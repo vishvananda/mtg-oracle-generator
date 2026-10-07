@@ -36,7 +36,8 @@ python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 
-# After publication, set these to the dataset ID and immutable release commit.
+export MTG_DATASET=vishvananda/mtg-oracle-design-descriptions
+export MTG_DATASET_REVISION=4e32fd88762697f984f8091947d6ba65246074d5
 python src/hub_dataset.py download --repo-id "$MTG_DATASET" \
   --revision "$MTG_DATASET_REVISION" --directory data/oracle
 
@@ -54,8 +55,8 @@ uv run --frozen --script src/train_qlora.py --dataset data/oracle \
 
 The development machine has an unpublished staging copy at
 `dist/names-rarity-pilot-v1`; it is not included in a Git clone. That partial
-dataset has no final test. Consumers download releases from Hugging Face using
-the command above once the release links are published.
+dataset has no final test. The command above downloads the complete published
+release, including its frozen validation and test splits.
 Each release supplies standard `messages`, TRL `prompt`/`completion`, and
 provenance-rich records. [Dataset format and generation](docs/dataset.md) explains
 how to rebuild it; [training](docs/training.md) covers larger models and GPUs.

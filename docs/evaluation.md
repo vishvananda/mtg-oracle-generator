@@ -62,7 +62,7 @@ whole. Retain `cases.jsonl` alongside `metrics.json` for auditability.
 
 ## Final test after the model is frozen
 
-The full corpus and trained model are not finished yet. The checked-in
+The full corpus is published; full-epoch training and final evaluation are pending. The checked-in
 [`reports/final/status.json`](../reports/final/status.json) intentionally has no
 accuracy value. It must not be populated with pilot or source-corpus scores.
 
