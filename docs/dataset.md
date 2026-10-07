@@ -117,6 +117,22 @@ starts; inspect its receipt before an explicit `retry-review --job-id NNNNN`.
 Placing `{}` in `ROOT/drain.request.json` stops new batches after in-flight work
 finishes. Neither a failed review nor a timeout triggers an automatic retry.
 
+To change concurrency on an existing run, use the host with write access to its
+artifact directory. The coordinator reads worker count at startup, so editing
+its config alone does not resize a running pool:
+
+```bash
+python src/resize_workers.py --root "$CARD_INTENT_ARTIFACTS/detailed" --workers 6
+python src/resize_workers.py --root "$CARD_INTENT_ARTIFACTS/detailed" --workers 6 --apply
+```
+
+The first command only prints a plan. The second drains current batches, waits
+for the existing coordinator and export, preserves the model/prompt settings,
+then starts one replacement coordinator with six workers and a new export path.
+It requires `active-launch.json` and its recorded launch command. Existing drain
+requests and failed/review batches require inspection; the tool does not override
+them or reset completed work. Other corpus queues are unaffected.
+
 Historical wording is optional and uses a separately pinned download:
 
 ```bash
