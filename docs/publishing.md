@@ -2,7 +2,10 @@
 
 Keep three artifacts separate: GitHub code/docs, HF datasets, and HF model
 adapters. `dist/`, `artifacts/`, `data/`, GPU checkpoints and model weights are
-ignored by Git. The current local preparation is recorded in
+ignored by Git. Dataset archives are local upload staging files; distribute
+prepared datasets through Hugging Face, not GitHub commits or release assets.
+GitHub retains small examples, evaluation reports, and provenance manifests.
+The current local preparation is recorded in
 [`release-status.json`](../release-status.json); URLs are null until upload.
 
 ## Dataset

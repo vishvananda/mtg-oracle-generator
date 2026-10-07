@@ -1,9 +1,14 @@
 # MTG Oracle Text Generator
 
 Turn a card idea into editable card JSON with Oracle-style rules text. This
-repository contains the description-generation and review pipeline, portable
-datasets, a QLoRA training recipe, and evaluation against the unchanged
+repository contains the description-generation and review pipeline, dataset
+preparation tools, a QLoRA training recipe, and evaluation against the unchanged
 [mtgish parser](https://github.com/i5jb/mtgish).
+
+**GitHub hosts the code, documentation, examples, and evaluation reports.
+Hugging Face hosts the prepared datasets and trained adapters.** Their download
+links and pinned revisions are recorded in [release status](release-status.json)
+after publication. Local release files in `dist/` are staging copies ignored by Git.
 
 A request such as “a midsize red Giant” can leave cost and stats to the model.
 A detailed request must preserve its mechanics. Names, rarity, costs and stats
@@ -47,8 +52,10 @@ uv run --frozen --script src/train_qlora.py --dataset data/oracle \
   --config configs/qwen3-4b-full.json --output runs/full --max-steps -1
 ```
 
-Until upload, the prepared local dataset is `dist/names-rarity-pilot-v1`; use that
-directory in place of `data/oracle`. It is a partial dataset, with no final test.
+The development machine has an unpublished staging copy at
+`dist/names-rarity-pilot-v1`; it is not included in a Git clone. That partial
+dataset has no final test. Consumers download releases from Hugging Face using
+the command above once the release links are published.
 Each release supplies standard `messages`, TRL `prompt`/`completion`, and
 provenance-rich records. [Dataset format and generation](docs/dataset.md) explains
 how to rebuild it; [training](docs/training.md) covers larger models and GPUs.
