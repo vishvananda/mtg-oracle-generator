@@ -2,7 +2,14 @@
 import argparse
 import json
 from pathlib import Path
+import os
+import tempfile
 from data_utils import digest
+
+
+def publication_readme(text,repo_id):
+    return text.replace('license_link: DATA_LICENSE.md\n',
+        f'license_link: https://huggingface.co/datasets/{repo_id}/blob/main/DATA_LICENSE.md\n')
 
 
 def verify(root):
@@ -35,9 +42,14 @@ if __name__=='__main__':
         manifest=verify(a.directory)
         api=HfApi()
         api.create_repo(a.repo_id,repo_type='dataset',private=a.private,exist_ok=True)
-        receipt=api.upload_folder(repo_id=a.repo_id,repo_type='dataset',folder_path=a.directory,
-            allow_patterns=['manifest.json','README.md',*manifest['files']],
-            commit_message='Publish '+manifest['release'])
+        # Data stays byte-identical; adapt only the unpinned display card to its public location.
+        with tempfile.TemporaryDirectory(prefix='oracle-hub-',dir=a.directory.parent) as tmp:
+            staging=Path(tmp)
+            for name in ['manifest.json',*manifest['files']]: os.link(a.directory/name,staging/name)
+            (staging/'README.md').write_text(publication_readme((a.directory/'README.md').read_text(),a.repo_id))
+            receipt=api.upload_folder(repo_id=a.repo_id,repo_type='dataset',folder_path=staging,
+                allow_patterns=['manifest.json','README.md',*manifest['files']],
+                commit_message='Publish '+manifest['release'])
         print(json.dumps({'repo_id':a.repo_id,'commit':receipt.oid,'url':receipt.commit_url},indent=2))
     else:
         result=verify(a.directory)

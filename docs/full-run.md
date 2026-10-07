@@ -8,6 +8,61 @@ Prepared datasets, predictions, and weights belong on Hugging Face; keep them
 out of Git. The repository contains code, recipes, documentation, and measured
 aggregate plots/reports.
 
+## Start with a checkpoint experiment
+
+One full epoch is one pass through roughly 250,000 descriptions. It is not
+necessary to finish it before checking model quality. `configs/staged-run.json`
+keeps the full-epoch learning-rate schedule but stops each training segment
+after a one-hour training-loop budget (90-minute hard job timeout). Resume its
+optimizer checkpoint to continue the same epoch and data order.
+
+The staged experiment has a **$20 aggregate ledger**, one attempt per job, and
+no automatic continuation after its first quality report. At the current A100
+price, the initial smoke (30-minute cap), training segment (90-minute cap), and
+development generation (30-minute cap) reserve approximately **$6.25 total**.
+The ledger conservatively counts the full timeout cost even if jobs finish
+early. A failed or ambiguous submission retains its reservation for inspection.
+The controller refuses an increased live price above its per-job caps.
+
+```bash
+python src/setup_mtgish.py
+python src/run_package.py --dataset data/oracle --recipe configs/staged-run.json \
+  --output runs/staged-package
+.hf-jobs/bin/python src/run_first_segment.py --package runs/staged-package \
+  --dataset data/oracle --output runs/segment-1 --cpu-python .venv/bin/python
+```
+
+The second command submits paid jobs. It runs smoke → one training segment →
+paired base/adapter development generation → CPU parser/loss reports, then
+stops at `awaiting_quality_review`. Read `status.json` and `budget.json` for
+progress and reserved cost. There is no automatic retry or model promotion.
+
+The fixed 256-case validation panel spreads examples across description styles
+and distinct source groups, reserving up to 32 planeswalker and 16 multi-face
+cases. It intentionally emphasizes difficult categories, so its rate is a
+development-panel score, **not** an estimate of full-corpus accuracy. The report
+also includes 32 raw paired examples in `intent-review.jsonl`; inspect request
+fidelity, names, rarity, loyalty, and editable defaults before deciding whether
+to spend on another segment. Final-test examples are untouched.
+
+For a later segment, use `hf_jobs.py launch --stage train` with the same package,
+the existing successful smoke directory, `--resume-record` pointing to the
+previous train job, a complete `--checkpoint checkpoint-N`, and **the same
+`--ledger runs/segment-1/budget.json`**. Use fresh job/output paths, then launch
+`--stage development` against that adapter and the same ledger. Checkpoint
+resumption preserves optimizer/scheduler state; starting a fresh adapter would
+discard the prior segment's learning. Do not replace `max_steps=-1` with a small
+step count, which would change the learning-rate schedule.
+
+## Training and serving precision
+
+The current recipe uses QLoRA: frozen 4-bit NF4 base weights, trainable LoRA
+adapters, and BF16 computation on the A100. It is not full-weight BF16 training.
+QLoRA reduces memory requirements; its speed advantage over BF16 LoRA is not
+assumed. The smoke supplies actual throughput before committing more budget.
+Serving merges the adapter into a fresh pinned BF16 base, then quantizes once
+to GGUF. The public adapters can also be used with the BF16 base directly.
+
 ## Freeze and check the data
 
 After downloading a complete dataset with `hub_dataset.py`, use Python from
@@ -148,6 +203,28 @@ separately. Do not tune again against the final-test score. If it informs anothe
 training decision, treat it as development data and reserve a new test set.
 
 ## Release and serving candidate
+
+To share checkpoints as they are saved, add `publication` to an artifact copy
+of the staged recipe **before packaging it**:
+
+```json
+{
+  "publication": {
+    "model_repo": "YOUR_ACCOUNT/mtg-oracle-checkpoints",
+    "dataset_reference": "YOUR_ACCOUNT/mtg-oracle-descriptions@IMMUTABLE_COMMIT"
+  }
+}
+```
+
+The launcher explicitly creates/checks a public model repository. Each save
+preserves an inference-only snapshot in persistent storage and publishes it with
+a tag such as `train-step-00000200` or `smoke-step-00000020`. Snapshots contain
+adapter weights/config, the prompt, and minimal recipe/provenance/model-card
+metadata. Existing tags are immutable: a retry must match their files exactly.
+Optimizer state and worker logs stay private. If a Hub upload fails, the snapshot
+survives optimizer-checkpoint rotation and the controller retries its upload
+after collection. Checkpoint cards explicitly distinguish incomplete training
+from a finished, evaluated model.
 
 ```bash
 python src/prepare_model_release.py --adapter "$MTG_RUN/train/adapter" \

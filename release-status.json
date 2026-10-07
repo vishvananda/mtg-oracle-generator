@@ -1,5 +1,5 @@
 {
-  "prepared_at": "2026-10-07T18:14:25.195156+00:00",
+  "prepared_at": "2026-10-07T23:24:19.094178+00:00",
   "github": {
     "status": "local_repository_prepared",
     "proposed_name": "vishvananda/mtg-oracle-generator",
@@ -27,6 +27,20 @@
       "url": null,
       "revision": null,
       "manifest_sha256": "98d823c0237ba83f6cdc05481160344c2e61d6ca6a459e7c6bba2f730e910924"
+    },
+    "oracle-full-v1": {
+      "repo_id": "vishvananda/mtg-oracle-design-descriptions",
+      "revision": "4e32fd88762697f984f8091947d6ba65246074d5",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions",
+      "private": false,
+      "manifest_sha256": "addbde2a349e0f59f0da3a2f14e3a83e1192ffd826bcc970584f8d87eb628f11",
+      "counts": {
+        "test": 37618,
+        "validation": 31852,
+        "train": 250587
+      },
+      "files_verified": 14,
+      "status": "published"
     }
   },
   "model": {
@@ -36,7 +50,19 @@
     "release_manifest_sha256": "6717af612023014c56e6c7efd1edcec2bfccf08b3392606a5c9f56e4578ad05d"
   },
   "full_corpus": {
-    "status": "generation_in_progress",
+    "status": "dataset_published",
+    "final_test_evaluated": false,
+    "counts": {
+      "test": 37618,
+      "validation": 31852,
+      "train": 250587
+    }
+  },
+  "checkpoint_model": {
+    "status": "public_repository_prepared",
+    "repo_id": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
+    "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
+    "weights_published": false,
     "final_test_evaluated": false
   }
 }

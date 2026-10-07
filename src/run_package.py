@@ -12,7 +12,7 @@ from paths import PROJECT
 from train_qlora import preflight,validate_config
 
 SOURCES=('train_qlora.py','train_qlora.py.lock','generate.py','generate.py.lock',
-         'data_utils.py','hub_dataset.py','prediction_io.py','gpu_workflow.py')
+         'data_utils.py','hub_dataset.py','prediction_io.py','evaluation_selection.py','gpu_workflow.py')
 
 
 def package(dataset, output, recipe_path):

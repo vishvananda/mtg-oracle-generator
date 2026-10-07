@@ -18,8 +18,11 @@ from preflight_run import inspect
 from prepare_dataset import prepare
 from prepare_model_release import prepare as model_release
 from run_package import package,verify_package,prepare_run
-from train_qlora import training_identity,validation_indices
+from train_qlora import training_identity,validation_indices,checkpoint_release
 from test_release_pipeline import row,source
+from evaluation_selection import POLICY,select_cases,evaluation_allowed
+from job_budget import reserve
+from hub_dataset import publication_readme
 
 
 def fixture(root):
@@ -150,6 +153,30 @@ class Jobs(unittest.TestCase):
 
 
 class Reports(unittest.TestCase):
+    def test_development_panel_is_fixed_across_formats_and_covers_walkers_and_faces(self):
+        rows=[]
+        for i in range(400):
+            for j in range(3):
+                item=row(f'{i}-{j}','validation');item['source_group_id']=str(i);item['style']=str(j)
+                if i<60: item['target']['type_line']='Planeswalker'
+                if 60<=i<100: item['target']['card_faces']=[{'type_line':'Creature'},{'type_line':'Land'}]
+                rows.append(item)
+        selection={'policy':POLICY,'limit':256};chosen=select_cases(rows,selection)
+        self.assertEqual(len(chosen),256);self.assertEqual(len({r['source_group_id'] for r in chosen}),256)
+        self.assertGreaterEqual(sum(r['target']['type_line']=='Planeswalker' for r in chosen),32)
+        self.assertGreaterEqual(sum('card_faces' in r['target'] for r in chosen),16)
+        messages=[{k:r[k] for k in ('example_id','source_group_id','style')}|{'messages':[{'content':json.dumps(r['target'])}]} for r in rows]
+        self.assertEqual([r['example_id'] for r in chosen],[r['example_id'] for r in select_cases(list(reversed(messages)),selection)])
+
+    def test_partial_epochs_only_allow_development_and_never_smoke_or_final_test(self):
+        summary={'max_steps':-1,'stopped_for_training_budget':True,'metrics':{'epoch':.07},'config':{'epochs':1}}
+        selection={'policy':POLICY,'limit':256}
+        self.assertFalse(evaluation_allowed(summary,'validation',selection))
+        for split,panel in [('test',selection),('test',None),('validation',None)]:
+            with self.assertRaises(ValueError): evaluation_allowed(summary,split,panel)
+        with self.assertRaisesRegex(ValueError,'smoke'):
+            evaluation_allowed({**summary,'max_steps':20},'validation',selection)
+
     def test_paired_comparison_rejects_different_settings_and_parser(self):
         base={'complete':True,'cases':3,'scheduled_cases':3,'adapter_files':{},'decoding':{'batch_size':16}}
         adapter={**base,'adapter_files':{'weights':'hash'}}
@@ -184,6 +211,52 @@ class Reports(unittest.TestCase):
             report['dataset_manifest_sha256']='wrong';evidence.write_text(json.dumps(report))
             with self.assertRaisesRegex(ValueError,'another model/dataset'):
                 model_release(adapter,prompt,root/'wrong','dataset@pin','Test',evidence)
+
+
+class StagedBudget(unittest.TestCase):
+    def test_publication_uses_an_absolute_license_link_without_changing_data_description(self):
+        value=publication_readme('---\nlicense_link: DATA_LICENSE.md\n---\nData description\n','owner/dataset')
+        self.assertIn('https://huggingface.co/datasets/owner/dataset/blob/main/DATA_LICENSE.md',value)
+        self.assertTrue(value.endswith('Data description\n'))
+
+    def test_public_checkpoint_allowlist_preserves_weights_without_optimizer_or_logs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);checkpoint=root/'checkpoint';checkpoint.mkdir()
+            for name in ('adapter_config.json','adapter_model.safetensors','optimizer.pt','worker.log'):
+                (checkpoint/name).write_text(name)
+            metadata={'phase':'train','step':200,'epoch':.01,'dataset_reference':'owner/data@pin','tag':'train-step-00000200',
+                      'config':{'model':'Qwen/Test','model_revision':'hash'},'training_identity':{'dataset':'pin'}}
+            checkpoint_release(checkpoint,root/'public',metadata,'prompt')
+            self.assertEqual({p.name for p in (root/'public').iterdir()},
+                {'adapter_config.json','adapter_model.safetensors','system-prompt.txt','README.md','checkpoint.json'})
+            self.assertEqual((root/'public/adapter_model.safetensors').read_text(),'adapter_model.safetensors')
+            self.assertIn('No final-test accuracy',(root/'public/README.md').read_text())
+
+    def test_total_budget_survives_restarts_and_does_not_auto_retry_reservations(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);ledger=root/'budget.json'
+            reserve(ledger,20,root/'smoke.json',1.25)
+            reserve(ledger,20,root/'segment1.json',3.75)
+            reserve(ledger,20,root/'eval1.json',1.25)
+            for name,amount in [('segment2',5),('segment3',5)]: reserve(ledger,20,root/(name+'.json'),amount)
+            with self.assertRaisesRegex(ValueError,'exhausted'): reserve(ledger,20,root/'too-much.json',5)
+            with self.assertRaisesRegex(ValueError,'already'): reserve(ledger,20,root/'smoke.json',1.25)
+            with self.assertRaisesRegex(ValueError,'changed'): reserve(ledger,50,root/'higher.json',1)
+            self.assertEqual(sum(r['maximum_usd'] for r in json.loads(ledger.read_text())['reservations']),16.25)
+
+    def test_staged_commands_preserve_full_scheduler_and_limit_only_development(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);fixture(root)
+            package(root/'dataset',root/'staged',PROJECT/'configs/staged-run.json')
+            planned=plan(root/'staged','smoke')
+            self.assertEqual(planned['experiment_budget_usd'],20)
+            with self.assertRaisesRegex(ValueError,'not enabled'): plan(root/'staged','test')
+            trained=commands(root/'staged',root/'out','train',resume=root/'previous/checkpoint-1000')[0]
+            self.assertEqual(trained[trained.index('--max-steps')+1],'-1')
+            self.assertIn('--resume',trained)
+            paired=commands(root/'staged',root/'out','development',root/'dataset',root/'adapter')
+            self.assertTrue(all(c[c.index('--validation-limit')+1]=='256' for c in paired))
+            self.assertTrue(all(c[c.index('--split')+1]=='validation' for c in paired))
 
 
 if __name__=='__main__': unittest.main()

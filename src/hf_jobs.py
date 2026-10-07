@@ -16,6 +16,7 @@ from data_utils import digest
 from hub_dataset import verify
 from job_image import verify_job_image
 from run_package import verify_package
+from job_budget import reserve
 
 TERMINAL={'COMPLETED','ERROR','CANCELED','DELETED'}
 
@@ -27,7 +28,9 @@ def save(path,value):
 
 def plan(package,stage,smoke=None):
     manifest=verify_package(package);recipe=json.loads((package/'recipe.json').read_text())
-    config=json.loads((package/'train-config.json').read_text());settings=recipe['hf'];phase=settings['stages'][stage]
+    config=json.loads((package/'train-config.json').read_text());settings=recipe['hf']
+    if stage not in settings['stages']: raise ValueError('Stage is not enabled by this recipe')
+    phase=settings['stages'][stage]
     package_hash=digest((package/'package-manifest.json').read_bytes())
     estimate=None
     if stage=='train':
@@ -46,7 +49,8 @@ def plan(package,stage,smoke=None):
     return {'stage':stage,'package_hash':package_hash,'dataset_manifest_sha256':manifest['dataset_manifest_sha256'],
             'flavor':settings['flavor'],'image':settings['image'],'timeout_minutes':phase['timeout_minutes'],
             'attempts':1,'private_storage':True,'measured_estimate_minutes':estimate,
-            'automatic_promotion':False,'counts':manifest['counts'],'optimizer_steps':manifest['optimizer_steps']}
+            'automatic_promotion':False,'counts':manifest['counts'],'optimizer_steps':manifest['optimizer_steps'],
+            'training_mode':recipe.get('purpose','full_epoch'),'experiment_budget_usd':recipe.get('budget_limit_usd')}
 
 
 def cost_cap(planned,hardware,budget=None):
@@ -68,11 +72,13 @@ def sync_allowlist(hf,root,names,destination,token):
         hf.sync_bucket(str(staging),destination,token=token,quiet=True)
 
 
-def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,resume_record=None,checkpoint=None):
+def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,resume_record=None,checkpoint=None,ledger=None):
     import huggingface_hub as hf
-    settings=json.loads((package/'recipe.json').read_text())['hf']
+    recipe=json.loads((package/'recipe.json').read_text());settings=recipe['hf']
     if hf.__version__!=settings['client_version']: raise ValueError('Use HF client '+settings['client_version'])
     if record_path.exists(): raise ValueError('Job record exists; inspect it before submitting another job')
+    if planned.get('experiment_budget_usd') is not None and not ledger:
+        raise ValueError('This experiment requires a shared --ledger for its total budget')
     manifest=verify_package(package)
     if digest((package/'package-manifest.json').read_bytes())!=planned['package_hash']: raise ValueError('Package changed after planning')
     token=hf.get_token()
@@ -93,7 +99,7 @@ def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,r
         if job.status.stage not in ({'COMPLETED'} if completed else TERMINAL):
             raise ValueError('Previous job is not in the required terminal state')
         return old
-    evaluation=planned['stage'] in ('validation','test')
+    evaluation=planned['stage'] in ('development','validation','test')
     if evaluation:
         if not dataset or not adapter_record: raise ValueError('Evaluation needs --dataset and --adapter-record')
         data_manifest=verify(dataset)
@@ -124,9 +130,19 @@ def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,r
     mounts+=[hf.Volume(type='bucket',source=bucket,path=package_prefix,mount_path='/package',read_only=True),
              hf.Volume(type='bucket',source=bucket,path=output_prefix,mount_path='/outputs')]
     record={**planned,'run_name':run_name,'bucket':bucket,'output_prefix':output_prefix,'namespace':account,
-            'hardware_cost_cap_usd':cap,'image_check':image_check,'state':'submitting','public_uploads':False,
+            'hardware_cost_cap_usd':cap,'image_check':image_check,'state':'submitting','public_uploads':bool(recipe.get('publication')),
             'adapter_record_hash':digest(adapter_record.read_bytes()) if adapter_record else None,
             'resumed_from':str(resume_record) if resume_record else None}
+    if ledger:
+        if planned.get('experiment_budget_usd') is None: raise ValueError('Recipe must declare the experiment budget')
+        reserve(ledger,planned['experiment_budget_usd'],record_path,cap)
+        record['budget_ledger']=str(ledger.resolve())
+    if recipe.get('publication'):
+        publication=recipe['publication'];api=hf.HfApi(token=token)
+        api.create_repo(publication['model_repo'],repo_type='model',private=False,exist_ok=True)
+        if api.repo_info(publication['model_repo'],repo_type='model').private:
+            raise ValueError('Checkpoint publication target must be public')
+        record['publication']=publication
     # Retain 'submitting' on ambiguous API failures so a retry cannot silently duplicate a job.
     save(record_path,record)
     job=hf.run_job(image=planned['image'],command=command,flavor=planned['flavor'],timeout=str(planned['timeout_minutes'])+'m',
@@ -157,11 +173,12 @@ def collect(record_path,output=None):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('action',choices=['plan','launch','status','download'])
-    p.add_argument('--package',type=Path);p.add_argument('--stage',choices=['smoke','train','validation','test'],default='smoke')
+    p.add_argument('--package',type=Path);p.add_argument('--stage',choices=['smoke','train','development','validation','test'],default='smoke')
     p.add_argument('--smoke',type=Path);p.add_argument('--dataset',type=Path);p.add_argument('--adapter-record',type=Path)
     p.add_argument('--record',type=Path);p.add_argument('--output',type=Path)
     p.add_argument('--max-cost-usd',type=float);p.add_argument('--live-price',action='store_true')
     p.add_argument('--resume-record',type=Path);p.add_argument('--checkpoint')
+    p.add_argument('--ledger',type=Path,help='Shared experiment budget receipt')
     a=p.parse_args()
     if a.action in ('status','download'):
         if not a.record or (a.action=='download' and not a.output): p.error('--record and (for download) --output required')
@@ -175,5 +192,5 @@ if __name__=='__main__':
             result['hardware_cost_cap_usd']=cost_cap(result,hardware)
         if a.action=='launch':
             if a.max_cost_usd is None or not a.record: p.error('Launch requires --max-cost-usd and a new --record')
-            result=launch(a.package,result,a.record,a.max_cost_usd,a.dataset,a.adapter_record,a.resume_record,a.checkpoint)
+            result=launch(a.package,result,a.record,a.max_cost_usd,a.dataset,a.adapter_record,a.resume_record,a.checkpoint,a.ledger)
     print(json.dumps(result,indent=2))

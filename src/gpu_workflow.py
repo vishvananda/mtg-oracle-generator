@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import hashlib
 from data_utils import digest
+from evaluation_selection import evaluation_allowed
 
 
 def check_package(root):
@@ -24,15 +25,20 @@ def commands(package, output, stage, dataset=None, adapter=None, resume=None):
             '--max-steps',str(phase['max_steps']),'--training-seconds',str(phase['training_seconds']),
             '--generation-cases','4']
         if resume: command+=['--resume',str(resume)]
+        if recipe.get('publication'):
+            publication=recipe['publication']
+            command+=['--publish-repo',publication['model_repo'],'--publish-phase',stage,
+                      '--public-dataset-reference',publication['dataset_reference']]
         return [command]
     if not dataset or not adapter: raise ValueError('Evaluation needs the frozen dataset and trained adapter')
-    evaluation=recipe['evaluation'];result=[]
+    evaluation=recipe['evaluation'];result=[];split='validation' if stage=='development' else stage
     for arm in ('base','adapter'):
         command=uv+[str(package/'generate.py'),'--dataset',str(dataset),'--config',str(package/'train-config.json'),
-            '--split',stage,'--output',str(output/f'{arm}-{stage}.jsonl'),
+            '--split',split,'--output',str(output/f'{arm}-{split}.jsonl'),
             '--batch-size',str(evaluation['batch_size']),'--max-new-tokens',str(evaluation['max_new_tokens']),
             '--resume-output']
         if arm=='adapter': command+=['--adapter',str(adapter)]
+        if stage=='development': command+=['--validation-limit',str(evaluation['development_cases'])]
         result.append(command)
     return result
 
@@ -40,15 +46,15 @@ def commands(package, output, stage, dataset=None, adapter=None, resume=None):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--package',type=Path,default=Path('/package'));p.add_argument('--output',type=Path,default=Path('/outputs'))
-    p.add_argument('--stage',choices=['smoke','train','validation','test'],required=True)
+    p.add_argument('--stage',choices=['smoke','train','development','validation','test'],required=True)
     p.add_argument('--dataset',type=Path);p.add_argument('--adapter',type=Path);p.add_argument('--resume',type=Path)
     a=p.parse_args();manifest=check_package(a.package);a.output.mkdir(parents=True,exist_ok=True)
-    if a.stage in ('validation','test'):
+    if a.stage in ('development','validation','test'):
         if not a.dataset or not a.adapter: p.error('--dataset and --adapter are required for evaluation')
         if digest((a.dataset/'manifest.json').read_bytes())!=manifest['dataset_manifest_sha256']: raise ValueError('Evaluation dataset changed')
         summary=json.loads((a.adapter/'run-summary.json').read_text())
-        if summary['stopped_for_training_budget'] or summary['max_steps']!=-1 or summary['metrics']['epoch']<summary['config']['epochs']-1e-6:
-            raise ValueError('Full-run evaluation requires a completed epoch, not a smoke/budget-stopped adapter')
+        evaluation_allowed(summary,'validation' if a.stage=='development' else a.stage,
+                           {'development':True} if a.stage=='development' else None)
         if summary['training_identity']['dataset_manifest_sha256']!=manifest['dataset_manifest_sha256']:
             raise ValueError('Adapter belongs to another dataset')
         if summary['training_identity']['trainer_sha256']!=digest((a.package/'train_qlora.py').read_bytes()):
@@ -59,7 +65,8 @@ if __name__=='__main__':
         frozen={'dataset_manifest_sha256':manifest['dataset_manifest_sha256'],
                 'package_manifest_sha256':digest((a.package/'package-manifest.json').read_bytes()),
                 'adapter_files':{n:digest((a.adapter/n).read_bytes()) for n in ('adapter_config.json','adapter_model.safetensors')},
-                'evaluation':json.loads((a.package/'recipe.json').read_text())['evaluation'],'split':a.stage}
+                'evaluation':json.loads((a.package/'recipe.json').read_text())['evaluation'],
+                'stage':a.stage,'split':'validation' if a.stage=='development' else a.stage}
         pin=a.output/'evaluation-freeze.json'
         if pin.exists() and json.loads(pin.read_text())!=frozen: raise ValueError('Frozen model/evaluation changed')
         pin.write_text(json.dumps(frozen,indent=2)+'\n')

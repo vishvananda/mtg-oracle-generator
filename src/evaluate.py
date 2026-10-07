@@ -9,6 +9,7 @@ from jsonschema import Draft202012Validator
 from data_utils import digest,write_jsonl
 from hub_dataset import verify
 from validate_mtgish import MtgishValidator
+from evaluation_selection import select_cases
 
 
 def score(cases,predictions,schema,check):
@@ -91,6 +92,11 @@ if __name__=='__main__':
     predictions=[json.loads(line) for line in a.predictions.read_text().splitlines()]
     receipt_path=a.predictions.with_suffix('.manifest.json')
     generation=json.loads(receipt_path.read_text())
+    if a.split=='test' and generation.get('selection'): p.error('Final test cannot be sampled')
+    cases=select_cases(cases,generation.get('selection'))
+    if generation.get('selection') and (generation['scheduled_cases']!=len(cases)
+            or generation['scheduled_ids_sha256']!=digest([r['example_id'] for r in cases])):
+        p.error('Development panel identity mismatch')
     if generation['dataset_manifest_sha256']!=digest((a.dataset/'manifest.json').read_bytes()):
         p.error('Predictions belong to another dataset')
     if generation['split']!=a.split or generation['predictions_sha256']!=digest(a.predictions.read_bytes()):

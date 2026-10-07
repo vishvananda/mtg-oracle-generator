@@ -6,15 +6,16 @@ import shutil
 import subprocess
 import sys
 
-from data_utils import digest
+from data_utils import digest,write_jsonl
 from hub_dataset import verify
 from paths import PROJECT
 from plot_training import plot
+from evaluation_selection import POLICY,select_cases,evaluation_allowed
 
 
 def paired_identity(base,adapter):
     fields=('dataset_manifest_sha256','split','model','model_revision','config_sha256','seed','decoding',
-            'config_canonical_sha256','code_files','backend','scheduled_cases','scheduled_ids_sha256')
+            'config_canonical_sha256','code_files','backend','scheduled_cases','scheduled_ids_sha256','selection','selection_code_sha256')
     if any(base.get(k)!=adapter.get(k) for k in fields): raise ValueError('Base/adapter generation conditions differ')
     if base.get('adapter_files') or not adapter.get('adapter_files'): raise ValueError('Expected one base and one adapter arm')
     if not base.get('complete') or not adapter.get('complete'): raise ValueError('Paired generation is incomplete')
@@ -55,9 +56,6 @@ def plot_acceptance(report,output):
 def run(dataset,adapter,generations,split,output):
     manifest=verify(dataset);dataset_hash=digest((dataset/'manifest.json').read_bytes())
     summary=json.loads((adapter/'run-summary.json').read_text())
-    if (summary['max_steps']!=-1 or summary['stopped_for_training_budget']
-            or summary['metrics']['epoch']<summary['config']['epochs']-1e-6):
-        raise ValueError('Full-run report requires a completed training run')
     if summary['training_identity']['dataset_manifest_sha256']!=dataset_hash:
         raise ValueError('Training and evaluation datasets differ')
     predictions={arm:generations/f'{arm}-{split}.jsonl' for arm in ('base','adapter')}
@@ -65,11 +63,16 @@ def run(dataset,adapter,generations,split,output):
     paired_identity(receipts['base'],receipts['adapter'])
     adapter_files={name:digest((adapter/name).read_bytes()) for name in ('adapter_config.json','adapter_model.safetensors')}
     trained=receipts['adapter']
+    selection=trained.get('selection')
+    complete=evaluation_allowed(summary,split,selection)
+    selected=select_cases([json.loads(line) for line in (dataset/f'{split}.jsonl').read_text().splitlines()],selection)
+    if trained['scheduled_ids_sha256']!=digest([r['example_id'] for r in selected]):
+        raise ValueError('Evaluation panel identity differs')
     if (trained['dataset_manifest_sha256']!=dataset_hash or trained['split']!=split
             or trained['adapter_files']!=adapter_files or trained['model']!=summary['config']['model']
             or trained['model_revision']!=summary['model_revision']
             or trained['config_canonical_sha256']!=summary['training_identity']['config_sha256']
-            or trained['scheduled_cases']!=manifest['counts'][split]):
+            or trained['scheduled_cases']!=len(selected)):
         raise ValueError('Generation provenance differs from the trained model/dataset')
     identity={'dataset_manifest_sha256':dataset_hash,'adapter_files':adapter_files,'split':split,
               'predictions':{arm:digest(path.read_bytes()) for arm,path in predictions.items()},
@@ -90,6 +93,17 @@ def run(dataset,adapter,generations,split,output):
         metrics[arm]=json.loads((destination/'metrics.json').read_text())
         if metrics[arm]['generation']!=receipts[arm]: raise ValueError('Existing score belongs to another generation')
     report=comparison(metrics['base'],metrics['adapter'])
+    report.update(training_complete=complete,training_epoch=summary['metrics']['epoch'],
+                  evaluation_scope='development_panel' if selection else 'full_split')
+    generated={arm:{r['example_id']:r for r in map(json.loads,path.read_text().splitlines())}
+               for arm,path in predictions.items()}
+    review=select_cases(selected,{'policy':POLICY,'limit':32})
+    write_jsonl(output/'intent-review.jsonl',[{'example_id':r['example_id'],'style':r['style'],
+        'description':r['description'],'reference':r['target'],
+        'base':generated['base'][r['example_id']]['raw_text'],
+        'adapter':generated['adapter'][r['example_id']]['raw_text'],
+        'manual_verdict':None,'rubric':'Preserves explicit intent; sensible editable defaults; name/rarity/loyalty present when appropriate. Reference is not the only valid completion.'}
+        for r in review])
     report['training_summary_sha256']=identity['run_summary_sha256']
     plot(adapter/'run-summary.json',output,state_path=adapter/'trainer_state.json')
     plot_acceptance(report,output)
@@ -98,7 +112,8 @@ def run(dataset,adapter,generations,split,output):
     for arm in ('base','adapter'):
         m=report[arm]
         table+=f'| {arm.title()} | {m["cases"]:,} | {m["schema_valid"]:,} | {100*m["mtgish_acceptance_all_cases"]:.2f}% |\n'
-    (output/'README.md').write_text(f'# {split.title()} — base versus tuned model\n\n'+table+'\n'
+    scope=f'Development panel; training epoch {summary["metrics"]["epoch"]:.4f}. Not a full-split score.\n\n' if selection else ''
+    (output/'README.md').write_text(f'# {split.title()} — base versus tuned model\n\n'+scope+table+'\n'
         '![Training loss and token accuracy](training-curve.png)\n\n![Parser acceptance](parser-acceptance.png)\n\n'
         'The denominator includes all scheduled cases, including malformed JSON, unsupported layouts, '
         'ignored cards, and parser errors. Parser acceptance does not prove intent preservation or legality. '
@@ -106,6 +121,7 @@ def run(dataset,adapter,generations,split,output):
         'Each arm retains `metrics.json` (style/type breakdowns and exact parser/model provenance) '
         'and `cases.jsonl` (failure diagnostics). `comparison.json` pins the trained adapter and dataset. '
         'Inspect wrong players/zones, omitted abilities, loyalty and multi-face cards before promoting a model. '
+        '`intent-review.jsonl` supplies 32 paired cases for that review; no intent score is inferred. '
         'This command does not change the live service.\n')
     files={str(p.relative_to(output)):digest(p.read_bytes()) for p in sorted(output.rglob('*'))
            if p.is_file() and p.name!='report-manifest.json'}

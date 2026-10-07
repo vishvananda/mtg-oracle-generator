@@ -18,6 +18,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import shutil
 import time
 
 
@@ -100,6 +101,50 @@ def training_identity(dataset, config):
             'validation_sha256': manifest['files']['validation.sft.jsonl']['sha256']}
 
 
+def checkpoint_release(checkpoint, output, metadata, prompt):
+    """Preserve only public inference files before optimizer checkpoint rotation."""
+    output.mkdir(parents=True,exist_ok=True)
+    for name in ('adapter_config.json','adapter_model.safetensors'):
+        shutil.copyfile(checkpoint/name,output/name)
+    (output/'system-prompt.txt').write_text(prompt)
+    (output/'checkpoint.json').write_text(json.dumps(metadata,indent=2)+'\n')
+    (output/'README.md').write_text(
+        f'---\nbase_model: {metadata["config"]["model"]}\nlibrary_name: peft\npipeline_tag: text-generation\n'
+        'license: apache-2.0\nlanguage: [en]\n---\n\n'
+        f'# MTG Oracle — {metadata["phase"]}, step {metadata["step"]}\n\n'
+        f'Research QLoRA adapter; epoch {metadata["epoch"]:.4f}. This is a checkpoint, '
+        'not a claim that training or evaluation is complete. No final-test accuracy is claimed.\n\n'
+        f'Dataset: {metadata["dataset_reference"]}. Exact base revision: `{metadata["config"]["model_revision"]}`. '
+        f'This snapshot is tagged `{metadata["tag"]}`. Pin that tag/commit when downloading. '
+        'Download the base separately; load with Transformers/PEFT, apply `system-prompt.txt`, '
+        'and disable thinking. See `checkpoint.json` for the recipe and data/code identities.\n\n'
+        'Base attribution: Qwen team, Apache 2.0. The dataset includes third-party Magic: The Gathering '
+        'card content; retain its DATA_LICENSE.md and Wizards of the Coast/Scryfall/MTGJSON attribution. '
+        'No artwork, optimizer state, credentials, or worker logs are included.\n')
+    return output
+
+
+def publish_checkpoint(directory,repo_id,tag):
+    from huggingface_hub import HfApi
+    api=HfApi()
+    names=['adapter_config.json','adapter_model.safetensors','system-prompt.txt','checkpoint.json','README.md']
+    existing=next((r for r in api.list_repo_refs(repo_id,repo_type='model').tags if r.name==tag),None)
+    if existing:
+        files={f.rfilename:f for f in api.repo_info(repo_id,repo_type='model',revision=existing.target_commit,files_metadata=True).siblings}
+        for name in names:
+            raw=(directory/name).read_bytes();remote=files.get(name)
+            expected=hashlib.sha256(raw).hexdigest() if remote and remote.lfs else hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+            actual=(remote.lfs.sha256 if remote.lfs else remote.blob_id) if remote else None
+            if actual!=expected: raise ValueError('Refusing to replace an existing checkpoint tag: '+tag)
+        return {'repo_id':repo_id,'revision':existing.target_commit,'tag':tag,
+                'url':f'https://huggingface.co/{repo_id}/tree/{tag}'}
+    receipt=api.upload_folder(repo_id=repo_id,repo_type='model',folder_path=directory,
+        allow_patterns=names,
+        commit_message='Publish '+tag)
+    api.create_tag(repo_id=repo_id,repo_type='model',tag=tag,revision=receipt.oid)
+    return {'repo_id':repo_id,'revision':receipt.oid,'tag':tag,'url':receipt.commit_url}
+
+
 def generate_comparison(model, tokenizer, rows, output, adapter_enabled, max_new_tokens=400, compute_dtype=None):
     import torch
     model.eval()
@@ -151,9 +196,13 @@ def main():
     parser.add_argument('--resume', type=Path, help='Trainer checkpoint to resume, never a bare adapter directory')
     parser.add_argument('--check-environment', action='store_true', help='Verify pinned imports without loading weights')
     parser.add_argument('--training-seconds', type=int, help='Stop after this training-loop budget; final evaluation/save still run')
+    parser.add_argument('--publish-repo',help='Explicit public model repo for inference-only checkpoint snapshots')
+    parser.add_argument('--publish-phase',choices=['smoke','train'],default='train')
+    parser.add_argument('--public-dataset-reference',help='Pinned public dataset repo@commit')
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
     validate_config(config, args.max_steps)
+    if args.publish_repo and not args.public_dataset_reference: raise ValueError('Public checkpoints require a pinned dataset reference')
     if args.generation_cases < 1:
         raise ValueError('At least one paired generation case is required')
     checked = preflight(args.dataset, config)
@@ -233,6 +282,21 @@ def main():
         def on_save(self, training_args, state, control, **kwargs):
             checkpoint=Path(training_args.output_dir)/f'checkpoint-{state.global_step}'
             (checkpoint/'training-identity.json').write_text(json.dumps(run_identity,indent=2)+'\n')
+            if args.publish_repo:
+                tag=f'{args.publish_phase}-step-{state.global_step:08d}'
+                destination=args.output/'public-checkpoints'/tag
+                public=checkpoint_release(checkpoint,destination,{'phase':args.publish_phase,'step':state.global_step,
+                    'epoch':state.epoch,'tag':tag,'config':config,'training_identity':run_identity,
+                    'dataset_reference':args.public_dataset_reference,'final_test_evaluated':False},
+                    data['train'][0]['prompt'][0]['content'])
+                try:
+                    receipt=publish_checkpoint(public,args.publish_repo,tag)
+                    (destination/'publication.json').write_text(json.dumps(receipt,indent=2)+'\n')
+                except Exception as error:
+                    # Preserve every adapter even if Hub upload fails; private checkpoint rotation may continue.
+                    (destination/'publication-error.json').write_text(json.dumps({'error_type':type(error).__name__,
+                        'retry_required':True,'repo_id':args.publish_repo,'tag':tag},indent=2)+'\n')
+                    print(json.dumps({'checkpoint_publication':'deferred','tag':tag,'error_type':type(error).__name__}),flush=True)
     budget_callback=TimeBudget()
     trainer.add_callback(budget_callback)
     verify_completion_masks(tokenizer, trainer.train_dataset, data['train'])

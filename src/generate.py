@@ -17,6 +17,7 @@ import time
 from data_utils import digest
 from hub_dataset import verify
 from prediction_io import Predictions
+from evaluation_selection import POLICY,select_cases
 
 
 if __name__=='__main__':
@@ -29,13 +30,18 @@ if __name__=='__main__':
     p.add_argument('--max-new-tokens',type=int,default=2048)
     p.add_argument('--batch-size',type=int,default=8)
     p.add_argument('--resume-output',action='store_true')
+    p.add_argument('--validation-limit',type=int,help='Fixed development panel; forbidden for test')
     a=p.parse_args()
     if a.max_new_tokens<1 or a.batch_size<1: p.error('Token and batch budgets must be positive')
+    if a.validation_limit is not None and (a.split!='validation' or a.validation_limit<1):
+        p.error('A positive sample limit is allowed only for validation')
     manifest=verify(a.dataset)
     if a.split=='test' and manifest['status']!='complete': p.error('Final test requires a complete frozen release')
     if a.split+'.messages.jsonl' not in manifest['files']: p.error('Split missing from manifest')
     config=json.loads(a.config.read_text())
     rows=[json.loads(line) for line in (a.dataset/(a.split+'.messages.jsonl')).read_text().splitlines()]
+    selection={'policy':POLICY,'limit':a.validation_limit} if a.validation_limit else None
+    rows=select_cases(rows,selection)
     adapter_files={}
     if a.adapter:
         for name in ('adapter_config.json','adapter_model.safetensors'):
@@ -45,6 +51,7 @@ if __name__=='__main__':
         'config_sha256':digest(a.config.read_bytes()),
         'config_canonical_sha256':hashlib.sha256(json.dumps(config,sort_keys=True).encode()).hexdigest(),'seed':config['seed'],
         'code_files':{n:digest((Path(__file__).parent/n).read_bytes()) for n in ('generate.py','generate.py.lock','prediction_io.py')},
+        'selection':selection,'selection_code_sha256':digest((Path(__file__).parent/'evaluation_selection.py').read_bytes()),
         'decoding':{'do_sample':False,'max_new_tokens':a.max_new_tokens,'enable_thinking':False,'batch_size':a.batch_size},
         'backend':'transformers NF4, one GPU'}
     writer=Predictions(a.output,identity,[r['example_id'] for r in rows],a.resume_output)

@@ -19,11 +19,11 @@ intent fidelity, game balance, or official Magic rules correctness.
 
 | Artifact | Status |
 | --- | --- |
-| Full Oracle description corpus | Generation/review in progress; 36,163 source game cards |
+| Full Oracle description corpus | [Public dataset](https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions): 250,587 train / 31,852 validation / 37,618 test |
 | Names + rarity pilot dataset | Packaged locally: 19,065 train / 572 validation; not uploaded |
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | Full training and final-test mtgish results | **Pending** — no final-test score claimed |
-| Public Hugging Face dataset/model links | Pending upload; see [release status](release-status.json) |
+| Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
 ## Use the data and fine-tune
 
@@ -66,6 +66,8 @@ The [full-run workflow](docs/full-run.md) connects dataset freezing, token-lengt
 checks, bounded HF Jobs, resumable checkpoints, paired base/tuned evaluation,
 loss and mtgish plots, and model/CPU-serving exports. Its preparation watcher
 can wait for the remaining corpus work; GPU submission is an explicit step.
+Its staged recipe can stop after a short training segment and evaluate a fixed
+development panel before continuing the same epoch, with a shared spending cap.
 
 ## Measured pilot results
 
