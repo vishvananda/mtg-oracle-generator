@@ -16,6 +16,7 @@ import time
 
 from data_utils import digest
 from hub_dataset import verify
+from prediction_io import Predictions
 
 
 if __name__=='__main__':
@@ -26,13 +27,29 @@ if __name__=='__main__':
     p.add_argument('--split',choices=['validation','test'],default='validation')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--max-new-tokens',type=int,default=2048)
+    p.add_argument('--batch-size',type=int,default=8)
+    p.add_argument('--resume-output',action='store_true')
     a=p.parse_args()
-    if a.output.exists() or a.output.with_suffix('.manifest.json').exists(): p.error('Use a fresh output path')
-    if a.max_new_tokens<1: p.error('--max-new-tokens must be positive')
+    if a.max_new_tokens<1 or a.batch_size<1: p.error('Token and batch budgets must be positive')
     manifest=verify(a.dataset)
     if a.split=='test' and manifest['status']!='complete': p.error('Final test requires a complete frozen release')
     if a.split+'.messages.jsonl' not in manifest['files']: p.error('Split missing from manifest')
     config=json.loads(a.config.read_text())
+    rows=[json.loads(line) for line in (a.dataset/(a.split+'.messages.jsonl')).read_text().splitlines()]
+    adapter_files={}
+    if a.adapter:
+        for name in ('adapter_config.json','adapter_model.safetensors'):
+            with (a.adapter/name).open('rb') as stream: adapter_files[name]=hashlib.file_digest(stream,'sha256').hexdigest()
+    identity={'dataset_manifest_sha256':digest((a.dataset/'manifest.json').read_bytes()),'split':a.split,
+        'model':config['model'],'model_revision':config['model_revision'],'adapter_files':adapter_files,
+        'config_sha256':digest(a.config.read_bytes()),
+        'config_canonical_sha256':hashlib.sha256(json.dumps(config,sort_keys=True).encode()).hexdigest(),'seed':config['seed'],
+        'code_files':{n:digest((Path(__file__).parent/n).read_bytes()) for n in ('generate.py','generate.py.lock','prediction_io.py')},
+        'decoding':{'do_sample':False,'max_new_tokens':a.max_new_tokens,'enable_thinking':False,'batch_size':a.batch_size},
+        'backend':'transformers NF4, one GPU'}
+    writer=Predictions(a.output,identity,[r['example_id'] for r in rows],a.resume_output)
+    if all(r['example_id'] in writer.done for r in rows):
+        writer.finish();raise SystemExit(0)
     import torch
     from transformers import AutoModelForCausalLM,AutoTokenizer,BitsAndBytesConfig,set_seed
     from peft import PeftModel
@@ -40,21 +57,26 @@ if __name__=='__main__':
     set_seed(config['seed'])
     dtype=torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     tokenizer=AutoTokenizer.from_pretrained(config['model'],revision=config['model_revision'])
+    tokenizer.padding_side='left';tokenizer.pad_token=tokenizer.eos_token
     model=AutoModelForCausalLM.from_pretrained(config['model'],revision=config['model_revision'],
         quantization_config=BitsAndBytesConfig(load_in_4bit=True,bnb_4bit_quant_type='nf4',
             bnb_4bit_use_double_quant=True,bnb_4bit_compute_dtype=dtype),
         torch_dtype=dtype,device_map={'':torch.cuda.current_device()},attn_implementation='sdpa')
     if a.adapter: model=PeftModel.from_pretrained(model,a.adapter)
     model.eval()
-    rows=[json.loads(line) for line in (a.dataset/(a.split+'.messages.jsonl')).read_text().splitlines()]
-    a.output.parent.mkdir(parents=True,exist_ok=True)
+    # Similar prompt lengths reduce padding. The schedule and batch policy are frozen.
+    rows.sort(key=lambda r:(len(r['messages'][1]['content']),r['example_id']))
     started=time.monotonic()
-    with a.output.open('w') as stream,torch.inference_mode(),torch.autocast('cuda',dtype=dtype):
-        for i,row in enumerate(rows):
-            messages=row['messages'][:2]
-            if [m['role'] for m in messages]!=['system','user']: raise ValueError('Unexpected messages')
-            prompt=tokenizer.apply_chat_template(messages,tokenize=False,add_generation_prompt=True,enable_thinking=False)
-            batch=tokenizer(prompt,return_tensors='pt',add_special_tokens=False).to(model.device)
+    try:
+      with torch.inference_mode(),torch.autocast('cuda',dtype=dtype):
+        for i in range(0,len(rows),a.batch_size):
+            group=rows[i:i+a.batch_size];prompts=[]
+            if all(r['example_id'] in writer.done for r in group): continue
+            for row in group:
+                messages=row['messages'][:2]
+                if [m['role'] for m in messages]!=['system','user']: raise ValueError('Unexpected messages')
+                prompts.append(tokenizer.apply_chat_template(messages,tokenize=False,add_generation_prompt=True,enable_thinking=False))
+            batch=tokenizer(prompts,return_tensors='pt',padding=True,add_special_tokens=False).to(model.device)
             width=batch['input_ids'].shape[1]
             context_limit=getattr(model.config,'max_position_embeddings',None)
             if context_limit and width+a.max_new_tokens>context_limit:
@@ -62,19 +84,15 @@ if __name__=='__main__':
             before=time.monotonic()
             generated=model.generate(**batch,do_sample=False,max_new_tokens=a.max_new_tokens,
                                       pad_token_id=tokenizer.eos_token_id,use_cache=True)
-            tokens=generated[0,width:].tolist()
-            prediction={'example_id':row['example_id'],'raw_text':tokenizer.decode(tokens,skip_special_tokens=True),
-                        'output_tokens':len(tokens),'seconds':time.monotonic()-before,
-                        'hit_token_limit':len(tokens)>=a.max_new_tokens and tokens[-1]!=tokenizer.eos_token_id}
-            stream.write(json.dumps(prediction,ensure_ascii=False)+'\n');stream.flush()
-            if (i+1)%100==0: print(json.dumps({'completed':i+1,'total':len(rows)}),flush=True)
-    adapter_files={}
-    if a.adapter:
-        for name in ('adapter_config.json','adapter_model.safetensors'):
-            with (a.adapter/name).open('rb') as stream: adapter_files[name]=hashlib.file_digest(stream,'sha256').hexdigest()
-    receipt={'dataset_manifest_sha256':digest((a.dataset/'manifest.json').read_bytes()),'split':a.split,
-        'predictions_sha256':digest(a.output.read_bytes()),'cases':len(rows),'model':config['model'],
-        'model_revision':config['model_revision'],'adapter_files':adapter_files,'seed':config['seed'],
-        'decoding':{'do_sample':False,'max_new_tokens':a.max_new_tokens,'enable_thinking':False},
-        'backend':'transformers NF4, one GPU','elapsed_seconds':time.monotonic()-started}
-    a.output.with_suffix('.manifest.json').write_text(json.dumps(receipt,indent=2)+'\n')
+            elapsed=time.monotonic()-before
+            for row, sequence in zip(group,generated):
+                if row['example_id'] in writer.done: continue
+                tokens=sequence[width:].tolist()
+                if tokenizer.eos_token_id in tokens: tokens=tokens[:tokens.index(tokenizer.eos_token_id)+1]
+                writer.append({'example_id':row['example_id'],'raw_text':tokenizer.decode(tokens,skip_special_tokens=True),
+                    'output_tokens':len(tokens),'seconds':elapsed/len(group),'batch_seconds':elapsed,
+                    'hit_token_limit':len(tokens)>=a.max_new_tokens and tokens[-1]!=tokenizer.eos_token_id})
+            print(json.dumps({'completed':len(writer.done),'scheduled':writer.identity['scheduled_cases'],
+                             'session_seconds':time.monotonic()-started}),flush=True)
+      writer.finish()
+    finally: writer.close()

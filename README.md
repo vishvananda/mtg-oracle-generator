@@ -62,6 +62,11 @@ how to rebuild it; [training](docs/training.md) covers larger models and GPUs.
 The [quarantine recovery workflow](docs/recovery.md) rechecks false positives
 and repairs descriptions with independent review while preserving original data.
 
+The [full-run workflow](docs/full-run.md) connects dataset freezing, token-length
+checks, bounded HF Jobs, resumable checkpoints, paired base/tuned evaluation,
+loss and mtgish plots, and model/CPU-serving exports. Its preparation watcher
+can wait for the remaining corpus work; GPU submission is an explicit step.
+
 ## Measured pilot results
 
 ![Measured loss and token accuracy from the 16k pilot](reports/pilot-16k/training-curve.png)

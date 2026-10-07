@@ -1,0 +1,18 @@
+{
+  "release": "oracle-full-v1",
+  "training_config": "configs/qwen3-4b-full.json",
+  "evaluation": {"batch_size": 16, "max_new_tokens": 2048, "do_sample": false, "enable_thinking": false},
+  "serving": {"quantization": "Q4_0", "llama_cpp_tag": "b11443", "automatic_promotion": false},
+  "hf": {
+    "client_version": "2.1.1",
+    "image": "ghcr.io/astral-sh/uv@sha256:28d570c06d150303b39adfa731ada20956c63fc86b1277d7ff2ad63185974092",
+    "flavor": "a100-large",
+    "bucket_name": "vizier-card-training",
+    "stages": {
+      "smoke": {"timeout_minutes": 30, "max_steps": 20, "training_seconds": 900},
+      "train": {"timeout_minutes": 1440, "max_steps": -1, "training_seconds": 82800},
+      "validation": {"timeout_minutes": 240},
+      "test": {"timeout_minutes": 240}
+    }
+  }
+}

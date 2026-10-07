@@ -19,8 +19,10 @@
   ],
   "epochs": 1,
   "max_length": 4096,
-  "per_device_train_batch_size": 1,
-  "gradient_accumulation_steps": 16,
+  "per_device_train_batch_size": 8,
+  "gradient_accumulation_steps": 2,
+  "per_device_eval_batch_size": 8,
+  "validation_max_examples": 1024,
   "learning_rate": 0.0001,
   "warmup_ratio": 0.05,
   "seed": 17,
@@ -29,5 +31,5 @@
   "gradient_checkpointing": true,
   "group_by_length": true,
   "save_steps": 200,
-  "eval_steps": 250
+  "eval_steps": 500
 }

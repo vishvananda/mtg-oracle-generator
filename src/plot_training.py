@@ -40,7 +40,8 @@ def plot(summary_path,output,csv_path=None,state_path=None):
         ax.spines[['top','right']].set_visible(False);ax.legend(frameon=False,fontsize=8)
     counts=summary['dataset']['splits']
     fig.suptitle(f'{summary["config"]["model"].split("/")[-1]} · {counts["train"]:,} training examples',fontweight='bold')
-    fig.supxlabel(f'{counts["validation"]:,} validation examples; {len(validation)} measured evaluation points. '
+    evaluated=summary.get('validation_sample',{}).get('evaluated',counts['validation'])
+    fig.supxlabel(f'{evaluated:,} validation examples; {len(validation)} measured evaluation points. '
                   'Teacher-forced token accuracy is not whole-card correctness.',fontsize=8)
     for suffix in ('png','svg'): fig.savefig(output/f'training-curve.{suffix}',dpi=180)
     svg=output/'training-curve.svg'

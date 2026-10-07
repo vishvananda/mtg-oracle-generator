@@ -83,6 +83,23 @@ def training_budget_exhausted(elapsed, steps, budget):
     return bool(budget and steps and elapsed + 2 * elapsed / steps >= budget)
 
 
+def validation_indices(rows, limit):
+    """A fixed development sample; final-test rows never enter the trainer."""
+    if limit is None: return list(range(len(rows)))
+    if type(limit) is not int or limit < 1: raise ValueError('validation_max_examples must be positive')
+    return sorted(sorted(range(len(rows)), key=lambda i: hashlib.sha256(
+        json.dumps(rows[i], sort_keys=True, ensure_ascii=False).encode()).hexdigest())[:limit])
+
+
+def training_identity(dataset, config):
+    manifest = json.loads((dataset/'manifest.json').read_text())
+    return {'dataset_manifest_sha256': hashlib.sha256((dataset/'manifest.json').read_bytes()).hexdigest(),
+            'config_sha256': hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
+            'trainer_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            'train_sha256': manifest['files']['train.sft.jsonl']['sha256'],
+            'validation_sha256': manifest['files']['validation.sft.jsonl']['sha256']}
+
+
 def generate_comparison(model, tokenizer, rows, output, adapter_enabled, max_new_tokens=400, compute_dtype=None):
     import torch
     model.eval()
@@ -163,8 +180,20 @@ def main():
     if args.resume and not (args.resume/'trainer_state.json').is_file():
         raise ValueError('Resume path must contain trainer_state.json')
     initial_steps = json.loads((args.resume/'trainer_state.json').read_text())['global_step'] if args.resume else 0
+    run_identity = training_identity(args.dataset, config)
+    run_identity['max_steps'] = args.max_steps
+    if args.resume:
+        if json.loads((args.resume/'training-identity.json').read_text()) != run_identity:
+            raise ValueError('Resume checkpoint belongs to another dataset or training config')
+    (args.output/'training-identity.json').write_text(json.dumps(run_identity, indent=2)+'\n')
     tokenizer = AutoTokenizer.from_pretrained(config['model'], revision=config['model_revision'])
     data = load_dataset('json', data_files={s: str(args.dataset/(s+'.sft.jsonl')) for s in ('train', 'validation')})
+    validation_total = len(data['validation'])
+    selected_validation = validation_indices(data['validation'], config.get('validation_max_examples'))
+    data['validation'] = data['validation'].select(selected_validation)
+    validation_sample = {'available': validation_total, 'evaluated': len(selected_validation),
+                         'indices_sha256': hashlib.sha256(json.dumps(selected_validation).encode()).hexdigest(),
+                         'policy': 'fixed SHA-256 rank of complete validation records; no test data'}
     tokenized = data.map(lambda row: tokenize_supervised(row, tokenizer, config['max_length']))
     token_counts = [len(row['input_ids']) for row in tokenized['train']]
     dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
@@ -179,7 +208,7 @@ def main():
     training = SFTConfig(output_dir=str(args.output), max_steps=args.max_steps, num_train_epochs=config['epochs'],
                          max_length=config['max_length'], completion_only_loss=True, packing=False,
                          per_device_train_batch_size=config['per_device_train_batch_size'],
-                         per_device_eval_batch_size=1, gradient_accumulation_steps=config['gradient_accumulation_steps'],
+                         per_device_eval_batch_size=config.get('per_device_eval_batch_size',1), gradient_accumulation_steps=config['gradient_accumulation_steps'],
                          gradient_checkpointing=config.get('gradient_checkpointing',True), learning_rate=config['learning_rate'], warmup_ratio=config['warmup_ratio'],
                          bf16=dtype==torch.bfloat16, fp16=dtype==torch.float16,
                          seed=config['seed'], data_seed=config['seed'], logging_steps=1,
@@ -195,11 +224,15 @@ def main():
         def on_train_begin(self, args, state, control, **kwargs):
             self.started = time.monotonic()
         def on_step_end(self, training_args, state, control, **kwargs):
-            if training_budget_exhausted(time.monotonic()-self.started,
+            if state.global_step < state.max_steps and training_budget_exhausted(time.monotonic()-self.started,
                                          state.global_step-initial_steps,args.training_seconds):
                 self.stopped = True
                 control.should_training_stop = True
+                control.should_save = True
             return control
+        def on_save(self, training_args, state, control, **kwargs):
+            checkpoint=Path(training_args.output_dir)/f'checkpoint-{state.global_step}'
+            (checkpoint/'training-identity.json').write_text(json.dumps(run_identity,indent=2)+'\n')
     budget_callback=TimeBudget()
     trainer.add_callback(budget_callback)
     verify_completion_masks(tokenizer, trainer.train_dataset, data['train'])
@@ -216,6 +249,7 @@ def main():
     generation_before = generate_comparison(trainer.model, tokenizer, sample, args.output/'base-generations.json', False, compute_dtype=dtype)
     base_metrics = trainer.evaluate()
     (args.output/'pre-training.json').write_text(json.dumps({'config': config, 'dataset': checked,
+        'training_identity': run_identity, 'validation_sample': validation_sample,
         'loss_masks_checked': len(data['train'])+len(data['validation']), 'base_metrics': base_metrics,
         'base_generation': generation_before, 'resumed_from': str(args.resume) if args.resume else None}, indent=2)+'\n')
     setup_seconds = time.monotonic() - started
@@ -247,6 +281,7 @@ def main():
                'base_generation': generation_before, 'adapter_generation': generation_after,
                'loss_mask_verified': True, 'loss_masks_checked': len(data['train'])+len(data['validation']),
                'resumed_from': str(args.resume) if args.resume else None,
+               'training_identity': run_identity, 'validation_sample': validation_sample,
                'deployment_status': 'Research adapter; not merged, quantized or deployed.'}
     (args.output/'run-summary.json').write_text(json.dumps(summary, indent=2)+'\n')
     print(json.dumps(summary, indent=2))

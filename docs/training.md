@@ -36,7 +36,10 @@ Accelerate 1.10.1, Datasets 4.1.1 and bitsandbytes 0.47.0. Run with Python
 ## Full corpus / larger model
 
 Start with `configs/qwen3-4b-full.json`. It increases max length to 4,096,
-uses batch 1 × accumulation 16, and evaluates every 250 steps. These are
+uses batch 8 × accumulation 2, and evaluates every 500 steps on a fixed
+1,024-example validation sample (evaluation batch size 8). The original pilot
+used that training batch size on an A100; the longer full-corpus sequences still
+require a fresh smoke run. These are
 **starting settings, not a completed full-corpus result**. Long multi-face cards
 may exceed that length; the trainer refuses silent truncation. Increase context
 or create a documented length-filtered training variant while leaving held-out
@@ -83,6 +86,12 @@ commit into the job, then run `--preflight` followed by the same `uv run` comman
 The successful pilot used uv 0.12.23 in the image recorded in
 [`hf-pilot-environment.json`](../configs/hf-pilot-environment.json).
 This repository does not automatically submit paid jobs.
+
+The [full-run workflow](full-run.md) supplies the preparation watcher, private
+HF Jobs controller, checkpoint resume, paired generation, parser reports, model
+release, and separate GGUF serving export. Periodic validation monitors the
+fixed sample; post-training generation covers the complete validation/test
+splits. It never evaluates the full 30k-plus validation set every 500 steps.
 
 Persist adapters/checkpoints to mounted storage or upload them before the job
 exits; container-local output alone will be lost. Pass HF access through the
