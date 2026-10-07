@@ -117,6 +117,12 @@ starts; inspect its receipt before an explicit `retry-review --job-id NNNNN`.
 Placing `{}` in `ROOT/drain.request.json` stops new batches after in-flight work
 finishes. Neither a failed review nor a timeout triggers an automatic retry.
 
+Use the separate [quarantine recovery pass](recovery.md) to recheck scripted
+false positives, audit source conversions, and propose repairs with fresh
+independent review. It can follow an active queue without changing original
+results. Export its explicit immutable snapshot with `--recovery`; unresolved
+items remain excluded from training.
+
 To change concurrency on an existing run, use the host with write access to its
 artifact directory. The coordinator reads worker count at startup, so editing
 its config alone does not resize a running pool:

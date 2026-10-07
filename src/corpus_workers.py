@@ -16,6 +16,7 @@ from data_utils import digest
 from codex_batch import invoke
 from codex_cached_batch import invoke as invoke_cached
 from corpus_protocol import VERSION as COMPACT_PROTOCOL, teacher_request, teacher_reply
+from corpus_checks import deterministic_checks, source_name_issues, VERSION as CHECKS_VERSION
 
 TEACHER='gpt-6.1-sol'
 REVIEWER='gpt-6-luna'
@@ -28,44 +29,17 @@ def schema(key, fields):
                  'required':list(fields),'properties':fields}}}}
 
 
-def deterministic_checks(projection, description):
-    issues=[]
-    def check_fields(target):
-        costs=re.findall(r'(?:\{[0-9A-Z/]+\})+',description)
-        if target.get('mana_cost') and target['mana_cost'] not in costs:
-            issues.append('missing_or_changed_mana_cost:'+target['mana_cost'])
-        if target.get('power') is not None and f"{target['power']}/{target['toughness']}" not in description.replace(' ',''):
-            issues.append('missing_or_changed_stats')
-        typ=target.get('type_line','')
-        subtype_words=typ.split(' — ',1)[1].split() if ' — ' in typ else []
-        creature_implied=bool(re.search(r'\b\d+\s*/\s*\d+\b',description)) or (
-            'Creature' in typ and bool(subtype_words) and all(re.search(r'\b'+re.escape(w)+r'\b',description,re.I) for w in subtype_words))
-        for word in re.split(r'\s+|—|//',typ):
-            if word=='Creature' and creature_implied: continue
-            if word=='Artifact' and 'Equipment' in subtype_words and re.search(r'\bequipment\b',description,re.I): continue
-            if word and not re.search(r'\b'+re.escape(word)+r'\b',description,re.I):
-                issues.append('missing_type_word:'+word)
-        for face in target.get('card_faces',[]): check_fields(face)
-    check_fields(projection['target'])
-    if projection['style'] in ('minimal','concept'):
-        target=projection['target']
-        if 'mana_cost' not in target and re.search(r'\{[^}]+\}',description): issues.append('detail_level_leaked_mana_cost')
-        if 'power' not in target and re.search(r'\b\d+\s*/\s*\d+\b',description): issues.append('detail_level_leaked_exact_stats')
-    if len(description)>12000 or not description.strip(): issues.append('invalid_description_length')
-    return issues
-
-
 def prompt_config(policy='exact_constraints'):
     """Freeze shared terminology in the config; resumed jobs never read live prompts."""
     if policy not in ('exact_constraints','plausible_completion'):
         raise ValueError('Unknown description policy')
-    terminology=(PROJECT/'prompts/player-language-v1.txt').read_text()
+    terminology=(PROJECT/'prompts/player-language-v1.txt').read_text()+'\n'+(PROJECT/'prompts/rules-updates-v1.txt').read_text()
     if policy=='plausible_completion':
         return {'instructions':(PROJECT/'prompts/teacher-broad-descriptions-v1.txt').read_text()+'\n'+terminology,
                 'reviewer_terminology':terminology,
                 'reviewer_completion_guidance':(PROJECT/'prompts/review-broad-descriptions-v1.txt').read_text(),
                 'description_policy':policy,
-                'terminology_revision':'player-language-v1','terminology_sha256':digest(terminology.encode())}
+                'terminology_revision':'player-language-v1+rules-updates-v1','terminology_sha256':digest(terminology.encode())}
     instructions=(PROJECT/'prompts/teacher-descriptions-v1.txt').read_text()+'''
 For exact mana costs use braced notation and for exact stats use P/T notation.
 For linked faces, describe each face and the supplied layout/relationship. Names
@@ -74,7 +48,7 @@ Do not state technical metadata like "normal layout"; ordinary single-face cards
 need no such wording. Preserve special gameplay layouts where they matter.
 '''+ '\n' + terminology
     return {'instructions':instructions,'reviewer_terminology':terminology,
-            'terminology_revision':'player-language-v1','terminology_sha256':digest(terminology.encode())}
+            'terminology_revision':'player-language-v1+rules-updates-v1','terminology_sha256':digest(terminology.encode())}
 
 
 def prepare(root, batch_size=12):
@@ -231,9 +205,7 @@ pass). Include every label, even when cases seem similar. No tools or other outp
             verdict=reviews[row['id']]
             issues=deterministic_checks(projection,row['description'])
             card=by_id[row['id']]
-            # Original names are provenance only; typed subtype names and real other-card references remain allowed.
-            if card['name'].casefold() in row['description'].casefold() and len(card['name'])>4:
-                if card['name'] not in json.dumps(projection['target']): issues.append('source_name_leak')
+            issues += source_name_issues(card, projection, row['description'])
             passed=not issues and verdict['verdict']=='pass' and not verdict['issues']
             result.append({'example_id':row['id'],'split':card['split'],'source_group_id':card['source_group_id'],
                 'source':{k:card[k] for k in ('oracle_id','source_sha256','layout','source_updated_at')},
@@ -248,7 +220,7 @@ pass). Include every label, even when cases seem similar. No tools or other outp
                 'teacher_prompt_sha256':teacher_receipt['prompt_sha256'],'teacher_output_sha256':teacher_receipt['output_sha256'],
                 'reviewer_output_sha256':review_receipt['output_sha256'],
                 'fidelity_controls_rejected':job['fidelity_controls_rejected'],
-                'fidelity_review':verdict,'deterministic_issues':issues,'status':'accepted' if passed else 'quarantined',
+                'checks_version':CHECKS_VERSION,'fidelity_review':verdict,'deterministic_issues':issues,'status':'accepted' if passed else 'quarantined',
                 'human_reviewed':False,'oracle_source':'Scryfall complete Oracle snapshot; source-derived target',
                 'engine_validation':'not_run; unsupported engine mechanics are not rejected'})
         (run/'results.jsonl').write_text(''.join(json.dumps(r,ensure_ascii=False)+'\n' for r in result))

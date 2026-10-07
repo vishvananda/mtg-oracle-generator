@@ -38,7 +38,7 @@ def select_unique(rows):
     return chosen,duplicates
 
 
-def export(root, output):
+def export(root, output, recovery=None):
     if output.exists(): raise ValueError('Export snapshots are immutable; choose a new output directory')
     manifest=json.loads((root/'manifest.json').read_text())
     for name,metadata in manifest['files'].items():
@@ -48,6 +48,10 @@ def export(root, output):
     validator=Draft202012Validator(schema)
     prompt=(root/'student-prompt.txt').read_text().rstrip()+NAME_INSTRUCTIONS+RARITY_INSTRUCTIONS+'\n'
     admitted=[]; quarantined=[]; states=Counter()
+    overlays = audit = recovery_manifest = None
+    if recovery:
+        from corpus_recovery import load_overlay, apply_overlay
+        overlays,audit,recovery_manifest=load_overlay(root,recovery)
     for path in sorted((root/'queue').glob('*.json')):
         job=json.loads(path.read_text()); states[job['state']]+=1
         if job['state']!='completed': continue
@@ -55,7 +59,11 @@ def export(root, output):
         result_path=root/'runs'/job['id']/'results.jsonl'
         for line in result_path.read_text().splitlines():
             row=json.loads(line)
-            issues=list(row['deterministic_issues'])
+            issues=[]
+            if recovery:
+                row,recovery_issues=apply_overlay(row,overlays,audit)
+                issues+=recovery_issues
+            issues+=list(row['deterministic_issues'])
             issues+=deterministic_checks({'style':row['style'],'target':row['expressed_constraints']},row['description'])
             review=row['fidelity_review']
             if review['verdict']!='pass' or review['issues']: issues.append('fidelity_review_not_passed')
@@ -83,6 +91,11 @@ def export(root, output):
                 for line in path.open():
                     row=json.loads(line); validator.validate(row['target'])
                     if row['split']!=split: raise ValueError('Augmentation split mismatch')
+                    if recovery and row['source']['oracle_id'] in (audit['changes'].keys()|audit['holds'].keys()):
+                        # Printed-wording examples need source-level revalidation,
+                        # not a paraphrase repair that rewrites historical wording.
+                        quarantined.append({**row,'export_issues':['augmentation_target_audit_pending']})
+                        continue
                     admitted.append(row)
             augmentation_reports.append({'manifest_sha256':attachment['manifest_sha256'],'accepted_examples':extra['accepted_examples'],
                                          'version':extra['version'],'needs_review':extra['needs_review'],
@@ -121,6 +134,8 @@ def export(root, output):
             'initial_generation_config_sha256':digest((root/'generation-config.json').read_bytes()),
             'reviewer_counts':dict(Counter(r.get('reviewer','source_derived_no_model_review') for r in rows)),
             'augmentations':augmentation_reports,
+            'recovery':({'manifest_sha256':digest((recovery/'manifest.json').read_bytes()),
+                         'states':recovery_manifest['states']} if recovery else None),
             'states':dict(states),'generation_complete':states['completed']==sum(states.values()),
             'accepted_exported':len(rows),'quarantined':len(quarantined),'duplicates_removed':len(duplicates),
             'editable_default_adjustments':sum(bool(r.get('completion_adjustments')) for r in rows),
@@ -138,4 +153,5 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser()
     parser.add_argument('--root',type=Path,default=ROOT)
     parser.add_argument('--output',type=Path,required=True)
-    args=parser.parse_args(); export(args.root,args.output)
+    parser.add_argument('--recovery',type=Path,help='Immutable corpus_recovery snapshot; originals remain unchanged')
+    args=parser.parse_args(); export(args.root,args.output,args.recovery)

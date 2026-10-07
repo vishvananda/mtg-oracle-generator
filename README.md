@@ -59,6 +59,8 @@ the command above once the release links are published.
 Each release supplies standard `messages`, TRL `prompt`/`completion`, and
 provenance-rich records. [Dataset format and generation](docs/dataset.md) explains
 how to rebuild it; [training](docs/training.md) covers larger models and GPUs.
+The [quarantine recovery workflow](docs/recovery.md) rechecks false positives
+and repairs descriptions with independent review while preserving original data.
 
 ## Measured pilot results
 

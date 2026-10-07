@@ -33,8 +33,14 @@ def rules(text, name, aliases=(), keep_reminder=False):
         return f'\x00{len(protected)-1}\x00'
     text=re.sub(r'\bnamed\s+[^.\n;]+',protect,text)
     replacements={name:'CARDNAME',**dict(aliases)}
-    for old,new in list(replacements.items()):
-        if ',' in old: replacements.setdefault(old.split(',')[0],new)
+    # Only shorten self names. An alias for the other face must not capture a
+    # shared short name: "Transform Henrika" on Henrika Domnathi is a self-reference,
+    # not a reference to the face named "Henrika, Infernal Seer".
+    if ',' in name: replacements.setdefault(name.split(',')[0], 'CARDNAME')
+    for old, _ in aliases:
+        short = old.split(',')[0]
+        if ',' in old and (name.startswith(short+' ') or name.startswith(short+',')):
+            replacements.setdefault(short, 'CARDNAME')
     pattern='|'.join(re.escape(k) for k in sorted(replacements,key=len,reverse=True))
     text=re.sub(r'(?<!\w)(?:'+pattern+r')(?!\w)',lambda m:replacements[m[0]],text)
     return re.sub(r'\x00(\d+)\x00',lambda m:protected[int(m[1])],text)
