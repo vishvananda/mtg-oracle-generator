@@ -1,0 +1,100 @@
+{
+  "config": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "method": "QLoRA",
+    "load_in_4bit": true,
+    "quant_type": "nf4",
+    "double_quant": true,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "epochs": 1,
+    "max_length": 1536,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 2,
+    "learning_rate": 0.0001,
+    "warmup_ratio": 0.05,
+    "seed": 17,
+    "completion_only_loss": true,
+    "packing": false,
+    "gradient_checkpointing": true,
+    "notes": "Broad and detailed head-to-head v1; one epoch, 55-minute training cap.",
+    "group_by_length": true,
+    "save_steps": 200
+  },
+  "max_steps": -1,
+  "dataset": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "splits": {
+      "train": 16000,
+      "validation": 480
+    }
+  },
+  "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "gpu": "NVIDIA A100-SXM4-80GB",
+  "setup_seconds": 185.23867760999974,
+  "training_seconds": 2791.6528688360004,
+  "peak_allocated_gib": 24.548144340515137,
+  "train_tokens_per_epoch": 7654311,
+  "max_sequence_tokens": 1339,
+  "optimizer_steps": 1000,
+  "new_optimizer_steps": 1000,
+  "training_budget_seconds": 3300,
+  "stopped_for_training_budget": false,
+  "seconds_per_optimizer_step": 2.7916528688360005,
+  "metrics": {
+    "train_runtime": 2790.723,
+    "train_samples_per_second": 5.733,
+    "train_steps_per_second": 0.358,
+    "total_flos": 1.6921895405223936e+17,
+    "train_loss": 0.3016197840347886,
+    "epoch": 1.0
+  },
+  "base_eval": {
+    "eval_loss": 2.433659315109253,
+    "eval_model_preparation_time": 0.0066,
+    "eval_runtime": 71.5794,
+    "eval_samples_per_second": 6.706,
+    "eval_steps_per_second": 6.706,
+    "eval_entropy": 1.6644428859154383,
+    "eval_num_tokens": 0.0,
+    "eval_mean_token_accuracy": 0.7458045518025755
+  },
+  "adapter_eval": {
+    "eval_loss": 0.24645979702472687,
+    "eval_model_preparation_time": 0.0066,
+    "eval_runtime": 72.3325,
+    "eval_samples_per_second": 6.636,
+    "eval_steps_per_second": 6.636,
+    "eval_entropy": 2.425911581516266,
+    "eval_num_tokens": 7654311.0,
+    "eval_mean_token_accuracy": 0.9324017367015283,
+    "epoch": 1.0
+  },
+  "base_generation": {
+    "count": 4,
+    "json_objects": 4,
+    "exact_object_matches": 0,
+    "note": "Unconstrained generation, base NF4 versus the same NF4 model plus adapter. Exact match is not semantic accuracy."
+  },
+  "adapter_generation": {
+    "count": 4,
+    "json_objects": 4,
+    "exact_object_matches": 1,
+    "note": "Unconstrained generation, base NF4 versus the same NF4 model plus adapter. Exact match is not semantic accuracy."
+  },
+  "loss_mask_verified": true,
+  "loss_masks_checked": 16480,
+  "deployment_status": "Research adapter; not merged, quantized or deployed."
+}

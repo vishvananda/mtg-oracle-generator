@@ -1,0 +1,28 @@
+{
+  "training_all_step_mean_accuracy": 0.9215292866230012,
+  "training_last_100_mean_accuracy": 0.9370566940307617,
+  "training_last_100_mean_loss": 0.226217,
+  "base_validation": {
+    "eval_loss": 2.433659315109253,
+    "eval_model_preparation_time": 0.0066,
+    "eval_runtime": 71.5794,
+    "eval_samples_per_second": 6.706,
+    "eval_steps_per_second": 6.706,
+    "eval_entropy": 1.6644428859154383,
+    "eval_num_tokens": 0.0,
+    "eval_mean_token_accuracy": 0.7458045518025755
+  },
+  "adapter_validation": {
+    "eval_loss": 0.24645979702472687,
+    "eval_model_preparation_time": 0.0066,
+    "eval_runtime": 72.3325,
+    "eval_samples_per_second": 6.636,
+    "eval_steps_per_second": 6.636,
+    "eval_entropy": 2.425911581516266,
+    "eval_num_tokens": 7654311.0,
+    "eval_mean_token_accuracy": 0.9324017367015283,
+    "epoch": 1.0
+  },
+  "test_evaluated": false,
+  "accuracy_definition": "Teacher-forced completion-token accuracy; training statistics are means of logged batch metrics."
+}

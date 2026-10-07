@@ -1,0 +1,91 @@
+{
+  "format_version": 1,
+  "release": "names-rarity-pilot-v1",
+  "status": "partial",
+  "generation_complete": false,
+  "counts": {
+    "validation": 572,
+    "train": 19065
+  },
+  "checks": {
+    "group_overlap": 0,
+    "card_overlap": 0,
+    "description_overlap": 0,
+    "examples": 19637,
+    "source_cards": 6260,
+    "source_groups": 5866
+  },
+  "styles": {
+    "casual_complete": 3056,
+    "concept": 616,
+    "broad_shorthand": 3047,
+    "complete": 3089,
+    "broad_plain": 3064,
+    "minimal": 630,
+    "mechanics": 3114,
+    "printed_wording": 1805,
+    "current_oracle": 1216
+  },
+  "names_and_rarity": true,
+  "inputs": [
+    {
+      "version": "names-rarity-v1",
+      "manifest_sha256": "5e2ebda79837055fd14781bd5611906a303bdfa19acc1cd4addd39df037e70c3",
+      "generation_complete": false
+    }
+  ],
+  "files": {
+    "train.jsonl": {
+      "rows": 19065,
+      "bytes": 47505048,
+      "sha256": "9cc94f1409b2d86b615f3b4d83185b33dc09004396de08a4520bd7446840ec60"
+    },
+    "train.messages.jsonl": {
+      "rows": 19065,
+      "bytes": 65563075,
+      "sha256": "d8fe1b36568665c949b7c548b3b6225768a93f1b86d58356d9cdb45f833e37d0"
+    },
+    "train.sft.jsonl": {
+      "rows": 19065,
+      "bytes": 62898467,
+      "sha256": "535e60f3c0526265ef38498c38c056175d0d5d99117c2a226f054bb0893e46eb"
+    },
+    "validation.jsonl": {
+      "rows": 572,
+      "bytes": 1427110,
+      "sha256": "6587ab8f155835e0112c6928384f0791d96aac83cb46834d117fd134b4866096"
+    },
+    "validation.messages.jsonl": {
+      "rows": 572,
+      "bytes": 1957351,
+      "sha256": "8fa353a3c5e01cfb6a003b4092c4190593a9ade3d876a882db2b5c9076fae0bb"
+    },
+    "validation.sft.jsonl": {
+      "rows": 572,
+      "bytes": 1877615,
+      "sha256": "8d01461cfe30baae872e5948bf32e20970c17a0772ac9d530b427b4ed18c7a2a"
+    },
+    "duplicates.jsonl": {
+      "rows": 0,
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "system-prompt.txt": {
+      "sha256": "94d8461e479e2894dcfc4e89f49962b903cb77903303f7ceb91e381e149e1768"
+    },
+    "draft-schema.json": {
+      "sha256": "fc61a1d34e970724ad732ae4415e61be5fd5ac79cdc90971404c6087fc9f43ce"
+    },
+    "split-map.json": {
+      "sha256": "85a2251da946b92e817b1b8faa39180481949d5f30f0acc6be470f53526fe4a7"
+    },
+    "DATA_LICENSE.md": {
+      "sha256": "b750a5114eb7b0bf26332e785a2a7460b406e15addf8daf6d99d90b7d2e704cd"
+    }
+  },
+  "test_evaluated": false,
+  "duplicates_removed": 0,
+  "human_reviewed": false,
+  "automatic_training": false,
+  "public_uploads": false
+}

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Editable design draft v1",
+  "type": "object",
+  "required": [
+    "type_line",
+    "oracle_text"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "mana_cost": {
+      "type": "string"
+    },
+    "type_line": {
+      "type": "string"
+    },
+    "power": {
+      "type": "string"
+    },
+    "toughness": {
+      "type": "string"
+    },
+    "loyalty": {
+      "type": "string"
+    },
+    "defense": {
+      "type": "string"
+    },
+    "hand_modifier": {
+      "type": "string"
+    },
+    "life_modifier": {
+      "type": "string"
+    },
+    "oracle_text": {
+      "type": "string"
+    },
+    "layout": {
+      "type": "string"
+    },
+    "colors": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "W",
+          "U",
+          "B",
+          "R",
+          "G"
+        ]
+      }
+    },
+    "design_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "card_faces": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "$ref": "#/$defs/face"
+      }
+    },
+    "rarity": {
+      "enum": [
+        "common",
+        "uncommon",
+        "rare",
+        "mythic",
+        "special",
+        "bonus"
+      ]
+    }
+  },
+  "$defs": {
+    "face": {
+      "type": "object",
+      "required": [
+        "type_line",
+        "oracle_text"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "mana_cost": {
+          "type": "string"
+        },
+        "type_line": {
+          "type": "string"
+        },
+        "power": {
+          "type": "string"
+        },
+        "toughness": {
+          "type": "string"
+        },
+        "loyalty": {
+          "type": "string"
+        },
+        "defense": {
+          "type": "string"
+        },
+        "hand_modifier": {
+          "type": "string"
+        },
+        "life_modifier": {
+          "type": "string"
+        },
+        "oracle_text": {
+          "type": "string"
+        },
+        "layout": {
+          "type": "string"
+        },
+        "colors": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "W",
+              "U",
+              "B",
+              "R",
+              "G"
+            ]
+          }
+        },
+        "design_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

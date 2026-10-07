@@ -1,0 +1,12 @@
+{
+  "status": "pending",
+  "reason": "Full description generation and review, frozen complete dataset, and full training run are not finished.",
+  "dataset_revision": null,
+  "adapter_revision": null,
+  "test_cases": null,
+  "mtgish_accepted": null,
+  "mtgish_acceptance_all_cases": null,
+  "intent_accuracy": null,
+  "test_evaluated": false,
+  "procedure": "docs/evaluation.md"
+}

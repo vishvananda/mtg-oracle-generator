@@ -1,0 +1,42 @@
+{
+  "prepared_at": "2026-10-07T18:14:25.195156+00:00",
+  "github": {
+    "status": "local_repository_prepared",
+    "proposed_name": "vishvananda/mtg-oracle-generator",
+    "url": null
+  },
+  "datasets": {
+    "pilot-16k-exact": {
+      "status": "prepared_not_uploaded",
+      "directory": "dist/pilot-16k-exact",
+      "counts": {
+        "train": 16000,
+        "validation": 480
+      },
+      "url": null,
+      "revision": null,
+      "manifest_sha256": "cae07c50174699ae4dcc658aee22bb487ea3819dfafa6a40b7746aa858a413b2"
+    },
+    "names-rarity-pilot-v1": {
+      "status": "prepared_not_uploaded",
+      "directory": "dist/names-rarity-pilot-v1",
+      "counts": {
+        "validation": 572,
+        "train": 19065
+      },
+      "url": null,
+      "revision": null,
+      "manifest_sha256": "98d823c0237ba83f6cdc05481160344c2e61d6ca6a459e7c6bba2f730e910924"
+    }
+  },
+  "model": {
+    "status": "prepared_not_uploaded",
+    "directory": "dist/qwen3-4b-pilot-16k",
+    "url": null,
+    "release_manifest_sha256": "6717af612023014c56e6c7efd1edcec2bfccf08b3392606a5c9f56e4578ad05d"
+  },
+  "full_corpus": {
+    "status": "generation_in_progress",
+    "final_test_evaluated": false
+  }
+}
