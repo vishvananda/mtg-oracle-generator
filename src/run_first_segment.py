@@ -15,6 +15,7 @@ from hf_jobs import plan,launch,collect,save,TERMINAL
 from run_package import verify_package
 from paths import PROJECT
 from train_qlora import publish_checkpoint
+from finish_evaluation import collect_settled
 
 
 def run(package,dataset,output,cpu_python,ledger=None):
@@ -50,6 +51,9 @@ def run(package,dataset,output,cpu_python,ledger=None):
             print(json.dumps({'phase':stage,'state':status['state'],'url':status['url']}),flush=True)
             if status['state'] in TERMINAL: break
             time.sleep(30)
+        if stage=='development':
+            collect_settled(record,download)
+            continue
         if status['state']!='COMPLETED':
             if not download.exists(): collect(record,download)
             raise RuntimeError('Job did not complete; inspect its saved checkpoint/output before spending again')

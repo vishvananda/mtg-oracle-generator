@@ -201,8 +201,11 @@ submission failures leave a `submitting` receipt: inspect HF before retrying.
 
 Validation uses both the pinned base and the adapter under the same NF4,
 greedy, no-thinking settings. The recipe batches 16 prompts, with a 2,048-token
-output limit. Generation flushes each case to persistent storage and resumes
-only the identical request. Invalid/truncated outputs are retained. A killed
+output limit. Generation flushes each case locally and resumes only the identical
+request. Bucket commits can arrive after HF marks a job terminal: the mount's
+[write durability depends on close/flush](https://github.com/huggingface/hf-mount#consistency-model),
+so the collector waits for both result manifests and verifies their hashes before
+scoring. Invalid/truncated outputs are retained. A killed
 write's tail is preserved separately and that unfinished case is regenerated.
 
 ```bash
@@ -224,6 +227,31 @@ batch is recomputed with its original companions to preserve batching, while
 retaining completed outputs. Identical settings do not promise bitwise equality
 across different GPU kernels. Both arms must finish before the paired report.
 Repeated jobs each need an explicit budget; the cap is not a total project cap.
+
+For the staged experiment, retain the shared `--ledger` on every resumed job.
+Use `--stage development`, the unchanged package and training receipt, a fresh
+job record, and `--resume-record` naming the timed-out development job. The
+completed baseline and tuned batches are skipped without changing the original
+batch companions or dropping long/truncated cases. A single runaway completion
+can hold its entire batch to the token limit; keep that limit fixed for a paired
+comparison rather than silently shortening the slower arm.
+
+After submitting the replacement job, finish collection and CPU reporting with:
+
+```bash
+.hf-jobs/bin/python src/finish_evaluation.py \
+  --record "$MTG_RUN/development-resume-job.json" \
+  --dataset data/oracle --adapter "$MTG_RUN/train/adapter" \
+  --output "$MTG_RUN/development-resumed" \
+  --report "$MTG_RUN/development-report" --status "$MTG_RUN/status.json" \
+  --cpu-python .venv/bin/python
+```
+
+This watcher submits no jobs. It waits for late bucket uploads, runs the paired
+mtgish report and loss plots, and stops for quality review without promoting the
+adapter or starting another training segment. Use a fresh download directory
+for a different job receipt; an existing snapshot from the failed job may be
+incomplete even when more results have since reached the bucket.
 
 Review validation, then freeze the adapter and decoding settings. Repeat the
 above commands with `--stage test`, `--split test`, and fresh test job/output
