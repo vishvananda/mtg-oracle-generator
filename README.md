@@ -23,6 +23,8 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Names + rarity pilot dataset | Packaged locally: 19,065 train / 572 validation; not uploaded |
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
+| Remaining epoch | [HF job running](https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3), resuming checkpoint 963 with saves every 200 updates |
+| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): checkpoint 963 in Q4_0 alongside GPT-6 Luna |
 | Full training and final-test mtgish results | **Pending** — no final-test score claimed |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -79,8 +81,10 @@ verified Arrow files without repeating full-corpus preprocessing.
 The first one-hour segment on the full corpus reached 6.15% of one epoch.
 On the fixed 256-case development panel, schema compliance improved from
 **8.59% to 99.22%** and whole-card mtgish acceptance from **0% to 49.22%**
-against the untuned Qwen baseline. Complex mechanics still have intent errors;
-the checkpoint is awaiting review before further training or deployment.
+against the untuned Qwen baseline. Complex mechanics still have intent errors.
+The remaining epoch is now running, and checkpoint 963 is available as an
+intermediate workshop preview alongside Luna. The CPU preview uses a merged
+Q4_0 model, so the NF4 development scores do not measure that serving artifact.
 The panel emphasizes difficult card types and is not a full-corpus accuracy
 estimate. See the [loss curves, parser coverage and qualitative review](reports/full-corpus-step-963/README.md).
 

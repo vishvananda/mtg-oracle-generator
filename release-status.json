@@ -73,14 +73,14 @@
     "training_epoch": 0.06148640020431618
   },
   "staged_experiment": {
-    "status": "awaiting_quality_review",
+    "status": "finishing_epoch",
     "initial_job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
-    "budget_limit_usd": 20,
+    "budget_limit_usd": 60,
     "initial_cycle_maximum_usd": 6.25005,
     "automatic_continuation_after_review": false,
     "final_test_evaluated": false,
     "original_smoke_status": "completed",
-    "active_job_url": null,
+    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3",
     "prepared_training": true,
     "microbatch": 16,
     "gradient_accumulation": 1,
@@ -90,8 +90,28 @@
     "development_cases": 256,
     "base_mtgish_accepted": 0,
     "adapter_mtgish_accepted": 126,
-    "maximum_reserved_usd": 8.75007,
-    "automatic_promotion": false
+    "maximum_reserved_usd": 58.708803,
+    "automatic_promotion": false,
+    "resume_checkpoint": 963,
+    "target_optimizer_steps": 15662,
+    "training_job_maximum_usd": 49.958733,
+    "development_baseline_reused": true
   },
-  "updated_at": "2026-10-08T04:37:11.406200+00:00"
+  "updated_at": "2026-10-08T05:06:07.849810+00:00",
+  "workshop_preview": {
+    "status": "deployed",
+    "url": "https://tetrarchs.com/cards/new",
+    "checkpoint": 963,
+    "quantization": "Q4_0",
+    "model_sha256": "b0a843a56749e1ce8367992fb135199b556f64ab5a6fbddf3cc0669c0c4b797c",
+    "training_scope": "partial_epoch_preview",
+    "training_epoch": 0.06148640020431618,
+    "models": [
+      "Qwen3-4B checkpoint 963",
+      "gpt-6-luna"
+    ],
+    "generation_mode": "unconstrained with frozen training prompt and optional terminology guide",
+    "backend_commit": "344db86",
+    "browser_checked": true
+  }
 }
