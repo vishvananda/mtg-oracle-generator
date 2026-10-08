@@ -1,0 +1,32 @@
+{
+  "including_base_initialization": {
+    "input_tokens": 46292,
+    "cached_input_tokens": 26880,
+    "output_tokens": 901,
+    "reasoning_output_tokens": 0,
+    "uncached_input_tokens": 19412
+  },
+  "incremental_batches": [
+    {
+      "input_tokens": 12227,
+      "cached_input_tokens": 8960,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 276,
+      "reasoning_output_tokens": 0
+    },
+    {
+      "input_tokens": 12240,
+      "cached_input_tokens": 8960,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 303,
+      "reasoning_output_tokens": 0
+    },
+    {
+      "input_tokens": 12349,
+      "cached_input_tokens": 8960,
+      "cache_write_input_tokens": 0,
+      "output_tokens": 307,
+      "reasoning_output_tokens": 0
+    }
+  ]
+}

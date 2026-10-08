@@ -1,0 +1,21 @@
+{
+  "index_manifest_sha256": "886b8c17c4711822e73504fd90eb404ad5e6c4773f697e84d9458ac064821f10",
+  "cases_sha256": "94cfa2079ff5fc3733bc3e0c848173a96817289709fcede2ae46ab32b349ec1e",
+  "cases": 27,
+  "wrong_candidates_above_0_9_cosine_to_reference": [
+    "case-002",
+    "case-004",
+    "case-006",
+    "case-008",
+    "case-010",
+    "case-012",
+    "case-014",
+    "case-016",
+    "case-018",
+    "case-020",
+    "case-022",
+    "case-024",
+    "case-027"
+  ],
+  "interpretation": "Similarity diagnoses neighborhood/style; neither numeric threshold nor nearest-card agreement proves intent or legality."
+}

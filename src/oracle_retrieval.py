@@ -4,9 +4,7 @@ Use train-reward scope for judge context. all-reference is a separate reference
 index and must never enter training/reward selection for this frozen holdout.
 """
 import argparse
-from collections import Counter
 import gzip
-import hashlib
 import importlib.metadata
 import json
 from pathlib import Path
@@ -103,13 +101,47 @@ def build(oracle,dataset,output,scope,revision):
     (output/'manifest.json').write_text(json.dumps(metadata,indent=2)+'\n');return metadata
 
 
-def probe(index,cases_path,output):
+def load_index(index,reward_context=False):
     import numpy as np
     metadata=json.loads((index/'manifest.json').read_text())
     for name,key in [('vectors.npy','vector_sha256'),('cards.jsonl','cards_sha256')]:
         if digest((index/name).read_bytes())!=metadata[key]:raise ValueError('Index hash mismatch')
-    matrix=np.load(index/'vectors.npy',mmap_mode='r');cards=[json.loads(l) for l in (index/'cards.jsonl').open()]
-    cases=[json.loads(l) for l in cases_path.open()]
+    matrix=np.load(index/'vectors.npy',mmap_mode='r')
+    with (index/'cards.jsonl').open() as stream:cards=[json.loads(l) for l in stream]
+    if reward_context and (metadata['scope']!='train-reward' or metadata['holdout_cards_indexed']
+                           or any(c['split']!='train' for c in cards)):
+        raise ValueError('Judge retrieval requires a training-only index')
+    if matrix.shape!=(len(cards),metadata['dimensions']):raise ValueError('Index dimensions do not match cards')
+    return metadata,matrix,cards
+
+
+def context(index,cases_path,output):
+    """Retrieve two request neighbors and one candidate neighbor as wording evidence."""
+    import numpy as np
+    if output.exists():raise ValueError('Choose a new immutable context directory')
+    metadata,matrix,cards=load_index(index,reward_context=True)
+    with cases_path.open() as stream:cases=[json.loads(l) for l in stream]
+    encoder=Encoder(metadata['revision'])
+    queries=encoder.encode(['Represent this sentence for searching relevant passages: '+c['request'] for c in cases])
+    candidates=encoder.encode([document(c['candidate']) for c in cases])
+    for case,q,v in zip(cases,queries,candidates):
+        request_top=np.argsort(matrix@q)[-5:][::-1]
+        candidate_top=np.argsort(matrix@v)[-5:][::-1]
+        order=list(request_top[:2])+list(candidate_top[:1])+list(request_top[2:])+list(candidate_top[1:])
+        selected=list(dict.fromkeys(int(i) for i in order))[:3]
+        case['references']=[{'oracle_id':cards[i]['oracle_id'],'name':cards[i]['name'],
+                              'excerpt':cards[i]['document']} for i in selected]
+    output.mkdir(parents=True);result=write_jsonl(output/'cases.jsonl',cases)
+    summary={'cases':len(cases),'file':result,'retrieval':'two request neighbors, one candidate neighbor; deduplicated',
+             'index_manifest_sha256':digest((index/'manifest.json').read_bytes()),'holdout_cards_retrieved':0,
+             'input_cases_sha256':digest(cases_path.read_bytes()),'embedding_reward_weight':0}
+    (output/'manifest.json').write_text(json.dumps(summary,indent=2)+'\n');return summary
+
+
+def probe(index,cases_path,output):
+    import numpy as np
+    metadata,matrix,cards=load_index(index)
+    with cases_path.open() as stream:cases=[json.loads(l) for l in stream]
     encoder=Encoder(metadata['revision']);vectors=encoder.encode([document(c['candidate']) for c in cases])
     reference=encoder.encode([document(c['reference']) for c in cases]);results=[]
     for c,v,ref in zip(cases,vectors,reference):
@@ -130,8 +162,9 @@ if __name__=='__main__':
     b=sub.add_parser('build')
     for name in ('oracle','dataset','output'):b.add_argument('--'+name,type=Path,required=True)
     b.add_argument('--scope',choices=['train-reward','all-reference'],default='train-reward');b.add_argument('--revision',required=True)
-    q=sub.add_parser('probe')
-    for name in ('index','cases','output'):q.add_argument('--'+name,type=Path,required=True)
+    for action in ('probe','context'):
+        q=sub.add_parser(action)
+        for name in ('index','cases','output'):q.add_argument('--'+name,type=Path,required=True)
     a=p.parse_args()
-    result=build(a.oracle,a.dataset,a.output,a.scope,a.revision) if a.action=='build' else probe(a.index,a.cases,a.output)
+    result=build(a.oracle,a.dataset,a.output,a.scope,a.revision) if a.action=='build' else globals()[a.action](a.index,a.cases,a.output)
     print(json.dumps(result,indent=2))

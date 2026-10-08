@@ -1,0 +1,23 @@
+{
+  "model": "BAAI/bge-small-en-v1.5",
+  "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+  "scope": "train-reward",
+  "cards": 35744,
+  "dimensions": 384,
+  "holdout_cards_indexed": 0,
+  "excluded_source_cards": 416,
+  "dataset_manifest_sha256": "d7fd06e722c7b0ebde3784dce09861afa867a55d68d52994d66f3d10b49d7a7e",
+  "oracle_snapshot_sha256": "457b0dbd78432750e468b0a505c6ec1c08ee34283aab841443bc9e029f8e0fd0",
+  "encoder_source_sha256": "d8ada1563775d2c7ed4bd2a62aae9db3efca6062c44378ba47faf74bf9f5dafd",
+  "vector_sha256": "ac07fda5ee416c7570efc8e035cbb008921afd51454757786f6e6f6f6883203a",
+  "cards_sha256": "0ddaf5bf4aa8d2082be186e293b769d68fe39cade1cc2730f85ea3686e94f5c8",
+  "long_documents_chunked": 1,
+  "chunking": "480 tokens, 32 overlap; mean chunk vectors, then L2 normalize",
+  "seconds": 725.2085037450306,
+  "embedding_reward_weight": 0,
+  "versions": {
+    "torch": "2.8.0+cpu",
+    "transformers": "4.56.2",
+    "numpy": "2.2.6"
+  }
+}

@@ -121,6 +121,11 @@ parsing, failure denominators, and comparison of base versus adapter.
 [Publishing](docs/publishing.md) covers GitHub, HF dataset/model cards, hashes,
 and adapter staging. No private editor or compiler is required.
 
+[Post-training preparation](docs/rl-plan.md) compares Luna intent judgments,
+parser rewards and Oracle embeddings, with an offline scoring/pair-export harness
+and a 512-prompt pilot. See the [measured reward diagnostics](reports/rl-preparation/README.md).
+This is preparation only; no RL training is scheduled automatically.
+
 Run CPU checks with `python -m unittest discover -s tests -v`. Original code and
 documentation use [MIT](LICENSE); card content and base models retain their own
 [rights and attribution](DATA_LICENSE.md).
