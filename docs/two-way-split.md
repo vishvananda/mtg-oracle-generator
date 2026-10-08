@@ -6,6 +6,16 @@ scores, or test-based checkpoint selection. The requested endpoint is one epoch.
 The operational cost limit can stop it earlier; a partial run is checkpointed
 and does not automatically open the final test.
 
+The active experiment now has explicit authorization to finish this one epoch
+even if its original time/budget allowance runs out. `finish_fixed_epoch.py`
+replaces the initial watcher, leaves the running GPU job alone, and resumes only
+verified full optimizer checkpoints after normal time-limit stops or HF timeouts.
+Each continuation keeps the frozen dataset, trainer, model config and target step
+19,774. The ledger records any necessary allowance increase under the pinned
+authorization. Non-timeout failures stop for review; no additional epoch, RL run
+or deployment is authorized by this mechanism. Final evaluation still waits for
+completion of the epoch.
+
 | Partition | Descriptions | Source cards | Role |
 | --- | ---: | ---: | --- |
 | Training | 316,372 | 35,744 | Gradient updates; 98.85% of available cards |

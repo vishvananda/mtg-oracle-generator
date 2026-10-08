@@ -23,7 +23,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Names + rarity pilot dataset | Packaged locally: 19,065 train / 572 validation; not uploaded |
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
-| Revised training run | [Smoke check running](https://huggingface.co/jobs/vishvananda/6ac72ab8e7a0dae8a2780ce0); fresh training follows automatically, with a small, coverage-protected holdout |
+| Revised training run | [Training running](https://huggingface.co/jobs/vishvananda/6ac72dd6e7a0dae8a2780d6d); automatic checkpoint continuation if the job reaches its time limit; stops after one epoch |
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): checkpoint 963 in Q4_0 alongside GPT-6 Luna |
 | Full training and final-test mtgish results | **Pending** — no final-test score claimed |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |

@@ -86,7 +86,7 @@
     "training_epoch": 0.06148640020431618
   },
   "staged_experiment": {
-    "status": "two_way_smoke_running",
+    "status": "training_with_authorized_epoch_completion",
     "initial_job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
     "budget_limit_usd": 60,
     "initial_cycle_maximum_usd": 6.25005,
@@ -106,17 +106,20 @@
     "canceled_job_url": "https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3",
     "cancellation_reason": "User requested smaller holdout with rare-ability, type and color coverage",
     "maximum_prior_cost_bound_usd": 7.250058,
-    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac72ab8e7a0dae8a2780ce0",
+    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac72dd6e7a0dae8a2780d6d",
     "fresh_base": true,
     "split_policy": "coverage-protected-two-way-v2",
     "target_optimizer_steps": 19774,
     "training_job_maximum_usd": 48.958725,
-    "maximum_total_cost_bound_usd": 59.958813,
     "final_test_cases": 400,
     "heldout_validation_cases": 0,
-    "training_diagnostic_cases": 256
+    "training_diagnostic_cases": 256,
+    "automatic_time_limit_resume": true,
+    "budget_policy": "User authorized completion of this existing epoch and final evaluation; prior $60 ceiling may be raised as necessary with an audit record.",
+    "additional_epochs": false,
+    "automatic_rl": false
   },
-  "updated_at": "2026-10-08T05:32:35.580318+00:00",
+  "updated_at": "2026-10-08T06:30:35.098482+00:00",
   "workshop_preview": {
     "status": "deployed",
     "url": "https://tetrarchs.com/cards/new",

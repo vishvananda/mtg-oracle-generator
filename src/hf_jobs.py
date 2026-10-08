@@ -26,19 +26,20 @@ def save(path,value):
     path.write_text(json.dumps(value,indent=2)+'\n')
 
 
-def plan(package,stage,smoke=None,compatible_package=None):
+def plan(package,stage,smoke=None,compatible_package=None,smoke_package=None):
     manifest=verify_package(package);recipe=json.loads((package/'recipe.json').read_text())
     config=json.loads((package/'train-config.json').read_text());settings=recipe['hf']
     if stage not in settings['stages']: raise ValueError('Stage is not enabled by this recipe')
     phase=settings['stages'][stage]
     package_hash=digest((package/'package-manifest.json').read_bytes())
     parent_hash=verify_continuation(package,compatible_package) if compatible_package else None
+    smoke_hash=verify_continuation(package,smoke_package) if smoke_package else None
     estimate=None
     if stage=='train':
         if not smoke: raise ValueError('Full training requires a collected smoke run from this package')
         receipt=json.loads((smoke/'job-result.json').read_text())
         summary=json.loads((smoke/'adapter/run-summary.json').read_text())
-        if receipt['state']!='COMPLETED' or receipt['stage']!='smoke' or receipt['package_hash'] not in {package_hash,parent_hash}:
+        if receipt['state']!='COMPLETED' or receipt['stage']!='smoke' or receipt['package_hash'] not in {package_hash,parent_hash,smoke_hash}:
             raise ValueError('Smoke job did not complete using this exact package')
         if (summary['config']!=config or not summary['loss_mask_verified'] or summary['stopped_for_training_budget']
                 or summary['optimizer_steps']<settings['stages']['smoke']['max_steps']
@@ -170,7 +171,7 @@ def collect(record_path,output=None):
     record=json.loads(record_path.read_text())
     job=hf.inspect_job(job_id=record['job_id'],namespace=record['namespace'])
     result={k:record[k] for k in ('job_id','stage','package_hash','dataset_manifest_sha256','output_prefix')}
-    result.update(state=job.status.stage,url=job.url)
+    result.update(state=job.status.stage,url=job.url,message=job.status.message)
     if output:
         if result['state'] not in TERMINAL: raise ValueError('Collect only terminal jobs for consistent outputs')
         if output.exists(): raise ValueError('Use a fresh collection directory')
