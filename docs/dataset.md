@@ -1,5 +1,7 @@
 # Dataset generation and formats
 
+The current v2 experiment uses [a small, coverage-protected two-way split](two-way-split.md): 316,372 training descriptions and 400 final-test cases, with no held-out validation split. Earlier v1 and staged-pilot procedures below retain their original three-way protocols.
+
 The unit of training is **description → editable card JSON**, not a parser AST.
 The JSON contains Oracle text plus the requested or proposed name, mana cost,
 type line, colors, stats/loyalty, rarity, and linked faces when applicable.

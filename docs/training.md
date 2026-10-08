@@ -1,5 +1,7 @@
 # Training approach and larger models
 
+The current v2 experiment uses [a small, coverage-protected two-way split](two-way-split.md): 316,372 training descriptions and 400 final-test cases, with no held-out validation split. Earlier v1 and staged-pilot procedures below retain their original three-way protocols.
+
 This is supervised fine-tuning with completion-only cross-entropy. Source card
 JSON provides the target; model-generated descriptions and historical wording
 provide the user input. The teacher does not invent the canonical target during

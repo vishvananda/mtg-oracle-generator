@@ -24,10 +24,28 @@ import tempfile
 import time
 
 
+def training_splits(config):
+    source=config.get('monitoring_split','validation')
+    if source not in ('train','validation'): raise ValueError('Monitoring may never read final test')
+    return ('train',) if source=='train' else ('train','validation')
+
+
+def monitoring_data(data, config):
+    source=config.get('monitoring_split','validation')
+    training_splits(config)
+    candidates=data[source]
+    selected=validation_indices(candidates,config.get('validation_max_examples'))
+    data['validation']=candidates.select(selected)
+    return {'available':len(candidates),'evaluated':len(selected),'source_split':source,
+            'indices_sha256':hashlib.sha256(json.dumps(selected).encode()).hexdigest(),
+            'policy':('fixed training diagnostic sample; NOT held-out validation' if source=='train' else
+                      'fixed SHA-256 rank of complete validation records; no test data')}
+
+
 def preflight(dataset, config):
     manifest = json.loads((dataset / 'manifest.json').read_text())
     result = {'model': config['model'], 'revision': config['model_revision'], 'splits': {}}
-    for split in ('train', 'validation'):
+    for split in training_splits(config):
         path = dataset / (split + '.sft.jsonl')
         data = path.read_bytes()
         if hashlib.sha256(data).hexdigest() != manifest['files'][path.name]['sha256']:
@@ -100,7 +118,8 @@ def training_identity(dataset, config):
             'config_sha256': hashlib.sha256(json.dumps(config, sort_keys=True).encode()).hexdigest(),
             'trainer_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'train_sha256': manifest['files']['train.sft.jsonl']['sha256'],
-            'validation_sha256': manifest['files']['validation.sft.jsonl']['sha256']}
+            'validation_sha256': manifest['files'].get('validation.sft.jsonl',{}).get('sha256'),
+            **({'monitoring_split':'train'} if config.get('monitoring_split')=='train' else {})}
 
 
 def checkpoint_release(checkpoint, output, metadata, prompt):
@@ -268,13 +287,8 @@ def main():
         train_tokens = metadata['train_tokens_per_epoch']
         max_sequence_tokens = metadata['max_sequence_tokens']
     else:
-        data = load_dataset('json', data_files={s: str(args.dataset/(s+'.sft.jsonl')) for s in ('train', 'validation')})
-        validation_total = len(data['validation'])
-        selected_validation = validation_indices(data['validation'], config.get('validation_max_examples'))
-        data['validation'] = data['validation'].select(selected_validation)
-        validation_sample = {'available': validation_total, 'evaluated': len(selected_validation),
-                             'indices_sha256': hashlib.sha256(json.dumps(selected_validation).encode()).hexdigest(),
-                             'policy': 'fixed SHA-256 rank of complete validation records; no test data'}
+        data = load_dataset('json', data_files={s: str(args.dataset/(s+'.sft.jsonl')) for s in training_splits(config)})
+        validation_sample = monitoring_data(data,config)
         tokenized = data.map(lambda row: tokenize_supervised(row, tokenizer, config['max_length']))
         token_counts = [len(row['input_ids']) for row in tokenized['train']]
         train_tokens, max_sequence_tokens = sum(token_counts), max(token_counts)

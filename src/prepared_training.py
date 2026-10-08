@@ -15,7 +15,7 @@ import tarfile
 import tempfile
 import time
 
-from train_qlora import preflight, tokenize_supervised, verify_completion_masks, validation_indices
+from train_qlora import preflight, tokenize_supervised, verify_completion_masks, validation_indices, training_splits, monitoring_data
 
 MANIFEST = 'prepared-training.json'
 ARCHIVE = 'prepared-training.tar.gz'
@@ -33,9 +33,10 @@ def identity(dataset, config):
         'model': config['model'], 'model_revision': config['model_revision'],
         'max_length': config['max_length'],
         'validation_max_examples': config.get('validation_max_examples'),
+        'monitoring_split': config.get('monitoring_split','validation'),
         'preprocessor_sha256': file_hash(Path(__file__)),
         'semantics_sha256': hashlib.sha256(''.join(inspect.getsource(f) for f in
-            (preflight, tokenize_supervised, verify_completion_masks, validation_indices)).encode()).hexdigest(),
+            (preflight, tokenize_supervised, verify_completion_masks, validation_indices, training_splits, monitoring_data)).encode()).hexdigest(),
         'versions': {p: importlib.metadata.version(p) for p in ('datasets', 'transformers', 'tokenizers')},
     }
 
@@ -86,13 +87,8 @@ def prepare(dataset, config, output, workers=8, batch_size=128, tokenizer=None):
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=output.name+'.preparing-', dir=output.parent) as tmp:
         staging = Path(tmp)
-        data = load_dataset('json', data_files={s: str(dataset/(s+'.sft.jsonl')) for s in ('train', 'validation')})
-        total = len(data['validation'])
-        selected = validation_indices(data['validation'], config.get('validation_max_examples'))
-        data['validation'] = data['validation'].select(selected)
-        sample = {'available': total, 'evaluated': len(selected),
-            'indices_sha256': hashlib.sha256(json.dumps(selected).encode()).hexdigest(),
-            'policy': 'fixed SHA-256 rank of complete validation records; no test data'}
+        data = load_dataset('json', data_files={s: str(dataset/(s+'.sft.jsonl')) for s in training_splits(config)})
+        sample = monitoring_data(data,config)
         encoded = data.map(tokenize_batch, batched=True, batch_size=batch_size, num_proc=workers,
             fn_kwargs={'tokenizer': tokenizer, 'max_length': config['max_length']},
             load_from_cache_file=False, desc='CPU tokenize and verify completion masks')

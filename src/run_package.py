@@ -10,7 +10,7 @@ import time
 from data_utils import digest
 from hub_dataset import verify
 from paths import PROJECT
-from train_qlora import preflight,validate_config
+from train_qlora import preflight,validate_config,training_splits
 
 SOURCES=('train_qlora.py','train_qlora.py.lock','generate.py','generate.py.lock',
          'data_utils.py','hub_dataset.py','prediction_io.py','evaluation_selection.py','gpu_workflow.py',
@@ -29,7 +29,7 @@ def package(dataset, output, recipe_path, prepared=None):
         inspect_prepared(prepared,dataset,config)
     output.mkdir(parents=True);(output/'data').mkdir()
     for name in SOURCES: shutil.copyfile(PROJECT/'src'/name,output/name)
-    for name in (('manifest.json',) if prepared else ('manifest.json','train.sft.jsonl','validation.sft.jsonl')):
+    for name in (('manifest.json',) if prepared else ('manifest.json',)+tuple(s+'.sft.jsonl' for s in training_splits(config))):
         shutil.copyfile(dataset/name,output/'data'/name)
     if prepared:
         for name in ('prepared-training.json','prepared-training.tar.gz'):
@@ -43,7 +43,8 @@ def package(dataset, output, recipe_path, prepared=None):
            'dataset_release':manifest['release'],'counts':manifest['counts'],
            'effective_batch_size':config['per_device_train_batch_size']*config['gradient_accumulation_steps'],
            'optimizer_steps':math.ceil(manifest['counts']['train']/config['per_device_train_batch_size']/config['gradient_accumulation_steps'])*config['epochs'],
-           'validation_monitoring_examples':min(config.get('validation_max_examples',manifest['counts']['validation']),manifest['counts']['validation']),
+           'validation_monitoring_examples':min(config.get('validation_max_examples',manifest['counts'][config.get('monitoring_split','validation')]),manifest['counts'][config.get('monitoring_split','validation')]),
+           **({'monitoring_split':'train'} if config.get('monitoring_split')=='train' else {}),
            'test_in_training_package':False,'prepared_training':bool(prepared),
            'files':files,'automatic_gpu_launch':False}
     (output/'package-manifest.json').write_text(json.dumps(value,indent=2)+'\n')
@@ -54,7 +55,7 @@ def verify_package(root):
     manifest=json.loads((root/'package-manifest.json').read_text())
     allowed=set(SOURCES)|{'data/manifest.json','train-config.json','recipe.json','system-prompt.txt'}
     allowed |= ({'data/prepared-training.json','data/prepared-training.tar.gz'} if manifest.get('prepared_training') else
-                {'data/train.sft.jsonl','data/validation.sft.jsonl'})
+                {'data/'+s+'.sft.jsonl' for s in training_splits(json.loads((root/'train-config.json').read_text()))})
     if set(manifest['files'])!=allowed or manifest['test_in_training_package'] is not False:
         raise ValueError('Unexpected training package files')
     actual={str(p.relative_to(root)) for p in root.rglob('*') if p.is_file()}

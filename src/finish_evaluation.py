@@ -16,10 +16,10 @@ from paths import PROJECT
 from post_training import paired_identity
 
 
-def complete_pair(directory):
+def complete_pair(directory,split='validation'):
     receipts={}
     for arm in ('base','adapter'):
-        predictions=directory/f'{arm}-validation.jsonl'
+        predictions=directory/f'{arm}-{split}.jsonl'
         receipts[arm]=json.loads(predictions.with_suffix('.manifest.json').read_text())
         if receipts[arm]['predictions_sha256']!=digest(predictions.read_bytes()):
             raise ValueError(arm+' predictions do not match the completion manifest')
@@ -27,7 +27,7 @@ def complete_pair(directory):
     return receipts
 
 
-def collect_settled(record,output,attempts=19,delay=10):
+def collect_settled(record,output,attempts=19,delay=10,split='validation'):
     """Refresh an owned download until late bucket commits are visible."""
     import huggingface_hub as hf
     receipt=collect(record)
@@ -42,7 +42,7 @@ def collect_settled(record,output,attempts=19,delay=10):
     last_error=None
     for attempt in range(attempts):
         try:
-            complete_pair(output)
+            complete_pair(output,split)
             return receipt
         except (OSError,ValueError,KeyError) as error:
             last_error=error
@@ -55,26 +55,27 @@ def collect_settled(record,output,attempts=19,delay=10):
 
 def run(record,dataset,adapter,output,report,status,cpu_python,poll=30):
     job=json.loads(record.read_text())
-    if job['stage']!='development': raise ValueError('This watcher is for the development panel only')
+    if job['stage'] not in ('development','test'): raise ValueError('Expected development or final-test job')
+    split='test' if job['stage']=='test' else 'validation'
     with record.with_suffix('.watch.lock').open('a') as lock:
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         while True:
             current=collect(record)
-            save(status,{'phase':'development',**current,'resumed_from':job.get('resumed_from'),
+            save(status,{'phase':job['stage'],**current,'resumed_from':job.get('resumed_from'),
                          'automatic_retry':False,'automatic_continuation_after_review':False})
             print(json.dumps(current),flush=True)
             if current['state'] in TERMINAL: break
             time.sleep(poll)
-        save(status,{'phase':'collecting_development',**current,'automatic_retry':False})
-        collect_settled(record,output)
-        save(status,{'phase':'scoring_development',**current,'report':str(report),'automatic_retry':False})
+        save(status,{'phase':'collecting_'+job['stage'],**current,'automatic_retry':False})
+        collect_settled(record,output,split=split)
+        save(status,{'phase':'scoring_'+job['stage'],**current,'report':str(report),'automatic_retry':False})
         subprocess.run([str(cpu_python),str(PROJECT/'src/post_training.py'),'--dataset',str(dataset),
-            '--adapter',str(adapter),'--generations',str(output),'--split','validation',
+            '--adapter',str(adapter),'--generations',str(output),'--split',split,
             '--output',str(report)],check=True)
         save(status,{'phase':'awaiting_quality_review','job_id':job['job_id'],'report':str(report),
                      'generations':str(output),'budget_ledger':job.get('budget_ledger'),
                      'automatic_continuation_after_review':False,'automatic_promotion':False,
-                     'final_test_evaluated':False})
+                     'final_test_evaluated':split=='test'})
 
 
 if __name__=='__main__':

@@ -44,6 +44,21 @@ class BatchedTokenization(unittest.TestCase):
 
 @unittest.skipUnless(importlib.util.find_spec('datasets') and importlib.util.find_spec('transformers'), 'CPU tokenizer dependencies required')
 class PreparedRoundtrip(unittest.TestCase):
+    def test_two_way_cache_uses_only_training_for_diagnostics(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp)
+            source(root/'input',[row('a','train'),row('b','train'),row('v','validation'),row('t','test')],True)
+            prepare_dataset([root/'input'],root/'data','fixture')
+            # Final test and even validation are unavailable to preprocessing.
+            for name in ('validation.sft.jsonl','test.sft.jsonl'):(root/'data'/name).unlink()
+            config=json.loads((PROJECT/'configs/qwen3-4b-full.json').read_text())
+            config.update(monitoring_split='train',validation_max_examples=1)
+            report=prepare(root/'data',config,root/'prepared',workers=1,tokenizer=Tokenizer())
+            self.assertEqual(report['counts'],{'train':2,'validation':1})
+            self.assertEqual(report['validation_sample']['source_split'],'train')
+            self.assertIn('NOT held-out',report['validation_sample']['policy'])
+            self.assertEqual(report['preflight']['splits'],{'train':2})
+
     def test_parallel_preparation_roundtrip_freeze_and_invalidation(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

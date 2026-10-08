@@ -11,6 +11,7 @@ def plot(summary_path,output,csv_path=None,state_path=None):
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
     summary=json.loads(summary_path.read_text())
+    diagnostic=summary.get('validation_sample',{}).get('source_split')=='train'
     if state_path:
         history=json.loads(state_path.read_text())['log_history']
         rows=[r for r in history if 'loss' in r]
@@ -35,13 +36,15 @@ def plot(summary_path,output,csv_path=None,state_path=None):
         ax.plot(x,[statistics.mean(y[max(0,i-49):i+1]) for i in range(len(y))],
                 color='#23658e',linewidth=2,label='Training: 50-step mean')
         points=sorted((s,r[metric]*factor) for s,r in validation.items() if metric in r)
-        ax.scatter([p[0] for p in points],[p[1] for p in points],color='#bc5525',s=50,label='Measured validation',zorder=5)
+        ax.scatter([p[0] for p in points],[p[1] for p in points],color='#bc5525',s=50,
+                   label='Training diagnostic sample' if diagnostic else 'Measured validation',zorder=5)
         ax.set(xlabel='Optimizer step',ylabel=label);ax.grid(alpha=.2)
         ax.spines[['top','right']].set_visible(False);ax.legend(frameon=False,fontsize=8)
     counts=summary['dataset']['splits']
     fig.suptitle(f'{summary["config"]["model"].split("/")[-1]} · {counts["train"]:,} training examples',fontweight='bold')
-    evaluated=summary.get('validation_sample',{}).get('evaluated',counts['validation'])
-    fig.supxlabel(f'{evaluated:,} validation examples; {len(validation)} measured evaluation points. '
+    evaluated=summary.get('validation_sample',{}).get('evaluated',counts.get('validation',0))
+    label='training diagnostic examples (not held-out validation)' if diagnostic else 'validation examples'
+    fig.supxlabel(f'{evaluated:,} {label}; {len(validation)} measured evaluation points. '
                   'Teacher-forced token accuracy is not whole-card correctness.',fontsize=8)
     for suffix in ('png','svg'): fig.savefig(output/f'training-curve.{suffix}',dpi=180)
     svg=output/'training-curve.svg'

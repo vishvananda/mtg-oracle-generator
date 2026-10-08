@@ -19,11 +19,11 @@ intent fidelity, game balance, or official Magic rules correctness.
 
 | Artifact | Status |
 | --- | --- |
-| Full Oracle description corpus | [Public dataset](https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions): 250,587 train / 31,852 validation / 37,618 test |
+| Full Oracle description corpus | [Public dataset](https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions-v2): 316,372 train / 400 final-test cases; [v2 split policy](docs/two-way-split.md) |
 | Names + rarity pilot dataset | Packaged locally: 19,065 train / 572 validation; not uploaded |
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
-| Remaining epoch | [HF job running](https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3), resuming checkpoint 963 with saves every 200 updates |
+| Revised training run | [Smoke check running](https://huggingface.co/jobs/vishvananda/6ac72ab8e7a0dae8a2780ce0); fresh training follows automatically, with a small, coverage-protected holdout |
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): checkpoint 963 in Q4_0 alongside GPT-6 Luna |
 | Full training and final-test mtgish results | **Pending** — no final-test score claimed |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
@@ -39,27 +39,29 @@ python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
 
-export MTG_DATASET=vishvananda/mtg-oracle-design-descriptions
-export MTG_DATASET_REVISION=4e32fd88762697f984f8091947d6ba65246074d5
+export MTG_DATASET=vishvananda/mtg-oracle-design-descriptions-v2
+export MTG_DATASET_REVISION=7c1bbca04b4259c15c397c5c6a00af5e143ef21e
 python src/hub_dataset.py download --repo-id "$MTG_DATASET" \
   --revision "$MTG_DATASET_REVISION" --directory data/oracle
 
 python src/train_qlora.py --dataset data/oracle \
-  --config configs/qwen3-4b-full.json --preflight
+  --config configs/qwen3-4b-two-way.json --preflight
 
 # Start with a 20-step smoke run. Use a fresh output directory for each run.
 uv run --frozen --script src/train_qlora.py --dataset data/oracle \
-  --config configs/qwen3-4b-full.json --output runs/smoke --max-steps 20
+  --config configs/qwen3-4b-two-way.json --output runs/smoke --max-steps 20
 
 # One configured epoch, starting again from the pinned base.
 uv run --frozen --script src/train_qlora.py --dataset data/oracle \
-  --config configs/qwen3-4b-full.json --output runs/full --max-steps -1
+  --config configs/qwen3-4b-two-way.json --output runs/full --max-steps -1
 ```
 
 The development machine has an unpublished staging copy at
 `dist/names-rarity-pilot-v1`; it is not included in a Git clone. That partial
 dataset has no final test. The command above downloads the complete published
-release, including its frozen validation and test splits.
+v2 release: training plus one locked 400-case final panel. There is no separate
+validation split. All card types and colors are covered; rare abilities stay in
+training. See the [split policy and coverage table](docs/two-way-split.md).
 Each release supplies standard `messages`, TRL `prompt`/`completion`, and
 provenance-rich records. [Dataset format and generation](docs/dataset.md) explains
 how to rebuild it; [training](docs/training.md) covers larger models and GPUs.
@@ -82,8 +84,8 @@ The first one-hour segment on the full corpus reached 6.15% of one epoch.
 On the fixed 256-case development panel, schema compliance improved from
 **8.59% to 99.22%** and whole-card mtgish acceptance from **0% to 49.22%**
 against the untuned Qwen baseline. Complex mechanics still have intent errors.
-The remaining epoch is now running, and checkpoint 963 is available as an
-intermediate workshop preview alongside Luna. The CPU preview uses a merged
+That run was canceled to improve the split. Checkpoint 963 remains available as an
+intermediate workshop preview alongside Luna; its report uses the original split. The CPU preview uses a merged
 Q4_0 model, so the NF4 development scores do not measure that serving artifact.
 The panel emphasizes difficult card types and is not a full-corpus accuracy
 estimate. See the [loss curves, parser coverage and qualitative review](reports/full-corpus-step-963/README.md).
@@ -102,15 +104,16 @@ remain. See [results, raw CSV and parser measurements](reports/pilot-16k/README.
 ## Evaluate generated cards
 
 ```bash
+# Run only after the fixed training endpoint; do not use final test to choose checkpoints.
 # Downloads the pinned upstream source and builds only the Go parser in artifacts/.
 python src/setup_mtgish.py
 
 uv run --frozen --script src/generate.py --dataset data/oracle \
-  --config configs/qwen3-4b-full.json --adapter runs/full \
-  --split validation --output runs/validation-predictions.jsonl
+  --config configs/qwen3-4b-two-way.json --adapter runs/full \
+  --split test --output runs/test-predictions.jsonl
 python src/evaluate.py --dataset data/oracle \
-  --predictions runs/validation-predictions.jsonl --split validation \
-  --output runs/validation-metrics
+  --predictions runs/test-predictions.jsonl --split test \
+  --output runs/test-metrics
 ```
 
 [Evaluation](docs/evaluation.md) describes the final-test procedure, whole-card

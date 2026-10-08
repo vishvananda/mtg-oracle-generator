@@ -1,5 +1,7 @@
 # Full training and post-training workflow
 
+The current v2 experiment uses [a small, coverage-protected two-way split](two-way-split.md): 316,372 training descriptions and 400 final-test cases, with no held-out validation split. Earlier v1 and staged-pilot procedures below retain their original three-way protocols.
+
 The recipe is [`configs/full-run.json`](../configs/full-run.json). Each stage is
 separate: freeze data → CPU preflight → GPU smoke → training → validation →
 freeze the selected model/settings → final test → reports → release/serving
