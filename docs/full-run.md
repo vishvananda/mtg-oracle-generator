@@ -26,16 +26,56 @@ The controller refuses an increased live price above its per-job caps.
 
 ```bash
 python src/setup_mtgish.py
+python -m pip install datasets==4.1.1 transformers==4.56.2 tokenizers==0.22.2
+TOKENIZERS_PARALLELISM=false python src/prepared_training.py --dataset data/oracle \
+  --config configs/qwen3-4b-full.json --output runs/prepared-training --workers 8
 python src/run_package.py --dataset data/oracle --recipe configs/staged-run.json \
-  --output runs/staged-package
+  --prepared runs/prepared-training --output runs/staged-package
 .hf-jobs/bin/python src/run_first_segment.py --package runs/staged-package \
   --dataset data/oracle --output runs/segment-1 --cpu-python .venv/bin/python
 ```
 
-The second command submits paid jobs. It runs smoke → one training segment →
+Only the final controller command submits paid jobs. It runs smoke → one training segment →
 paired base/adapter development generation → CPU parser/loss reports, then
 stops at `awaiting_quality_review`. Read `status.json` and `budget.json` for
 progress and reserved cost. There is no automatic retry or model promotion.
+When replacing an experiment, pass `--ledger path/to/existing/budget.json` to
+the controller so earlier reservations remain inside the same total budget.
+
+Prepare tokens on a CPU host before allocating the GPU. Preparation uses batched
+tokenization across eight processes and checks every completion mask against its
+assistant JSON. It keeps the original example order and fixed validation sample.
+The compressed cache binds the source dataset hashes, pinned tokenizer revision,
+tokenizer library versions, preprocessing code, maximum length, and validation
+sample policy. A changed input is rejected; use a new cache directory to rebuild.
+Training batch size can change without retokenizing.
+
+GPU jobs verify and unpack that cache onto local disk, then memory-map the Arrow
+files using `load_from_disk`. They skip JSON ingestion, tokenization, redundant
+truncation, and full-corpus target decoding. The actual training collator's
+completion-only labels are still checked. Cached lengths also avoid a full
+dataset scan when constructing each length-grouped sampler. No final-test data
+enters the cache. See the [Datasets processing guide](https://huggingface.co/docs/datasets/process)
+for batched multiprocessing and saving/reloading Arrow datasets.
+
+Logs now identify data loading, model loading, collator setup, baseline
+generation/evaluation, and the start of training separately. Low GPU use during
+CPU preparation is not evidence of an undersized training batch; measure GPU
+memory and optimizer-step throughput after training begins.
+
+The first full-corpus smoke spent 850 seconds tokenizing on the A100 host.
+Eight local CPU workers prepared and verified the same 250,587 training examples
+plus 1,024 monitoring examples in 174 seconds, including archive construction.
+Verifying, extracting and loading the 64 MB archive locally took 15 seconds.
+These are different hosts and different scopes; the new end-to-end GPU setup
+time remains to be measured. See the [benchmark receipt](../reports/preprocessing/benchmark.json).
+
+`configs/qwen3-4b-a100.json` tests a microbatch of 16 with accumulation 1,
+instead of 8 with accumulation 2. Both use 16 examples per optimizer update.
+The original smoke peaked at 27.7 GiB on the 80 GB A100; the larger batch must
+pass its own smoke before the first training segment. Set `training_config`
+to this file in the artifact recipe to try it. The existing token cache is
+compatible because tokenization and the validation sample have not changed.
 
 The fixed 256-case validation panel spreads examples across description styles
 and distinct source groups, reserving up to 32 planeswalker and 16 multi-face
@@ -211,14 +251,17 @@ of the staged recipe **before packaging it**:
 {
   "publication": {
     "model_repo": "YOUR_ACCOUNT/mtg-oracle-checkpoints",
-    "dataset_reference": "YOUR_ACCOUNT/mtg-oracle-descriptions@IMMUTABLE_COMMIT"
+    "dataset_reference": "YOUR_ACCOUNT/mtg-oracle-descriptions@IMMUTABLE_COMMIT",
+    "tag_prefix": "experiment-1"
   }
 }
 ```
 
 The launcher explicitly creates/checks a public model repository. Each save
 preserves an inference-only snapshot in persistent storage and publishes it with
-a tag such as `train-step-00000200` or `smoke-step-00000020`. Snapshots contain
+a tag such as `experiment-1-train-step-00000200` or `experiment-1-smoke-step-00000020`.
+Choose a new `tag_prefix` when changing the recipe; resume segments keep theirs.
+Snapshots contain
 adapter weights/config, the prompt, and minimal recipe/provenance/model-card
 metadata. Existing tags are immutable: a retry must match their files exactly.
 Optimizer state and worker logs stay private. If a Hub upload fails, the snapshot

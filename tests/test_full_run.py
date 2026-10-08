@@ -257,6 +257,11 @@ class StagedBudget(unittest.TestCase):
             paired=commands(root/'staged',root/'out','development',root/'dataset',root/'adapter')
             self.assertTrue(all(c[c.index('--validation-limit')+1]=='256' for c in paired))
             self.assertTrue(all(c[c.index('--split')+1]=='validation' for c in paired))
+            recipe=json.loads((root/'staged/recipe.json').read_text())
+            recipe['publication']={'model_repo':'owner/model','dataset_reference':'owner/data@pin','tag_prefix':'prepared-v1'}
+            (root/'staged/recipe.json').write_text(json.dumps(recipe))
+            command=commands(root/'staged',root/'out','smoke')[0]
+            self.assertEqual(command[command.index('--publish-prefix')+1],'prepared-v1')
 
 
 if __name__=='__main__': unittest.main()

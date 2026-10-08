@@ -59,18 +59,28 @@
     }
   },
   "checkpoint_model": {
-    "status": "public_repository_prepared",
+    "status": "smoke_checkpoint_published",
     "repo_id": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
     "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
-    "weights_published": false,
-    "final_test_evaluated": false
+    "weights_published": true,
+    "final_test_evaluated": false,
+    "smoke_revision": "ed32be67f5b8d76fc263c5725c8249dca11d4a0d",
+    "smoke_tag": "smoke-step-00000020"
   },
   "staged_experiment": {
-    "status": "smoke_queued",
+    "status": "prepared_smoke_queued",
     "initial_job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
     "budget_limit_usd": 20,
     "initial_cycle_maximum_usd": 6.25005,
     "automatic_continuation_after_review": false,
-    "final_test_evaluated": false
-  }
+    "final_test_evaluated": false,
+    "original_smoke_status": "completed",
+    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac6de90df2184ac91ac6108",
+    "prepared_training": true,
+    "microbatch": 16,
+    "gradient_accumulation": 1,
+    "earlier_reservations_retained": true,
+    "maximum_cycle_usd_including_original_smoke": 7.50006
+  },
+  "updated_at": "2026-10-08T00:07:20.207198+00:00"
 }

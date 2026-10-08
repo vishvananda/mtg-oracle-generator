@@ -29,6 +29,7 @@ def commands(package, output, stage, dataset=None, adapter=None, resume=None):
             publication=recipe['publication']
             command+=['--publish-repo',publication['model_repo'],'--publish-phase',stage,
                       '--public-dataset-reference',publication['dataset_reference']]
+            if publication.get('tag_prefix'): command+=['--publish-prefix',publication['tag_prefix']]
         return [command]
     if not dataset or not adapter: raise ValueError('Evaluation needs the frozen dataset and trained adapter')
     evaluation=recipe['evaluation'];result=[];split='validation' if stage=='development' else stage

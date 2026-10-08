@@ -1,0 +1,30 @@
+{
+  "dataset_manifest_sha256": "addbde2a349e0f59f0da3a2f14e3a83e1192ffd826bcc970584f8d87eb628f11",
+  "baseline": {
+    "job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
+    "tokenization_seconds_from_log": 850,
+    "setup_seconds": 1080.4309737810036,
+    "training_seconds_including_checkpoint_save": 100.29299853100383,
+    "optimizer_steps": 20,
+    "peak_allocated_gib": 27.728047370910645,
+    "microbatch": 8,
+    "gradient_accumulation": 2
+  },
+  "prepared": {
+    "cpu_prepare_seconds": 173.58665071695577,
+    "local_cache_verify_extract_load_seconds": 14.560724063077942,
+    "counts": {
+      "train": 250587,
+      "validation": 1024
+    },
+    "archive_bytes": 64409428,
+    "mask_checks": 251611,
+    "gpu_measurement_pending": true,
+    "workers": 8,
+    "tokenization_batch_size": 128,
+    "archive_sha256": "ab331aac138e41f67627844b325647b04ef651f3d971f97b9f63f3dcdc9c9d21",
+    "equivalence_spotcheck_examples": 256,
+    "exact_token_ids_and_completion_masks": true
+  },
+  "scope": "Different hosts; CPU preparation includes mask verification and archive construction. Local cache reload includes hash checks, extraction and Arrow loading. New GPU timings are pending; these are not end-to-end GPU speedup or model quality claims."
+}

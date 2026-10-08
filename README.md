@@ -69,6 +69,9 @@ loss and mtgish plots, and model/CPU-serving exports. Its preparation watcher
 can wait for the remaining corpus work; GPU submission is an explicit step.
 Its staged recipe can stop after a short training segment and evaluate a fixed
 development panel before continuing the same epoch, with a shared spending cap.
+For remote GPU jobs, use its CPU token-cache preparation step first: eight
+workers tokenize and verify the data once, and each GPU phase loads the same
+verified Arrow files without repeating full-corpus preprocessing.
 
 ## Measured pilot results
 

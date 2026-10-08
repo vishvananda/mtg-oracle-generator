@@ -12,20 +12,27 @@ from paths import PROJECT
 from train_qlora import preflight,validate_config
 
 SOURCES=('train_qlora.py','train_qlora.py.lock','generate.py','generate.py.lock',
-         'data_utils.py','hub_dataset.py','prediction_io.py','evaluation_selection.py','gpu_workflow.py')
+         'data_utils.py','hub_dataset.py','prediction_io.py','evaluation_selection.py','gpu_workflow.py',
+         'prepared_training.py')
 
 
-def package(dataset, output, recipe_path):
+def package(dataset, output, recipe_path, prepared=None):
     if output.exists(): raise ValueError('Use a new immutable package directory')
     manifest=verify(dataset)
     if manifest['status']!='complete': raise ValueError('Full run requires a complete, frozen dataset')
     recipe=json.loads(recipe_path.read_text())
     config_path=PROJECT/recipe['training_config'];config=json.loads(config_path.read_text())
     validate_config(config,-1);preflight(dataset,config)
+    if prepared:
+        from prepared_training import inspect_prepared
+        inspect_prepared(prepared,dataset,config)
     output.mkdir(parents=True);(output/'data').mkdir()
     for name in SOURCES: shutil.copyfile(PROJECT/'src'/name,output/name)
-    for name in ('manifest.json','train.sft.jsonl','validation.sft.jsonl'):
+    for name in (('manifest.json',) if prepared else ('manifest.json','train.sft.jsonl','validation.sft.jsonl')):
         shutil.copyfile(dataset/name,output/'data'/name)
+    if prepared:
+        for name in ('prepared-training.json','prepared-training.tar.gz'):
+            shutil.copyfile(prepared/name,output/'data'/name)
     shutil.copyfile(config_path,output/'train-config.json')
     shutil.copyfile(recipe_path,output/'recipe.json')
     shutil.copyfile(dataset/'system-prompt.txt',output/'system-prompt.txt')
@@ -36,15 +43,17 @@ def package(dataset, output, recipe_path):
            'effective_batch_size':config['per_device_train_batch_size']*config['gradient_accumulation_steps'],
            'optimizer_steps':math.ceil(manifest['counts']['train']/config['per_device_train_batch_size']/config['gradient_accumulation_steps'])*config['epochs'],
            'validation_monitoring_examples':min(config.get('validation_max_examples',manifest['counts']['validation']),manifest['counts']['validation']),
-           'test_in_training_package':False,'files':files,'automatic_gpu_launch':False}
+           'test_in_training_package':False,'prepared_training':bool(prepared),
+           'files':files,'automatic_gpu_launch':False}
     (output/'package-manifest.json').write_text(json.dumps(value,indent=2)+'\n')
     return value
 
 
 def verify_package(root):
     manifest=json.loads((root/'package-manifest.json').read_text())
-    allowed=set(SOURCES)|{'data/manifest.json','data/train.sft.jsonl','data/validation.sft.jsonl',
-                          'train-config.json','recipe.json','system-prompt.txt'}
+    allowed=set(SOURCES)|{'data/manifest.json','train-config.json','recipe.json','system-prompt.txt'}
+    allowed |= ({'data/prepared-training.json','data/prepared-training.tar.gz'} if manifest.get('prepared_training') else
+                {'data/train.sft.jsonl','data/validation.sft.jsonl'})
     if set(manifest['files'])!=allowed or manifest['test_in_training_package'] is not False:
         raise ValueError('Unexpected training package files')
     actual={str(p.relative_to(root)) for p in root.rglob('*') if p.is_file()}
@@ -115,11 +124,13 @@ if __name__=='__main__':
     source.add_argument('--dataset',type=Path,help='Package an existing verified complete HF dataset')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--recipe',type=Path,default=PROJECT/'configs/full-run.json')
+    p.add_argument('--prepared',type=Path,help='Verified CPU token cache (with --dataset)')
     p.add_argument('--watch',action='store_true')
     a=p.parse_args()
     if a.dataset:
         if a.watch: p.error('--watch is for recovery exports')
-        print(json.dumps(package(a.dataset,a.output,a.recipe),indent=2));raise SystemExit(0)
+        print(json.dumps(package(a.dataset,a.output,a.recipe,a.prepared),indent=2));raise SystemExit(0)
+    if a.prepared: p.error('--prepared requires --dataset')
     while True:
         result=prepare_run(a.recovery,a.output,a.recipe);print(json.dumps(result),flush=True)
         if result['stage']=='prepared' or not a.watch: break

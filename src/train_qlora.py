@@ -18,7 +18,9 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import re
 import shutil
+import tempfile
 import time
 
 
@@ -198,15 +200,24 @@ def main():
     parser.add_argument('--training-seconds', type=int, help='Stop after this training-loop budget; final evaluation/save still run')
     parser.add_argument('--publish-repo',help='Explicit public model repo for inference-only checkpoint snapshots')
     parser.add_argument('--publish-phase',choices=['smoke','train'],default='train')
+    parser.add_argument('--publish-prefix',default='',help='Unique tag prefix for a changed experiment recipe')
     parser.add_argument('--public-dataset-reference',help='Pinned public dataset repo@commit')
     args = parser.parse_args()
     config = json.loads(args.config.read_text())
     validate_config(config, args.max_steps)
     if args.publish_repo and not args.public_dataset_reference: raise ValueError('Public checkpoints require a pinned dataset reference')
+    if args.publish_prefix and not re.fullmatch('[a-z0-9][a-z0-9-]{0,40}',args.publish_prefix):
+        raise ValueError('Invalid public checkpoint tag prefix')
     if args.generation_cases < 1:
         raise ValueError('At least one paired generation case is required')
-    checked = preflight(args.dataset, config)
-    print(json.dumps({'preflight': checked}), flush=True)
+    prepared = (args.dataset/'prepared-training.json').is_file()
+    if prepared:
+        from prepared_training import inspect_prepared, load_prepared
+        metadata = inspect_prepared(args.dataset, args.dataset, config)
+        checked = metadata['preflight']
+    else:
+        checked = preflight(args.dataset, config)
+    print(json.dumps({'preflight': checked, 'prepared_training': prepared}), flush=True)
     if args.preflight:
         return
     import torch
@@ -223,6 +234,15 @@ def main():
     if not torch.cuda.is_available():
         raise RuntimeError('This training recipe requires a CUDA GPU; use --preflight on the CPU host.')
     started = time.monotonic()
+    setup_phases = {}
+    phase_started = started
+    def mark(phase):
+        nonlocal phase_started
+        now = time.monotonic()
+        setup_phases[phase] = now-phase_started
+        phase_started = now
+        print(json.dumps({'completed_phase': phase, 'seconds': setup_phases[phase],
+                          'elapsed_seconds': now-started}), flush=True)
     if args.output.exists() and any(args.output.iterdir()):
         raise ValueError('Output directory is not empty; choose a fresh run directory')
     args.output.mkdir(parents=True, exist_ok=True)
@@ -236,15 +256,32 @@ def main():
             raise ValueError('Resume checkpoint belongs to another dataset or training config')
     (args.output/'training-identity.json').write_text(json.dumps(run_identity, indent=2)+'\n')
     tokenizer = AutoTokenizer.from_pretrained(config['model'], revision=config['model_revision'])
-    data = load_dataset('json', data_files={s: str(args.dataset/(s+'.sft.jsonl')) for s in ('train', 'validation')})
-    validation_total = len(data['validation'])
-    selected_validation = validation_indices(data['validation'], config.get('validation_max_examples'))
-    data['validation'] = data['validation'].select(selected_validation)
-    validation_sample = {'available': validation_total, 'evaluated': len(selected_validation),
-                         'indices_sha256': hashlib.sha256(json.dumps(selected_validation).encode()).hexdigest(),
-                         'policy': 'fixed SHA-256 rank of complete validation records; no test data'}
-    tokenized = data.map(lambda row: tokenize_supervised(row, tokenizer, config['max_length']))
-    token_counts = [len(row['input_ids']) for row in tokenized['train']]
+    if prepared:
+        local_cache = tempfile.TemporaryDirectory(prefix='oracle-prepared-')
+        tokenized, metadata = load_prepared(args.dataset, args.dataset, config, Path(local_cache.name)/'dataset')
+        validation_sample = metadata['validation_sample']
+        if args.generation_cases > len(metadata['generation_samples']):
+            raise ValueError('Requested more generation cases than the prepared cache contains')
+        sample = metadata['generation_samples'][:args.generation_cases]
+        system_prompt = metadata['system_prompt']
+        loss_masks_checked = metadata['loss_masks_checked']
+        train_tokens = metadata['train_tokens_per_epoch']
+        max_sequence_tokens = metadata['max_sequence_tokens']
+    else:
+        data = load_dataset('json', data_files={s: str(args.dataset/(s+'.sft.jsonl')) for s in ('train', 'validation')})
+        validation_total = len(data['validation'])
+        selected_validation = validation_indices(data['validation'], config.get('validation_max_examples'))
+        data['validation'] = data['validation'].select(selected_validation)
+        validation_sample = {'available': validation_total, 'evaluated': len(selected_validation),
+                             'indices_sha256': hashlib.sha256(json.dumps(selected_validation).encode()).hexdigest(),
+                             'policy': 'fixed SHA-256 rank of complete validation records; no test data'}
+        tokenized = data.map(lambda row: tokenize_supervised(row, tokenizer, config['max_length']))
+        token_counts = [len(row['input_ids']) for row in tokenized['train']]
+        train_tokens, max_sequence_tokens = sum(token_counts), max(token_counts)
+        sample = sorted(data['validation'], key=lambda r: hashlib.sha256(r['prompt'][-1]['content'].encode()).hexdigest())[:args.generation_cases]
+        system_prompt = data['train'][0]['prompt'][0]['content']
+        loss_masks_checked = len(data['train'])+len(data['validation'])
+    mark('prepared_data_load' if prepared else 'data_preprocessing')
     dtype = torch.bfloat16 if torch.cuda.is_bf16_supported() else torch.float16
     quantization = BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type=config['quant_type'],
                                       bnb_4bit_use_double_quant=config['double_quant'], bnb_4bit_compute_dtype=dtype)
@@ -252,10 +289,15 @@ def main():
                                                 quantization_config=quantization, torch_dtype=dtype,
                                                 device_map={'': torch.cuda.current_device()}, attn_implementation='sdpa')
     model.config.use_cache = False
+    mark('model_load')
     peft = LoraConfig(r=config['lora_r'], lora_alpha=config['lora_alpha'], lora_dropout=config['lora_dropout'],
                       target_modules=config['target_modules'], task_type='CAUSAL_LM', bias='none')
     training = SFTConfig(output_dir=str(args.output), max_steps=args.max_steps, num_train_epochs=config['epochs'],
                          max_length=config['max_length'], completion_only_loss=True, packing=False,
+                         dataset_kwargs={'skip_prepare_dataset': True} if prepared else None,
+                         # Keep cached lengths available to the sampler. The SFT
+                         # collator consumes only token IDs/masks, never length.
+                         remove_unused_columns=not prepared,
                          per_device_train_batch_size=config['per_device_train_batch_size'],
                          per_device_eval_batch_size=config.get('per_device_eval_batch_size',1), gradient_accumulation_steps=config['gradient_accumulation_steps'],
                          gradient_checkpointing=config.get('gradient_checkpointing',True), learning_rate=config['learning_rate'], warmup_ratio=config['warmup_ratio'],
@@ -283,12 +325,12 @@ def main():
             checkpoint=Path(training_args.output_dir)/f'checkpoint-{state.global_step}'
             (checkpoint/'training-identity.json').write_text(json.dumps(run_identity,indent=2)+'\n')
             if args.publish_repo:
-                tag=f'{args.publish_phase}-step-{state.global_step:08d}'
+                tag=(args.publish_prefix+'-' if args.publish_prefix else '')+f'{args.publish_phase}-step-{state.global_step:08d}'
                 destination=args.output/'public-checkpoints'/tag
                 public=checkpoint_release(checkpoint,destination,{'phase':args.publish_phase,'step':state.global_step,
                     'epoch':state.epoch,'tag':tag,'config':config,'training_identity':run_identity,
                     'dataset_reference':args.public_dataset_reference,'final_test_evaluated':False},
-                    data['train'][0]['prompt'][0]['content'])
+                    system_prompt)
                 try:
                     receipt=publish_checkpoint(public,args.publish_repo,tag)
                     (destination/'publication.json').write_text(json.dumps(receipt,indent=2)+'\n')
@@ -299,8 +341,9 @@ def main():
                     print(json.dumps({'checkpoint_publication':'deferred','tag':tag,'error_type':type(error).__name__}),flush=True)
     budget_callback=TimeBudget()
     trainer.add_callback(budget_callback)
-    verify_completion_masks(tokenizer, trainer.train_dataset, data['train'])
-    verify_completion_masks(tokenizer, trainer.eval_dataset, data['validation'])
+    if not prepared:
+        verify_completion_masks(tokenizer, trainer.train_dataset, data['train'])
+        verify_completion_masks(tokenizer, trainer.eval_dataset, data['validation'])
     # Also verify the actual collator preserves the prompt exclusion.
     batch = next(iter(trainer.get_train_dataloader()))
     labels = batch['labels'][0]
@@ -309,15 +352,20 @@ def main():
         raise ValueError('Completion-only labels are missing or prompt tokens are supervised')
     decoded = tokenizer.decode(active.tolist(), skip_special_tokens=True).strip()
     json.loads(decoded)  # supervised tokens must be exactly the assistant JSON
-    sample = sorted(data['validation'], key=lambda r: hashlib.sha256(r['prompt'][-1]['content'].encode()).hexdigest())[:args.generation_cases]
+    mark('trainer_and_collator_check')
     generation_before = generate_comparison(trainer.model, tokenizer, sample, args.output/'base-generations.json', False, compute_dtype=dtype)
+    mark('base_generation')
     base_metrics = trainer.evaluate()
+    mark('base_evaluation')
     (args.output/'pre-training.json').write_text(json.dumps({'config': config, 'dataset': checked,
         'training_identity': run_identity, 'validation_sample': validation_sample,
-        'loss_masks_checked': len(data['train'])+len(data['validation']), 'base_metrics': base_metrics,
+        'loss_masks_checked': loss_masks_checked, 'base_metrics': base_metrics,
         'base_generation': generation_before, 'resumed_from': str(args.resume) if args.resume else None}, indent=2)+'\n')
     setup_seconds = time.monotonic() - started
     torch.cuda.reset_peak_memory_stats()
+    print(json.dumps({'starting_phase':'training', 'microbatch':config['per_device_train_batch_size'],
+        'gradient_accumulation':config['gradient_accumulation_steps'],
+        'allocated_gib':torch.cuda.memory_allocated()/1024**3}),flush=True)
     before = time.monotonic()
     run = trainer.train(resume_from_checkpoint=str(args.resume) if args.resume else None)
     training_seconds = time.monotonic() - before
@@ -333,9 +381,10 @@ def main():
         raise ValueError('Non-finite training or evaluation loss')
     summary = {'config': config, 'max_steps': args.max_steps, 'dataset': checked,
                'model_revision': config['model_revision'], 'gpu': torch.cuda.get_device_name(),
-               'setup_seconds': setup_seconds, 'training_seconds': training_seconds,
+               'setup_seconds': setup_seconds, 'setup_phases_seconds': setup_phases,
+               'prepared_training': prepared, 'training_seconds': training_seconds,
                'peak_allocated_gib': torch.cuda.max_memory_allocated()/1024**3,
-               'train_tokens_per_epoch': sum(token_counts), 'max_sequence_tokens': max(token_counts),
+               'train_tokens_per_epoch': train_tokens, 'max_sequence_tokens': max_sequence_tokens,
                'optimizer_steps': trainer.state.global_step,
                'new_optimizer_steps': new_steps,
                'training_budget_seconds': args.training_seconds,
@@ -343,7 +392,7 @@ def main():
                'seconds_per_optimizer_step': training_seconds/new_steps,
                'metrics': run.metrics, 'base_eval': base_metrics, 'adapter_eval': final_metrics,
                'base_generation': generation_before, 'adapter_generation': generation_after,
-               'loss_mask_verified': True, 'loss_masks_checked': len(data['train'])+len(data['validation']),
+               'loss_mask_verified': True, 'loss_masks_checked': loss_masks_checked,
                'resumed_from': str(args.resume) if args.resume else None,
                'training_identity': run_identity, 'validation_sample': validation_sample,
                'deployment_status': 'Research adapter; not merged, quantized or deployed.'}
