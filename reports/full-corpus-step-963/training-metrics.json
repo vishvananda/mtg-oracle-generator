@@ -1,0 +1,78 @@
+{
+  "optimizer_steps": 963,
+  "epoch": 0.06148640020431618,
+  "training_seconds": 3604.603678601001,
+  "setup_seconds": 293.4206799320018,
+  "peak_allocated_gib": 52.8394832611084,
+  "train_mean_loss": 0.5617824502111348,
+  "base_eval": {
+    "eval_loss": 2.496098518371582,
+    "eval_model_preparation_time": 0.0065,
+    "eval_runtime": 65.8372,
+    "eval_samples_per_second": 15.554,
+    "eval_steps_per_second": 0.972,
+    "eval_entropy": 1.6263188980519772,
+    "eval_num_tokens": 0.0,
+    "eval_mean_token_accuracy": 0.7372140903025866
+  },
+  "adapter_eval": {
+    "eval_loss": 0.4159250259399414,
+    "eval_model_preparation_time": 0.0065,
+    "eval_runtime": 66.0095,
+    "eval_samples_per_second": 15.513,
+    "eval_steps_per_second": 0.97,
+    "eval_entropy": 2.44668010994792,
+    "eval_num_tokens": 9927947.0,
+    "eval_mean_token_accuracy": 0.9043970741331577,
+    "epoch": 0.06148640020431618
+  },
+  "validation_sample": {
+    "available": 31852,
+    "evaluated": 1024,
+    "indices_sha256": "9ff5337d066a34db7c96c786b7fc503f83261b4426eba9b8ba9772f23db65311",
+    "policy": "fixed SHA-256 rank of complete validation records; no test data"
+  },
+  "training_config": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "method": "QLoRA",
+    "load_in_4bit": true,
+    "quant_type": "nf4",
+    "double_quant": true,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "epochs": 1,
+    "max_length": 4096,
+    "per_device_train_batch_size": 16,
+    "gradient_accumulation_steps": 1,
+    "per_device_eval_batch_size": 16,
+    "validation_max_examples": 1024,
+    "learning_rate": 0.0001,
+    "warmup_ratio": 0.05,
+    "seed": 17,
+    "completion_only_loss": true,
+    "packing": false,
+    "gradient_checkpointing": true,
+    "group_by_length": true,
+    "save_steps": 200,
+    "eval_steps": 500
+  },
+  "training_identity": {
+    "dataset_manifest_sha256": "addbde2a349e0f59f0da3a2f14e3a83e1192ffd826bcc970584f8d87eb628f11",
+    "config_sha256": "7844a7e916a63bd4853e165db547c3206ac0d35562b1d913c3a091ec16fe155d",
+    "trainer_sha256": "cabfd31d47a75c2450b2725ddf6e83c103b1650ee49cec2fcf58eed89504288d",
+    "train_sha256": "6ef0bbf577aa7d24c751987cd7d892168e0e32b61ae9a21c14a670ebce99a1ab",
+    "validation_sha256": "1dbe20345dbd44c6abcedd3c71e7176aea79f9a52c3c514f1cc087a3d6c3acfd",
+    "max_steps": -1
+  }
+}

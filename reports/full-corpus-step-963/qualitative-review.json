@@ -1,0 +1,200 @@
+{
+  "reviewer": "Codex assistant qualitative review",
+  "scope": "32 preselected development examples; not a blinded or calibrated intent-accuracy metric",
+  "rubric": "Preserve explicit intent; allow editable defaults for unspecified fields; distinguish parser recognition from semantics.",
+  "cases": [
+    {
+      "example_id": "1552f537c83c296a0bcdb5c8",
+      "style": "complete",
+      "verdict": "intent_preserved",
+      "notes": "Both explicitly named land faces and their mana abilities are preserved; unspecified rarity is an editable suggestion."
+    },
+    {
+      "example_id": "16bccacde5b463716620f619",
+      "style": "casual_complete",
+      "verdict": "needs_repair",
+      "notes": "The emblem refers to a graveyard under your control instead of returning the creature under your control."
+    },
+    {
+      "example_id": "2241fea3f225a7ed971ea905",
+      "style": "printed_wording",
+      "verdict": "needs_repair",
+      "notes": "Emblem has malformed nested ability quotation; requested effects and starting loyalty are otherwise present."
+    },
+    {
+      "example_id": "26e43efda9165f9772e0367f",
+      "style": "current_oracle",
+      "verdict": "intent_preserved",
+      "notes": "Supplied rules, cost, color and explicit name are preserved."
+    },
+    {
+      "example_id": "29f2f48a17b3243ba10d679d",
+      "style": "minimal",
+      "verdict": "intent_preserved",
+      "notes": "Requested 1/3 Human Rogue is preserved; unspecified defaults may differ from reference."
+    },
+    {
+      "example_id": "4ba63955c6df443c985ec263",
+      "style": "casual_complete",
+      "verdict": "needs_repair",
+      "notes": "Activated ability discount became spell casting text; adapt behavior is inverted and duplicated."
+    },
+    {
+      "example_id": "4efdd59ff40fa9f8f66a3bfe",
+      "style": "current_oracle",
+      "verdict": "intent_preserved",
+      "notes": "Supplied damage, bonus, cost, color and explicit rarity are preserved."
+    },
+    {
+      "example_id": "4f8bc0f1baed8facbac4f467",
+      "style": "mechanics",
+      "verdict": "intent_preserved",
+      "notes": "Requested land behavior is apparent, but the opponents condition is not parser-recognized Oracle wording."
+    },
+    {
+      "example_id": "51bfc5b7f085c6b758555396",
+      "style": "concept",
+      "verdict": "intent_preserved",
+      "notes": "Blue enchantment/artifact concept is preserved; parser rejects the type-line ordering."
+    },
+    {
+      "example_id": "53436def3a854e9b88c7155a",
+      "style": "complete",
+      "verdict": "intent_preserved",
+      "notes": "Explicit cost, color, type and exile-all-creatures effect are preserved."
+    },
+    {
+      "example_id": "56d0f64f212821e787a68358",
+      "style": "broad_shorthand",
+      "verdict": "needs_repair",
+      "notes": "Two separate targets replace granting both requested effects to one creature; unblockable wording is awkward."
+    },
+    {
+      "example_id": "5b9d88ea695af8fd772c0906",
+      "style": "broad_plain",
+      "verdict": "needs_repair",
+      "notes": "Saga does not transform or become a creature, and its chapter instructions are malformed."
+    },
+    {
+      "example_id": "6010b629ae35105556bb5447",
+      "style": "minimal",
+      "verdict": "intent_preserved",
+      "notes": "Explicit name, stats and Human Ninja type are preserved; other defaults are permitted."
+    },
+    {
+      "example_id": "77e578cb07b6770d4124f9cf",
+      "style": "complete",
+      "verdict": "intent_preserved",
+      "notes": "Characteristics, second-spell trigger, opponent target and conditional tap/stun behavior are preserved despite parser rejection."
+    },
+    {
+      "example_id": "8307b3d3a03c68891b6e8fc4",
+      "style": "printed_wording",
+      "verdict": "intent_preserved",
+      "notes": "Printed play-cards permission and combat exile behavior are retained; text was not fully modernized."
+    },
+    {
+      "example_id": "99ab5c75ada26602ccb67d87",
+      "style": "mechanics",
+      "verdict": "intent_preserved",
+      "notes": "Requested top-library permissions and full-party trigger are preserved; parser ignores this rule pattern."
+    },
+    {
+      "example_id": "9acc9867fcad79587a9230f8",
+      "style": "current_oracle",
+      "verdict": "intent_preserved",
+      "notes": "Supplied Aura text, cost, color and rarity are preserved."
+    },
+    {
+      "example_id": "afb18d860feecb3f810ee1b2",
+      "style": "complete",
+      "verdict": "needs_repair",
+      "notes": "Damage ability says each target tapped creature rather than specifying a single target."
+    },
+    {
+      "example_id": "b4f3e9af2828f1d0890809af",
+      "style": "broad_plain",
+      "verdict": "source_conflict",
+      "notes": "Description explicitly says untap itself, but reference only pays blue mana for flying. Output follows reference and omits the requested untap."
+    },
+    {
+      "example_id": "b5786e08dce70dc1ab804cf4",
+      "style": "broad_plain",
+      "verdict": "needs_repair",
+      "notes": "Creature gains life, Vampire creation is absent, and requested planeswalker has no loyalty abilities."
+    },
+    {
+      "example_id": "b5a454163053baab440296af",
+      "style": "broad_plain",
+      "verdict": "needs_repair",
+      "notes": "Requested alternative effects became two mandatory effects; bounce target scope was narrowed."
+    },
+    {
+      "example_id": "b7e140fd20d88d04f8715b6f",
+      "style": "broad_shorthand",
+      "verdict": "intent_preserved",
+      "notes": "Blue instant tapping multiple creatures is a valid completion; quantity and cost were unspecified."
+    },
+    {
+      "example_id": "bdaa985be3d8bb90c2bdccc9",
+      "style": "concept",
+      "verdict": "intent_preserved",
+      "notes": "Small red Orc Warrior is preserved; 1/1 is an acceptable editable default."
+    },
+    {
+      "example_id": "c074b2aa7c0de7fb0851aca6",
+      "style": "minimal",
+      "verdict": "intent_preserved",
+      "notes": "2/1 Human Villain is preserved; unspecified color, name, cost and rarity may differ."
+    },
+    {
+      "example_id": "c929f5d8ac0ccac8b6f68578",
+      "style": "casual_complete",
+      "verdict": "needs_repair",
+      "notes": "Play permission became cast permission, excluding lands; mana permission is not standard wording."
+    },
+    {
+      "example_id": "ca8bf41e873e4c6da742dcdf",
+      "style": "casual_complete",
+      "verdict": "needs_repair",
+      "notes": "All-colors token requirement was dropped and repeated-mode wording is nonstandard."
+    },
+    {
+      "example_id": "d65731f436a8e8be41f9ee92",
+      "style": "broad_plain",
+      "verdict": "intent_preserved",
+      "notes": "Black artifact creature gives its artifact creatures an evasion ability and respects explicit rarity."
+    },
+    {
+      "example_id": "d6a2669ed48bdc437898eac5",
+      "style": "complete",
+      "verdict": "needs_repair",
+      "notes": "Tie branch chooses a player without clearly giving that chosen player control."
+    },
+    {
+      "example_id": "eb3e48fb6edb8adafacc15f5",
+      "style": "concept",
+      "verdict": "intent_preserved",
+      "notes": "Small white Kirin is preserved; unspecified defaults are permitted."
+    },
+    {
+      "example_id": "eb83c926933581ee48bc770d",
+      "style": "broad_shorthand",
+      "verdict": "needs_repair",
+      "notes": "Has stats and this-creature text but lacks Creature in type line; empty mana cost also makes the proposed card unusable as a normal castable artifact creature."
+    },
+    {
+      "example_id": "f0f36ba5320882f88ee73539",
+      "style": "printed_wording",
+      "verdict": "source_conflict",
+      "notes": "Historical Clone input includes cannot be played with no creatures, a restriction absent from its current target. Output also uses an enters trigger instead of entering as a copy."
+    },
+    {
+      "example_id": "f471e3d81594bfd77a255f8d",
+      "style": "mechanics",
+      "verdict": "needs_repair",
+      "notes": "Boast lacks the untap and counter effects and describes its activation restriction as a trigger."
+    }
+  ],
+  "final_test_evaluated": false
+}

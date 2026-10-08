@@ -22,6 +22,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Full Oracle description corpus | [Public dataset](https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions): 250,587 train / 31,852 validation / 37,618 test |
 | Names + rarity pilot dataset | Packaged locally: 19,065 train / 572 validation; not uploaded |
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
+| First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
 | Full training and final-test mtgish results | **Pending** — no final-test score claimed |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -72,6 +73,16 @@ development panel before continuing the same epoch, with a shared spending cap.
 For remote GPU jobs, use its CPU token-cache preparation step first: eight
 workers tokenize and verify the data once, and each GPU phase loads the same
 verified Arrow files without repeating full-corpus preprocessing.
+
+## Latest development results
+
+The first one-hour segment on the full corpus reached 6.15% of one epoch.
+On the fixed 256-case development panel, schema compliance improved from
+**8.59% to 99.22%** and whole-card mtgish acceptance from **0% to 49.22%**
+against the untuned Qwen baseline. Complex mechanics still have intent errors;
+the checkpoint is awaiting review before further training or deployment.
+The panel emphasizes difficult card types and is not a full-corpus accuracy
+estimate. See the [loss curves, parser coverage and qualitative review](reports/full-corpus-step-963/README.md).
 
 ## Measured pilot results
 
