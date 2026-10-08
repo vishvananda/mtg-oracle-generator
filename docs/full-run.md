@@ -94,6 +94,46 @@ resumption preserves optimizer/scheduler state; starting a fresh adapter would
 discard the prior segment's learning. Do not replace `max_steps=-1` with a small
 step count, which would change the learning-rate schedule.
 
+To finish the epoch in one longer job, copy the original package with operational
+limits changed explicitly. `--compatible-package` verifies that every code,
+dataset, token-cache, prompt, model, optimizer and decoding input is unchanged;
+only the training time limits and total spending cap may differ. It permits the
+original smoke evidence and resumable checkpoint to be reused.
+
+```bash
+python src/run_package.py --continue-package runs/segment-1/package \
+  --output runs/epoch-package --training-seconds 68400 \
+  --timeout-minutes 1199 --budget-limit-usd 60
+.hf-jobs/bin/python src/hf_jobs.py plan --package runs/epoch-package \
+  --compatible-package runs/segment-1/package --stage train \
+  --smoke runs/segment-1/smoke --live-price
+```
+
+These are example limits, not authorization to spend. After an explicit budget
+decision, `job_budget.py --ledger ... --expected-limit 20 --new-limit 60
+--reason '...'` records the amendment while retaining all prior reservations.
+Launch with the planned package, compatible parent, checkpoint and ledger. The
+full timeout is reserved, even when the measured remaining training time is lower.
+The latest two full Trainer checkpoints are retained; every 200 updates, the
+adapter is also saved separately and published under its step tag on HF.
+
+`watch_epoch.py --package ... --record ... --dataset ... --baseline
+.../base-validation.jsonl --output ... --cpu-python ...` watches that submitted
+job. Only after the complete epoch is verified does it submit one bounded
+development evaluation, generate the report, and stop for quality review.
+It does not retry failed GPU jobs, evaluate the final test, or change the live model.
+The baseline JSONL, request, and completion manifest must all match the frozen
+dataset, selected cases, model, generation code and decoding settings. The
+verified base arm is reused; only the new adapter needs GPU generation.
+
+For an explicitly requested intermediate workshop preview, `export_gguf.py
+--allow-partial` permits a budget-stopped checkpoint and labels it
+`partial_epoch_preview`. Smoke adapters remain excluded. This exports a serving
+candidate only; test the exact quantized model and serving prompt before changing
+the live backend. The workshop's constrained schema can change field order and
+behavior relative to raw SFT generation; a labeled checkpoint profile can use its
+frozen training prompt and unconstrained JSON output with validation afterward.
+
 ## Training and serving precision
 
 The current recipe uses QLoRA: frozen 4-bit NF4 base weights, trainable LoRA

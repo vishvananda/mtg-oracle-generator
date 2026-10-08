@@ -15,7 +15,7 @@ import tempfile
 from data_utils import digest
 from hub_dataset import verify
 from job_image import verify_job_image
-from run_package import verify_package
+from run_package import verify_package,verify_continuation
 from job_budget import reserve
 
 TERMINAL={'COMPLETED','ERROR','CANCELED','DELETED'}
@@ -26,18 +26,19 @@ def save(path,value):
     path.write_text(json.dumps(value,indent=2)+'\n')
 
 
-def plan(package,stage,smoke=None):
+def plan(package,stage,smoke=None,compatible_package=None):
     manifest=verify_package(package);recipe=json.loads((package/'recipe.json').read_text())
     config=json.loads((package/'train-config.json').read_text());settings=recipe['hf']
     if stage not in settings['stages']: raise ValueError('Stage is not enabled by this recipe')
     phase=settings['stages'][stage]
     package_hash=digest((package/'package-manifest.json').read_bytes())
+    parent_hash=verify_continuation(package,compatible_package) if compatible_package else None
     estimate=None
     if stage=='train':
         if not smoke: raise ValueError('Full training requires a collected smoke run from this package')
         receipt=json.loads((smoke/'job-result.json').read_text())
         summary=json.loads((smoke/'adapter/run-summary.json').read_text())
-        if receipt['state']!='COMPLETED' or receipt['stage']!='smoke' or receipt['package_hash']!=package_hash:
+        if receipt['state']!='COMPLETED' or receipt['stage']!='smoke' or receipt['package_hash'] not in {package_hash,parent_hash}:
             raise ValueError('Smoke job did not complete using this exact package')
         if (summary['config']!=config or not summary['loss_mask_verified'] or summary['stopped_for_training_budget']
                 or summary['optimizer_steps']<settings['stages']['smoke']['max_steps']
@@ -50,7 +51,8 @@ def plan(package,stage,smoke=None):
             'flavor':settings['flavor'],'image':settings['image'],'timeout_minutes':phase['timeout_minutes'],
             'attempts':1,'private_storage':True,'measured_estimate_minutes':estimate,
             'automatic_promotion':False,'counts':manifest['counts'],'optimizer_steps':manifest['optimizer_steps'],
-            'training_mode':recipe.get('purpose','full_epoch'),'experiment_budget_usd':recipe.get('budget_limit_usd')}
+            'training_mode':recipe.get('purpose','full_epoch'),'experiment_budget_usd':recipe.get('budget_limit_usd'),
+            'compatible_package_sha256':parent_hash}
 
 
 def cost_cap(planned,hardware,budget=None):
@@ -72,7 +74,7 @@ def sync_allowlist(hf,root,names,destination,token):
         hf.sync_bucket(str(staging),destination,token=token,quiet=True)
 
 
-def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,resume_record=None,checkpoint=None,ledger=None):
+def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,resume_record=None,checkpoint=None,ledger=None,compatible_package=None,reuse_base=None):
     import huggingface_hub as hf
     recipe=json.loads((package/'recipe.json').read_text());settings=recipe['hf']
     if hf.__version__!=settings['client_version']: raise ValueError('Use HF client '+settings['client_version'])
@@ -81,6 +83,8 @@ def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,r
         raise ValueError('This experiment requires a shared --ledger for its total budget')
     manifest=verify_package(package)
     if digest((package/'package-manifest.json').read_bytes())!=planned['package_hash']: raise ValueError('Package changed after planning')
+    parent_hash=verify_continuation(package,compatible_package) if compatible_package else None
+    if planned.get('compatible_package_sha256')!=parent_hash: raise ValueError('Continuation package changed after planning')
     token=hf.get_token()
     if not token: raise ValueError('HF credentials missing')
     account=hf.whoami(token=token)['name'];bucket=account+'/'+settings['bucket_name']
@@ -93,13 +97,18 @@ def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,r
     # Inspect upstream job records before uploading or starting compute.
     def previous(path,stage,completed=False):
         old=json.loads(path.read_text())
-        if old['package_hash']!=planned['package_hash'] or old['bucket']!=bucket or old['stage']!=stage:
+        if old['package_hash'] not in {planned['package_hash'],parent_hash} or old['bucket']!=bucket or old['stage']!=stage:
             raise ValueError('Previous job identity does not match')
         job=hf.inspect_job(job_id=old['job_id'],namespace=old['namespace'],token=token)
         if job.status.stage not in ({'COMPLETED'} if completed else TERMINAL):
             raise ValueError('Previous job is not in the required terminal state')
         return old
     evaluation=planned['stage'] in ('development','validation','test')
+    baseline_names=None
+    if reuse_base:
+        if not evaluation or not dataset or resume_record: raise ValueError('Reuse a baseline only for a fresh evaluation job')
+        from reuse_baseline import baseline_files
+        baseline_names=baseline_files(package,dataset,planned['stage'],reuse_base)
     if evaluation:
         if not dataset or not adapter_record: raise ValueError('Evaluation needs --dataset and --adapter-record')
         data_manifest=verify(dataset)
@@ -127,12 +136,15 @@ def launch(package,planned,record_path,budget,dataset=None,adapter_record=None,r
     sync_allowlist(hf,package,[*manifest['files'],'package-manifest.json'],f'hf://buckets/{bucket}/{package_prefix}',token)
     if evaluation:
         sync_allowlist(hf,dataset,[*data_manifest['files'],'manifest.json','README.md'],f'hf://buckets/{bucket}/{data_prefix}',token)
+    if baseline_names:
+        sync_allowlist(hf,reuse_base.parent,baseline_names,f'hf://buckets/{bucket}/{output_prefix}',token)
     mounts+=[hf.Volume(type='bucket',source=bucket,path=package_prefix,mount_path='/package',read_only=True),
              hf.Volume(type='bucket',source=bucket,path=output_prefix,mount_path='/outputs')]
     record={**planned,'run_name':run_name,'bucket':bucket,'output_prefix':output_prefix,'namespace':account,
             'hardware_cost_cap_usd':cap,'image_check':image_check,'state':'submitting','public_uploads':bool(recipe.get('publication')),
             'adapter_record_hash':digest(adapter_record.read_bytes()) if adapter_record else None,
-            'resumed_from':str(resume_record) if resume_record else None}
+            'resumed_from':str(resume_record) if resume_record else None,
+            'reused_baseline_sha256':digest(reuse_base.read_bytes()) if reuse_base else None}
     if ledger:
         if planned.get('experiment_budget_usd') is None: raise ValueError('Recipe must declare the experiment budget')
         reserve(ledger,planned['experiment_budget_usd'],record_path,cap)
@@ -179,18 +191,20 @@ if __name__=='__main__':
     p.add_argument('--max-cost-usd',type=float);p.add_argument('--live-price',action='store_true')
     p.add_argument('--resume-record',type=Path);p.add_argument('--checkpoint')
     p.add_argument('--ledger',type=Path,help='Shared experiment budget receipt')
+    p.add_argument('--compatible-package',type=Path,help='Verified parent package; only training time/budget changes are allowed')
+    p.add_argument('--reuse-base',type=Path,help='Completed, hash-verified base predictions from the identical generation protocol')
     a=p.parse_args()
     if a.action in ('status','download'):
         if not a.record or (a.action=='download' and not a.output): p.error('--record and (for download) --output required')
         result=collect(a.record,a.output if a.action=='download' else None)
     else:
         if not a.package: p.error('--package required')
-        result=plan(a.package,a.stage,a.smoke)
+        result=plan(a.package,a.stage,a.smoke,a.compatible_package)
         if a.live_price:
             import huggingface_hub as hf
             hardware=next(h for h in hf.list_jobs_hardware() if h.name==result['flavor'])
             result['hardware_cost_cap_usd']=cost_cap(result,hardware)
         if a.action=='launch':
             if a.max_cost_usd is None or not a.record: p.error('Launch requires --max-cost-usd and a new --record')
-            result=launch(a.package,result,a.record,a.max_cost_usd,a.dataset,a.adapter_record,a.resume_record,a.checkpoint,a.ledger)
+            result=launch(a.package,result,a.record,a.max_cost_usd,a.dataset,a.adapter_record,a.resume_record,a.checkpoint,a.ledger,a.compatible_package,a.reuse_base)
     print(json.dumps(result,indent=2))

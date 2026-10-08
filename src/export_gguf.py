@@ -16,15 +16,23 @@ def sha(path):
     with path.open('rb') as stream: return hashlib.file_digest(stream,'sha256').hexdigest()
 
 
-def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8):
+def check_export_scope(summary,allow_partial=False):
+    if summary.get('max_steps')!=-1:
+        raise ValueError('A smoke checkpoint cannot be exported as a serving candidate')
+    partial=bool(summary.get('stopped_for_training_budget'))
+    if partial and not allow_partial:
+        raise ValueError('Budget-stopped adapter needs explicit --allow-partial for preview export')
+    return 'partial_epoch_preview' if partial else 'completed_training'
+
+
+def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allow_partial=False):
     import torch
     from huggingface_hub import snapshot_download
     from peft import PeftModel
     from transformers import AutoModelForCausalLM,AutoTokenizer
     summary=json.loads((adapter/'run-summary.json').read_text());config=summary['config']
     if output.exists(): raise ValueError('Use a fresh serving candidate directory')
-    if summary.get('stopped_for_training_budget') or summary.get('max_steps')!=-1:
-        raise ValueError('Export the completed full run, not a smoke or budget-stopped adapter')
+    scope=check_export_scope(summary,allow_partial)
     base=Path(snapshot_download(config['model'],revision=config['model_revision'],
         allow_patterns=['*.json','*.safetensors','*.txt','*.model','*.tiktoken']))
     identity={'base_model':config['model'],'base_revision':config['model_revision'],
@@ -35,7 +43,8 @@ def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8):
             for p in sorted(converter.parent.rglob('*.py'))},
         'base_files':{p.name:sha(p) for p in sorted(base.glob('*.safetensors'))},
         'recipe':'Pinned BF16 base + PEFT safe merge; F16 GGUF; one quantization pass',
-        'quantization':quantization,'automatic_promotion':False}
+        'quantization':quantization,'automatic_promotion':False,'training_scope':scope,
+        'optimizer_steps':summary.get('optimizer_steps'),'training_epoch':summary.get('metrics',{}).get('epoch')}
     output.mkdir(parents=True);started=time.monotonic()
     (output/'request.json').write_text(json.dumps(identity,indent=2)+'\n')
     torch.set_num_threads(threads)
@@ -65,6 +74,7 @@ if __name__=='__main__':
     p.add_argument('--adapter',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--converter',type=Path,required=True);p.add_argument('--quantizer',type=Path,required=True)
     p.add_argument('--quantization',choices=['Q4_0','Q4_K_M','Q8_0'],default='Q4_0');p.add_argument('--threads',type=int,default=8)
+    p.add_argument('--allow-partial',action='store_true',help='Export a budget-stopped training checkpoint as a labeled preview')
     a=p.parse_args()
     if a.threads<1: p.error('--threads must be positive')
-    print(json.dumps(export(a.adapter,a.output,a.converter,a.quantizer,a.quantization,a.threads),indent=2))
+    print(json.dumps(export(a.adapter,a.output,a.converter,a.quantizer,a.quantization,a.threads,a.allow_partial),indent=2))

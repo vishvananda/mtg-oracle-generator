@@ -1,5 +1,6 @@
 """Freeze a training-only package and a separate complete evaluation dataset."""
 import argparse
+import copy
 import json
 import math
 from pathlib import Path
@@ -66,6 +67,41 @@ def verify_package(root):
     return manifest
 
 
+def verify_continuation(package_root,parent):
+    """Permit only operational time/budget changes to an immutable package."""
+    current=verify_package(package_root);previous=verify_package(parent)
+    if {k:v for k,v in current.items() if k!='files'}!={k:v for k,v in previous.items() if k!='files'}:
+        raise ValueError('Continuation changed dataset or training metadata')
+    if {k:v for k,v in current['files'].items() if k!='recipe.json'}!={k:v for k,v in previous['files'].items() if k!='recipe.json'}:
+        raise ValueError('Continuation changed frozen code, data, prompt or model config')
+    recipes=[json.loads((p/'recipe.json').read_text()) for p in (package_root,parent)]
+    for recipe in recipes:
+        recipe.pop('budget_limit_usd',None)
+        phase=recipe['hf']['stages']['train']
+        phase.pop('timeout_minutes',None);phase.pop('training_seconds',None)
+    if recipes[0]!=recipes[1]: raise ValueError('Continuation changed more than training time and budget')
+    return digest((parent/'package-manifest.json').read_bytes())
+
+
+def continue_package(parent,output,training_seconds,timeout_minutes,budget_limit_usd):
+    manifest=verify_package(parent)
+    if output.exists(): raise ValueError('Use a new immutable continuation package')
+    if (not isinstance(training_seconds,int) or not isinstance(timeout_minutes,int)
+            or not 0<training_seconds<timeout_minutes*60
+            or not math.isfinite(budget_limit_usd) or budget_limit_usd<=0):
+        raise ValueError('Positive time/budget limits and shutdown headroom required')
+    recipe=json.loads((parent/'recipe.json').read_text())
+    recipe['budget_limit_usd']=budget_limit_usd
+    recipe['hf']['stages']['train'].update(training_seconds=training_seconds,timeout_minutes=timeout_minutes)
+    shutil.copytree(parent,output)
+    (output/'recipe.json').write_text(json.dumps(recipe,indent=2)+'\n')
+    manifest=copy.deepcopy(manifest)
+    manifest['files']['recipe.json']={'sha256':digest((output/'recipe.json').read_bytes()),'bytes':(output/'recipe.json').stat().st_size}
+    (output/'package-manifest.json').write_text(json.dumps(manifest,indent=2)+'\n')
+    verify_continuation(output,parent)
+    return manifest
+
+
 def ready_exports(recovery_dirs):
     inputs=[];waiting=[]
     for directory in recovery_dirs:
@@ -122,11 +158,19 @@ if __name__=='__main__':
     source=p.add_mutually_exclusive_group(required=True)
     source.add_argument('--recovery',type=Path,action='append')
     source.add_argument('--dataset',type=Path,help='Package an existing verified complete HF dataset')
+    source.add_argument('--continue-package',type=Path,help='Copy a verified package, changing only training time/budget limits')
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--recipe',type=Path,default=PROJECT/'configs/full-run.json')
     p.add_argument('--prepared',type=Path,help='Verified CPU token cache (with --dataset)')
     p.add_argument('--watch',action='store_true')
+    p.add_argument('--training-seconds',type=int);p.add_argument('--timeout-minutes',type=int)
+    p.add_argument('--budget-limit-usd',type=float)
     a=p.parse_args()
+    if a.continue_package:
+        if a.watch or a.prepared or any(v is None for v in (a.training_seconds,a.timeout_minutes,a.budget_limit_usd)):
+            p.error('Continuation requires explicit training-seconds, timeout-minutes and budget-limit-usd')
+        print(json.dumps(continue_package(a.continue_package,a.output,a.training_seconds,a.timeout_minutes,a.budget_limit_usd),indent=2))
+        raise SystemExit(0)
     if a.dataset:
         if a.watch: p.error('--watch is for recovery exports')
         print(json.dumps(package(a.dataset,a.output,a.recipe,a.prepared),indent=2));raise SystemExit(0)
