@@ -1,11 +1,13 @@
 import sys
+import threading
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from assay_custom_cards import convert_card, inventory, mechanical_key
+from assay_custom_cards import convert_card, inventory, mechanical_key, parser_checks
 from assay_custom_wording import modernize_enters, normalize_wording
-from filter_custom_candidates import canonical_parser_key
+from filter_custom_candidates import canonical_parser_key, filter_candidates
 
 
 def source_card(name="Custom Test", **changes):
@@ -15,6 +17,49 @@ def source_card(name="Custom Test", **changes):
 
 
 class CustomCardAssayTests(unittest.TestCase):
+    def test_parallel_checks_keep_order_and_isolate_and_close_clients(self):
+        barrier = threading.Barrier(3)
+        clients = []
+
+        class Client:
+            def __init__(self):
+                self.owner = threading.get_ident()
+                self.first = True
+                self.closed = False
+                clients.append(self)
+
+            def check(self, draft):
+                if threading.get_ident() != self.owner:
+                    raise AssertionError("Shared parser client")
+                if self.first:
+                    self.first = False
+                    barrier.wait(timeout=5)
+                return {"id": draft["id"]}
+
+            def close(self):
+                self.closed = True
+
+        with patch("assay_custom_cards.MtgishValidator", Client):
+            results = list(parser_checks([{"id": i} for i in range(12)], workers=3))
+        self.assertEqual([result["id"] for result, _ in results], list(range(12)))
+        self.assertEqual(len(clients), 3)
+        self.assertTrue(all(c.closed for c in clients))
+
+    def test_parallel_check_failure_closes_clients(self):
+        closed = []
+
+        class Client:
+            def check(self, draft):
+                raise RuntimeError("Test infrastructure failure")
+
+            def close(self):
+                closed.append(True)
+
+        with patch("assay_custom_cards.MtgishValidator", Client):
+            with self.assertRaisesRegex(RuntimeError, "Test infrastructure failure"):
+                list(parser_checks([{}], workers=1))
+        self.assertEqual(closed, [True])
+
     def test_conversion_preserves_unknown_rules_and_loyalty(self):
         text = "+1: Dreamweave. (Create a new kind of counter.)\n−4: Draw three cards."
         card = source_card(type="Legendary Planeswalker — Example", text=text, loyalty="4")
@@ -112,6 +157,22 @@ class CustomCardAssayTests(unittest.TestCase):
         self.assertEqual(canonical_parser_key('Card(Name: "\\\"First\\\"", Rules: [])'),
                          canonical_parser_key('Card(Name: "Second", Rules: [])'))
         self.assertIsNone(canonical_parser_key('MultiCard(Name: "First", Rules: [])'))
+
+    def test_parsed_custom_dedup_keeps_provenance_and_named_references(self):
+        rows = [{"id": str(i), "draft": {"name": name}, "sources": [{"designer": name}],
+                 "validation": {"mtgish": f'Card(Name: "{name}", Rules: [NamedCard("{target}")])'}}
+                for i, (name, target) in enumerate((("A", "Other"), ("B", "Other"), ("C", "Different")))]
+        kept, official, duplicates = filter_candidates(rows, {}, True)
+        self.assertEqual([r["id"] for r in kept], ["0", "2"])
+        self.assertEqual(official, [])
+        self.assertEqual(duplicates, [{"id": "1", "name": "B", "representative_id": "0"}])
+        self.assertEqual(kept[0]["equivalent_designs"][1]["sources"], rows[1]["sources"])
+        self.assertNotIn("equivalent_designs", rows[0])
+        reference = {canonical_parser_key(rows[0]["validation"]["mtgish"]): ["Official"]}
+        kept, official, duplicates = filter_candidates(rows, reference, True)
+        self.assertEqual([r["id"] for r in kept], ["2"])
+        self.assertEqual(len(official), 2)
+        self.assertEqual(duplicates, [])
 
 
 if __name__ == "__main__":

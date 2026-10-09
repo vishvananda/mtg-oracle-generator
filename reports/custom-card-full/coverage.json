@@ -1,0 +1,634 @@
+{
+  "kind": "custom_collection_coverage",
+  "final_test": false,
+  "semantic_review": "pending",
+  "script_sha256": "8b770269ed03c4a5a01cafb29ac3d05a61047d38eb0dd71ddd4cc4e54cfb8552",
+  "baseline_cases_sha256": "2cbe0bab2cd9ebcaefee85879b82f69dc3733dcb0277ff1d96321b832080ade7",
+  "normalized_cases_sha256": "ac2a0652467e3de9ca16cb028bb6b8c4d97e72faa3eaa14f784663229b1aa869",
+  "candidate_sha256": "f012ac9b3f766800658e1b697d0a22c3f9ba1879acef5535a93d1045d46d1f32",
+  "baseline": {
+    "sampled": 14969,
+    "accepted": 3729,
+    "acceptance_rate": 0.249114837330483,
+    "statuses": {
+      "parsed": 3729,
+      "rejected": 11240
+    },
+    "accepted_with_rewrites": 0,
+    "accepted_with_rules_text": 3656
+  },
+  "normalized": {
+    "sampled": 14969,
+    "accepted": 3997,
+    "acceptance_rate": 0.2670185049101476,
+    "statuses": {
+      "parsed": 3997,
+      "rejected": 10972
+    },
+    "accepted_with_rewrites": 0,
+    "accepted_with_rules_text": 3924
+  },
+  "coverage_eligible": {
+    "cards": 14969,
+    "source_sets": 86,
+    "by_type": {
+      "Artifact": 886,
+      "Artifact Creature": 413,
+      "Artifact Enchantment": 1,
+      "Artifact Enchantment Creature": 2,
+      "Artifact Land": 1,
+      "Artifact Planeswalker": 1,
+      "Battle": 22,
+      "Conspiracy": 16,
+      "Creature": 7167,
+      "Criatura": 1,
+      "Enchantment": 1660,
+      "Enchantment Artifact": 4,
+      "Enchantment Artifact Creature": 2,
+      "Enchantment Creature": 203,
+      "Enchantment Land": 4,
+      "Enchantment Planeswalker": 1,
+      "Instant": 1687,
+      "Kindred Land": 1,
+      "Kindred Sorcery": 2,
+      "Land": 832,
+      "Planeswalker": 262,
+      "Playtest": 1,
+      "Reminder": 1,
+      "Riddle Artifact": 2,
+      "Riddle Artifact Creature": 2,
+      "Riddle Enchantment": 3,
+      "Riddle Enchantment Creature": 6,
+      "Riddle Instant": 3,
+      "Riddle Sorcery": 4,
+      "Sorcery": 1778,
+      "Vanguard": 1
+    },
+    "by_color": {
+      "B": 2165,
+      "G": 2127,
+      "R": 2177,
+      "U": 2136,
+      "W": 2168,
+      "colorless": 1836,
+      "multicolor": 2360
+    },
+    "by_color_combination": {
+      "B": 2165,
+      "BG": 189,
+      "BR": 180,
+      "BRG": 50,
+      "G": 2127,
+      "R": 2177,
+      "RG": 172,
+      "U": 2136,
+      "UB": 198,
+      "UBG": 37,
+      "UBR": 49,
+      "UBRG": 8,
+      "UG": 173,
+      "UR": 210,
+      "URG": 44,
+      "W": 2168,
+      "WB": 163,
+      "WBG": 42,
+      "WBR": 42,
+      "WBRG": 9,
+      "WG": 198,
+      "WR": 186,
+      "WRG": 46,
+      "WU": 182,
+      "WUB": 44,
+      "WUBG": 8,
+      "WUBR": 8,
+      "WUBRG": 28,
+      "WUG": 44,
+      "WUR": 41,
+      "WURG": 9,
+      "colorless": 1836
+    },
+    "by_layout": {
+      "class": 18,
+      "leveler": 34,
+      "normal": 14799,
+      "saga": 118
+    },
+    "by_rarity": {
+      "common": 5123,
+      "mythic": 879,
+      "rare": 4588,
+      "special": 322,
+      "uncommon": 4057
+    },
+    "by_rules_lines": {
+      "0": 76,
+      "1": 4642,
+      "2": 6868,
+      "3": 2561,
+      "4+": 822
+    }
+  },
+  "coverage_accepted": {
+    "cards": 3997,
+    "source_sets": 84,
+    "by_type": {
+      "Artifact": 298,
+      "Artifact Creature": 139,
+      "Creature": 2184,
+      "Enchantment": 342,
+      "Enchantment Creature": 45,
+      "Enchantment Land": 1,
+      "Instant": 402,
+      "Land": 297,
+      "Sorcery": 289
+    },
+    "by_color": {
+      "B": 552,
+      "G": 596,
+      "R": 589,
+      "U": 542,
+      "W": 671,
+      "colorless": 645,
+      "multicolor": 402
+    },
+    "by_color_combination": {
+      "B": 552,
+      "BG": 47,
+      "BR": 28,
+      "BRG": 7,
+      "G": 596,
+      "R": 589,
+      "RG": 28,
+      "U": 542,
+      "UB": 24,
+      "UBG": 3,
+      "UBR": 11,
+      "UBRG": 1,
+      "UG": 30,
+      "UR": 37,
+      "URG": 4,
+      "W": 671,
+      "WB": 25,
+      "WBG": 3,
+      "WBR": 7,
+      "WG": 50,
+      "WR": 38,
+      "WRG": 8,
+      "WU": 35,
+      "WUB": 6,
+      "WUBG": 1,
+      "WUBRG": 2,
+      "WUG": 3,
+      "WUR": 4,
+      "colorless": 645
+    },
+    "by_layout": {
+      "normal": 3993,
+      "saga": 4
+    },
+    "by_rarity": {
+      "common": 2096,
+      "mythic": 72,
+      "rare": 715,
+      "special": 64,
+      "uncommon": 1050
+    },
+    "by_rules_lines": {
+      "0": 73,
+      "1": 1515,
+      "2": 1817,
+      "3": 535,
+      "4+": 57
+    }
+  },
+  "coverage_candidates": {
+    "cards": 3852,
+    "source_sets": 84,
+    "by_type": {
+      "Artifact": 294,
+      "Artifact Creature": 131,
+      "Creature": 2108,
+      "Enchantment": 337,
+      "Enchantment Creature": 44,
+      "Enchantment Land": 1,
+      "Instant": 399,
+      "Land": 249,
+      "Sorcery": 289
+    },
+    "by_color": {
+      "B": 539,
+      "G": 574,
+      "R": 575,
+      "U": 529,
+      "W": 649,
+      "colorless": 585,
+      "multicolor": 401
+    },
+    "by_color_combination": {
+      "B": 539,
+      "BG": 47,
+      "BR": 28,
+      "BRG": 7,
+      "G": 574,
+      "R": 575,
+      "RG": 28,
+      "U": 529,
+      "UB": 24,
+      "UBG": 3,
+      "UBR": 11,
+      "UBRG": 1,
+      "UG": 30,
+      "UR": 37,
+      "URG": 4,
+      "W": 649,
+      "WB": 24,
+      "WBG": 3,
+      "WBR": 7,
+      "WG": 50,
+      "WR": 38,
+      "WRG": 8,
+      "WU": 35,
+      "WUB": 6,
+      "WUBG": 1,
+      "WUBRG": 2,
+      "WUG": 3,
+      "WUR": 4,
+      "colorless": 585
+    },
+    "by_layout": {
+      "normal": 3848,
+      "saga": 4
+    },
+    "by_rarity": {
+      "common": 1993,
+      "mythic": 69,
+      "rare": 698,
+      "special": 58,
+      "uncommon": 1034
+    },
+    "by_rules_lines": {
+      "1": 1502,
+      "2": 1777,
+      "3": 516,
+      "4+": 57
+    }
+  },
+  "normalized_by_type": {
+    "Artifact": {
+      "sampled": 886,
+      "accepted": 298,
+      "acceptance_rate": 0.3363431151241535,
+      "statuses": {
+        "rejected": 588,
+        "parsed": 298
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 298
+    },
+    "Artifact Creature": {
+      "sampled": 413,
+      "accepted": 139,
+      "acceptance_rate": 0.3365617433414044,
+      "statuses": {
+        "parsed": 139,
+        "rejected": 274
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 132
+    },
+    "Artifact Enchantment": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Artifact Enchantment Creature": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Artifact Land": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Artifact Planeswalker": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Battle": {
+      "sampled": 22,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 22
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Conspiracy": {
+      "sampled": 16,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 16
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Creature": {
+      "sampled": 7167,
+      "accepted": 2184,
+      "acceptance_rate": 0.30473001255755544,
+      "statuses": {
+        "parsed": 2184,
+        "rejected": 4983
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 2119
+    },
+    "Criatura": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Enchantment": {
+      "sampled": 1660,
+      "accepted": 342,
+      "acceptance_rate": 0.20602409638554217,
+      "statuses": {
+        "parsed": 342,
+        "rejected": 1318
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 342
+    },
+    "Enchantment Artifact": {
+      "sampled": 4,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 4
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Enchantment Artifact Creature": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Enchantment Creature": {
+      "sampled": 203,
+      "accepted": 45,
+      "acceptance_rate": 0.22167487684729065,
+      "statuses": {
+        "rejected": 158,
+        "parsed": 45
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 44
+    },
+    "Enchantment Land": {
+      "sampled": 4,
+      "accepted": 1,
+      "acceptance_rate": 0.25,
+      "statuses": {
+        "rejected": 3,
+        "parsed": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 1
+    },
+    "Enchantment Planeswalker": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Instant": {
+      "sampled": 1687,
+      "accepted": 402,
+      "acceptance_rate": 0.23829282750444578,
+      "statuses": {
+        "rejected": 1285,
+        "parsed": 402
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 402
+    },
+    "Kindred Land": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Kindred Sorcery": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Land": {
+      "sampled": 832,
+      "accepted": 297,
+      "acceptance_rate": 0.35697115384615385,
+      "statuses": {
+        "parsed": 297,
+        "rejected": 535
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 297
+    },
+    "Planeswalker": {
+      "sampled": 262,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 262
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Playtest": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Reminder": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Artifact": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Artifact Creature": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Enchantment": {
+      "sampled": 3,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 3
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Enchantment Creature": {
+      "sampled": 6,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 6
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Instant": {
+      "sampled": 3,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 3
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Sorcery": {
+      "sampled": 4,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 4
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Sorcery": {
+      "sampled": 1778,
+      "accepted": 289,
+      "acceptance_rate": 0.1625421822272216,
+      "statuses": {
+        "rejected": 1489,
+        "parsed": 289
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 289
+    },
+    "Vanguard": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    }
+  },
+  "new_acceptances": 268,
+  "lost_acceptances": 0,
+  "recovered_by_rule_combination": {
+    "enters": 184,
+    "quotes": 61,
+    "sacrifice-choice": 18,
+    "renowned-self": 3,
+    "owner-choice": 2
+  },
+  "pilot_recheck": {
+    "baseline": {
+      "pilot_cards": 500,
+      "identical_drafts_and_results": 500,
+      "changed_ids": []
+    },
+    "normalized": {
+      "pilot_cards": 500,
+      "identical_drafts_and_results": 500,
+      "changed_ids": []
+    }
+  },
+  "rejected_for_review": {
+    "rows": 10972,
+    "bytes": 39664672,
+    "sha256": "3ddc8ca8e91950c9d6282f2fe8d5b8f6a0153d254b8c30b1a27a51d3f26da210"
+  },
+  "recovered_for_review": {
+    "rows": 268,
+    "bytes": 898349,
+    "sha256": "049722c2bb42959d3ddb731b412d559a0de4ab13aee3fc2adf62c533b5b85838"
+  },
+  "lost_acceptances_for_review": {
+    "rows": 0,
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "interpretation": "Coverage and complete parser acceptance only. Candidates await semantic review and description generation. Rejections include parser limitations; they are not labels of invalid Magic rules. Rule-combination counts record changed rules, not isolated causal attribution."
+}

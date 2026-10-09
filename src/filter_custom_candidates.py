@@ -24,12 +24,36 @@ def canonical_parser_key(text):
     return match[1] + "<SELF>" + match[3]
 
 
+def filter_candidates(accepted, reference, deduplicate_custom=False):
+    retained, overlaps, duplicates = [], [], []
+    seen = {}
+    for row in accepted:
+        key = canonical_parser_key(row["validation"]["mtgish"])
+        matches = reference.get(key, []) if key is not None else []
+        if matches:
+            overlaps.append({"id": row["id"], "name": row["draft"]["name"], "official_matches": matches})
+            continue
+        if deduplicate_custom and key is not None:
+            equivalent = {"id": row["id"], "name": row["draft"]["name"], "sources": row["sources"]}
+            if key in seen:
+                representative = seen[key]
+                representative["equivalent_designs"].append(equivalent)
+                duplicates.append({"id": row["id"], "name": row["draft"]["name"],
+                                   "representative_id": representative["id"]})
+                continue
+            row = {**row, "design_family_id": digest(key), "equivalent_designs": [equivalent]}
+            seen[key] = row
+        retained.append(row)
+    return retained, overlaps, duplicates
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, required=True)
     parser.add_argument("--official", type=Path, required=True)
     parser.add_argument("--official-parsed", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--deduplicate-custom", action="store_true", help="Also collapse exact parsed custom duplicates after wording cleanup")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Output directory must be new")
@@ -44,13 +68,7 @@ def main():
             reference[canonical_parser_key(line)].append(json.loads(match[2]))
     rows = [json.loads(line) for line in args.cases.read_text().splitlines()]
     accepted = [r for r in rows if r["validation"]["status"] == "parsed" and r["validation"].get("parse_complete") is True]
-    retained, overlaps = [], []
-    for row in accepted:
-        matches = reference.get(canonical_parser_key(row["validation"]["mtgish"]), [])
-        if matches:
-            overlaps.append({"id": row["id"], "name": row["draft"]["name"], "official_matches": matches})
-        else:
-            retained.append(row)
+    retained, overlaps, duplicates = filter_candidates(accepted, reference, args.deduplicate_custom)
     with_rules = [r for r in retained if r["draft"]["oracle_text"].strip()]
     args.output.mkdir(parents=True)
     summary = {"kind": "post_normalization_official_overlap_filter", "final_test": False,
@@ -60,6 +78,7 @@ def main():
                "official_parsed_sha256": digest(args.official_parsed.read_bytes()),
                "official_parsed_structures": len(reference), "accepted_before_filter": len(accepted),
                "exact_parsed_overlaps": overlaps, "retained": len(retained), "retained_with_rules": len(with_rules),
+               "deduplicate_custom": args.deduplicate_custom, "exact_parsed_custom_duplicates": duplicates,
                "candidates": write_jsonl(args.output / "candidates.jsonl", with_rules),
                "policy": "Exact mtgish single-card structure equality after replacing only the top-level card name. Remaining designs are review candidates; incomplete overlap detection and parser acceptance do not prove novelty, correctness, or training rights."}
     (args.output / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")

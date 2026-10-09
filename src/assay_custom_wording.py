@@ -10,7 +10,7 @@ from pathlib import Path
 import re
 import time
 
-from assay_custom_cards import aggregate
+from assay_custom_cards import aggregate, parser_checks
 from data_utils import digest, write_jsonl
 from validate_mtgish import MtgishValidator
 
@@ -72,8 +72,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--rules", nargs="+", choices=("enters", "quotes", "loyalty-minus", "renowned-self", "sacrifice-choice", "owner-choice"), default=["enters"])
     args = parser.parse_args()
+    if args.workers < 1:
+        parser.error("Workers must be positive")
     if args.output.exists():
         parser.error("Output directory must be new")
     parent_path = args.cases.with_name("summary.json")
@@ -89,24 +92,30 @@ def main():
         if validator.provenance != parent["parser"]:
             parser.error("Parser changed since baseline assay")
         args.output.mkdir(parents=True)
+        prepared = [(row, *normalize_wording(row["draft"], args.rules)) for row in rows]
+        checks = parser_checks((draft for _, draft, changes in prepared if changes), args.workers)
         with (args.output / "cases.jsonl").open("w") as stream:
-            for row in rows:
-                draft, changes = normalize_wording(row["draft"], args.rules)
-                tick = time.monotonic()
-                result = validator.check(draft) if changes else row["validation"]
+            for row, draft, changes in prepared:
+                result, seconds = next(checks) if changes else (row["validation"], 0.0)
                 updated = {**row, "original_draft": row["draft"], "raw_validation": row["validation"],
                            "draft": draft, "normalization_changes": changes, "validation": result,
-                           "raw_seconds": row.get("seconds"), "seconds": round(time.monotonic() - tick, 4),
+                           "raw_seconds": row.get("seconds"), "seconds": seconds,
                            "reused_raw_validation": not bool(changes)}
                 result_rows.append(updated)
                 stream.write(json.dumps(updated, ensure_ascii=False) + "\n")
                 stream.flush()
+                if len(result_rows) % 1000 == 0:
+                    print(json.dumps({"completed": len(result_rows), "total": len(rows),
+                                      "elapsed_seconds": round(time.monotonic() - started, 2)}), flush=True)
+        # Consume the generator's finalization so all worker clients are closed.
+        if next(checks, None) is not None:
+            raise RuntimeError("Unexpected extra parser result")
     changed = [r for r in result_rows if r["normalization_changes"]]
     gained = [r for r in changed if r["raw_validation"]["status"] != "parsed" and r["validation"]["status"] == "parsed"]
     lost = [r for r in changed if r["raw_validation"]["status"] == "parsed" and r["validation"]["status"] != "parsed"]
     accepted = [r for r in result_rows if r["validation"].get("parse_complete") is True and r["validation"]["status"] == "parsed"]
     summary = {"kind": "historical_wording_normalization_assay", "final_test": False,
-               "rules": args.rules,
+               "rules": args.rules, "workers": args.workers,
                "parent_cases_sha256": parent["cases_sha256"], "parent_summary_sha256": digest(parent_path.read_bytes()),
                "script_sha256": digest(Path(__file__).read_bytes()), "parser": parent["parser"],
                "baseline": aggregate(rows), "modernized": aggregate(result_rows),

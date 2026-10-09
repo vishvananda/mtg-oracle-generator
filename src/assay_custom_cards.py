@@ -5,6 +5,7 @@ This is a source feasibility assay, not a model evaluation or training release.
 """
 import argparse
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import gzip
 import json
@@ -12,6 +13,7 @@ from pathlib import Path
 import random
 import re
 import time
+import threading
 import unicodedata
 
 from data_utils import digest, without_reminder, write_jsonl
@@ -132,28 +134,60 @@ def aggregate(rows):
             "accepted_with_rules_text": sum(bool(r["draft"].get("oracle_text", "").strip()) for r in accepted)}
 
 
+def parser_checks(drafts, workers=1):
+    """Ordered results, with a private persistent parser client per worker.
+
+    Threads coordinate isolated Go parser subprocesses and upstream preprocessing;
+    no client pipes or temporary input files are shared between workers.
+    """
+    if workers < 1:
+        raise ValueError("Workers must be positive")
+    local = threading.local()
+    clients = []
+    lock = threading.Lock()
+
+    def check(draft):
+        if not hasattr(local, "validator"):
+            local.validator = MtgishValidator()
+            with lock:
+                clients.append(local.validator)
+        started = time.monotonic()
+        return local.validator.check(draft), round(time.monotonic() - started, 4)
+
+    try:
+        with ThreadPoolExecutor(max_workers=workers) as executor:
+            yield from executor.map(check, drafts)
+    finally:
+        for client in clients:
+            client.close()
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--source", type=Path, required=True, help="Downloaded MSEM AllSets.json")
     p.add_argument("--official", type=Path, required=True, help="Scryfall Oracle JSONL[.gz]")
     p.add_argument("--output", type=Path, required=True)
-    p.add_argument("--sample-size", type=int, default=500)
+    selection = p.add_mutually_exclusive_group()
+    selection.add_argument("--sample-size", type=int, default=500)
+    selection.add_argument("--all", action="store_true", help="Check every eligible unique single-face design")
+    p.add_argument("--workers", type=int, default=1)
     p.add_argument("--seed", type=int, default=20261009)
     a = p.parse_args()
     if a.output.exists():
         p.error("Output directory must be new")
-    if a.sample_size < 1:
-        p.error("Sample size must be positive")
+    if a.sample_size < 1 or a.workers < 1:
+        p.error("Sample size and workers must be positive")
     source_bytes = a.source.read_bytes()
     names, mechanics = official_index(a.official)
     eligible, summary = inventory(json.loads(source_bytes), names, mechanics)
-    sample = random.Random(a.seed).sample(eligible, min(a.sample_size, len(eligible)))
+    sample = eligible if a.all else random.Random(a.seed).sample(eligible, min(a.sample_size, len(eligible)))
     a.output.mkdir(parents=True)
     summary.update({"kind": "custom_source_parser_feasibility", "final_test": False,
                     "source_url": "https://mse-modern.com/msem2/notlackey/AllSets.json",
                     "source_sha256": digest(source_bytes), "official_sha256": digest(a.official.read_bytes()),
-                    "script_sha256": digest(Path(__file__).read_bytes()), "seed": a.seed,
-                    "sampling": "Uniform random sample without replacement from mechanically deduplicated eligible single-face designs; no filtering on keywords or parser results.",
+                    "script_sha256": digest(Path(__file__).read_bytes()), "seed": None if a.all else a.seed,
+                    "workers": a.workers,
+                    "sampling": "All eligible unique single-face designs, sorted by stable ID; no filtering on keywords or parser results." if a.all else "Uniform random sample without replacement from mechanically deduplicated eligible single-face designs; no filtering on keywords or parser results.",
                     "scope": "normal/saga/leveler/class single-face layouts only; multiface records excluded before sampling",
                     "overlap_policy": "Remove _SET/(SL123) printing suffixes only when the base name is independently present in source/Oracle; retain original names and adjustments. Exclude official names and normalized type/cost/text/stats matches against official faces. Deduplicate custom mechanical matches ignoring full self-name and reminder text. This does not detect every functional reprint or wording variant. Rules text is never rewritten for the assay.",
                     "interpretation": "Parser acceptance only; does not establish rules correctness, balance, request fidelity, or training/redistribution permission.",
@@ -165,15 +199,15 @@ def main():
     started = time.monotonic()
     with MtgishValidator() as validator, (a.output / "cases.jsonl").open("w") as stream:
         summary["parser"] = validator.provenance
-        for item in sample:
-            tick = time.monotonic()
-            row = {**item, "validation": validator.check(item["draft"]),
-                   "seconds": round(time.monotonic() - tick, 4)}
+        for item, (validation, seconds) in zip(sample, parser_checks((r["draft"] for r in sample), a.workers)):
+            row = {**item, "validation": validation, "seconds": seconds}
             results.append(row)
             stream.write(json.dumps(row, ensure_ascii=False) + "\n")
             stream.flush()
-            if len(results) % 25 == 0:
-                print(json.dumps({"completed": len(results), **aggregate(results)}), flush=True)
+            if len(results) % (250 if a.all else 25) == 0:
+                print(json.dumps({"completed": len(results), "total": len(sample),
+                                  "elapsed_seconds": round(time.monotonic() - started, 2),
+                                  **aggregate(results)}), flush=True)
     summary.update(aggregate(results))
     summary["seconds"] = round(time.monotonic() - started, 2)
     for label, key in (("type", card_type), ("color", color_group), ("layout", lambda d: d["layout"])):
