@@ -35,6 +35,15 @@ name/rarity exercises. If necessary, add disjoint batches until there are
 insufficient. Each family contributes at most one pair. Keep actual sampled
 failures as negatives; prefer good Qwen positives, otherwise use a Sol repair.
 
+Once a broad batch establishes collection yield, generation can run one batch
+ahead of the six local review workers. The next sampling job starts while the
+current batch is reviewed, provided the previous yield plus a 50% margin still
+predicts a shortfall. The scheduler respects the three-batch limit and keeps a
+full 60-minute training reservation within the experiment budget. Completed
+reviews are required before any preferences enter training. Local review process
+receipts let an orchestrator restart attach to existing workers without
+restarting their CLI calls.
+
 Before viewing outputs, freeze two panels of 128 requests/96 families each:
 development and locked release. Half the requests come from source cards held
 out of all preference collection; half are novel designs at two detail levels.

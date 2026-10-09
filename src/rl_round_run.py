@@ -13,6 +13,7 @@ from job_budget import settle_terminal
 from rl_gpu import sha
 from rl_jobs import package,launch
 from rl_pipeline import verify_collected
+from rl_review_process import review_process,should_look_ahead,lookahead_minutes
 
 
 def checked_audit(root):
@@ -92,12 +93,8 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
             write_jsonl(dev,rows)
         configuration={'seed':17,'generation_batch_size':24,'minimum_pairs':1000,'max_steps':250,
                        'training_seconds':2400,'save_total_limit':12,'evaluate_midpoint':True}
-        reviews=[audit];pilots=[root/'audit-pilot']
-        count=json.loads((reviews[0]/'review.json').read_text())['approved_pairs']
-        for index in range(1,4):
-            if count>=1000:break
+        def sample_inputs(index):
             batch=root/f'batch-{index:02d}';pilot=batch/'pilot'
-            update('preparing_expansion',batch=index,approved_pairs=count)
             if not (pilot/'manifest.json').exists():
                 command('rl_round_expand.py','prepare','--root',root,'--dataset',dataset,
                     '--old-pilot',old_pilot,'--index',index,'--count',2048)
@@ -107,16 +104,51 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
             if override and not (pack/'resume-provenance.json').exists():
                 raise ValueError('Recovery package lacks validated sampling provenance')
             if not pack.exists():package(pack,sft_adapter,pilot,dev,config=configuration)
+            return batch,pilot,pack,record
+
+        ahead=None
+        reviews=[audit];pilots=[root/'audit-pilot']
+        count=json.loads((reviews[0]/'review.json').read_text())['approved_pairs']
+        for index in range(1,4):
+            if count>=1000:break
+            update('preparing_expansion',batch=index,approved_pairs=count)
+            batch,pilot,pack,record=sample_inputs(index)
             gpu('sample',pack,record,batch/'sample',180)
-            review=batch/'review';update('sol_review_and_repair',batch=index,approved_pairs=count)
+            review=batch/'review';parallel=None
+            previous_yield=json.loads((reviews[-1]/'review.json').read_text())['approved_pairs'] if len(reviews)>1 else None
+            if not (review/'review.json').exists() and should_look_ahead(index,count,previous_yield):
+                next_record=root/f'batch-{index+1:02d}/sample-job.json'
+                if next_record.exists():
+                    ahead=sample_inputs(index+1)
+                else:
+                    hardware=next(h for h in hf.list_jobs_hardware() if h.name=='a100-large')
+                    from hf_jobs import cost_cap
+                    price=cost_cap({'timeout_minutes':1},hardware)
+                    ledger=json.loads((root/'budget.json').read_text())
+                    minutes=lookahead_minutes(ledger,json.loads(auth.read_text())['ceiling_usd'],price)
+                    if minutes is not None:
+                        ahead=sample_inputs(index+1)
+                        launch(ahead[2],sft_record,ahead[3],'sample',root/'budget.json',auth,minutes)
+                if ahead is not None:
+                    job=json.loads(ahead[3].read_text())
+                    parallel={'batch':index+1,'job_id':job['job_id'],'url':job['url'],'receipt':str(ahead[3])}
+                    save(root/'lookahead.json',parallel)
+            update('sol_review_and_repair',batch=index,approved_pairs=count,concurrent_sampling=parallel)
             if not (review/'review.json').exists():
-                command('rl_teacher.py','--pilot',pilot,'--candidates',batch/'sample/candidates.jsonl',
-                    '--output',review,'--workers',6)
+                for name,pin in identity['files'].items():
+                    if sha(repo/name)!=pin:raise ValueError('Pipeline source changed while running: '+name)
+                argv=[str(cpu_python),'-u',str(repo/'src/rl_teacher.py'),'--pilot',str(pilot),
+                      '--candidates',str(batch/'sample/candidates.jsonl'),'--output',str(review),'--workers','6']
+                review_process(argv,batch/'review-worker.json',review/'review.json',repo)
             value=json.loads((review/'review.json').read_text())
             if value.get('excluded_checklists',0)>value['scheduled_requests']*.02:
                 raise ValueError('Too many requirement extraction failures; inspect before further sampling')
             count+=value['approved_pairs'];reviews.append(review);pilots.append(pilot)
             update('expansion_review_complete',batch=index,approved_pairs=count)
+            if count>=1000 and ahead is not None and ahead[0]!=batch:
+                # A yield surprise may make the one ahead unnecessary. Retain
+                # and settle that allocation before starting training.
+                gpu('sample',ahead[2],ahead[3],ahead[0]/'sample',180)
         if count<1000:raise ValueError('Three batches did not reach 1000 verified pairs; preserve data and inspect yield')
         merged=root/'merged-review'
         if not (merged/'review.json').exists():
