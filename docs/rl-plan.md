@@ -8,8 +8,13 @@ GPU submission is explicit. The first preference pilot was requested on
 2026-10-09; its launch receipts bind that request and a $10 operator-selected
 ceiling separately from the SFT epoch-completion budget.
 
-The near-term recommendation is **Luna intent judgments + deterministic checks +
-a small, coverage-aware parser signal**. Use Oracle embeddings to retrieve wording
+The first pilot is complete: 47 reviewed pairs, six DPO updates, and no measured
+gain on its small development panel. The next recommendation is **Sol-reviewed
+repairs and preferences + deterministic checks + a small, coverage-aware parser
+signal**; see the [next-round plan](next-preference-round.md) and
+[pilot report](../reports/dpo-pilot-v1/README.md). The Luna-first scheme below
+records the original experiment, whose natural false rejections required stronger
+review and recovery. Use Oracle embeddings to retrieve wording
 examples, not as a direct reward for looking like existing cards. The executable
 prototype is [rl_rewards.py](../src/rl_rewards.py), with a
 [draft pilot recipe](../configs/rl-pilot.json). The executable

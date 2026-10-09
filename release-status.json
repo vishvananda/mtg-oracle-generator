@@ -129,17 +129,17 @@
     "final_test_base_mtgish_accepted": 2,
     "final_test_adapter_mtgish_accepted": 260
   },
-  "updated_at": "2026-10-09T03:55:47.232759+00:00",
+  "updated_at": "2026-10-09T05:11:51.150030+00:00",
   "workshop_preview": {
     "status": "deployed",
     "url": "https://tetrarchs.com/cards/new",
     "checkpoint": 19774,
     "quantization": "Q4_0",
-    "model_sha256": "74ca26df1823c9188c57e61f94a87cac722ea007724334edc073cc4078c067cb",
-    "training_scope": "completed_training",
+    "model_sha256": "0372cf2b4a0ee2245fbb8233377a6dc46cdbcb47fff5ee8ead15a21e4077479b",
+    "training_scope": "completed_dpo_pilot",
     "training_epoch": 1.0,
     "models": [
-      "Qwen3-4B checkpoint 19774",
+      "Qwen3-4B full epoch + DPO pilot",
       "gpt-6-luna"
     ],
     "generation_mode": "unconstrained with frozen training prompt and optional terminology guide",
@@ -148,10 +148,14 @@
     "public_health_checked": true,
     "serving_smoke_cases": 3,
     "serving_smoke_mtgish_accepted": 3,
-    "deployed_at": "2026-10-09T01:55:41.660971+00:00"
+    "deployed_at": "2026-10-09T05:09:07.942498+00:00",
+    "dpo_steps": 6,
+    "preference_pairs": 47,
+    "public_comparison_checked": true,
+    "model_revision": "cbd08b3f392461aac1ea54edd1673db58e7373ab"
   },
   "preference_pilot": {
-    "status": "recovering_preference_pairs",
+    "status": "completed_and_deployed_at_user_request",
     "method": "DPO",
     "gpu_ceiling_usd": 10,
     "candidates_planned": 2048,
@@ -167,7 +171,7 @@
       "repo_id": "vishvananda/mtg-oracle-preference-pilot-v1",
       "revision": "af62f738f77829e137d48a518a406a5d2deff635",
       "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1",
-      "preferences_published": false
+      "preferences_published": true
     },
     "candidate_pairs": 77,
     "candidates_judged": 2048,
@@ -177,6 +181,53 @@
     "recovery_families": 94,
     "additional_sol_reviews": 356,
     "reference_positives_allowed": true,
-    "dpo_started": false
+    "dpo_started": true,
+    "dpo_completed": true,
+    "approved_pairs": 47,
+    "chosen_origins": {
+      "sampled_sft": 35,
+      "training_reference": 12
+    },
+    "optimizer_steps": 6,
+    "training_epoch": 1.0,
+    "train_job_url": "https://huggingface.co/jobs/vishvananda/6ac86915095c578089301bdf",
+    "report": "reports/dpo-pilot-v1/README.md",
+    "next_plan": "docs/next-preference-round.md",
+    "model": {
+      "repo_id": "vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009",
+      "revision": "cbd08b3f392461aac1ea54edd1673db58e7373ab",
+      "files_verified": 17,
+      "manifest_sha256": "31c30c2f3c6de9c7278c0965dd56d34a44eed2996fefcc309703b55e5910e84c",
+      "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009"
+    },
+    "results_dataset": {
+      "repo_id": "vishvananda/mtg-oracle-preference-pilot-v1",
+      "revision": "436c9ecc9035fa6692396a66e85b098750f73d37",
+      "files_verified": 21,
+      "manifest_sha256": "5228b9fd975ab1ab92dc2e6e15a730a0e3fea026579e5d60ebe95cc8f8f74e51",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1"
+    },
+    "measured_development_improvement": false,
+    "oracle_text_changed_cases": 0,
+    "gpu_cost_bound_usd": 1.583346,
+    "gpu_cost_excludes_judges": true,
+    "development_results": {
+      "sft": {
+        "cases": 64,
+        "schema_valid": 64,
+        "mtgish_accepted": 48,
+        "intent_faithful": 63,
+        "faithful_and_parsed": 48,
+        "abstentions": 0
+      },
+      "dpo": {
+        "cases": 64,
+        "schema_valid": 64,
+        "mtgish_accepted": 48,
+        "intent_faithful": 63,
+        "faithful_and_parsed": 48,
+        "abstentions": 0
+      }
+    }
   }
 }

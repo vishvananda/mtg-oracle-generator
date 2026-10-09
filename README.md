@@ -24,7 +24,8 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
 | Revised training run | **One full epoch complete**, 19,774 steps; [loss curves and diagnostic measurements](reports/full-epoch-v2/README.md) |
-| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): completed epoch in Q4_0 alongside GPT-6 Luna |
+| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental DPO pilot in Q4_0 alongside GPT-6 Luna; SFT retained for rollback |
+| Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -80,6 +81,14 @@ verified Arrow files without repeating full-corpus preprocessing.
 
 ## Latest results
 
+The first DPO pilot is complete and deployed for experimentation. Both SFT and
+DPO passed schema checks on 64/64 development requests, mtgish on 48/64 and
+Sol's intent judgment on 63/64; Oracle text was unchanged in all 64. These
+correlated development cases do not establish representative accuracy. See the
+[pilot report and loss curve](reports/dpo-pilot-v1/README.md). The
+[next-round plan](docs/next-preference-round.md) prioritizes Sol-reviewed repairs
+and a broader evaluation before another full supervised epoch.
+
 The revised full epoch is complete. Its locked 400-case final test produced
 100% schema-valid outputs and 65.0% whole-card mtgish acceptance, compared with
 9.0% and 0.5% for the pinned untuned base. These are parser and format metrics,
@@ -91,7 +100,7 @@ On the fixed 256-case development panel, schema compliance improved from
 **8.59% to 99.22%** and whole-card mtgish acceptance from **0% to 49.22%**
 against the untuned Qwen baseline. Complex mechanics still have intent errors.
 That run was canceled to improve the split. Its report uses the original split;
-the workshop now serves the completed epoch from the revised run alongside Luna. The CPU preview uses a merged
+the workshop now serves a small DPO update on the completed revised epoch alongside Luna. The CPU preview uses a merged
 Q4_0 model, so the NF4 development scores do not measure that serving artifact.
 The panel emphasizes difficult card types and is not a full-corpus accuracy
 estimate. See the [loss curves, parser coverage and qualitative review](reports/full-corpus-step-963/README.md).
