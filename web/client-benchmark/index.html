@@ -10,7 +10,8 @@
   <p class="intro">Describe a card and watch the fine-tuned model write it in your browser. The first download is <strong>2.37 GB</strong>; model files are cached on this device.</p>
   <p id="identity" class="muted">Qwen3 4B · SFT + DPO round two · Q4_0</p>
   <p class="muted">Use a current Chrome or Edge with WebGPU for the fastest test. A cold CPU run can take several minutes.</p>
-  <section aria-label="Model settings">
+  <p class="demo-links"><a href="#text-demo">Card text</a><a href="#art-demo">Bonsai image generation ↓</a></p>
+  <section id="text-demo" aria-label="Model settings">
     <div class="settings">
       <label>Backend<select id="backend"><option value="auto">Auto · prefer WebGPU</option><option value="cpu">CPU · WebAssembly</option></select></label>
       <label>CPU threads<input id="threads" type="number" min="1" max="32" value="8"></label>
@@ -47,7 +48,31 @@
   <section><div class="output-header"><h2>Streamed output</h2><span id="json-status" class="muted"></span></div><pre id="output" tabindex="0">Load the model to begin.</pre></section>
   <section><div class="output-header"><h2>Runs on this browser</h2><button id="export" class="secondary" disabled>Download results</button></div><p class="muted">Results, descriptions, and outputs are saved in this browser only. Download the JSON to compare machines.</p><div class="table-scroll"><table><thead><tr><th>Run</th><th>Backend</th><th>Sampling</th><th>First token</th><th>Total</th><th>Tokens/s</th></tr></thead><tbody id="history"></tbody></table></div></section>
   <details><summary>Device and runtime details</summary><pre id="device"></pre><pre id="logs"></pre></details>
-  <footer>Experimental card generation. JSON syntax is checked here; Oracle validators and artwork remain in the <a href="/cards/new">workshop</a>. <a href="./notices/model-and-runtime.txt">Model and runtime notices</a>.</footer>
+  <section id="art-demo" aria-label="Bonsai image generation">
+    <div class="output-header"><h2>Bonsai, on your machine.</h2><a href="#text-demo">↑ Card text</a></div>
+    <p class="intro">Generate fantasy artwork with <strong>Bonsai Image 4B · ternary</strong>. Its separate <strong>3.9 GB</strong> model download is cached on this device. Requires WebGPU.</p>
+    <div class="actions"><button id="art-load">Load Bonsai</button><button id="art-unload" class="secondary" disabled>Unload Bonsai</button><span id="art-backend" class="muted">Image model not loaded</span></div>
+    <progress id="art-progress" max="1" value="0" hidden></progress>
+    <p id="art-status" role="status" aria-live="polite">Ready to load. You can unload the text model above to free memory.</p>
+    <label for="art-prompt" class="art-prompt-label">Image prompt</label>
+    <textarea id="art-prompt" rows="4" maxlength="4000">Stylized fantasy illustration of a towering red Giant forging a glowing sword beside a volcanic mountain. Painterly details, dramatic lighting, rich textures, clear focal subject. Artwork only, no lettering, borders, or card frame.</textarea>
+    <button id="art-use-card" class="secondary">Use card description</button>
+    <div class="sampling">
+      <label>Image size<select id="art-size"><option value="256x256">256 × 256 · quick test</option><option value="512x512" selected>512 × 512</option><option value="768x512">768 × 512 · landscape</option><option value="512x768">512 × 768 · portrait</option><option value="1024x1024">1,024 × 1,024</option></select></label>
+      <label>Steps<select id="art-steps"><option value="1">1</option><option value="2">2</option><option value="4" selected>4</option><option value="8">8</option></select></label>
+      <label>Seed<input id="art-seed" type="number" min="0" max="2147483647" step="1" value="17" required disabled></label>
+    </div>
+    <div class="actions"><button id="art-generate" disabled>Generate image</button><button id="art-stop" class="secondary" disabled>Stop</button><label class="inline"><input id="art-random" type="checkbox" checked> New random seed each run</label></div>
+    <p class="muted">Start with 512 × 512 and 4 steps. Stop unloads Bonsai to cancel immediately. For comparable timings, run one model at a time.</p>
+    <div class="metrics art-metrics"><div><span>Bonsai load</span><strong id="art-load-time">—</strong><small>Includes download / cache read</small></div><div><span>Steps completed</span><strong id="art-step-count">—</strong><small>Image appears after final decoding</small></div><div><span>Total generation</span><strong id="art-total-time">—</strong><small>Excludes model loading</small></div></div>
+    <div class="art-output"><p id="art-placeholder" class="muted">Your generated image will appear here.</p><img id="art-image" alt="" hidden></div>
+    <div class="actions"><a id="art-png" class="button-link" hidden>Download PNG</a><button id="art-export" class="secondary" disabled>Download image results</button></div>
+    <p class="muted">Prompts and images stay in this browser. Timing history is saved locally; download a PNG to keep an image after refreshing. <a href="https://huggingface.co/spaces/webml-community/bonsai-image-webgpu" target="_blank" rel="noopener">Bonsai runtime by WebML Community</a> · <a href="./image-models/bonsai-ternary-2c24c81/NOTICE.md">Model attribution</a></p>
+    <div class="table-scroll"><table><thead><tr><th>Run</th><th>Size</th><th>Settings</th><th>Total</th><th>Result</th></tr></thead><tbody id="art-history"></tbody></table></div>
+    <details><summary>Bonsai device details</summary><pre id="art-device"></pre></details>
+  </section>
+  <footer>Experimental card generation. JSON syntax is checked here; Oracle validators remain in the <a href="/cards/new">workshop</a>. <a href="./notices/model-and-runtime.txt">Model and runtime notices</a>.</footer>
 </main>
 <script type="module" src="./app.js"></script>
+<script type="module" src="./bonsai.js"></script>
 </html>

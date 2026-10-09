@@ -1,0 +1,105 @@
+{
+  "runtime_probe": {
+    "pipeline_api": "function",
+    "caps": {
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "f16": false,
+      "subgroups": true,
+      "subgroupMatrix": false
+    },
+    "tensor_roundtrip": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "worker_probe": {
+    "ok": true,
+    "caps": {
+      "adapter": {
+        "vendor": "google",
+        "architecture": "swiftshader",
+        "device": "",
+        "description": ""
+      },
+      "f16": false,
+      "subgroups": true,
+      "subgroupMatrix": false
+    }
+  },
+  "ui_with_fixture": {
+    "generation": true,
+    "png_download": true,
+    "metadata": true,
+    "cancellation": true,
+    "mobile_layout": true
+  },
+  "full_image_inference_tested": true,
+  "errors": [],
+  "full_model_load": {
+    "full_model_loaded": true,
+    "full_image_inference_tested": false,
+    "device": {
+      "total_ms": 41015.12999999523,
+      "pipeline_load_ms": 40678.77499997616,
+      "device": {
+        "adapter": {
+          "vendor": "google",
+          "architecture": "swiftshader",
+          "device": "",
+          "description": ""
+        },
+        "f16": false,
+        "subgroups": true,
+        "subgroupMatrix": false
+      },
+      "browser": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "logical_cpus": 88
+    },
+    "errors": [
+      "https://tetrarchs.com/model-bench/image-models/bonsai-ternary-2c24c81/text_encoder-mlx-4bit/model.safetensors net::ERR_ABORTED",
+      "https://tetrarchs.com/model-bench/image-models/bonsai-ternary-2c24c81/transformer-packed-mflux/diffusion_pytorch_model.safetensors net::ERR_ABORTED",
+      "https://tetrarchs.com/model-bench/image-models/bonsai-ternary-2c24c81/vae/diffusion_pytorch_model.safetensors net::ERR_ABORTED"
+    ],
+    "unloaded": true,
+    "network": {
+      "requests": 76,
+      "range_reads": 52,
+      "only_read_requests": true
+    },
+    "note": "The three reported ERR_ABORTED requests were HEAD size probes; model loading completed successfully."
+  },
+  "unsupported_gpu_recovery": true,
+  "host_image_inference": {
+    "completed": false,
+    "backend": "SwiftShader software WebGPU",
+    "width": 256,
+    "height": 256,
+    "steps": 1,
+    "seed": 17,
+    "timeout_ms": 180000,
+    "last_stage": "step 0/1 t=1.0000",
+    "cached_model_load_ms": 13944.58,
+    "browser_closed_after_test": true
+  },
+  "user_reported_image_inference": {
+    "date": "2026-10-09",
+    "completed": true,
+    "width": 768,
+    "height": 512,
+    "steps": 8,
+    "reported_generation_seconds": 16,
+    "source": "User reported successful generation in the live demo",
+    "device": null,
+    "browser": null,
+    "prompt": null,
+    "seed": null,
+    "independently_measured": false
+  }
+}

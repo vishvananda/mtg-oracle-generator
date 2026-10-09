@@ -8,8 +8,60 @@ workshop generation API. There is no server inference fallback.
 The source GGUF is 2,369,545,056 bytes (2.37 GB / 2.21 GiB), SHA-256
 `af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09`.
 Five shards preserve the existing quantized tensors; there is no further
-quantization. The model and all runtime assets are served from the same origin.
+quantization. The Qwen model and its runtime assets are served from the same origin.
 The published workshop system prompt and nonthinking chat template are retained.
+
+The optional [Bonsai image section](https://tetrarchs.com/model-bench/#art-demo)
+on the same page has a separate load button, prompt, step progress, generation
+timer, PNG download, and JSON timing export. It runs **Bonsai Image 4B ternary**
+locally through WebGPU. No image inference service or API key is required.
+Defaults are 512×512, four denoising steps, guidance 1, and a fresh random seed.
+The text model and image model can be loaded independently; unload either to
+release its memory. For timings, generate with one model at a time.
+
+"Use card description" makes an editable fantasy-art prompt from the description
+and, when available, the generated card's name and type. This is a prompt template,
+not a separate prompt-writing model. Step progress is shown during denoising;
+the image appears after VAE decoding. Stop terminates the worker and unloads
+Bonsai immediately. Load again to resume; cached weights are retained.
+
+Image timing history stays in localStorage, with prompt, actual seed, size,
+steps, model/runtime identity, GPU details, load time, step times, and total
+generation time. PNGs are kept in memory until replaced or the page closes;
+use Download PNG to save them. Prompts and images are not uploaded.
+
+### Bonsai runtime and weights
+
+The model is `prism-ml/bonsai-image-ternary-4B-mlx-2bit` at revision
+`2c24c81b934a658ba5590cf39088ba929985b4a8`, approximately 3.9 GB including its text
+encoder and decoder. The original weights are served locally without conversion.
+All downloaded weights and configurations are checked against the upstream
+manifest. Its README entry has a stale hash and is intentionally omitted;
+weight verification is not relaxed. The model's Apache-2.0 LICENSE and NOTICE
+are included in the served directory.
+
+Upstream currently distributes its WebGPU engine in a compiled
+[WebML Community demo](https://huggingface.co/spaces/webml-community/bonsai-image-webgpu).
+`bonsai-loader.js` fetches that bundle from Hugging Face on first use, caches it,
+and verifies SHA-256 `8e1726c485bfdae81ad7fa479a73a60cc27313a40e5b76b588245d1c9416f0eb`.
+It exposes only the pipeline portion of that exact bundle in a module worker.
+The upstream landing page and sharing code are not executed. No compiled
+third-party bundle is checked into this repository. This is an experimental
+adapter to a pinned demo, not a stable upstream library API; changing the bundle
+requires rechecking its boundaries and pipeline interface.
+
+The image runtime's first fetch reaches Hugging Face; image weights and our UI
+come from tetrarchs.com. CORS and the existing isolation headers permit this.
+CacheStorage retains runtime/configuration responses and range-read weight
+chunks. WebGPU is required; there is no CPU or server inference fallback for
+Bonsai. The worker handles GPU loss and load errors without affecting text
+generation.
+
+Cached files survive page reloads, but the loaded model and GPU allocations do
+not. Both load buttons initialize the runtime and load weights into memory again;
+they reuse cached downloads when available. Loading Bonsai does not unload Qwen.
+
+### Card text controls
 
 Choose Auto to prefer WebGPU, or CPU to force WebAssembly inference. GPU use
 is reported from the runtime's layer-offload log rather than inferred solely
@@ -58,7 +110,8 @@ Measurements distinguish:
   not the number of JavaScript callbacks or a text-length estimate.
 
 Output is streamed as plain text. A completed JSON parse checks syntax only;
-this page does not run mtgish or create images. Cancellation is supported and
+the text benchmark does not run mtgish. Image generation is a separate action
+in the Bonsai section. Cancellation is supported and
 marked separately from completed or output-limited runs. The last 20 results,
 including descriptions, outputs, settings, browser information and timing,
 are saved only in that browser's local storage. **Download results** exports
@@ -79,6 +132,7 @@ python3 prepare-model.py \
   --gguf /path/to/model-Q4_0.gguf \
   --system-prompt /path/to/system-prompt.txt \
   --splitter /path/to/llama-gguf-split
+python3 prepare-bonsai.py
 ```
 
 Serve `dist/` over HTTPS, including binary `.wasm` files as `application/wasm`.
@@ -96,7 +150,8 @@ entries. Caddy's static file server supplies these capabilities. Apply isolation
 headers only to the benchmark route; existing editor routes keep their policies.
 
 The deployed layout is `/srv/mtg-oracle-client/current` pointing to an immutable
-release directory, with shared model files at `models/af725e31/`.
+release directory, with shared model files at `models/af725e31/` and
+`image-models/bonsai-ternary-2c24c81/`.
 Dependencies and app source are in Git; generated assets, browser profiles,
 model files, and local test outputs are ignored.
 
@@ -150,3 +205,22 @@ generation and its measurements were preserved, and the assertion now accepts
 either field. See [validation.json](validation.json) for the recorded results.
 
 Runtime reference: [wllama documentation](https://github.com/ngxson/wllama).
+
+### Bonsai validation and user benchmark
+
+The user reported successful generation at **768×512, eight steps, approximately
+16 seconds** on October 9, 2026. This is a manually reported observation, not an
+automated measurement or a promise of performance on other devices. The device,
+browser, prompt, and seed were not supplied with this result.
+
+The deployment host has software WebGPU (SwiftShader). The actual pinned engine
+passed GPU tensor upload/readback and module-worker initialization. All model
+components loaded successfully in 41.02 seconds initially and 13.94 seconds from
+cache. A 256×256, one-step generation exceeded the diagnostic's 180-second limit
+during denoising; no completed image is claimed for that host test.
+
+Separate UI tests used a fixture image to check display, PNG download, timing
+export, cancellation, and mobile layout. Unsupported-GPU recovery, HTTPS
+isolation headers, and model byte-range responses also passed. These fixture
+tests are distinct from the user's successful real-model generation. See
+[bonsai-validation.json](bonsai-validation.json) for the validation receipt.
