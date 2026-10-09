@@ -290,3 +290,41 @@ The first development panel has 64 hand-authored requests across 40 categories,
 including planeswalkers and playing opponents' cards. Several are numeric variants
 of shared templates: report this as a correlated diagnostic, not independent
 representative test accuracy. The original SFT test remains a separate report.
+
+### Download the first experiment's frozen inputs
+
+The [pilot input dataset](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1)
+at revision `af62f738f77829e137d48a518a406a5d2deff635` contains the exact 512
+prompts, source provenance, 64 development cases, 219 calibration cases, rubric
+and file hashes. It currently contains inputs, not a claim of completed DPO
+training. The SFT adapter, run summary and frozen prompt are available at
+`vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007`, completed-release revision
+`0fe439c78472635d517dbea942736fa45592800c`.
+
+```python
+from huggingface_hub import snapshot_download
+
+snapshot_download(
+    "vishvananda/mtg-oracle-preference-pilot-v1", repo_type="dataset",
+    revision="af62f738f77829e137d48a518a406a5d2deff635",
+    local_dir="data/preference-pilot",
+)
+```
+
+Use `pilot-prompts.jsonl`, `pilot-cases.jsonl` and `pilot-manifest.json` as
+`prompts.jsonl`, `cases.jsonl` and `manifest.json` in the pilot directory. The
+renamed files retain their original hashes. Keep the development files separate.
+Re-run calibration with `rl_review.py --cases calibration-cases.jsonl --model
+gpt-6-luna`, then `gpt-6.1-sol`, using separate output directories and an
+authenticated Codex CLI. The published summary includes both successful blinded
+runs; earlier label-revealing attempts were excluded.
+
+On an existing CUDA machine, package with `rl_jobs.py package`, then run
+`uv run --frozen --script src/rl_gpu.py --stage sample --package PACKAGE
+--adapter ADAPTER --output SAMPLE_OUTPUT`. Score with `rl_score.py`, export
+pairs with `rl_data.py export-pairs`, and independently review with
+`rl_review.py --pilot PILOT --pairs PAIRS --model gpt-6.1-sol`. Package those
+reviewed preferences and use `rl_gpu.py --stage train` for the bounded update.
+Each command's `--help` supplies its required paths. Use `rl_evaluate.py` for
+the paired development report. HF Jobs uses the same packages through the
+explicit launcher and budget ledger described above.

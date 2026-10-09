@@ -156,6 +156,12 @@
     "independent_pair_review": true,
     "automatic_promotion": false,
     "job_url": "https://huggingface.co/jobs/vishvananda/6ac84909fee2c9007017240a",
-    "sft_checkpoint": 19774
+    "sft_checkpoint": 19774,
+    "inputs_dataset": {
+      "repo_id": "vishvananda/mtg-oracle-preference-pilot-v1",
+      "revision": "af62f738f77829e137d48a518a406a5d2deff635",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1",
+      "preferences_published": false
+    }
   }
 }
