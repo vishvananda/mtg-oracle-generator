@@ -16,7 +16,7 @@ CONFIG={'seed':29,'candidates_per_prompt':4,'generation_batch_size':24,'max_new_
     'learning_rate':5e-6,'beta':.1,'training_seconds':1800}
 
 
-def package(output,adapter,pilot,development,preferences=None,review=None):
+def package(output,adapter,pilot,development,preferences=None,review=None,config=None):
     if output.exists():raise ValueError('Use a new immutable package')
     root=Path(__file__).resolve().parents[1]
     m=json.loads((pilot/'manifest.json').read_text())
@@ -30,7 +30,12 @@ def package(output,adapter,pilot,development,preferences=None,review=None):
     for name in ('rl_gpu.py','rl_gpu.py.lock'):shutil.copyfile(root/'src'/name,output/name)
     shutil.copyfile(pilot/'prompts.jsonl',output/'prompts.jsonl')
     shutil.copyfile(development,output/'development.jsonl')
-    save(output/'config.json',CONFIG)
+    chosen={**CONFIG,**(config or {})}
+    if chosen['effective_batch_size']<2 or chosen['effective_batch_size']%2 or chosen['max_steps']<1:
+        raise ValueError('Invalid DPO batch size or step count')
+    if chosen['candidates_per_prompt']!=m['candidates_per_prompt']:
+        raise ValueError('Candidate budget differs from pilot manifest')
+    save(output/'config.json',chosen)
     if preferences:
         if not review:raise ValueError('Independent pair review required')
         value=json.loads(review.read_text())
@@ -44,13 +49,14 @@ def package(output,adapter,pilot,development,preferences=None,review=None):
     save(output/'manifest.json',manifest);return manifest
 
 
-def launch(package,adapter_record,record,stage,ledger,authorization):
+def launch(package,adapter_record,record,stage,ledger,authorization,timeout_minutes=None):
     import huggingface_hub as hf
     if record.exists():raise ValueError('Job receipt exists; never submit twice')
     auth=json.loads(authorization.read_text())
-    if auth['scope']!='one_preference_pilot' or not auth['user_instruction'].strip():
+    if auth['scope'] not in ('one_preference_pilot','one_preference_round') or not auth['user_instruction'].strip():
         raise ValueError('Explicit preference-pilot authorization required')
-    if auth['ceiling_usd']>10:raise ValueError('This launcher is limited to the first $10 pilot')
+    limit=10 if auth['scope']=='one_preference_pilot' else 20
+    if auth['ceiling_usd']>limit:raise ValueError('Authorization exceeds the configured experiment bound')
     manifest=json.loads((package/'manifest.json').read_text())
     for name,pin in manifest['files'].items():
         if Path(name).is_absolute() or '..' in Path(name).parts or sha(package/name)!=pin:
@@ -63,7 +69,8 @@ def launch(package,adapter_record,record,stage,ledger,authorization):
     if not bucket.startswith(account+'/') or not hf.bucket_info(bucket,token=token).private:
         raise ValueError('Private owned bucket required')
     hardware=next(h for h in hf.list_jobs_hardware(token=token) if h.name=='a100-large')
-    minutes={'sample':120,'train':90}[stage]
+    minutes=timeout_minutes or {'sample':120,'train':90}[stage]
+    if type(minutes) is not int or not 1<=minutes<=240:raise ValueError('Invalid allocation timeout')
     cap=cost_cap({'timeout_minutes':minutes},hardware)
     image=old['image'];verify_job_image(image)
     pin=sha(package/'manifest.json');prefix='rl-packages/'+pin
@@ -95,9 +102,11 @@ if __name__=='__main__':
     prep=sub.add_parser('package')
     for name in ('output','adapter','pilot','development'):prep.add_argument('--'+name,type=Path,required=True)
     for name in ('preferences','review'):prep.add_argument('--'+name,type=Path)
+    prep.add_argument('--config',type=Path)
     launch_p=sub.add_parser('launch')
     for name in ('package','adapter-record','record','ledger','authorization'):launch_p.add_argument('--'+name,type=Path,required=True)
     launch_p.add_argument('--stage',choices=['sample','train'],required=True)
+    launch_p.add_argument('--timeout-minutes',type=int)
     a=p.parse_args()
-    result=package(a.output,a.adapter,a.pilot,a.development,a.preferences,a.review) if a.command=='package' else launch(a.package,a.adapter_record,a.record,a.stage,a.ledger,a.authorization)
+    result=package(a.output,a.adapter,a.pilot,a.development,a.preferences,a.review,json.loads(a.config.read_text()) if a.config else None) if a.command=='package' else launch(a.package,a.adapter_record,a.record,a.stage,a.ledger,a.authorization,a.timeout_minutes)
     print(json.dumps(result,indent=2))

@@ -51,6 +51,15 @@ class Rewards(unittest.TestCase):
         case=copy.deepcopy(fixtures()[16]);del case['candidate']['loyalty']
         self.assertIn('missing_loyalty',self.report(case)['deterministic_violations'])
 
+    def test_requested_front_name_accepts_combined_name_but_not_back_only(self):
+        face={'name':'Front','type_line':'Instant','oracle_text':'Draw a card.'}
+        case={'id':'x','explicit_metadata':{'name':'Front'},'candidate':{
+            'name':'Front // Back','rarity':'rare','type_line':'Instant // Sorcery',
+            'oracle_text':'','layout':'modal_dfc','card_faces':[face,{**face,'name':'Back','type_line':'Sorcery'}]}}
+        self.assertEqual(self.report(case)['gate'],'needs_intent_judge')
+        case['explicit_metadata']['name']='Back'
+        self.assertIn('explicit_name_changed',self.report(case)['deterministic_violations'])
+
     def test_blank_name_and_broken_output_are_penalized(self):
         case=copy.deepcopy(fixtures()[0]);case['candidate']['name']=' '
         self.assertLess(self.report(case)['reward'],0)

@@ -66,5 +66,19 @@ class CollectionIntegrity(unittest.TestCase):
             with self.assertRaisesRegex(ValueError,'job/package differs'):
                 verify_collected(output,package,'train')
 
+    def test_requested_midpoint_must_be_complete_and_hash_verified(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            package,output,phase=self.fixture(Path(tmp),'train')
+            save(package/'config.json',{'candidates_per_prompt':2,'evaluate_midpoint':True})
+            with self.assertRaises(FileNotFoundError):verify_collected(output,package,'train')
+            path=output/'midpoint-development.jsonl'
+            path.write_bytes((output/'dpo-development.jsonl').read_bytes())
+            receipt=phase['development'].copy()
+            save(path.with_suffix('.manifest.json'),receipt)
+            phase['midpoint_development']=receipt;save(output/'phase-complete.json',phase)
+            self.assertEqual(verify_collected(output,package,'train'),phase)
+            path.write_text('{}\n')
+            with self.assertRaisesRegex(ValueError,'incomplete or changed'):verify_collected(output,package,'train')
+
 
 if __name__=='__main__':unittest.main()

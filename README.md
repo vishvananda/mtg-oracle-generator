@@ -26,6 +26,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Revised training run | **One full epoch complete**, 19,774 steps; [loss curves and diagnostic measurements](reports/full-epoch-v2/README.md) |
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental DPO pilot in Q4_0 alongside GPT-6 Luna; SFT retained for rollback |
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
+| Larger preference round | [Audited collection/training workflow](docs/preference-round-two.md); 43 initial reviewed pairs, scaling toward 1,000–2,000; results pending |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 

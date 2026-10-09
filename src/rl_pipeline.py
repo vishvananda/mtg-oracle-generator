@@ -23,6 +23,8 @@ def verify_collected(destination,package,stage):
     config=json.loads((package/'config.json').read_text())
     outputs=[('development','sft-development' if stage=='sample' else 'dpo-development','development',1)]
     if stage=='sample':outputs.append(('candidates','candidates','prompts',config['candidates_per_prompt']))
+    if stage=='train' and config.get('evaluate_midpoint'):
+        outputs.append(('midpoint_development','midpoint-development','development',1))
     for key,name,source,copies in outputs:
         path=destination/(name+'.jsonl')
         receipt=json.loads(path.with_suffix('.manifest.json').read_text())

@@ -6,8 +6,9 @@ had 47 pairs and six updates. It verified the training machinery, but changed no
 Oracle text on its 64-case development panel. That panel is too small, correlated
 and easy on intent to establish whether substantial preference training helps.
 
-This document is a proposed next experiment. No second epoch or larger paid GPU
-job was launched with the pilot deployment.
+The user authorized this experiment after the pilot deployment. The implemented
+workflow and initial audit are in [preference round two](preference-round-two.md).
+No second full SFT epoch is part of this round.
 
 ## 1. Establish a useful baseline before generating more labels
 

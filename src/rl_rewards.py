@@ -30,6 +30,10 @@ def inspect(case,raw,schema,parser,hit_token_limit=False):
     issues=report['deterministic_violations']
     for field,expected in case.get('explicit_metadata',{}).items():
         actual=card.get(field)
+        # An explicitly named front face can coexist with the conventional
+        # "Front // Back" root name. Never accept a match on the back face.
+        if field=='name' and card.get('card_faces') and card['card_faces'][0].get('name')==expected:
+            continue
         if field not in card:
             issues.append('explicit_'+field+'_missing');continue
         if field=='colors':actual,expected=set(actual or []),set(expected)

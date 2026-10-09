@@ -116,6 +116,20 @@ def adapter_hash(model,name):
     return h.hexdigest()
 
 
+def preflight(package,adapter,output):
+    manifest,summary=verify_inputs(package,adapter)
+    from transformers import AutoTokenizer
+    base=summary['config'];config=json.loads((package/'config.json').read_text())
+    tokenizer=AutoTokenizer.from_pretrained(base['model'],revision=base['model_revision'])
+    rows=list(map(json.loads,(package/'preferences.jsonl').read_text().splitlines()))
+    if len(rows)<config['minimum_pairs']:raise ValueError('Too few preference pairs')
+    render_preferences(rows,tokenizer,config['max_length'])
+    output.mkdir(parents=True,exist_ok=True)
+    result={'package_manifest_sha256':sha(package/'manifest.json'),'pairs':len(rows),
+        'max_length':config['max_length'],'all_pairs_fit_without_truncation':True}
+    save(output/'preflight.json',result);return result
+
+
 def run(package,adapter,output,stage):
     manifest,summary=verify_inputs(package,adapter)
     if output.exists() and any(output.iterdir()):raise ValueError('Use empty output directory')
@@ -171,7 +185,7 @@ def run(package,adapter,output,stage):
             per_device_eval_batch_size=2,gradient_checkpointing=True,bf16=True,max_length=config['max_length'],
             max_prompt_length=None,max_completion_length=None,precompute_ref_log_probs=True,
             precompute_ref_batch_size=4,disable_dropout=True,logging_steps=1,save_strategy='steps',save_steps=25,
-            save_total_limit=2,report_to='none',seed=config['seed'],data_seed=config['seed'],warmup_ratio=.1,
+            save_total_limit=config.get('save_total_limit',2),report_to='none',seed=config['seed'],data_seed=config['seed'],warmup_ratio=.1,
             optim='adamw_torch',remove_unused_columns=False)
         class Budget(TrainerCallback):
             stopped=False
@@ -181,7 +195,25 @@ def run(package,adapter,output,stage):
                     self.stopped=True;control.should_training_stop=True;control.should_save=True
                 return control
         budget=Budget()
-        trainer=DPOTrainer(model=model,args=args,processing_class=tokenizer,train_dataset=Dataset.from_list(data),callbacks=[budget])
+        class Development(TrainerCallback):
+            def on_step_end(self,args,state,control,**kw):
+                if config.get('evaluate_midpoint') and state.global_step==max(1,steps//2):
+                    import random
+                    import numpy as np
+                    python_rng=random.getstate();numpy_rng=np.random.get_state()
+                    padding=tokenizer.padding_side
+                    try:
+                        with torch.random.fork_rng(devices=[torch.cuda.current_device()]):
+                            generate(model,tokenizer,dev,output/'midpoint-development.jsonl',1,
+                                config['generation_batch_size'],config['max_new_tokens'],config['seed'],False)
+                    finally:
+                        random.setstate(python_rng);np.random.set_state(numpy_rng)
+                        tokenizer.padding_side=padding;model.config.use_cache=False;model.train()
+                    save(output/'midpoint-policy.json',{'step':state.global_step,'epoch':state.epoch,
+                        'policy_sha256':adapter_hash(model,'default'),'reference_sha256':reference})
+                    control.should_save=True
+                return control
+        trainer=DPOTrainer(model=model,args=args,processing_class=tokenizer,train_dataset=Dataset.from_list(data),callbacks=[budget,Development()])
         # This invokes TRL's own reference context, not the adapter-disabled base.
         batch=next(iter(trainer.get_train_dataloader()))
         if 'ref_chosen_logps' not in batch or 'ref_rejected_logps' not in batch:
@@ -196,6 +228,8 @@ def run(package,adapter,output,stage):
             'stopped_for_budget':budget.stopped,'reference_sha256':reference,'initial_policy_sha256':initial,
             'final_policy_sha256':adapter_hash(model,'default'),'train_seconds':time.monotonic()-budget.started,
             'peak_gpu_gib':torch.cuda.max_memory_allocated()/1024**3}
+        if config.get('evaluate_midpoint'):
+            result['midpoint_development']=json.loads((output/'midpoint-development.manifest.json').read_text())
         save(output/'training-summary.json',result)
         result['development']=generate(model,tokenizer,dev,output/'dpo-development.jsonl',1,
             config['generation_batch_size'],config['max_new_tokens'],config['seed'],False)
@@ -206,5 +240,7 @@ def run(package,adapter,output,stage):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('package','adapter','output'):p.add_argument('--'+name,type=Path,required=True)
-    p.add_argument('--stage',choices=['sample','train'],required=True)
-    a=p.parse_args();run(a.package,a.adapter,a.output,a.stage)
+    p.add_argument('--stage',choices=['sample','train','preflight'],required=True)
+    a=p.parse_args()
+    if a.stage=='preflight':print(json.dumps(preflight(a.package,a.adapter,a.output)))
+    else:run(a.package,a.adapter,a.output,a.stage)
