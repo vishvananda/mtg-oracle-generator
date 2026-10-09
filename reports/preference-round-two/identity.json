@@ -1,0 +1,25 @@
+{
+  "package_manifest_sha256": "c140aac267bea5a333f8aea3942d60deb5cf3734d3f26eef165d1f4ff0cd6c46",
+  "adapter_files": {
+    "adapter_config.json": "45566cd0da7a8819103bce2d88a749de4819c882cd16bd046257771fd43c5e56",
+    "adapter_model.safetensors": "7cd83a73a5f0816dd300adb0b38d58211eb91e28cc920ed69f6db9888daf9251"
+  },
+  "stage": "train",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "config": {
+    "seed": 17,
+    "candidates_per_prompt": 4,
+    "generation_batch_size": 24,
+    "max_new_tokens": 2048,
+    "max_length": 4096,
+    "minimum_pairs": 1000,
+    "max_steps": 250,
+    "effective_batch_size": 8,
+    "learning_rate": 5e-06,
+    "beta": 0.1,
+    "training_seconds": 2400,
+    "save_total_limit": 12,
+    "evaluate_midpoint": true
+  }
+}

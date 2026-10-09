@@ -1,0 +1,7 @@
+{
+  "cases": 128,
+  "identical_card_json": 59,
+  "identical_card_json_intent_disagreements": [],
+  "same_oracle_text": 78,
+  "note": "Diagnostic only; keep frozen benchmark scores unchanged. Oracle-text equality does not imply equal card metadata."
+}

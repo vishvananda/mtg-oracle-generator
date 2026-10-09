@@ -129,30 +129,36 @@
     "final_test_base_mtgish_accepted": 2,
     "final_test_adapter_mtgish_accepted": 260
   },
-  "updated_at": "2026-10-09T05:11:51.150030+00:00",
+  "updated_at": "2026-10-09T20:22:34.688449+00:00",
   "workshop_preview": {
-    "status": "deployed",
+    "status": "experimental_round_two_deployed",
     "url": "https://tetrarchs.com/cards/new",
     "checkpoint": 19774,
     "quantization": "Q4_0",
-    "model_sha256": "0372cf2b4a0ee2245fbb8233377a6dc46cdbcb47fff5ee8ead15a21e4077479b",
-    "training_scope": "completed_dpo_pilot",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "training_scope": "completed_dpo_round_two",
     "training_epoch": 1.0,
     "models": [
-      "Qwen3-4B full epoch + DPO pilot",
+      "Qwen3-4B full epoch + DPO round two",
       "gpt-6-luna"
     ],
-    "generation_mode": "unconstrained with frozen training prompt and optional terminology guide",
-    "backend_commit": "d11be48",
-    "browser_checked": false,
+    "generation_mode": "Two unconstrained sampled local drafts (temperature 0.35), shared prompt processing; greedy single-output evaluation reported separately",
+    "backend_commit": "a3de4d36c26dba4c6402a686140267ee819e7ce7",
+    "browser_checked": true,
     "public_health_checked": true,
-    "serving_smoke_cases": 3,
-    "serving_smoke_mtgish_accepted": 3,
-    "deployed_at": "2026-10-09T05:09:07.942498+00:00",
-    "dpo_steps": 6,
-    "preference_pairs": 47,
+    "deployed_at": "2026-10-09T19:51:31.136778+00:00",
+    "dpo_steps": 125,
+    "preference_pairs": 1000,
     "public_comparison_checked": true,
-    "model_revision": "cbd08b3f392461aac1ea54edd1673db58e7373ab"
+    "model_revision": "87a472d72057760ee757052e846eccf8535a6349",
+    "local_candidates": 2,
+    "explicit_preferences_saved": true,
+    "chosen_card_art": true,
+    "serving_smoke_report": "reports/preference-round-two/serving-probes.json",
+    "known_smoke_failures": [
+      "opponent-library play permission",
+      "planeswalker token and library-exile request"
+    ]
   },
   "preference_pilot": {
     "status": "completed_and_deployed_at_user_request",
@@ -229,5 +235,150 @@
         "abstentions": 0
       }
     }
+  },
+  "preference_round_two": {
+    "status": "completed_evaluated_published_experimental_preview",
+    "method": "DPO",
+    "approved_pairs": 1007,
+    "training_pairs": 1000,
+    "steps": 125,
+    "epoch": 1,
+    "sft_steps": 19774,
+    "starts_from": "completed SFT, not prior DPO",
+    "training_seconds": 823.4231107550149,
+    "peak_gpu_gib": 17.372128009796143,
+    "train_job_url": "https://huggingface.co/jobs/vishvananda/6ac9396cfee2c9007017bfd6",
+    "report": "reports/preference-round-two/README.md",
+    "gpu_cost_bound_usd": 21.416838,
+    "invoice_verified": false,
+    "automatic_promotion": false,
+    "deployment_requested_by_user": true,
+    "dataset": {
+      "repo_id": "vishvananda/mtg-oracle-preferences-v2",
+      "revision": "7cfc474886c97b29cc4177ffe0f166cfd4918eb0",
+      "files_verified": 50,
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preferences-v2",
+      "status": "published"
+    },
+    "model": {
+      "repo_id": "vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+      "revision": "87a472d72057760ee757052e846eccf8535a6349",
+      "files_verified": 74,
+      "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+      "status": "published",
+      "verification": {
+        "method": "Previously verified immutable parent plus hash-verified changed files; commit operations limited to these files",
+        "parent_revision": "5b2c7368658675837a95bd53ed20206151159152",
+        "reverified_files": [
+          "README.md",
+          "validation-comparison.png",
+          "training-curves.png",
+          "release-manifest.json"
+        ]
+      }
+    },
+    "results": {
+      "development": {
+        "sft": {
+          "cases": 128,
+          "schema_valid": 126,
+          "intent_faithful": 74,
+          "mtgish_accepted": 47,
+          "faithful_and_parsed": 44,
+          "faithful_clean_oracle": 67,
+          "parser_infrastructure_error": 1,
+          "exact_metadata_failure": 6,
+          "abstentions": 4
+        },
+        "dpo": {
+          "cases": 128,
+          "schema_valid": 124,
+          "intent_faithful": 71,
+          "mtgish_accepted": 48,
+          "faithful_and_parsed": 46,
+          "faithful_clean_oracle": 66,
+          "parser_infrastructure_error": 1,
+          "exact_metadata_failure": 6,
+          "abstentions": 9
+        }
+      },
+      "release": {
+        "sft": {
+          "cases": 128,
+          "schema_valid": 127,
+          "intent_faithful": 68,
+          "mtgish_accepted": 47,
+          "faithful_and_parsed": 46,
+          "faithful_clean_oracle": 67,
+          "parser_infrastructure_error": 0,
+          "exact_metadata_failure": 2,
+          "abstentions": 10
+        },
+        "dpo": {
+          "cases": 128,
+          "schema_valid": 125,
+          "intent_faithful": 67,
+          "mtgish_accepted": 47,
+          "faithful_and_parsed": 45,
+          "faithful_clean_oracle": 63,
+          "parser_infrastructure_error": 0,
+          "exact_metadata_failure": 2,
+          "abstentions": 8
+        }
+      }
+    },
+    "paired_intervals": {
+      "development": {
+        "families": 96,
+        "requests": 128,
+        "metrics": {
+          "intent": {
+            "difference": -0.0234375,
+            "family_bootstrap_95_percent_interval": [
+              -0.07936507936507936,
+              0.031746031746031744
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          },
+          "mtgish": {
+            "difference": 0.0078125,
+            "family_bootstrap_95_percent_interval": [
+              -0.016,
+              0.03787878787878788
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          }
+        },
+        "limitation": "Intervals describe this designed panel and correlated LLM labels, not all possible user requests."
+      },
+      "release": {
+        "families": 96,
+        "requests": 128,
+        "metrics": {
+          "intent": {
+            "difference": -0.0078125,
+            "family_bootstrap_95_percent_interval": [
+              -0.05303030303030303,
+              0.037037037037037035
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          },
+          "mtgish": {
+            "difference": 0.0,
+            "family_bootstrap_95_percent_interval": [
+              -0.030534351145038167,
+              0.031496062992125984
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          }
+        },
+        "limitation": "Intervals describe this designed panel and correlated LLM labels, not all possible user requests."
+      }
+    },
+    "measured_improvement": false
   }
 }

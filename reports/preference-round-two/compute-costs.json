@@ -1,0 +1,56 @@
+{
+  "gpu_limit_usd": 28,
+  "settled_cost_bound_usd": 21.416838,
+  "method": "ceil(allocated elapsed minutes) + 2; capped at original timeout reservation",
+  "cli_cost_included": false,
+  "jobs": [
+    {
+      "job_id": "6ac885ed095c578089302b9b",
+      "state": "ERROR",
+      "started_at": "2026-10-09T06:13:10.040000+00:00",
+      "finished_at": "2026-10-09T06:38:43.622000+00:00",
+      "cost_bound_usd": 1.166676,
+      "invoice_verified": false
+    },
+    {
+      "job_id": "6ac88eb9fee2c90070174dd1",
+      "state": "COMPLETED",
+      "started_at": "2026-10-09T06:50:40.316000+00:00",
+      "finished_at": "2026-10-09T08:22:42.050000+00:00",
+      "cost_bound_usd": 3.958365,
+      "invoice_verified": false
+    },
+    {
+      "job_id": "6ac8be10095c578089304f3b",
+      "state": "COMPLETED",
+      "started_at": "2026-10-09T10:12:40.545000+00:00",
+      "finished_at": "2026-10-09T12:19:57.922000+00:00",
+      "cost_bound_usd": 5.41671,
+      "invoice_verified": false
+    },
+    {
+      "job_id": "6ac8ecf3095c5780893064a7",
+      "state": "COMPLETED",
+      "started_at": "2026-10-09T13:32:44.265000+00:00",
+      "finished_at": "2026-10-09T15:31:09.890000+00:00",
+      "cost_bound_usd": 5.041707,
+      "invoice_verified": false
+    },
+    {
+      "job_id": "6ac908cb095c578089306f30",
+      "state": "COMPLETED",
+      "started_at": "2026-10-09T15:33:14.064000+00:00",
+      "finished_at": "2026-10-09T17:24:32.021000+00:00",
+      "cost_bound_usd": 4.750038,
+      "invoice_verified": false
+    },
+    {
+      "job_id": "6ac9396cfee2c9007017bfd6",
+      "state": "COMPLETED",
+      "started_at": "2026-10-09T18:59:00.908000+00:00",
+      "finished_at": "2026-10-09T19:22:49.054000+00:00",
+      "cost_bound_usd": 1.083342,
+      "invoice_verified": false
+    }
+  ]
+}

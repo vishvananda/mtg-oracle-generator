@@ -24,9 +24,9 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
 | Revised training run | **One full epoch complete**, 19,774 steps; [loss curves and diagnostic measurements](reports/full-epoch-v2/README.md) |
-| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental DPO pilot in Q4_0 alongside GPT-6 Luna; SFT retained for rollback |
+| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental 1,000-pair DPO round in Q4_0 alongside GPT-6 Luna; two local drafts, saved choices and chosen-card art |
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
-| Larger preference round | [Audited collection/training workflow](docs/preference-round-two.md); 43 initial reviewed pairs, scaling toward 1,000–2,000; results pending |
+| Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -82,7 +82,17 @@ verified Arrow files without repeating full-corpus preprocessing.
 
 ## Latest results
 
-The first DPO pilot is complete and deployed for experimentation. Both SFT and
+The larger DPO round completed 125 updates on 1,000 reviewed pairs, with **no
+clear measured quality gain**. On the
+locked 128-request production panel, SFT → DPO intent pass counts were
+**68 → 67**, and mtgish acceptance was
+**47 → 47**. Development intent was 74 → 71 and
+parser acceptance 47 → 48. These are new-request panels with model-judged
+intent, not the 400-card SFT test. See the [paired intervals, curves and limitations](reports/preference-round-two/README.md).
+[Download the adapter or exact Q4 quant](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009)
+and follow the [local serving guide](docs/serve-preference-model.md).
+
+The earlier DPO pilot completed without measured development gain. Both SFT and
 DPO passed schema checks on 64/64 development requests, mtgish on 48/64 and
 Sol's intent judgment on 63/64; Oracle text was unchanged in all 64. These
 correlated development cases do not establish representative accuracy. See the
@@ -101,7 +111,7 @@ On the fixed 256-case development panel, schema compliance improved from
 **8.59% to 99.22%** and whole-card mtgish acceptance from **0% to 49.22%**
 against the untuned Qwen baseline. Complex mechanics still have intent errors.
 That run was canceled to improve the split. Its report uses the original split;
-the workshop now serves a small DPO update on the completed revised epoch alongside Luna. The CPU preview uses a merged
+the workshop now serves the larger DPO round on the completed revised epoch alongside Luna. The CPU preview uses a merged
 Q4_0 model, so the NF4 development scores do not measure that serving artifact.
 The panel emphasizes difficult card types and is not a full-corpus accuracy
 estimate. See the [loss curves, parser coverage and qualitative review](reports/full-corpus-step-963/README.md).

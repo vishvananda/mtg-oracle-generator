@@ -2,8 +2,9 @@
 
 The six-update pilot verified DPO training but showed no measured Oracle-text
 gain. This round collects stronger intent labels before spending on another
-full supervised epoch. The workshop continues to serve the existing pilot and
-Luna while the experiment runs.
+full supervised epoch. The final 1,000-pair checkpoint is deployed experimentally alongside Luna;
+[the report](../reports/preference-round-two/README.md) records measured results,
+reproduction details, runtime checks and remaining failures.
 
 ## Initial audit
 
@@ -140,5 +141,6 @@ job and code commit; failed receipts and previous code manifests are retained.
 The pipeline prepares loss curves and paired validation reports, then publishes
 curated datasets, complete LoRA checkpoints and evaluation diagnostics to Hugging
 Face. Raw worker conversations, optimizer states, reference adapters and local
-credentials are excluded. Bulk datasets stay out of GitHub. Results are pending;
-the initial audit is not a claim of model improvement.
+credentials are excluded. Bulk datasets stay out of GitHub. The [run report](../reports/preference-round-two/README.md)
+contains the loss curves, exact settings and measured evaluation. The initial
+audit and declining training loss are not claims of model improvement.

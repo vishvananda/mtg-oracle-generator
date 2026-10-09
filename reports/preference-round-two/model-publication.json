@@ -1,0 +1,16 @@
+{
+  "repo_id": "vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+  "revision": "87a472d72057760ee757052e846eccf8535a6349",
+  "files_verified": 74,
+  "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+  "verification": {
+    "method": "Previously verified immutable parent plus hash-verified changed files; commit operations limited to these files",
+    "parent_revision": "5b2c7368658675837a95bd53ed20206151159152",
+    "reverified_files": [
+      "README.md",
+      "validation-comparison.png",
+      "training-curves.png",
+      "release-manifest.json"
+    ]
+  }
+}

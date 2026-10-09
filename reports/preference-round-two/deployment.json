@@ -1,0 +1,44 @@
+{
+  "state": "verified",
+  "release": "20261009T194713Z",
+  "branch": "codex/card-generator-preferences-20261009",
+  "sources": {
+    "editor_upstream": "0e6f9458a94bdb2f8b304c647e6640fadea4f323",
+    "editor_deployment": "a3de4d36c26dba4c6402a686140267ee819e7ce7",
+    "tetranum_table_frontend": "a3a6a6947fafea1918cba7ae6ccdc003f7be80e0",
+    "mtg_runtime": "39a8f78e5e55e8e3e75a3cf7c4ec9ce253c4d943",
+    "tetranum_runtime": "511d6b7f6d6db88a72e34b9451b664cc2922eb89",
+    "generator_backend": "a3de4d36c26dba4c6402a686140267ee819e7ce7"
+  },
+  "packages": {
+    "runtime": "6ed7ceeeeedd5d776b933311a072a4ded16ce5e4e2a011c96ade26aea571f147",
+    "tetranum-runtime": "2d751753d2089dedd19cf8cf036456d67e50e69ea176c6af2b689bca10d9a569",
+    "tetranum-table": "3c523592a982acf810699592f820036f410d6e501d47f9f3ae3ac698d5c0bdde"
+  },
+  "model": {
+    "label": "Qwen3-4B DPO round two",
+    "pairs": 1000,
+    "updates": 125,
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "quantization": "Q4_0",
+    "experimental": true
+  },
+  "checks": {
+    "editor_tests": 246,
+    "generator_tests": 24,
+    "typecheck": true,
+    "build": true,
+    "choice_and_selected_art_browser": true,
+    "public_http": {
+      "/cards/new": 200,
+      "/tetranum/card-studies": 200,
+      "/tetranum/card-drafts": 200,
+      "/aurum/": 200,
+      "/api/card-generator/health": 200
+    },
+    "public_browser_choice_art": true,
+    "public_distinct_pair_saved": true,
+    "automatic_smoke_data_excluded": true
+  },
+  "verified_at": "2026-10-09T19:51:31.136778+00:00"
+}

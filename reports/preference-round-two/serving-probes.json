@@ -1,0 +1,3222 @@
+[
+  {
+    "name": "giant_single",
+    "description": "a midsize red giant that rummages when it enters",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "results": [
+      {
+        "draft": {
+          "colors": [
+            "R"
+          ],
+          "mana_cost": "{3}{R}",
+          "name": "Brazen Giant",
+          "oracle_text": "When this creature enters, discard a card, then draw a card.",
+          "power": "3",
+          "rarity": "common",
+          "toughness": "3",
+          "type_line": "Creature — Giant"
+        },
+        "raw": "{\"colors\":[\"R\"],\"mana_cost\":\"{3}{R}\",\"name\":\"Brazen Giant\",\"oracle_text\":\"When this creature enters, discard a card, then draw a card.\",\"power\":\"3\",\"rarity\":\"common\",\"toughness\":\"3\",\"type_line\":\"Creature — Giant\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 8.16,
+          "usage": {
+            "completion_tokens": 61,
+            "prompt_tokens": 770,
+            "total_tokens": 831,
+            "prompt_tokens_details": {
+              "cached_tokens": 753
+            }
+          },
+          "usage_scope": "single completion",
+          "candidate_index": 0,
+          "candidate_count": 1,
+          "decoding": {
+            "temperature": 0,
+            "seed": 17,
+            "max_tokens": 2048
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "Brazen Giant",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "When this creature enters, discard a card, then draw a card.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 60,
+                      "source_start": 0
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 7,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": false,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": [
+                    {
+                      "batched": false,
+                      "condition": null,
+                      "constraint": null,
+                      "damage_kind": "Any",
+                      "description": "When ~ enters, discard a card, then draw a card.",
+                      "destination": "Battlefield",
+                      "execute": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "count": {
+                            "type": "Fixed",
+                            "value": 1
+                          },
+                          "target": {
+                            "type": "Controller"
+                          },
+                          "type": "Discard"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "sub_ability": {
+                          "condition": null,
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "count": {
+                              "type": "Fixed",
+                              "value": 1
+                            },
+                            "target": {
+                              "type": "Controller"
+                            },
+                            "type": "Draw"
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": false,
+                          "optional_targeting": false,
+                          "sub_ability": null,
+                          "target_prompt": null
+                        },
+                        "target_prompt": null
+                      },
+                      "mode": "ChangesZone",
+                      "optional": false,
+                      "origin": null,
+                      "phase": null,
+                      "secondary": false,
+                      "trigger_zones": [
+                        "Battlefield"
+                      ],
+                      "valid_card": {
+                        "type": "SelfRef"
+                      },
+                      "valid_source": null,
+                      "valid_target": null
+                    }
+                  ]
+                },
+                "runtime_gaps": [],
+                "elapsed_ms": 71
+              },
+              "assay": {
+                "status": "compiled",
+                "parse_complete": true,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": true,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": null,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "When ~ enters, discard a card, then draw a card.",
+                        "verdict": "VARIANT",
+                        "printed": "When ~ enters, discard a card. Draw a card.",
+                        "decline_token": null
+                      }
+                    ]
+                  }
+                ],
+                "definition": {
+                  "name": "Brazen Giant",
+                  "manaCost": "{3}{R}",
+                  "typeLine": "Creature — Giant",
+                  "oracleText": "When this creature enters, discard a card, then draw a card.",
+                  "creatureStats": {
+                    "power": 3,
+                    "toughness": 3
+                  },
+                  "script": {
+                    "triggeredAbilities": [
+                      {
+                        "id": "Brazen Giant:1",
+                        "trigger": {
+                          "type": "ZoneChangeEvent",
+                          "to": "Battlefield"
+                        },
+                        "effect": {
+                          "type": "Composite",
+                          "effects": [
+                            {
+                              "type": "Composite",
+                              "effects": [
+                                {
+                                  "type": "GatherCards",
+                                  "source": {
+                                    "type": "FromZone",
+                                    "zone": "Hand"
+                                  },
+                                  "storeAs": "hand"
+                                },
+                                {
+                                  "type": "SelectFromCollection",
+                                  "from": "hand",
+                                  "selection": {
+                                    "type": "ChooseExactly",
+                                    "count": {
+                                      "type": "Fixed",
+                                      "amount": 1
+                                    }
+                                  },
+                                  "storeSelected": "discarded",
+                                  "prompt": "Choose 1 card to discard"
+                                },
+                                {
+                                  "type": "MoveCollection",
+                                  "from": "discarded",
+                                  "destination": {
+                                    "type": "ToZone",
+                                    "zone": "Graveyard"
+                                  },
+                                  "moveType": "Discard"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "DrawCards",
+                              "count": {
+                                "type": "Fixed",
+                                "amount": 1
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                },
+                "warnings": [],
+                "elapsed_ms": 2101
+              },
+              "mtgish": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "",
+                "intent_fidelity": "not_checked",
+                "mtgish": "Card(Name: \"Brazen Giant\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Giant]), ManaCost: [ManaCostGeneric(3), ManaCostR], Rules: [TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DiscardACard, DrawACard]))], CardPT: (Power: 3, Toughness: 3))",
+                "normalized_input": "Brazen Giant\nCreature - Giant\n{3}{R}\nWhen this creature enters, discard a card, then draw a card.\n3/3",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": null,
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 2224
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "parsed",
+            "parse_complete": true,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "",
+            "intent_fidelity": "not_checked",
+            "mtgish": "Card(Name: \"Brazen Giant\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Giant]), ManaCost: [ManaCostGeneric(3), ManaCostR], Rules: [TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DiscardACard, DrawACard]))], CardPT: (Power: 3, Toughness: 3))",
+            "normalized_input": "Brazen Giant\nCreature - Giant\n{3}{R}\nWhen this creature enters, discard a card, then draw a card.\n3/3",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": null,
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 2224
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "giant_pair",
+    "description": "a midsize red giant that rummages when it enters",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "results": [
+      {
+        "draft": {
+          "colors": [
+            "R"
+          ],
+          "mana_cost": "{4}{R}",
+          "name": "Rumbling Giant",
+          "oracle_text": "When this creature enters, you may discard a card. If you do, draw a card.",
+          "power": "4",
+          "rarity": "common",
+          "toughness": "4",
+          "type_line": "Creature — Giant"
+        },
+        "raw": "{\"colors\":[\"R\"],\"mana_cost\":\"{4}{R}\",\"name\":\"Rumbling Giant\",\"oracle_text\":\"When this creature enters, you may discard a card. If you do, draw a card.\",\"power\":\"4\",\"rarity\":\"common\",\"toughness\":\"4\",\"type_line\":\"Creature — Giant\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 11.61,
+          "usage": {
+            "completion_tokens": 65,
+            "prompt_tokens": 770,
+            "total_tokens": 835,
+            "prompt_tokens_details": {
+              "cached_tokens": 769
+            }
+          },
+          "usage_scope": "server response; batch usage may describe only the first completion",
+          "candidate_index": 0,
+          "candidate_count": 2,
+          "decoding": {
+            "temperature": 0.35,
+            "seed": 719664657,
+            "max_tokens": 2048,
+            "n": 2,
+            "top_p": 0.9,
+            "top_k": 40,
+            "min_p": 0.05,
+            "cache_prompt": true
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "Rumbling Giant",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "When this creature enters, you may discard a card. If you do, draw a card.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 74,
+                      "source_start": 0
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 5,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": false,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": [
+                    {
+                      "batched": false,
+                      "condition": null,
+                      "constraint": null,
+                      "damage_kind": "Any",
+                      "description": "When ~ enters, you may discard a card. If you do, draw a card.",
+                      "destination": "Battlefield",
+                      "execute": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "count": {
+                            "type": "Fixed",
+                            "value": 1
+                          },
+                          "target": {
+                            "type": "Controller"
+                          },
+                          "type": "Discard"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": true,
+                        "optional_targeting": false,
+                        "sub_ability": {
+                          "condition": {
+                            "signal": "OptionalEffectPerformed",
+                            "type": "EffectOutcome"
+                          },
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "count": {
+                              "type": "Fixed",
+                              "value": 1
+                            },
+                            "target": {
+                              "type": "Controller"
+                            },
+                            "type": "Draw"
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": false,
+                          "optional_targeting": false,
+                          "sub_ability": null,
+                          "sub_link": "SequentialSibling",
+                          "target_prompt": null
+                        },
+                        "target_prompt": null
+                      },
+                      "mode": "ChangesZone",
+                      "optional": true,
+                      "origin": null,
+                      "phase": null,
+                      "secondary": false,
+                      "trigger_zones": [
+                        "Battlefield"
+                      ],
+                      "valid_card": {
+                        "type": "SelfRef"
+                      },
+                      "valid_source": null,
+                      "valid_target": null
+                    }
+                  ]
+                },
+                "runtime_gaps": [],
+                "elapsed_ms": 83
+              },
+              "assay": {
+                "status": "compiled",
+                "parse_complete": true,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": true,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": true,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "When ~ enters, you may discard a card. If you do, draw a card.",
+                        "verdict": "ROUND_TRIP",
+                        "printed": "When ~ enters, you may discard a card. If you do, draw a card.",
+                        "decline_token": null
+                      }
+                    ]
+                  }
+                ],
+                "definition": {
+                  "name": "Rumbling Giant",
+                  "manaCost": "{4}{R}",
+                  "typeLine": "Creature — Giant",
+                  "oracleText": "When this creature enters, you may discard a card. If you do, draw a card.",
+                  "creatureStats": {
+                    "power": 4,
+                    "toughness": 4
+                  },
+                  "script": {
+                    "triggeredAbilities": [
+                      {
+                        "id": "Rumbling Giant:1",
+                        "trigger": {
+                          "type": "ZoneChangeEvent",
+                          "to": "Battlefield"
+                        },
+                        "effect": {
+                          "type": "Gated",
+                          "gate": "Gate.MayDecide",
+                          "then": {
+                            "type": "Gated",
+                            "gate": {
+                              "type": "Gate.DoAction",
+                              "action": {
+                                "type": "Composite",
+                                "effects": [
+                                  {
+                                    "type": "GatherCards",
+                                    "source": {
+                                      "type": "FromZone",
+                                      "zone": "Hand"
+                                    },
+                                    "storeAs": "hand"
+                                  },
+                                  {
+                                    "type": "SelectFromCollection",
+                                    "from": "hand",
+                                    "selection": {
+                                      "type": "ChooseExactly",
+                                      "count": {
+                                        "type": "Fixed",
+                                        "amount": 1
+                                      }
+                                    },
+                                    "storeSelected": "discarded",
+                                    "prompt": "Choose 1 card to discard"
+                                  },
+                                  {
+                                    "type": "MoveCollection",
+                                    "from": "discarded",
+                                    "destination": {
+                                      "type": "ToZone",
+                                      "zone": "Graveyard"
+                                    },
+                                    "moveType": "Discard"
+                                  }
+                                ]
+                              }
+                            },
+                            "then": {
+                              "type": "DrawCards",
+                              "count": {
+                                "type": "Fixed",
+                                "amount": 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "warnings": [],
+                "elapsed_ms": 2112
+              },
+              "mtgish": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "",
+                "intent_fidelity": "not_checked",
+                "mtgish": "Card(Name: \"Rumbling Giant\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Giant]), ManaCost: [ManaCostGeneric(4), ManaCostR], Rules: [TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([MayCost(DiscardACard), If(CostWasPaid, [DrawACard])]))], CardPT: (Power: 4, Toughness: 4))",
+                "normalized_input": "Rumbling Giant\nCreature - Giant\n{4}{R}\nWhen this creature enters, you may discard a card. If you do, draw a card.\n4/4",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": null,
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 2288
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "parsed",
+            "parse_complete": true,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "",
+            "intent_fidelity": "not_checked",
+            "mtgish": "Card(Name: \"Rumbling Giant\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Giant]), ManaCost: [ManaCostGeneric(4), ManaCostR], Rules: [TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([MayCost(DiscardACard), If(CostWasPaid, [DrawACard])]))], CardPT: (Power: 4, Toughness: 4))",
+            "normalized_input": "Rumbling Giant\nCreature - Giant\n{4}{R}\nWhen this creature enters, you may discard a card. If you do, draw a card.\n4/4",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": null,
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 2288
+          }
+        }
+      },
+      {
+        "draft": {
+          "colors": [
+            "R"
+          ],
+          "mana_cost": "{4}{R}",
+          "name": "Brazen Giant",
+          "oracle_text": "When this creature enters, you may discard a card. If you do, draw a card.",
+          "power": "4",
+          "rarity": "common",
+          "toughness": "4",
+          "type_line": "Creature — Giant"
+        },
+        "raw": "{\"colors\":[\"R\"],\"mana_cost\":\"{4}{R}\",\"name\":\"Brazen Giant\",\"oracle_text\":\"When this creature enters, you may discard a card. If you do, draw a card.\",\"power\":\"4\",\"rarity\":\"common\",\"toughness\":\"4\",\"type_line\":\"Creature — Giant\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 11.61,
+          "usage": {
+            "completion_tokens": 65,
+            "prompt_tokens": 770,
+            "total_tokens": 835,
+            "prompt_tokens_details": {
+              "cached_tokens": 769
+            }
+          },
+          "usage_scope": "server response; batch usage may describe only the first completion",
+          "candidate_index": 1,
+          "candidate_count": 2,
+          "decoding": {
+            "temperature": 0.35,
+            "seed": 719664657,
+            "max_tokens": 2048,
+            "n": 2,
+            "top_p": 0.9,
+            "top_k": 40,
+            "min_p": 0.05,
+            "cache_prompt": true
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "Brazen Giant",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "When this creature enters, you may discard a card. If you do, draw a card.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 74,
+                      "source_start": 0
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 5,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": false,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": [
+                    {
+                      "batched": false,
+                      "condition": null,
+                      "constraint": null,
+                      "damage_kind": "Any",
+                      "description": "When ~ enters, you may discard a card. If you do, draw a card.",
+                      "destination": "Battlefield",
+                      "execute": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "count": {
+                            "type": "Fixed",
+                            "value": 1
+                          },
+                          "target": {
+                            "type": "Controller"
+                          },
+                          "type": "Discard"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": true,
+                        "optional_targeting": false,
+                        "sub_ability": {
+                          "condition": {
+                            "signal": "OptionalEffectPerformed",
+                            "type": "EffectOutcome"
+                          },
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "count": {
+                              "type": "Fixed",
+                              "value": 1
+                            },
+                            "target": {
+                              "type": "Controller"
+                            },
+                            "type": "Draw"
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": false,
+                          "optional_targeting": false,
+                          "sub_ability": null,
+                          "sub_link": "SequentialSibling",
+                          "target_prompt": null
+                        },
+                        "target_prompt": null
+                      },
+                      "mode": "ChangesZone",
+                      "optional": true,
+                      "origin": null,
+                      "phase": null,
+                      "secondary": false,
+                      "trigger_zones": [
+                        "Battlefield"
+                      ],
+                      "valid_card": {
+                        "type": "SelfRef"
+                      },
+                      "valid_source": null,
+                      "valid_target": null
+                    }
+                  ]
+                },
+                "runtime_gaps": [],
+                "elapsed_ms": 83
+              },
+              "assay": {
+                "status": "compiled",
+                "parse_complete": true,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": true,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": true,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "When ~ enters, you may discard a card. If you do, draw a card.",
+                        "verdict": "ROUND_TRIP",
+                        "printed": "When ~ enters, you may discard a card. If you do, draw a card.",
+                        "decline_token": null
+                      }
+                    ]
+                  }
+                ],
+                "definition": {
+                  "name": "Brazen Giant",
+                  "manaCost": "{4}{R}",
+                  "typeLine": "Creature — Giant",
+                  "oracleText": "When this creature enters, you may discard a card. If you do, draw a card.",
+                  "creatureStats": {
+                    "power": 4,
+                    "toughness": 4
+                  },
+                  "script": {
+                    "triggeredAbilities": [
+                      {
+                        "id": "Brazen Giant:1",
+                        "trigger": {
+                          "type": "ZoneChangeEvent",
+                          "to": "Battlefield"
+                        },
+                        "effect": {
+                          "type": "Gated",
+                          "gate": "Gate.MayDecide",
+                          "then": {
+                            "type": "Gated",
+                            "gate": {
+                              "type": "Gate.DoAction",
+                              "action": {
+                                "type": "Composite",
+                                "effects": [
+                                  {
+                                    "type": "GatherCards",
+                                    "source": {
+                                      "type": "FromZone",
+                                      "zone": "Hand"
+                                    },
+                                    "storeAs": "hand"
+                                  },
+                                  {
+                                    "type": "SelectFromCollection",
+                                    "from": "hand",
+                                    "selection": {
+                                      "type": "ChooseExactly",
+                                      "count": {
+                                        "type": "Fixed",
+                                        "amount": 1
+                                      }
+                                    },
+                                    "storeSelected": "discarded",
+                                    "prompt": "Choose 1 card to discard"
+                                  },
+                                  {
+                                    "type": "MoveCollection",
+                                    "from": "discarded",
+                                    "destination": {
+                                      "type": "ToZone",
+                                      "zone": "Graveyard"
+                                    },
+                                    "moveType": "Discard"
+                                  }
+                                ]
+                              }
+                            },
+                            "then": {
+                              "type": "DrawCards",
+                              "count": {
+                                "type": "Fixed",
+                                "amount": 1
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                "warnings": [],
+                "elapsed_ms": 2183
+              },
+              "mtgish": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "",
+                "intent_fidelity": "not_checked",
+                "mtgish": "Card(Name: \"Brazen Giant\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Giant]), ManaCost: [ManaCostGeneric(4), ManaCostR], Rules: [TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([MayCost(DiscardACard), If(CostWasPaid, [DrawACard])]))], CardPT: (Power: 4, Toughness: 4))",
+                "normalized_input": "Brazen Giant\nCreature - Giant\n{4}{R}\nWhen this creature enters, you may discard a card. If you do, draw a card.\n4/4",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": null,
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 2232
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "parsed",
+            "parse_complete": true,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "",
+            "intent_fidelity": "not_checked",
+            "mtgish": "Card(Name: \"Brazen Giant\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Giant]), ManaCost: [ManaCostGeneric(4), ManaCostR], Rules: [TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([MayCost(DiscardACard), If(CostWasPaid, [DrawACard])]))], CardPT: (Power: 4, Toughness: 4))",
+            "normalized_input": "Brazen Giant\nCreature - Giant\n{4}{R}\nWhen this creature enters, you may discard a card. If you do, draw a card.\n4/4",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": null,
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 2232
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "opponent_pair",
+    "description": "a black/white/blue creature that plays cards from the top of the opponents deck",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "results": [
+      {
+        "draft": {
+          "colors": [
+            "W",
+            "U",
+            "B"
+          ],
+          "mana_cost": "{1}{W}{U}{B}",
+          "name": "The Inquisitor Exarch",
+          "oracle_text": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+          "power": "3",
+          "rarity": "rare",
+          "toughness": "3",
+          "type_line": "Legendary Creature — Human Cleric"
+        },
+        "raw": "{\"colors\":[\"W\",\"U\",\"B\"],\"mana_cost\":\"{1}{W}{U}{B}\",\"name\":\"The Inquisitor Exarch\",\"oracle_text\":\"At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.\",\"power\":\"3\",\"rarity\":\"rare\",\"toughness\":\"3\",\"type_line\":\"Legendary Creature — Human Cleric\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 17.71,
+          "usage": {
+            "completion_tokens": 100,
+            "prompt_tokens": 774,
+            "total_tokens": 874,
+            "prompt_tokens_details": {
+              "cached_tokens": 754
+            }
+          },
+          "usage_scope": "server response; batch usage may describe only the first completion",
+          "candidate_index": 0,
+          "candidate_count": 2,
+          "decoding": {
+            "temperature": 0.35,
+            "seed": 1080774759,
+            "max_tokens": 2048,
+            "n": 2,
+            "top_p": 0.9,
+            "top_k": 40,
+            "min_p": 0.05,
+            "cache_prompt": true
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "The Inquisitor Exarch",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 174,
+                      "source_start": 0
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 5,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": false,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": [
+                    {
+                      "batched": false,
+                      "condition": null,
+                      "constraint": {
+                        "type": "OnlyDuringOpponentsTurn"
+                      },
+                      "damage_kind": "Any",
+                      "description": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                      "destination": null,
+                      "execute": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "count": 1,
+                          "player": {
+                            "type": "ScopedPlayer"
+                          },
+                          "type": "RevealTop"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "sub_ability": {
+                          "condition": null,
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "destination": "Hand",
+                            "enter_tapped": false,
+                            "enter_transformed": false,
+                            "enters_attacking": false,
+                            "origin": null,
+                            "owner_library": false,
+                            "target": {
+                              "type": "ParentTarget"
+                            },
+                            "type": "ChangeZone"
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": true,
+                          "optional_targeting": false,
+                          "sub_ability": {
+                            "condition": {
+                              "condition": {
+                                "signal": "OptionalEffectPerformed",
+                                "type": "EffectOutcome"
+                              },
+                              "type": "Not"
+                            },
+                            "cost": null,
+                            "description": null,
+                            "duration": null,
+                            "effect": {
+                              "destination": "Graveyard",
+                              "enter_tapped": false,
+                              "enter_transformed": false,
+                              "enters_attacking": false,
+                              "origin": null,
+                              "owner_library": false,
+                              "target": {
+                                "type": "ParentTarget"
+                              },
+                              "type": "ChangeZone"
+                            },
+                            "forward_result": false,
+                            "kind": "Spell",
+                            "optional": false,
+                            "optional_targeting": false,
+                            "sub_ability": null,
+                            "sub_link": "SequentialSibling",
+                            "target_prompt": null
+                          },
+                          "sub_link": "SequentialSibling",
+                          "target_prompt": null
+                        },
+                        "target_prompt": null
+                      },
+                      "mode": "Phase",
+                      "optional": false,
+                      "origin": null,
+                      "phase": "Upkeep",
+                      "secondary": false,
+                      "trigger_zones": [
+                        "Battlefield"
+                      ],
+                      "valid_card": null,
+                      "valid_source": null,
+                      "valid_target": null
+                    }
+                  ]
+                },
+                "runtime_gaps": [],
+                "elapsed_ms": 131
+              },
+              "assay": {
+                "status": "declined",
+                "parse_complete": false,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": false,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": null,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "that"
+                      }
+                    ]
+                  }
+                ],
+                "declines": [
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"that\"",
+                    "line": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                    "line_index": 0
+                  }
+                ],
+                "elapsed_ms": 1275
+              },
+              "mtgish": {
+                "status": "rejected",
+                "parse_complete": false,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "No match",
+                "intent_fidelity": "not_checked",
+                "mtgish": "",
+                "normalized_input": "The Inquisitor Exarch\nLegendary Creature - Human Cleric\n{1}{W}{U}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": {
+                  "column": 96,
+                  "context": "}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. ⟪HERE⟫You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+                  "farthest_token_index": 57,
+                  "line": 4,
+                  "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+                  "stage": "english",
+                  "token": "You"
+                },
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 2207
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "rejected",
+            "parse_complete": false,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "No match",
+            "intent_fidelity": "not_checked",
+            "mtgish": "",
+            "normalized_input": "The Inquisitor Exarch\nLegendary Creature - Human Cleric\n{1}{W}{U}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": {
+              "column": 96,
+              "context": "}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. ⟪HERE⟫You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+              "farthest_token_index": 57,
+              "line": 4,
+              "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+              "stage": "english",
+              "token": "You"
+            },
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 2207
+          }
+        }
+      },
+      {
+        "draft": {
+          "colors": [
+            "W",
+            "U",
+            "B"
+          ],
+          "mana_cost": "{1}{W}{U}{B}",
+          "name": "The Inquisitor Exarch",
+          "oracle_text": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+          "power": "3",
+          "rarity": "rare",
+          "toughness": "3",
+          "type_line": "Legendary Creature — Human Cleric"
+        },
+        "raw": "{\"colors\":[\"W\",\"U\",\"B\"],\"mana_cost\":\"{1}{W}{U}{B}\",\"name\":\"The Inquisitor Exarch\",\"oracle_text\":\"At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.\",\"power\":\"3\",\"rarity\":\"rare\",\"toughness\":\"3\",\"type_line\":\"Legendary Creature — Human Cleric\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 17.71,
+          "usage": {
+            "completion_tokens": 100,
+            "prompt_tokens": 774,
+            "total_tokens": 874,
+            "prompt_tokens_details": {
+              "cached_tokens": 754
+            }
+          },
+          "usage_scope": "server response; batch usage may describe only the first completion",
+          "candidate_index": 1,
+          "candidate_count": 2,
+          "decoding": {
+            "temperature": 0.35,
+            "seed": 1080774759,
+            "max_tokens": 2048,
+            "n": 2,
+            "top_p": 0.9,
+            "top_k": 40,
+            "min_p": 0.05,
+            "cache_prompt": true
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "The Inquisitor Exarch",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 174,
+                      "source_start": 0
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 5,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": false,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": [
+                    {
+                      "batched": false,
+                      "condition": null,
+                      "constraint": {
+                        "type": "OnlyDuringOpponentsTurn"
+                      },
+                      "damage_kind": "Any",
+                      "description": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                      "destination": null,
+                      "execute": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "count": 1,
+                          "player": {
+                            "type": "ScopedPlayer"
+                          },
+                          "type": "RevealTop"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "sub_ability": {
+                          "condition": null,
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "destination": "Hand",
+                            "enter_tapped": false,
+                            "enter_transformed": false,
+                            "enters_attacking": false,
+                            "origin": null,
+                            "owner_library": false,
+                            "target": {
+                              "type": "ParentTarget"
+                            },
+                            "type": "ChangeZone"
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": true,
+                          "optional_targeting": false,
+                          "sub_ability": {
+                            "condition": {
+                              "condition": {
+                                "signal": "OptionalEffectPerformed",
+                                "type": "EffectOutcome"
+                              },
+                              "type": "Not"
+                            },
+                            "cost": null,
+                            "description": null,
+                            "duration": null,
+                            "effect": {
+                              "destination": "Graveyard",
+                              "enter_tapped": false,
+                              "enter_transformed": false,
+                              "enters_attacking": false,
+                              "origin": null,
+                              "owner_library": false,
+                              "target": {
+                                "type": "ParentTarget"
+                              },
+                              "type": "ChangeZone"
+                            },
+                            "forward_result": false,
+                            "kind": "Spell",
+                            "optional": false,
+                            "optional_targeting": false,
+                            "sub_ability": null,
+                            "sub_link": "SequentialSibling",
+                            "target_prompt": null
+                          },
+                          "sub_link": "SequentialSibling",
+                          "target_prompt": null
+                        },
+                        "target_prompt": null
+                      },
+                      "mode": "Phase",
+                      "optional": false,
+                      "origin": null,
+                      "phase": "Upkeep",
+                      "secondary": false,
+                      "trigger_zones": [
+                        "Battlefield"
+                      ],
+                      "valid_card": null,
+                      "valid_source": null,
+                      "valid_target": null
+                    }
+                  ]
+                },
+                "runtime_gaps": [],
+                "elapsed_ms": 105
+              },
+              "assay": {
+                "status": "declined",
+                "parse_complete": false,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": false,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": null,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "that"
+                      }
+                    ]
+                  }
+                ],
+                "declines": [
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"that\"",
+                    "line": "At the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.",
+                    "line_index": 0
+                  }
+                ],
+                "elapsed_ms": 1370
+              },
+              "mtgish": {
+                "status": "rejected",
+                "parse_complete": false,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "No match",
+                "intent_fidelity": "not_checked",
+                "mtgish": "",
+                "normalized_input": "The Inquisitor Exarch\nLegendary Creature - Human Cleric\n{1}{W}{U}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": {
+                  "column": 96,
+                  "context": "}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. ⟪HERE⟫You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+                  "farthest_token_index": 57,
+                  "line": 4,
+                  "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+                  "stage": "english",
+                  "token": "You"
+                },
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 2037
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "rejected",
+            "parse_complete": false,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "No match",
+            "intent_fidelity": "not_checked",
+            "mtgish": "",
+            "normalized_input": "The Inquisitor Exarch\nLegendary Creature - Human Cleric\n{1}{W}{U}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": {
+              "column": 96,
+              "context": "}{B}\nAt the beginning of each opponent's upkeep, that player reveals the top card of their library. ⟪HERE⟫You may put that card into your hand. If you don't, put it into your graveyard.\n3/3",
+              "farthest_token_index": 57,
+              "line": 4,
+              "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+              "stage": "english",
+              "token": "You"
+            },
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 2037
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "planeswalker_single",
+    "description": "a planeswalker with a loyalty ability that creates a 3/3 creature and an ultimate that removes opponents library from the game",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "results": [
+      {
+        "draft": {
+          "colors": [
+            "W",
+            "B"
+          ],
+          "loyalty": "3",
+          "mana_cost": "{2}{W}{B}",
+          "name": "Sorin, Vengeful Bloodlord",
+          "oracle_text": "+1: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life.\"\n−2: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life.\"\n−6: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.",
+          "rarity": "mythic",
+          "type_line": "Legendary Planeswalker — Sorin"
+        },
+        "raw": "{\"colors\":[\"W\",\"B\"],\"loyalty\":\"3\",\"mana_cost\":\"{2}{W}{B}\",\"name\":\"Sorin, Vengeful Bloodlord\",\"oracle_text\":\"+1: Create a 3/3 black Vampire creature token with flying and \\\"Whenever this token deals combat damage, you gain 1 life.\\\"\\n−2: Create a 3/3 black Vampire creature token with flying and \\\"Whenever this token deals combat damage, you gain 1 life.\\\"\\n−6: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.\",\"rarity\":\"mythic\",\"type_line\":\"Legendary Planeswalker — Sorin\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 17.02,
+          "usage": {
+            "completion_tokens": 157,
+            "prompt_tokens": 783,
+            "total_tokens": 940,
+            "prompt_tokens_details": {
+              "cached_tokens": 754
+            }
+          },
+          "usage_scope": "single completion",
+          "candidate_index": 0,
+          "candidate_count": 1,
+          "decoding": {
+            "temperature": 0,
+            "seed": 17,
+            "max_tokens": 2048
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "Sorin, Vengeful Bloodlord",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "+1: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life.\"",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 121,
+                      "source_start": 0
+                    },
+                    {
+                      "ability": 1,
+                      "detail": "−2: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life.\"",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 245,
+                      "source_start": 122
+                    },
+                    {
+                      "ability": 2,
+                      "detail": "−6: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 419,
+                      "source_start": 246
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 6,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "limitations": [
+                  "The pinned compiler does not support planeswalker loyalty abilities. A rejected planeswalker is not an official Magic rules ruling."
+                ],
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "partial_or_unsupported",
+                "parse_complete": false,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": true,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": 1,
+                        "type": "Loyalty"
+                      },
+                      "description": "+1: Create a 3/3 black Vampire creature token with flying and \"Whenever ~ deals combat damage, you gain 1 life.\"",
+                      "duration": null,
+                      "effect": {
+                        "colors": [
+                          "Black"
+                        ],
+                        "count": {
+                          "type": "Fixed",
+                          "value": 1
+                        },
+                        "enters_attacking": false,
+                        "keywords": [
+                          "Flying"
+                        ],
+                        "name": "Vampire",
+                        "owner": {
+                          "type": "Controller"
+                        },
+                        "power": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "static_abilities": [
+                          {
+                            "active_zones": [],
+                            "affected": {
+                              "type": "SelfRef"
+                            },
+                            "affected_zone": null,
+                            "characteristic_defining": false,
+                            "condition": null,
+                            "description": null,
+                            "effect_zone": null,
+                            "mode": "Continuous",
+                            "modifications": [
+                              {
+                                "trigger": {
+                                  "batched": false,
+                                  "condition": null,
+                                  "constraint": null,
+                                  "damage_kind": "CombatOnly",
+                                  "description": "Whenever ~ deals combat damage, you gain 1 life.",
+                                  "destination": null,
+                                  "execute": {
+                                    "condition": null,
+                                    "cost": null,
+                                    "description": null,
+                                    "duration": null,
+                                    "effect": {
+                                      "amount": {
+                                        "type": "Fixed",
+                                        "value": 1
+                                      },
+                                      "type": "GainLife"
+                                    },
+                                    "forward_result": false,
+                                    "kind": "Spell",
+                                    "optional": false,
+                                    "optional_targeting": false,
+                                    "sub_ability": null,
+                                    "target_prompt": null
+                                  },
+                                  "mode": "DamageDone",
+                                  "optional": false,
+                                  "origin": null,
+                                  "phase": null,
+                                  "secondary": false,
+                                  "trigger_zones": [
+                                    "Battlefield"
+                                  ],
+                                  "valid_card": null,
+                                  "valid_source": {
+                                    "type": "SelfRef"
+                                  },
+                                  "valid_target": null
+                                },
+                                "type": "GrantTrigger"
+                              }
+                            ]
+                          }
+                        ],
+                        "tapped": false,
+                        "toughness": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "type": "Token",
+                        "types": [
+                          "Creature",
+                          "Vampire"
+                        ]
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "sub_ability": null,
+                      "target_prompt": null
+                    },
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": -2,
+                        "type": "Loyalty"
+                      },
+                      "description": "−2: Create a 3/3 black Vampire creature token with flying and \"Whenever ~ deals combat damage, you gain 1 life.\"",
+                      "duration": null,
+                      "effect": {
+                        "colors": [
+                          "Black"
+                        ],
+                        "count": {
+                          "type": "Fixed",
+                          "value": 1
+                        },
+                        "enters_attacking": false,
+                        "keywords": [
+                          "Flying"
+                        ],
+                        "name": "Vampire",
+                        "owner": {
+                          "type": "Controller"
+                        },
+                        "power": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "static_abilities": [
+                          {
+                            "active_zones": [],
+                            "affected": {
+                              "type": "SelfRef"
+                            },
+                            "affected_zone": null,
+                            "characteristic_defining": false,
+                            "condition": null,
+                            "description": null,
+                            "effect_zone": null,
+                            "mode": "Continuous",
+                            "modifications": [
+                              {
+                                "trigger": {
+                                  "batched": false,
+                                  "condition": null,
+                                  "constraint": null,
+                                  "damage_kind": "CombatOnly",
+                                  "description": "Whenever ~ deals combat damage, you gain 1 life.",
+                                  "destination": null,
+                                  "execute": {
+                                    "condition": null,
+                                    "cost": null,
+                                    "description": null,
+                                    "duration": null,
+                                    "effect": {
+                                      "amount": {
+                                        "type": "Fixed",
+                                        "value": 1
+                                      },
+                                      "type": "GainLife"
+                                    },
+                                    "forward_result": false,
+                                    "kind": "Spell",
+                                    "optional": false,
+                                    "optional_targeting": false,
+                                    "sub_ability": null,
+                                    "target_prompt": null
+                                  },
+                                  "mode": "DamageDone",
+                                  "optional": false,
+                                  "origin": null,
+                                  "phase": null,
+                                  "secondary": false,
+                                  "trigger_zones": [
+                                    "Battlefield"
+                                  ],
+                                  "valid_card": null,
+                                  "valid_source": {
+                                    "type": "SelfRef"
+                                  },
+                                  "valid_target": null
+                                },
+                                "type": "GrantTrigger"
+                              }
+                            ]
+                          }
+                        ],
+                        "tapped": false,
+                        "toughness": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "type": "Token",
+                        "types": [
+                          "Creature",
+                          "Vampire"
+                        ]
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "sub_ability": null,
+                      "target_prompt": null
+                    },
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": -6,
+                        "type": "Loyalty"
+                      },
+                      "description": "−6: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.",
+                      "duration": null,
+                      "effect": {
+                        "destination": "Exile",
+                        "origin": "Library",
+                        "target": {
+                          "controller": null,
+                          "properties": [
+                            {
+                              "controller": "ScopedPlayer",
+                              "type": "Owned"
+                            },
+                            {
+                              "type": "InZone",
+                              "zone": "Library"
+                            }
+                          ],
+                          "type": "Typed",
+                          "type_filters": [
+                            "Card"
+                          ]
+                        },
+                        "type": "ChangeZoneAll"
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "player_scope": {
+                        "type": "Opponent"
+                      },
+                      "sub_ability": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "description": "shuffles the cards they exiled that aren't in their graveyard",
+                          "name": "unparsed_verb_arguments",
+                          "type": "Unimplemented"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "sub_ability": {
+                          "condition": null,
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "amount": {
+                              "divisor": 2,
+                              "inner": {
+                                "qty": {
+                                  "player": {
+                                    "type": "ScopedPlayer"
+                                  },
+                                  "type": "LifeTotal"
+                                },
+                                "type": "Ref"
+                              },
+                              "rounding": "Up",
+                              "type": "DivideRounded"
+                            },
+                            "type": "LoseLife"
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": false,
+                          "optional_targeting": false,
+                          "player_scope": {
+                            "type": "Opponent"
+                          },
+                          "sub_ability": null,
+                          "sub_link": "SequentialSibling",
+                          "target_prompt": null
+                        },
+                        "target_prompt": null
+                      },
+                      "target_prompt": null
+                    }
+                  ],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": []
+                },
+                "runtime_gaps": [
+                  "Effect:unparsed_verb_arguments"
+                ],
+                "elapsed_ms": 587
+              },
+              "assay": {
+                "status": "declined",
+                "parse_complete": false,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": false,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": null,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "+1: Create a 3/3 black Vampire creature token with flying and \"Whenever ~ deals combat damage, you gain 1 life.\"",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "+1:"
+                      },
+                      {
+                        "index": 1,
+                        "input": "−2: Create a 3/3 black Vampire creature token with flying and \"Whenever ~ deals combat damage, you gain 1 life.\"",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "−2:"
+                      },
+                      {
+                        "index": 2,
+                        "input": "−6: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "−6:"
+                      }
+                    ]
+                  }
+                ],
+                "declines": [
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"+1:\"",
+                    "line": "+1: Create a 3/3 black Vampire creature token with flying and \"Whenever ~ deals combat damage, you gain 1 life.\"",
+                    "line_index": 0
+                  },
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"−2:\"",
+                    "line": "−2: Create a 3/3 black Vampire creature token with flying and \"Whenever ~ deals combat damage, you gain 1 life.\"",
+                    "line_index": 1
+                  },
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"−6:\"",
+                    "line": "−6: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.",
+                    "line_index": 2
+                  }
+                ],
+                "elapsed_ms": 1279
+              },
+              "mtgish": {
+                "status": "rejected",
+                "parse_complete": false,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "No match",
+                "intent_fidelity": "not_checked",
+                "mtgish": "",
+                "normalized_input": "Sorin, Vengeful Bloodlord\nLegendary Planeswalker - Sorin\n{2}{W}{B}\n[+1]: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life\".\n[−2]: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life\".\n[−6]: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.\n3",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": {
+                  "column": 105,
+                  "context": ": Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage⟪HERE⟫, you gain 1 life\".\n[−2]: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life\".\n[−6]: Each opponent exiles all cards",
+                  "farthest_token_index": 59,
+                  "line": 4,
+                  "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+                  "stage": "english",
+                  "token": ","
+                },
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 1964
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "rejected",
+            "parse_complete": false,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "No match",
+            "intent_fidelity": "not_checked",
+            "mtgish": "",
+            "normalized_input": "Sorin, Vengeful Bloodlord\nLegendary Planeswalker - Sorin\n{2}{W}{B}\n[+1]: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life\".\n[−2]: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life\".\n[−6]: Each opponent exiles all cards from their library, then shuffles the cards they exiled that aren't in their graveyard. Each opponent loses half their life, rounded up.\n3",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": {
+              "column": 105,
+              "context": ": Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage⟪HERE⟫, you gain 1 life\".\n[−2]: Create a 3/3 black Vampire creature token with flying and \"Whenever this token deals combat damage, you gain 1 life\".\n[−6]: Each opponent exiles all cards",
+              "farthest_token_index": 59,
+              "line": 4,
+              "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+              "stage": "english",
+              "token": ","
+            },
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 1964
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "planeswalker_pair",
+    "description": "a planeswalker with a loyalty ability that creates a 3/3 creature and an ultimate that removes opponents library from the game",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "results": [
+      {
+        "draft": {
+          "colors": [
+            "W",
+            "B"
+          ],
+          "loyalty": "4",
+          "mana_cost": "{3}{W}{B}",
+          "name": "Sorin, Vengeful Bloodlord",
+          "oracle_text": "+1: Create a 3/3 black Vampire creature token with flying. It has \"Whenever this token deals combat damage to a player, that player loses 1 life.\"\n−2: You gain 3 life and each opponent loses 3 life.\n−6: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.",
+          "rarity": "mythic",
+          "type_line": "Legendary Planeswalker — Sorin"
+        },
+        "raw": "{\"colors\":[\"W\",\"B\"],\"loyalty\":\"4\",\"mana_cost\":\"{3}{W}{B}\",\"name\":\"Sorin, Vengeful Bloodlord\",\"oracle_text\":\"+1: Create a 3/3 black Vampire creature token with flying. It has \\\"Whenever this token deals combat damage to a player, that player loses 1 life.\\\"\\n−2: You gain 3 life and each opponent loses 3 life.\\n−6: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.\",\"rarity\":\"mythic\",\"type_line\":\"Legendary Planeswalker — Sorin\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 28.28,
+          "usage": {
+            "completion_tokens": 169,
+            "prompt_tokens": 783,
+            "total_tokens": 952,
+            "prompt_tokens_details": {
+              "cached_tokens": 782
+            }
+          },
+          "usage_scope": "server response; batch usage may describe only the first completion",
+          "candidate_index": 0,
+          "candidate_count": 2,
+          "decoding": {
+            "temperature": 0.35,
+            "seed": 683569040,
+            "max_tokens": 2048,
+            "n": 2,
+            "top_p": 0.9,
+            "top_k": 40,
+            "min_p": 0.05,
+            "cache_prompt": true
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "Sorin, Vengeful Bloodlord",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "+1: Create a 3/3 black Vampire creature token with flying. It has \"Whenever this token deals combat damage to a player, that player loses 1 life.\"",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 146,
+                      "source_start": 0
+                    },
+                    {
+                      "ability": 1,
+                      "detail": "−2: You gain 3 life and each opponent loses 3 life.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 200,
+                      "source_start": 147
+                    },
+                    {
+                      "ability": 2,
+                      "detail": "−6: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 482,
+                      "source_start": 201
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 7,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "limitations": [
+                  "The pinned compiler does not support planeswalker loyalty abilities. A rejected planeswalker is not an official Magic rules ruling."
+                ],
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "partial_or_unsupported",
+                "parse_complete": false,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": true,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": 1,
+                        "type": "Loyalty"
+                      },
+                      "description": "+1: Create a 3/3 black Vampire creature token with flying. It has \"Whenever ~ deals combat damage to a player, that player loses 1 life.\"",
+                      "duration": null,
+                      "effect": {
+                        "colors": [
+                          "Black"
+                        ],
+                        "count": {
+                          "type": "Fixed",
+                          "value": 1
+                        },
+                        "enters_attacking": false,
+                        "keywords": [
+                          "Flying"
+                        ],
+                        "name": "Vampire",
+                        "owner": {
+                          "type": "Controller"
+                        },
+                        "power": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "tapped": false,
+                        "toughness": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "type": "Token",
+                        "types": [
+                          "Creature",
+                          "Vampire"
+                        ]
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "sub_ability": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "duration": "Permanent",
+                          "static_abilities": [
+                            {
+                              "active_zones": [],
+                              "affected": {
+                                "type": "LastCreated"
+                              },
+                              "affected_zone": null,
+                              "characteristic_defining": false,
+                              "condition": null,
+                              "description": "have \"Whenever ~ deals combat damage to a player, that player loses 1 life.\"",
+                              "effect_zone": null,
+                              "mode": "Continuous",
+                              "modifications": [
+                                {
+                                  "trigger": {
+                                    "batched": false,
+                                    "condition": null,
+                                    "constraint": null,
+                                    "damage_kind": "CombatOnly",
+                                    "description": "Whenever ~ deals combat damage to a player, that player loses 1 life.",
+                                    "destination": null,
+                                    "execute": {
+                                      "condition": null,
+                                      "cost": null,
+                                      "description": null,
+                                      "duration": null,
+                                      "effect": {
+                                        "amount": {
+                                          "type": "Fixed",
+                                          "value": 1
+                                        },
+                                        "target": {
+                                          "type": "TriggeringPlayer"
+                                        },
+                                        "type": "LoseLife"
+                                      },
+                                      "forward_result": false,
+                                      "kind": "Spell",
+                                      "optional": false,
+                                      "optional_targeting": false,
+                                      "sub_ability": null,
+                                      "target_prompt": null
+                                    },
+                                    "mode": "DamageDone",
+                                    "optional": false,
+                                    "origin": null,
+                                    "phase": null,
+                                    "secondary": false,
+                                    "trigger_zones": [
+                                      "Battlefield"
+                                    ],
+                                    "valid_card": null,
+                                    "valid_source": {
+                                      "type": "SelfRef"
+                                    },
+                                    "valid_target": {
+                                      "type": "Player"
+                                    }
+                                  },
+                                  "type": "GrantTrigger"
+                                }
+                              ]
+                            }
+                          ],
+                          "target": {
+                            "type": "LastCreated"
+                          },
+                          "type": "GenericEffect"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "sub_ability": null,
+                        "sub_link": "SequentialSibling",
+                        "target_prompt": null
+                      },
+                      "target_prompt": null
+                    },
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": -2,
+                        "type": "Loyalty"
+                      },
+                      "description": "−2: You gain 3 life and each opponent loses 3 life.",
+                      "duration": null,
+                      "effect": {
+                        "amount": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "type": "GainLife"
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "sub_ability": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "amount": {
+                            "type": "Fixed",
+                            "value": 3
+                          },
+                          "type": "LoseLife"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "player_scope": {
+                          "type": "Opponent"
+                        },
+                        "sub_ability": null,
+                        "target_prompt": null
+                      },
+                      "target_prompt": null
+                    },
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": -6,
+                        "type": "Loyalty"
+                      },
+                      "description": "−6: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.",
+                      "duration": null,
+                      "effect": {
+                        "destination": "Exile",
+                        "origin": "Library",
+                        "target": {
+                          "controller": null,
+                          "properties": [
+                            {
+                              "controller": "ScopedPlayer",
+                              "type": "Owned"
+                            },
+                            {
+                              "type": "InZone",
+                              "zone": "Library"
+                            }
+                          ],
+                          "type": "Typed",
+                          "type_filters": [
+                            "Card"
+                          ]
+                        },
+                        "type": "ChangeZoneAll"
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "player_scope": {
+                        "type": "Opponent"
+                      },
+                      "sub_ability": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": null,
+                        "effect": {
+                          "destination": "Exile",
+                          "origin": null,
+                          "target": {
+                            "controller": "TargetPlayer",
+                            "properties": [
+                              {
+                                "type": "InAnyZone",
+                                "zones": [
+                                  "Hand",
+                                  "Graveyard"
+                                ]
+                              }
+                            ],
+                            "type": "Typed",
+                            "type_filters": []
+                          },
+                          "type": "ChangeZoneAll"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "player_scope": {
+                          "type": "All"
+                        },
+                        "sub_ability": {
+                          "condition": null,
+                          "cost": null,
+                          "description": null,
+                          "duration": null,
+                          "effect": {
+                            "driver": {
+                              "ResolutionWindow": {
+                                "bounds": {}
+                              }
+                            },
+                            "mode": "Cast",
+                            "target": {
+                              "type": "ExiledBySource"
+                            },
+                            "type": "CastFromZone",
+                            "without_paying_mana_cost": true
+                          },
+                          "forward_result": false,
+                          "kind": "Spell",
+                          "optional": false,
+                          "optional_targeting": false,
+                          "sub_ability": {
+                            "condition": null,
+                            "cost": null,
+                            "description": null,
+                            "duration": null,
+                            "effect": {
+                              "description": "put all cards exiled this way into their owners' libraries",
+                              "name": "unparsed_verb_arguments",
+                              "type": "Unimplemented"
+                            },
+                            "forward_result": false,
+                            "kind": "Spell",
+                            "optional": false,
+                            "optional_targeting": false,
+                            "sub_ability": null,
+                            "sub_link": "SequentialSibling",
+                            "target_prompt": null
+                          },
+                          "sub_link": "SequentialSibling",
+                          "target_choice_timing": "Resolution",
+                          "target_prompt": null
+                        },
+                        "sub_link": "SequentialSibling",
+                        "target_prompt": null
+                      },
+                      "target_prompt": null
+                    }
+                  ],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": []
+                },
+                "runtime_gaps": [
+                  "Effect:unparsed_verb_arguments"
+                ],
+                "elapsed_ms": 542
+              },
+              "assay": {
+                "status": "declined",
+                "parse_complete": false,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": false,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": null,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "+1: Create a 3/3 black Vampire creature token with flying. It has \"Whenever ~ deals combat damage to a player, that player loses 1 life.\"",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "+1:"
+                      },
+                      {
+                        "index": 1,
+                        "input": "−2: You gain 3 life and each opponent loses 3 life.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "−2:"
+                      },
+                      {
+                        "index": 2,
+                        "input": "−6: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "−6:"
+                      }
+                    ]
+                  }
+                ],
+                "declines": [
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"+1:\"",
+                    "line": "+1: Create a 3/3 black Vampire creature token with flying. It has \"Whenever ~ deals combat damage to a player, that player loses 1 life.\"",
+                    "line_index": 0
+                  },
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"−2:\"",
+                    "line": "−2: You gain 3 life and each opponent loses 3 life.",
+                    "line_index": 1
+                  },
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"−6:\"",
+                    "line": "−6: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.",
+                    "line_index": 2
+                  }
+                ],
+                "elapsed_ms": 1351
+              },
+              "mtgish": {
+                "status": "rejected",
+                "parse_complete": false,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "No match",
+                "intent_fidelity": "not_checked",
+                "mtgish": "",
+                "normalized_input": "Sorin, Vengeful Bloodlord\nLegendary Planeswalker - Sorin\n{3}{W}{B}\n[+1]: Create a 3/3 black Vampire creature token with flying. It has \"Whenever this token deals combat damage to a player, that player loses 1 life\".\n[−2]: You gain 3 life and each opponent loses 3 life.\n[−6]: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.\n4",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": {
+                  "column": 28,
+                  "context": "yer loses 1 life\".\n[−2]: You gain 3 life and each opponent loses 3 life.\n[−6]: Each opponent exiles ⟪HERE⟫all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their ma",
+                  "farthest_token_index": 121,
+                  "line": 6,
+                  "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+                  "stage": "english",
+                  "token": "all"
+                },
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 1985
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "rejected",
+            "parse_complete": false,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "No match",
+            "intent_fidelity": "not_checked",
+            "mtgish": "",
+            "normalized_input": "Sorin, Vengeful Bloodlord\nLegendary Planeswalker - Sorin\n{3}{W}{B}\n[+1]: Create a 3/3 black Vampire creature token with flying. It has \"Whenever this token deals combat damage to a player, that player loses 1 life\".\n[−2]: You gain 3 life and each opponent loses 3 life.\n[−6]: Each opponent exiles all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their mana costs. Then put all cards exiled this way into their owners' libraries.\n4",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": {
+              "column": 28,
+              "context": "yer loses 1 life\".\n[−2]: You gain 3 life and each opponent loses 3 life.\n[−6]: Each opponent exiles ⟪HERE⟫all cards from their library. Then each player exiles all cards from their hand and graveyard. You may cast any number of spells from among the exiled cards without paying their ma",
+              "farthest_token_index": 121,
+              "line": 6,
+              "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+              "stage": "english",
+              "token": "all"
+            },
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 1985
+          }
+        }
+      },
+      {
+        "draft": {
+          "colors": [
+            "W",
+            "B"
+          ],
+          "loyalty": "3",
+          "mana_cost": "{1}{W}{B}",
+          "name": "Necra, the Void's Hand",
+          "oracle_text": "+1: Create a 3/3 black Horror creature token with \"When this creature dies, draw a card.\"\n−2: Target opponent discards a card.\n−4: Each opponent exiles all cards from their library. They can't be regenerated.",
+          "rarity": "mythic",
+          "type_line": "Legendary Planeswalker — Necra"
+        },
+        "raw": "{\"colors\":[\"W\",\"B\"],\"loyalty\":\"3\",\"mana_cost\":\"{1}{W}{B}\",\"name\":\"Necra, the Void's Hand\",\"oracle_text\":\"+1: Create a 3/3 black Horror creature token with \\\"When this creature dies, draw a card.\\\"\\n−2: Target opponent discards a card.\\n−4: Each opponent exiles all cards from their library. They can't be regenerated.\",\"rarity\":\"mythic\",\"type_line\":\"Legendary Planeswalker — Necra\"}",
+        "inference": {
+          "model": "Qwen3-4B · DPO round two · Q4_0",
+          "elapsed_seconds": 28.28,
+          "usage": {
+            "completion_tokens": 169,
+            "prompt_tokens": 783,
+            "total_tokens": 952,
+            "prompt_tokens_details": {
+              "cached_tokens": 782
+            }
+          },
+          "usage_scope": "server response; batch usage may describe only the first completion",
+          "candidate_index": 1,
+          "candidate_count": 2,
+          "decoding": {
+            "temperature": 0.35,
+            "seed": 683569040,
+            "max_tokens": 2048,
+            "n": 2,
+            "top_p": 0.9,
+            "top_k": 40,
+            "min_p": 0.05,
+            "cache_prompt": true
+          },
+          "terminology_guide": true,
+          "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+          "generation_mode": "unconstrained",
+          "output_schema_sha256": null,
+          "finish_reason": "stop"
+        },
+        "validation": {
+          "schema": {
+            "accepted": true,
+            "errors": []
+          },
+          "faces": [
+            {
+              "index": 0,
+              "name": "Necra, the Void's Hand",
+              "binding": "CARDNAME replaced with this face name only; no rules repair",
+              "vizier": {
+                "canonical_text": null,
+                "compile": false,
+                "coverage": {
+                  "diagnostics": [
+                    {
+                      "ability": 0,
+                      "detail": "+1: Create a 3/3 black Horror creature token with \"When this creature dies, draw a card.\"",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 89,
+                      "source_start": 0
+                    },
+                    {
+                      "ability": 1,
+                      "detail": "−2: Target opponent discards a card.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 128,
+                      "source_start": 90
+                    },
+                    {
+                      "ability": 2,
+                      "detail": "−4: Each opponent exiles all cards from their library. They can't be regenerated.",
+                      "face": 0,
+                      "reason": "unsupported_syntax",
+                      "source_end": 212,
+                      "source_start": 129
+                    }
+                  ],
+                  "mechanics": [],
+                  "status": "unsupported"
+                },
+                "render": null,
+                "roundtrip": null,
+                "validation_ms": 5,
+                "runtime_admission": "not_checked",
+                "keyword_metadata": [],
+                "adapter_sha256": "8f8696eee9c127c7fbf2544cd5e3718b8142c0fd82101f0d02868a277594f298",
+                "limitations": [
+                  "The pinned compiler does not support planeswalker loyalty abilities. A rejected planeswalker is not an official Magic rules ruling."
+                ],
+                "status": "rejected"
+              },
+              "phase": {
+                "status": "parsed",
+                "parse_complete": true,
+                "revision": "8044043df143e551bb2f99b4c4d5ca55c1f49d5e",
+                "diagnostics": [],
+                "has_unimplemented_parts": false,
+                "intent_fidelity": "not_checked",
+                "keyword_metadata": [],
+                "oracle_correctness": "not_proven",
+                "parsed": {
+                  "abilities": [
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": 1,
+                        "type": "Loyalty"
+                      },
+                      "description": "+1: Create a 3/3 black Horror creature token with \"When ~ dies, draw a card.\"",
+                      "duration": null,
+                      "effect": {
+                        "colors": [
+                          "Black"
+                        ],
+                        "count": {
+                          "type": "Fixed",
+                          "value": 1
+                        },
+                        "enters_attacking": false,
+                        "keywords": [],
+                        "name": "Horror",
+                        "owner": {
+                          "type": "Controller"
+                        },
+                        "power": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "static_abilities": [
+                          {
+                            "active_zones": [],
+                            "affected": {
+                              "type": "SelfRef"
+                            },
+                            "affected_zone": null,
+                            "characteristic_defining": false,
+                            "condition": null,
+                            "description": null,
+                            "effect_zone": null,
+                            "mode": "Continuous",
+                            "modifications": [
+                              {
+                                "trigger": {
+                                  "batched": false,
+                                  "condition": null,
+                                  "constraint": null,
+                                  "damage_kind": "Any",
+                                  "description": "When ~ dies, draw a card.",
+                                  "destination": "Graveyard",
+                                  "execute": {
+                                    "condition": null,
+                                    "cost": null,
+                                    "description": null,
+                                    "duration": null,
+                                    "effect": {
+                                      "count": {
+                                        "type": "Fixed",
+                                        "value": 1
+                                      },
+                                      "target": {
+                                        "type": "Controller"
+                                      },
+                                      "type": "Draw"
+                                    },
+                                    "forward_result": false,
+                                    "kind": "Spell",
+                                    "optional": false,
+                                    "optional_targeting": false,
+                                    "sub_ability": null,
+                                    "target_prompt": null
+                                  },
+                                  "mode": "ChangesZone",
+                                  "optional": false,
+                                  "origin": "Battlefield",
+                                  "phase": null,
+                                  "secondary": false,
+                                  "trigger_zones": [
+                                    "Graveyard"
+                                  ],
+                                  "valid_card": {
+                                    "type": "SelfRef"
+                                  },
+                                  "valid_source": null,
+                                  "valid_target": null
+                                },
+                                "type": "GrantTrigger"
+                              }
+                            ]
+                          }
+                        ],
+                        "tapped": false,
+                        "toughness": {
+                          "type": "Fixed",
+                          "value": 3
+                        },
+                        "type": "Token",
+                        "types": [
+                          "Creature",
+                          "Horror"
+                        ]
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "sub_ability": null,
+                      "target_prompt": null
+                    },
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": -2,
+                        "type": "Loyalty"
+                      },
+                      "description": "−2: Target opponent discards a card.",
+                      "duration": null,
+                      "effect": {
+                        "count": {
+                          "type": "Fixed",
+                          "value": 1
+                        },
+                        "target": {
+                          "controller": "Opponent",
+                          "properties": [],
+                          "type": "Typed",
+                          "type_filters": []
+                        },
+                        "type": "Discard"
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "sub_ability": null,
+                      "target_prompt": null
+                    },
+                    {
+                      "activation_restrictions": [
+                        {
+                          "type": "AsSorcery"
+                        }
+                      ],
+                      "condition": null,
+                      "cost": {
+                        "amount": -4,
+                        "type": "Loyalty"
+                      },
+                      "description": "−4: Each opponent exiles all cards from their library. They can't be regenerated.",
+                      "duration": null,
+                      "effect": {
+                        "destination": "Exile",
+                        "origin": "Library",
+                        "target": {
+                          "controller": null,
+                          "properties": [
+                            {
+                              "controller": "ScopedPlayer",
+                              "type": "Owned"
+                            },
+                            {
+                              "type": "InZone",
+                              "zone": "Library"
+                            }
+                          ],
+                          "type": "Typed",
+                          "type_filters": [
+                            "Card"
+                          ]
+                        },
+                        "type": "ChangeZoneAll"
+                      },
+                      "forward_result": false,
+                      "kind": "Activated",
+                      "optional": false,
+                      "optional_targeting": false,
+                      "player_scope": {
+                        "type": "Opponent"
+                      },
+                      "sub_ability": {
+                        "condition": null,
+                        "cost": null,
+                        "description": null,
+                        "duration": "UntilEndOfTurn",
+                        "effect": {
+                          "duration": "UntilEndOfTurn",
+                          "static_abilities": [
+                            {
+                              "active_zones": [],
+                              "affected": {
+                                "type": "ParentTarget"
+                              },
+                              "affected_zone": null,
+                              "characteristic_defining": false,
+                              "condition": null,
+                              "description": null,
+                              "effect_zone": null,
+                              "mode": "CantBeRegenerated",
+                              "modifications": [
+                                {
+                                  "mode": "CantBeRegenerated",
+                                  "type": "AddStaticMode"
+                                }
+                              ]
+                            }
+                          ],
+                          "target": null,
+                          "type": "GenericEffect"
+                        },
+                        "forward_result": false,
+                        "kind": "Spell",
+                        "optional": false,
+                        "optional_targeting": false,
+                        "sub_ability": null,
+                        "sub_link": "SequentialSibling",
+                        "target_prompt": null
+                      },
+                      "target_prompt": null
+                    }
+                  ],
+                  "extractedKeywords": [],
+                  "replacements": [],
+                  "statics": [],
+                  "triggers": []
+                },
+                "runtime_gaps": [],
+                "elapsed_ms": 399
+              },
+              "assay": {
+                "status": "declined",
+                "parse_complete": false,
+                "revision": "475053b93399a10ec87ab7beab7dd35383e48964",
+                "upstream_compiled": false,
+                "oracle_correctness": "not_proven",
+                "intent_fidelity": "not_checked",
+                "faces": [
+                  {
+                    "normalization_holds": true,
+                    "restore_holds": null,
+                    "lines": [
+                      {
+                        "index": 0,
+                        "input": "+1: Create a 3/3 black Horror creature token with \"When ~ dies, draw a card.\"",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "+1:"
+                      },
+                      {
+                        "index": 1,
+                        "input": "−2: Target opponent discards a card.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "−2:"
+                      },
+                      {
+                        "index": 2,
+                        "input": "−4: Each opponent exiles all cards from their library. They can't be regenerated.",
+                        "verdict": "DECLINED",
+                        "printed": null,
+                        "decline_token": "−4:"
+                      }
+                    ]
+                  }
+                ],
+                "declines": [
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"+1:\"",
+                    "line": "+1: Create a 3/3 black Horror creature token with \"When ~ dies, draw a card.\"",
+                    "line_index": 0
+                  },
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"−2:\"",
+                    "line": "−2: Target opponent discards a card.",
+                    "line_index": 1
+                  },
+                  {
+                    "kind": "LINE_DECLINED",
+                    "detail": "no rule reads this line, from \"−4:\"",
+                    "line": "−4: Each opponent exiles all cards from their library. They can't be regenerated.",
+                    "line_index": 2
+                  }
+                ],
+                "elapsed_ms": 1259
+              },
+              "mtgish": {
+                "status": "rejected",
+                "parse_complete": false,
+                "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+                "applied_rewrites": [],
+                "card_specific_rewrites": true,
+                "error": "No match",
+                "intent_fidelity": "not_checked",
+                "mtgish": "",
+                "normalized_input": "Necra, the Void's Hand\nLegendary Planeswalker - Necra\n{1}{W}{B}\n[+1]: Create a 3/3 black Horror creature token with \"When this creature dies, draw a card\".\n[−2]: Target opponent discards a card.\n[−4]: Each opponent exiles all cards from their library. They can't be regenerated.\n3",
+                "oracle_correctness": "not_proven",
+                "parse_diagnostic": {
+                  "column": 26,
+                  "context": "Necra, the Void's Hand\nLegendary Planeswalker - ⟪HERE⟫Necra\n{1}{W}{B}\n[+1]: Create a 3/3 black Horror creature token with \"When this creature dies, draw a card\".\n[−2]: Target opponent discards a card.\n[−4]: Each opponent exiles all ca",
+                  "farthest_token_index": 17,
+                  "line": 2,
+                  "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+                  "stage": "english",
+                  "token": "Necra"
+                },
+                "representation_warning": "",
+                "scope": "whole_card",
+                "workflow": "upstream-standard-v2",
+                "elapsed_ms": 2285,
+                "unsupported_subtypes": [
+                  "Necra"
+                ],
+                "supported_planeswalker_subtypes": [
+                  "Ajani",
+                  "Aminatou",
+                  "Angrath",
+                  "Arlinn",
+                  "Arzakon",
+                  "Ashiok",
+                  "Bahamut",
+                  "Basri",
+                  "Bolas",
+                  "Calix",
+                  "Chandra",
+                  "Comet",
+                  "Dack",
+                  "Dakkon",
+                  "Daretti",
+                  "Davriel",
+                  "Deb",
+                  "Dellian",
+                  "Dihada",
+                  "Domri",
+                  "Dovin",
+                  "Dyfed",
+                  "Ellywick",
+                  "Elminster",
+                  "Elspeth",
+                  "Estrid",
+                  "Feroz",
+                  "Freyalise",
+                  "Garruk",
+                  "Gideon",
+                  "Greensleeves",
+                  "Grist",
+                  "Guff",
+                  "Huatli",
+                  "Jace",
+                  "Jared",
+                  "Jaya",
+                  "Jeska",
+                  "Kaito",
+                  "Karn",
+                  "Kasmina",
+                  "Kaya",
+                  "Kiora",
+                  "Koth",
+                  "Liliana",
+                  "Lolth",
+                  "Lukka",
+                  "Minsc",
+                  "Mordenkainen",
+                  "Nahiri",
+                  "Narset",
+                  "Niko",
+                  "Nissa",
+                  "Nixilis",
+                  "Oko",
+                  "Quintorius",
+                  "Ral",
+                  "Rowan",
+                  "Saheeli",
+                  "Samut",
+                  "Sarkhan",
+                  "Serra",
+                  "Sifa",
+                  "Sivitri",
+                  "Sorin",
+                  "Szat",
+                  "Tamiyo",
+                  "Tasha",
+                  "Teferi",
+                  "Teyo",
+                  "Tezzeret",
+                  "Thomil",
+                  "Tibalt",
+                  "Tyvar",
+                  "Ugin",
+                  "Urza",
+                  "Venser",
+                  "Vivien",
+                  "Vraska",
+                  "Vronos",
+                  "Will",
+                  "Windgrace",
+                  "Worzel",
+                  "Wrenn",
+                  "Xenagos",
+                  "Yanggu",
+                  "Yanling",
+                  "Zariel"
+                ],
+                "diagnostic": "This pinned grammar does not recognize these planeswalker subtypes. If invented as an unspecified default, choose a supported subtype and recheck. Preserve user-specified identity and all requested mechanics."
+              }
+            }
+          ],
+          "note": "Parser acceptance does not establish intent fidelity, balance, or official rules correctness. mtgish uses the upstream whole-card workflow; other parsers check each face separately. Upstream text corrections are disclosed in its result.",
+          "mtgish": {
+            "status": "rejected",
+            "parse_complete": false,
+            "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+            "applied_rewrites": [],
+            "card_specific_rewrites": true,
+            "error": "No match",
+            "intent_fidelity": "not_checked",
+            "mtgish": "",
+            "normalized_input": "Necra, the Void's Hand\nLegendary Planeswalker - Necra\n{1}{W}{B}\n[+1]: Create a 3/3 black Horror creature token with \"When this creature dies, draw a card\".\n[−2]: Target opponent discards a card.\n[−4]: Each opponent exiles all cards from their library. They can't be regenerated.\n3",
+            "oracle_correctness": "not_proven",
+            "parse_diagnostic": {
+              "column": 26,
+              "context": "Necra, the Void's Hand\nLegendary Planeswalker - ⟪HERE⟫Necra\n{1}{W}{B}\n[+1]: Create a 3/3 black Horror creature token with \"When this creature dies, draw a card\".\n[−2]: Target opponent discards a card.\n[−4]: Each opponent exiles all ca",
+              "farthest_token_index": 17,
+              "line": 2,
+              "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+              "stage": "english",
+              "token": "Necra"
+            },
+            "representation_warning": "",
+            "scope": "whole_card",
+            "workflow": "upstream-standard-v2",
+            "elapsed_ms": 2285,
+            "unsupported_subtypes": [
+              "Necra"
+            ],
+            "supported_planeswalker_subtypes": [
+              "Ajani",
+              "Aminatou",
+              "Angrath",
+              "Arlinn",
+              "Arzakon",
+              "Ashiok",
+              "Bahamut",
+              "Basri",
+              "Bolas",
+              "Calix",
+              "Chandra",
+              "Comet",
+              "Dack",
+              "Dakkon",
+              "Daretti",
+              "Davriel",
+              "Deb",
+              "Dellian",
+              "Dihada",
+              "Domri",
+              "Dovin",
+              "Dyfed",
+              "Ellywick",
+              "Elminster",
+              "Elspeth",
+              "Estrid",
+              "Feroz",
+              "Freyalise",
+              "Garruk",
+              "Gideon",
+              "Greensleeves",
+              "Grist",
+              "Guff",
+              "Huatli",
+              "Jace",
+              "Jared",
+              "Jaya",
+              "Jeska",
+              "Kaito",
+              "Karn",
+              "Kasmina",
+              "Kaya",
+              "Kiora",
+              "Koth",
+              "Liliana",
+              "Lolth",
+              "Lukka",
+              "Minsc",
+              "Mordenkainen",
+              "Nahiri",
+              "Narset",
+              "Niko",
+              "Nissa",
+              "Nixilis",
+              "Oko",
+              "Quintorius",
+              "Ral",
+              "Rowan",
+              "Saheeli",
+              "Samut",
+              "Sarkhan",
+              "Serra",
+              "Sifa",
+              "Sivitri",
+              "Sorin",
+              "Szat",
+              "Tamiyo",
+              "Tasha",
+              "Teferi",
+              "Teyo",
+              "Tezzeret",
+              "Thomil",
+              "Tibalt",
+              "Tyvar",
+              "Ugin",
+              "Urza",
+              "Venser",
+              "Vivien",
+              "Vraska",
+              "Vronos",
+              "Will",
+              "Windgrace",
+              "Worzel",
+              "Wrenn",
+              "Xenagos",
+              "Yanggu",
+              "Yanling",
+              "Zariel"
+            ],
+            "diagnostic": "This pinned grammar does not recognize these planeswalker subtypes. If invented as an unspecified default, choose a supported subtype and recheck. Preserve user-specified identity and all requested mechanics."
+          }
+        }
+      }
+    ]
+  }
+]
