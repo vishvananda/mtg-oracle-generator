@@ -1,0 +1,259 @@
+{
+  "kind": "assistant_spot_review",
+  "selection": "First 20 accepted and first 25 rejected cards in the fixed random sample order. Diagnostic probes are selected examples, not random samples.",
+  "accepted_review_count": 20,
+  "accepted_review_finding": "All 20 use familiar rules concepts; no obvious undefined custom mechanic found. Includes one vanilla creature. This is not a balance, semantic equivalence, or comprehensive rules certification.",
+  "accepted_review_ids": [
+    "816c20367743162ff522c04003c8b8c427c381a2ab46a3618ec16c2f5823522f",
+    "ba0bc068ea582dea0a46f632f285ca3e9f68167367b1929cfc49108712d856f6",
+    "970b453b3a418f597f7c8f1c66df674d05789f3e31016d69dcd1673f6db71cea",
+    "dddce6fabdd6a6686b34a707e973018acb30c5aba22d5296a9eb97a9d0af8cab",
+    "47381b596c2b2110a75ae095d0d481f0fdc9bb01d6ba6d87a64ae2bac3f1d15f",
+    "533772ad7dd6c7e4907fc7be3ecdaaa25b8cf782257335ddc0faa8dc26827537",
+    "97718f720cbd6f71468050a03c4277fb92bb75f332bf520d600e36f5b389a1d5",
+    "fa7e935ca6cd4d3265527f519f1d70d9dd2628eb98b104fedc2acbaac2b3e9ca",
+    "94d7c2b0199b6b48cb9b9ed5a52820153560a46e92d7842eb011b282075b24ed",
+    "7e1c4e9f5502e20f52842dd69e2216fcfa562b25ad7abdb78b57a6f18be9b75d",
+    "a179989217a443eefbe542e4e7f9bca0fe6651b299405a6b0b4485122e7901c0",
+    "f0da3a2f0fecdc75018059d4def29aece99525ef358760dcf03ce543b321eca1",
+    "9d273c10fc12de1200a5a129e8fda0fd479bdb7c6ecc7f9234b1d9e53523dc6d",
+    "5efe2a7a83b04ed41fccd18edba5fcb03d0c0be0790d4134d72ef2ad23dfa231",
+    "3b54b1038ba7d78f9438c1d781e532e614203ef9124da8a32f67420a7ee7a22d",
+    "86906e225cabb0bfda85eb64e00de0f97da42981004b5d01c731896cf8aab962",
+    "af65725bd077c91413fb26ef65acd1dc4634623cc21afefa3bd7e11395af5499",
+    "dd0916f9123da435dbab58029aeb959c0514b67144d61191ed82f7ef1373c535",
+    "7256bc198c65c3d09fefffa2160b23e915242162438cd93cb6db423ced9676c3",
+    "bc51ef2e2d0aff84ccd42c74ee2a3f253f8c769fd4a50e8fca3df02c2ef1dbf2"
+  ],
+  "rejected_review": [
+    {
+      "id": "ba9816e8ec84b3c00cda466e601d652a2ef423d5499372920b43a236142c9116",
+      "name": "Sunless Sky",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "Each"
+    },
+    {
+      "id": "db56fca2e9295252aff4728b831e35399e283626be7912d6ad30c95238651c91",
+      "name": "Darkheart Beckoning",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "toughness"
+    },
+    {
+      "id": "377c5ef3def31fe2ad57e9e3ab6dce5d3331acc2f350dd238d64156505acbfdf",
+      "name": "The Shepherd of Nowhere",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "each"
+    },
+    {
+      "id": "eb820085f20bcc9e100f0ec7eb08144bfc669ec756845f2fd97dbeb437131e06",
+      "name": "Satrapy Courier",
+      "category": "new_concept_or_type",
+      "diagnostic_token": "Satrapies"
+    },
+    {
+      "id": "26fe11edb4bb42d072fe1e586bf2db0486cebc4633f0a60da10d076fe466c7f2",
+      "name": "Flash of Blades",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "If"
+    },
+    {
+      "id": "5ccb1756730986a3aad91c89698f43edc14e3704a75ad147af4c0fa0b5260458",
+      "name": "Vagabones",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "any"
+    },
+    {
+      "id": "1764ea61d388e1c2f4e9a059f67fe1baf921a15da2e2b7536e9ed90793f362d7",
+      "name": "Altar of Adversity",
+      "category": "historical_enters_wording",
+      "diagnostic_token": "the"
+    },
+    {
+      "id": "35b55c01a72cd55069aa20d41da5d1ef91bf1fb6bf52d63e930fb8fb4a80e7ca",
+      "name": "Archaeological Experience",
+      "category": "custom_ability_word_label",
+      "diagnostic_token": "Wanderlust"
+    },
+    {
+      "id": "b5778fd7effd6dd8b1420ef314c902124c911b6b36c59c01d32f421ac35bc339",
+      "name": "Shadowcleft Hideout",
+      "category": "historical_enters_wording",
+      "diagnostic_token": "the"
+    },
+    {
+      "id": "81687ad06e7238ed59972317f6d3ca5a6547551ab7c0e02a641014b31fbc5972",
+      "name": "Stand Against Tyranny",
+      "category": "new_concept_or_type",
+      "diagnostic_token": "embattled"
+    },
+    {
+      "id": "e7b28e1b9bfb7f1aa27a16fffb92b2fd36c993f3f59af5ae3c1d78655cfd567a",
+      "name": "Insatiable Student",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "tap"
+    },
+    {
+      "id": "f2a2e5cd4dc81d1e1045f3faff8f582e673b6f301da367fbda77e1b4466627cd",
+      "name": "Basalt Ritualist",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "exile"
+    },
+    {
+      "id": "de265e609f33ed552c42f2f65f1a4ac6cc60784324078d064e6adf2369021e75",
+      "name": "Otherworldly Convocation",
+      "category": "custom_ability_word_label",
+      "diagnostic_token": "Augmented"
+    },
+    {
+      "id": "3fe2e60376eb5c6a248e6c944e1241af09ff822c9acb5391da58172ace485289",
+      "name": "Savings Broker",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "X"
+    },
+    {
+      "id": "1abb684af46c7ae1b1187aed446fcf5e9655c401ef681e5318a6f51661210175",
+      "name": "Calamitous Crash",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "X"
+    },
+    {
+      "id": "818b6e54ceacc44da55229db9d9f9a1ec95b0977c8260baf85c7c56312757c98",
+      "name": "Daring Cavalier",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "renowned"
+    },
+    {
+      "id": "bd69bad9a657556a608c0ed0d265bedf56c37a212cf00d2dd54d18e08bc84ba1",
+      "name": "Settlement Guardian",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": " "
+    },
+    {
+      "id": "ba83251bc77996613d14a853f4e2a66f1d42f5472c2ec0449536aee3b45dfb28",
+      "name": "Pathway of Lost Sultans",
+      "category": "historical_enters_wording",
+      "diagnostic_token": "the"
+    },
+    {
+      "id": "47f07b4b99474893ae0fa0f21c31ac77ba48b6b6d8d8b60a21c109386fe5c919",
+      "name": "Overflowing Knowledge",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "draw"
+    },
+    {
+      "id": "5eda7fdc87ffc80f63a215525f6295d125f96c2d4a98f150d794f843b6d80308",
+      "name": "Holdsteady Engine",
+      "category": "standard_vocabulary_wording_or_composition",
+      "diagnostic_token": "name"
+    },
+    {
+      "id": "6c550b2fac7c607c055d40a2416c6454d548234eaa721eaa95cb7933987f10c5",
+      "name": "Chosen of Bal",
+      "category": "new_concept_or_type",
+      "diagnostic_token": "less"
+    },
+    {
+      "id": "6cf22cf92b4ba71a1a229d5da081a9acd5336a8a6d302cc4bb53ed4484e6b7d9",
+      "name": "Dark Behemoth",
+      "category": "new_concept_or_type",
+      "diagnostic_token": "Riddle"
+    },
+    {
+      "id": "84cfc959b2819cd78e5e33e4045df56e878f870305456ca1bcbe2628eaac0c4b",
+      "name": "Memorial of Forgotten Heroes",
+      "category": "custom_ability_word_label",
+      "diagnostic_token": "Rapport"
+    },
+    {
+      "id": "b39ba25a85f4c2dc7da8d3f7604ad7101729a5d9acaeee0c00ada350994c4fa7",
+      "name": "Bloodstone Halls",
+      "category": "historical_enters_wording",
+      "diagnostic_token": "the"
+    },
+    {
+      "id": "092aaad438d08e926cc05d97eefd4f13e824be71db6eddccc49090c5dcdc41f7",
+      "name": "Chillwhisper Witch",
+      "category": "new_concept_or_type",
+      "diagnostic_token": "Engorge"
+    }
+  ],
+  "diagnostic_probes": [
+    {
+      "id": "35b55c01a72cd55069aa20d41da5d1ef91bf1fb6bf52d63e930fb8fb4a80e7ca",
+      "name": "Archaeological Experience",
+      "experiment": "ability_word_label_only",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Wanderlust — ",
+          ""
+        ]
+      ],
+      "modified_status": "rejected",
+      "modified_diagnostic_token": " "
+    },
+    {
+      "id": "b5778fd7effd6dd8b1420ef314c902124c911b6b36c59c01d32f421ac35bc339",
+      "name": "Shadowcleft Hideout",
+      "experiment": "historical_enters_wording",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "enters the battlefield",
+          "enters"
+        ]
+      ],
+      "modified_status": "parsed",
+      "modified_diagnostic_token": null
+    },
+    {
+      "id": "de265e609f33ed552c42f2f65f1a4ac6cc60784324078d064e6adf2369021e75",
+      "name": "Otherworldly Convocation",
+      "experiment": "ability_word_label_only",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Augmented — ",
+          ""
+        ]
+      ],
+      "modified_status": "rejected",
+      "modified_diagnostic_token": "If"
+    },
+    {
+      "id": "b39ba25a85f4c2dc7da8d3f7604ad7101729a5d9acaeee0c00ada350994c4fa7",
+      "name": "Bloodstone Halls",
+      "experiment": "historical_enters_wording",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "enters the battlefield",
+          "enters"
+        ]
+      ],
+      "modified_status": "rejected",
+      "modified_diagnostic_token": "black"
+    },
+    {
+      "id": "bc3eb280a4038a771f6550a6dbf6e80e2599831b265074dff0ac9cf006d925bb",
+      "name": "Koth, One True Hero",
+      "experiment": "loyalty_minus_glyph",
+      "original_status": "rejected",
+      "edits": [
+        {
+          "pattern": "(?m)^\\[-",
+          "replacement": "[−"
+        }
+      ],
+      "modified_status": "rejected",
+      "modified_diagnostic_token": "with"
+    }
+  ],
+  "rejected_review_interpretation": "Categories describe an observed obstacle or nonstandard feature; farthest-match diagnostics do not prove the sole cause, and standard vocabulary does not establish correct rules.",
+  "rejected_review_category_counts": {
+    "standard_vocabulary_wording_or_composition": 13,
+    "new_concept_or_type": 5,
+    "historical_enters_wording": 4,
+    "custom_ability_word_label": 3
+  }
+}

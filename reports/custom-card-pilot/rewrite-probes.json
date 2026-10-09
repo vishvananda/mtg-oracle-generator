@@ -1,0 +1,157 @@
+{
+  "purpose": "Selected wording probes. Not added to automatic cleanup or accepted candidate files; label removal needs confirmation that the source rules treat it as nonfunctional. No unknown keyword mechanics were expanded.",
+  "parent_cases_sha256": "368809d09e0fb498c31f3456daec4e5c1bb0ae76bb98ba93b6267891778147b7",
+  "parser_revision": "153451e44d88baabfeb9902092032c328f4d5416",
+  "probes": [
+    {
+      "id": "db56fca2e9295252aff4728b831e35399e283626be7912d6ad30c95238651c91",
+      "name": "Darkheart Beckoning",
+      "experiment": "numeric_comparator_synonym",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "toughness 4 or greater",
+          "toughness 4 or more"
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": "toughness"
+    },
+    {
+      "id": "70d057532636c48b4c660a50f6d30b9a1c8f1794afdf77ab769d841fbeec80eb",
+      "name": "Trainer's Eyes",
+      "experiment": "review_ability_label",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Vanguard — ",
+          ""
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "parsed",
+      "diagnostic_token": null
+    },
+    {
+      "id": "5e19cc88b7055e279a8f87b7ec155989ce0120aeb0b61619582152ea58c4c357",
+      "name": "Mother Night",
+      "experiment": "explicit_player_reference",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "from their graveyard",
+          "from that player's graveyard"
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": "that"
+    },
+    {
+      "id": "0409156f9dbe0c2b8908c1d5c7bbd38ec514a0fb68a4407927e3d155aa9bb0d7",
+      "name": "Coralight Communer",
+      "experiment": "review_ability_label",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Concord — ",
+          ""
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": "permanents"
+    },
+    {
+      "id": "6cfbd5cdd33090c78045b4ef52ceca5265913ad960ef39bff0cb695de7889d6a",
+      "name": "Daughter of Malextros",
+      "experiment": "repeat_bound_player",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "its controller discards a card and loses 1 life",
+          "its controller discards a card and that player loses 1 life"
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": " "
+    },
+    {
+      "id": "4360d471ffd760969327961e51a884c312af8948fdaf56cd1946ff4b425e99f4",
+      "name": "Warband Lieutenant",
+      "experiment": "review_ability_label",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Glorious end — ",
+          ""
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": "tapped"
+    },
+    {
+      "id": "aca2cf22f78bfc20567cb42ed3669aa1814aedae7c3454fe731e2449dfeaabe0",
+      "name": "Splinterfrost",
+      "experiment": "review_ability_label",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Flurry — ",
+          ""
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": " "
+    },
+    {
+      "id": "efcb843d018d221203752acb332193235141fc92afc13f5ea6d3e2f5fdbcf696",
+      "name": "Conchport Festival",
+      "experiment": "review_ability_label",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Menagerie — ",
+          ""
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": "types"
+    },
+    {
+      "id": "97f9262febc582ca1ff81bfa313a2ab996a898f05405aea239071757de227461",
+      "name": "Soul Gate",
+      "experiment": "sequential_connector",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Exile target card from a graveyard. Scry 1.",
+          "Exile target card from a graveyard, then scry 1."
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": ","
+    },
+    {
+      "id": "75507b803d3680b3bb9fa7cfbfc520d9d166dfb5ca42f30a942c9207fb1f5beb",
+      "name": "Smashing Brute",
+      "experiment": "review_ability_label",
+      "original_status": "rejected",
+      "edits": [
+        [
+          "Foresight — ",
+          ""
+        ]
+      ],
+      "requires_review": true,
+      "modified_status": "rejected",
+      "diagnostic_token": "permanent"
+    }
+  ]
+}

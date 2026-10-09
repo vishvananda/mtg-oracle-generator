@@ -1,0 +1,34 @@
+{
+  "kind": "post_normalization_official_overlap_filter",
+  "final_test": false,
+  "parent_cases_sha256": "7c1467f54ae900be86cd9b9c253877a617070e728c1bfe0b3f695b13e3d1e54f",
+  "script_sha256": "5a436cd6ac417ba50e45a841a973758b83a4f8374aa003e44990a7147c367d3b",
+  "official_sha256": "457b0dbd78432750e468b0a505c6ec1c08ee34283aab841443bc9e029f8e0fd0",
+  "official_parsed_sha256": "a82ffd8b1970d891715579dfe8556ab006dd22c469350194782b070041e0b33c",
+  "official_parsed_structures": 31917,
+  "accepted_before_filter": 151,
+  "exact_parsed_overlaps": [
+    {
+      "id": "2a7f21f29eebb2e6cf3d4872a27bcd24e7dd59fce5545b97d99cfa084d1481d3",
+      "name": "Tranquil Stream",
+      "official_matches": [
+        "Idyllic Beachfront"
+      ]
+    },
+    {
+      "id": "90489cea63a4810842c729e237b7be184bd9f93a4c5180510257b99e518af1ba",
+      "name": "Rainforest Spring",
+      "official_matches": [
+        "Tangled Islet"
+      ]
+    }
+  ],
+  "retained": 149,
+  "retained_with_rules": 146,
+  "candidates": {
+    "rows": 146,
+    "bytes": 442941,
+    "sha256": "1dbd693e67f7de967d782581c3d55f93a27c4525e9a54feb5d15e133e1809022"
+  },
+  "policy": "Exact mtgish single-card structure equality after replacing only the top-level card name. Remaining designs are review candidates; incomplete overlap detection and parser acceptance do not prove novelty, correctness, or training rights."
+}

@@ -27,6 +27,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental 1,000-pair DPO round in Q4_0 alongside GPT-6 Luna; two local drafts, saved choices and chosen-card art |
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
 | Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |
+| Custom-card data pilot | [500 MSEM designs](reports/custom-card-pilot/README.md): 137 parse unchanged, 151 after conservative wording normalization; 146 nonvanilla review candidates after additional official-card deduplication |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 

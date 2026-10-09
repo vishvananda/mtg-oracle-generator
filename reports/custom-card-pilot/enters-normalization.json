@@ -1,0 +1,105 @@
+{
+  "kind": "historical_wording_normalization_assay",
+  "final_test": false,
+  "rule": "\\b([Ee]nters?) the battlefield\\b -> \\1",
+  "parent_cases_sha256": "c1e104e4e497b42f36e69cd572f8939ebfa6dd8af08376dd39d7862829000a40",
+  "parent_summary_sha256": "8e363e6c5a68dc2c5c22529b3ea511255190e80e6449a1c3f79ec001dc33e47b",
+  "script_sha256": "ce17f2c3f0cb0c376908b21804fdb70e4bee6aff31222626cc006f0fdfcd0383",
+  "parser": {
+    "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+    "workflow": "upstream-standard-v2",
+    "manifest_sha256": "2d3820bf78cb398736fd7e56381e1fbd1a4549c5a0ee9fbbb58c7d7c78aca3b5",
+    "binary_sha256": "9137350af5cf08fc473b2a47e46b0f038acea36226ce954bf09ca4c237c79da4",
+    "grammar_files": {
+      "english_grammar-INPUT.json5": "9bf36603040f3eb3018a65f8520554300a6307cda98bb1df3034f454adafdbe6",
+      "english_grammar-ability_word.json5": "bd1eb337e7a29f7f27e2124944c6ac3ebfa545bac51d65faba595de71063d3fb",
+      "english_grammar-counters.json5": "a49a6dec59e2cca4162f286f6eb8ac523133ef0f584c4000b78b04d809ea5aa2",
+      "english_grammar-flavor_word.json5": "524548be31e483bdf513033bcaa64211e1ffc4746655e9792cbd7579aee206a1",
+      "english_grammar-named_cards.json5": "1df3fada73ab7554181441d51c65af2de54ac2346c806244b758617a9805ed42",
+      "english_grammar-null_text.json5": "9dd2507cddbe23a725d2a652961b311928ae3f54520cc11ba722e79f5f5b6c30",
+      "english_grammar-reminder_text.json5": "a57f4e77d4b46d28a18d6f4b5a7978cfef54ef49b3466a0a5db50f3b01a33082",
+      "english_grammar-type_line.json5": "57242bc89563b416aeebcb40192ea490a103bb28ce882d51142f4e6b6bc081d0",
+      "english_grammar.json5": "e82ca3e575eb75109fb88827e5890f60a17448a5fc84446ca2d2a25f330500ac",
+      "find_replace.json5": "0982b35d9f3ee12d0c61963cb7520f42a24ab7f383af8f345f70fc1d78d9d458",
+      "ignore.json5": "77e86963b89f9c3a6799db9fc35f53ecd347f0a9552a1d8fb785084387708a09",
+      "mtgish_grammar-counters.json5": "bf310d27bc187d3239384d1cc5b8b4e8365f1c075ab87b607b4d75b8fb71c461",
+      "mtgish_grammar-create_tokens.json5": "13100305c8edb8ec9c4002e59250c3011c01598a332ffe6c7258090b70230554",
+      "mtgish_grammar-exile.json5": "31f6ac351b04ef00c1fbcac5706c4ee1f2e6802272a62c686959b8084fe981b3",
+      "mtgish_grammar-fight.json5": "d7ff5d99d50e960a10f560da82c8dbe7a219b6b6827f0697310a8b0a0b90db6c",
+      "mtgish_grammar-mana.json5": "1212a7f06a53ba3032673c18d129267f1256384e0c6c3fa604aff846de1960bb",
+      "mtgish_grammar-named_cards.json5": "a44e7d644245c567452cef8d723e8b6dd2bcd11c7f5880c43320d1ff934f3be0",
+      "mtgish_grammar-put_counters.json5": "77425da052f6e30ba54e23b90f41e440a3e484a72f2cb28bd39d22ce24fe6c23",
+      "mtgish_grammar-triggers.json5": "96b070faa84d9a5cad36071d156a01e6139a8590a57f3b51a9b94fca9c1dff24",
+      "mtgish_grammar-type_line.json5": "1c7bbca24f18075a49f4b06c60d89b7e08c28757ef61a72b55677d469e73c8b4",
+      "mtgish_grammar-vote_option.json5": "93e2f2472543b1a6865d80c7d45032788759dfc365c41d5dfb0a424cd65587e3",
+      "mtgish_grammar.json5": "e29a5d84e898d996eb2b55677b3ce62727a05db88f57463d75af8ccf8c54f34c",
+      "short_names.json5": "dd44ee8da0d0546722fa3b83de3d042c5f147cbe7553ad8e200c3b572b2c76a3"
+    }
+  },
+  "baseline": {
+    "sampled": 500,
+    "accepted": 137,
+    "acceptance_rate": 0.274,
+    "statuses": {
+      "rejected": 363,
+      "parsed": 137
+    },
+    "accepted_with_rewrites": 0,
+    "accepted_with_rules_text": 134
+  },
+  "modernized": {
+    "sampled": 500,
+    "accepted": 145,
+    "acceptance_rate": 0.29,
+    "statuses": {
+      "rejected": 355,
+      "parsed": 145
+    },
+    "accepted_with_rewrites": 0,
+    "accepted_with_rules_text": 142
+  },
+  "changed_cards": 15,
+  "newly_accepted": 8,
+  "lost_acceptances": 0,
+  "changed_case_ids": [
+    "1764ea61d388e1c2f4e9a059f67fe1baf921a15da2e2b7536e9ed90793f362d7",
+    "b5778fd7effd6dd8b1420ef314c902124c911b6b36c59c01d32f421ac35bc339",
+    "ba83251bc77996613d14a853f4e2a66f1d42f5472c2ec0449536aee3b45dfb28",
+    "b39ba25a85f4c2dc7da8d3f7604ad7101729a5d9acaeee0c00ada350994c4fa7",
+    "51a288756ea96e4d674b3f43ef5eb3169359263c166976d2e649c2e8c54fd70f",
+    "6f4aa10e2b3bf16bb084810561cca9e6dd58e807f4b89a0996801032524f8578",
+    "2a7f21f29eebb2e6cf3d4872a27bcd24e7dd59fce5545b97d99cfa084d1481d3",
+    "90489cea63a4810842c729e237b7be184bd9f93a4c5180510257b99e518af1ba",
+    "5e5d614dde10ddb36dc572fc46cef6833ee9167112bffb85cc12d1d62aa9f564",
+    "201730075330ccc08d97e3a550a47f1e5d18275e03cddc636e8dd2202d460e38",
+    "80f0eceed68a353d02e231bae967c9417f7d14c50abc9f22f0d350dcf6328e19",
+    "53b22622f45e2435e8d622a1987849378b545d0560b52d0f1ff925a3617a92c9",
+    "aaa1e708c82886833632f0e1fa584b386183249798f2fa7aea6823f03ac8eb5b",
+    "02715c148b6d5ff34a95b3291ead0befea72d9308191a102aea1318379d5ce6a",
+    "7b0293c2be55621104828a51c798ec4cb43d775d989227311a637387af005c14"
+  ],
+  "newly_accepted_names": [
+    "Shadowcleft Hideout",
+    "Pathway of Lost Sultans",
+    "Coastal Dominion",
+    "Tranquil Stream",
+    "Rainforest Spring",
+    "Humble Bridge",
+    "Dominik's Shack",
+    "Ominous Quag"
+  ],
+  "lost_acceptance_names": [],
+  "seconds": 6.6,
+  "interpretation": "Same frozen sample and unchanged parser; only the stated historical wording normalization. Not a rules-correctness or model-accuracy measurement.",
+  "accepted_candidates": {
+    "rows": 145,
+    "bytes": 426910,
+    "sha256": "328bdb0d235e5e700b29d2c67c766f8ee13145a4e5faf491703dfa495971f5a2"
+  },
+  "accepted_with_rules_candidates": {
+    "rows": 142,
+    "bytes": 420914,
+    "sha256": "a6fad9d68786d0aa6ad8a5d6662815ad85c64ab3c998f19ac5c5e51c312bf1f3"
+  },
+  "cases_sha256": "b1cfd083fbf8e727c46b14567d17867778c09805f756294a0e998526971d394f"
+}
