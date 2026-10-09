@@ -1,0 +1,45 @@
+{
+  "optimizer_steps": 19774,
+  "training_epoch": 1.0,
+  "train_cases": 316372,
+  "final_test_cases": 400,
+  "final_test_evaluated": false,
+  "training_diagnostic": {
+    "cases": 256,
+    "source_split": "train",
+    "base": {
+      "eval_loss": 2.4913086891174316,
+      "eval_model_preparation_time": 0.0069,
+      "eval_runtime": 16.8702,
+      "eval_samples_per_second": 15.175,
+      "eval_steps_per_second": 0.948,
+      "eval_entropy": 1.6299063935875893,
+      "eval_num_tokens": 0.0,
+      "eval_mean_token_accuracy": 0.7300438806414604
+    },
+    "adapter": {
+      "eval_loss": 0.17042222619056702,
+      "eval_model_preparation_time": 0.0069,
+      "eval_runtime": 16.8013,
+      "eval_samples_per_second": 15.237,
+      "eval_steps_per_second": 0.952,
+      "eval_entropy": 2.200767159461975,
+      "eval_num_tokens": 3985027.0,
+      "eval_mean_token_accuracy": 0.9541410095989704,
+      "epoch": 1.0
+    }
+  },
+  "logged_training_loss_mean": 0.2761092798624456,
+  "last_100_logged_loss_mean": 0.196678,
+  "training_observations": 19774,
+  "dataset_manifest_sha256": "d7fd06e722c7b0ebde3784dce09861afa867a55d68d52994d66f3d10b49d7a7e",
+  "adapter_sha256": "7cd83a73a5f0816dd300adb0b38d58211eb91e28cc920ed69f6db9888daf9251",
+  "run_summary_sha256": "8c86abe8da80ad15f428fdc2ae066932951661f4e740b2e55a0e5e0dbb67c847",
+  "trainer_state_sha256": "a6a028234ae552483c8117b34c3168cac17e442ebe3483430d33263b6a40c40a",
+  "public_adapter_revision": "decd0eb5344719c298649ca4cf2be4950da4b18d",
+  "public_adapter_tag": "small-holdout-v2-train-step-00019774",
+  "serving_sha256": "74ca26df1823c9188c57e61f94a87cac722ea007724334edc073cc4078c067cb",
+  "generation_backend_note": "Local merged Q4_0 differs from NF4 evaluation.",
+  "summary_note": "Transformers resume train_loss divides continuation loss by cumulative global_step. Use the complete logged history; do not interpret its 0.00379 as final mean loss.",
+  "intent_evaluation": "Not inferred from loss, token accuracy, or three serving smoke probes."
+}

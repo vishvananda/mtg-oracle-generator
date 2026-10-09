@@ -63,30 +63,34 @@
     "release_manifest_sha256": "6717af612023014c56e6c7efd1edcec2bfccf08b3392606a5c9f56e4578ad05d"
   },
   "full_corpus": {
-    "status": "first_training_segment_evaluated",
+    "status": "full_epoch_complete_final_test_running",
     "final_test_evaluated": false,
     "counts": {
-      "test": 37618,
-      "validation": 31852,
-      "train": 250587
+      "train": 316372,
+      "validation": 0,
+      "test": 400
     },
-    "development_report": "reports/full-corpus-step-963/README.md"
+    "development_report": "reports/full-corpus-step-963/README.md",
+    "training_report": "reports/full-epoch-v2/README.md"
   },
   "checkpoint_model": {
-    "status": "first_training_segment_evaluated",
+    "status": "full_epoch_complete_final_test_running",
     "repo_id": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
     "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
     "weights_published": true,
     "final_test_evaluated": false,
     "smoke_revision": "ed32be67f5b8d76fc263c5725c8249dca11d4a0d",
     "smoke_tag": "smoke-step-00000020",
-    "training_revision": "1f60f1100f02695f2193615199f46d86c16084b9",
-    "training_tag": "prepared-v1-train-step-00000963",
-    "optimizer_steps": 963,
-    "training_epoch": 0.06148640020431618
+    "training_revision": "decd0eb5344719c298649ca4cf2be4950da4b18d",
+    "training_tag": "small-holdout-v2-train-step-00019774",
+    "optimizer_steps": 19774,
+    "training_epoch": 1.0,
+    "completed_release_revision": "0fe439c78472635d517dbea942736fa45592800c",
+    "completed_release_tag": "small-holdout-v2-full-epoch",
+    "training_report": "reports/full-epoch-v2/README.md"
   },
   "staged_experiment": {
-    "status": "training_with_authorized_epoch_completion",
+    "status": "final_test_running",
     "initial_job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
     "budget_limit_usd": 60,
     "initial_cycle_maximum_usd": 6.25005,
@@ -98,7 +102,7 @@
     "gradient_accumulation": 1,
     "earlier_reservations_retained": true,
     "maximum_cycle_usd_including_original_smoke": 7.50006,
-    "latest_completed_job_url": "https://huggingface.co/jobs/vishvananda/6ac7187ce7a0dae8a27808d6",
+    "latest_completed_job_url": "https://huggingface.co/jobs/vishvananda/6ac840d0095c5780893009ca",
     "development_cases": 256,
     "base_mtgish_accepted": 0,
     "adapter_mtgish_accepted": 126,
@@ -106,7 +110,7 @@
     "canceled_job_url": "https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3",
     "cancellation_reason": "User requested smaller holdout with rare-ability, type and color coverage",
     "maximum_prior_cost_bound_usd": 7.250058,
-    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac72dd6e7a0dae8a2780d6d",
+    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac8491b095c578089300dbd",
     "fresh_base": true,
     "split_policy": "coverage-protected-two-way-v2",
     "target_optimizer_steps": 19774,
@@ -119,25 +123,29 @@
     "additional_epochs": false,
     "automatic_rl": false
   },
-  "updated_at": "2026-10-09T01:39:25.886989+00:00",
+  "updated_at": "2026-10-09T01:56:57.032771+00:00",
   "workshop_preview": {
     "status": "deployed",
     "url": "https://tetrarchs.com/cards/new",
-    "checkpoint": 19385,
+    "checkpoint": 19774,
     "quantization": "Q4_0",
-    "model_sha256": "9a015c156eccea054e50f8d52da9e16d35c9ce80699edfa7f80d3624334e305e",
-    "training_scope": "partial_epoch_preview",
-    "training_epoch": 0.9803277030444018,
+    "model_sha256": "74ca26df1823c9188c57e61f94a87cac722ea007724334edc073cc4078c067cb",
+    "training_scope": "completed_training",
+    "training_epoch": 1.0,
     "models": [
-      "Qwen3-4B checkpoint 19385",
+      "Qwen3-4B checkpoint 19774",
       "gpt-6-luna"
     ],
     "generation_mode": "unconstrained with frozen training prompt and optional terminology guide",
-    "backend_commit": "344db86",
-    "browser_checked": true
+    "backend_commit": "d11be48",
+    "browser_checked": false,
+    "public_health_checked": true,
+    "serving_smoke_cases": 3,
+    "serving_smoke_mtgish_accepted": 3,
+    "deployed_at": "2026-10-09T01:55:41.660971+00:00"
   },
   "preference_pilot": {
-    "status": "waiting_for_final_sft",
+    "status": "sample_gpu_running",
     "method": "DPO",
     "gpu_ceiling_usd": 10,
     "candidates_planned": 2048,
@@ -146,6 +154,8 @@
     "luna_calibration_agreement": 219,
     "sol_calibration_agreement": 219,
     "independent_pair_review": true,
-    "automatic_promotion": false
+    "automatic_promotion": false,
+    "job_url": "https://huggingface.co/jobs/vishvananda/6ac84909fee2c9007017240a",
+    "sft_checkpoint": 19774
   }
 }
