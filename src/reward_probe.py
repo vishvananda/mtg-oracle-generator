@@ -74,13 +74,13 @@ def run(output,model=None,effort='medium',cases_path=None,reverse=False):
         provenance=parser.provenance
     judgments={};receipts=[]
     if model:
-        from codex_cached_batch import invoke
+        from judge_transport import invoke_judge
         # Blinded deterministic shuffle; category, expected and variant never enter the prompt.
         ordered=sorted(cases,key=lambda c:digest(c['id']))
         if reverse:ordered.reverse()
         for start in range(0,len(ordered),9):
             batch=ordered[start:start+9]
-            value,receipt=invoke(model,judge_payload(batch),judge_schema(),output/f'judge-{start//9:02d}',
+            value,receipt=invoke_judge(model,batch,output/f'judge-{start//9:02d}',
                                  prefix_root=output/'prefixes',reasoning_effort=effort)
             judgments.update(align_judgments(value,batch));receipts.append(receipt)
     scored=[{**c,'assessment':combine(reports[c['id']],judgments.get(c['id']),references[c['id']]),

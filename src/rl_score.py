@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import time
 
-from codex_cached_batch import invoke
+from judge_transport import invoke_judge
 from data_utils import digest,write_jsonl
 from paths import PROJECT
 from rl_data import checked_file,sha_file
@@ -24,8 +24,15 @@ def bind_candidates(cases,rows):
 
 
 def score(pilot,candidates,output,model,effort='medium'):
-    if output.exists():raise ValueError('Choose a new immutable scoring directory')
     started=time.monotonic()
+    request={'pilot_manifest_sha256':sha_file(pilot/'manifest.json'),'candidates_sha256':sha_file(candidates),
+        'judge_model':model,'judge_effort':effort,'rubric_sha256':sha_file(PROJECT/'prompts/reward-judge-v1.txt'),
+        'code_files':{n:sha_file(PROJECT/'src'/n) for n in ('rl_score.py','rl_rewards.py','judge_transport.py','validate_mtgish.py')}}
+    if output.exists():
+        if not (output/'request.json').exists() or json.loads((output/'request.json').read_text())!=request:
+            raise ValueError('Existing scoring directory belongs to different inputs')
+    else:
+        output.mkdir(parents=True);(output/'request.json').write_text(json.dumps(request,indent=2)+'\n')
     manifest=json.loads((pilot/'manifest.json').read_text())
     if manifest['source_split']!='train' or manifest['test_or_reserve_used']:
         raise ValueError('Scoring pilot must contain training data only')
@@ -36,22 +43,36 @@ def score(pilot,candidates,output,model,effort='medium'):
         raise ValueError('Candidate count exceeds prepared budget')
     schema=json.loads((PROJECT/'schemas/design-draft-v1.json').read_text())
     schema['required']+=['name','rarity']
-    output.mkdir(parents=True);reports={};references={};pending=[]
-    with MtgishValidator() as parser:
-        for case,row in bound:
-            cid=row['candidate_id']
-            reports[cid]=inspect(case,row['raw'],schema,parser.check,row.get('hit_token_limit',False))
-            if case['id'] not in references:references[case['id']]=parser.check(case['reference'])
-            if reports[cid]['gate']=='needs_intent_judge':
-                pending.append({**case,'id':cid,'candidate':json.loads(row['raw'])})
-        provenance=parser.provenance
+    reports={};references={};pending=[];cache_file=output/'deterministic.json'
+    if cache_file.exists():
+        cached=json.loads(cache_file.read_text());reports=cached['reports'];references=cached['references'];provenance=cached['parser']
+        if sha_file(cache_file)!=(output/'deterministic.sha256').read_text().strip():raise ValueError('Cached checks changed')
+    else:
+        with MtgishValidator() as parser:
+            cache={}
+            def check(card):
+                key=digest(card)
+                if key not in cache:cache[key]=parser.check(card)
+                return cache[key]
+            for index,(case,row) in enumerate(bound):
+                cid=row['candidate_id']
+                reports[cid]=inspect(case,row['raw'],schema,check,row.get('hit_token_limit',False))
+                if case['id'] not in references:references[case['id']]=check(case['reference'])
+                if (index+1)%32==0:print(json.dumps({'parsed':index+1,'scheduled':len(bound)}),flush=True)
+            provenance=parser.provenance
+        cache_file.write_text(json.dumps({'reports':reports,'references':references,'parser':provenance})+'\n')
+        (output/'deterministic.sha256').write_text(sha_file(cache_file)+'\n')
+    for case,row in bound:
+        if reports[row['candidate_id']]['gate']=='needs_intent_judge':
+            pending.append({**case,'id':row['candidate_id'],'candidate':json.loads(row['raw'])})
     # Input order cannot disclose which candidate was the greedy or best completion.
     pending.sort(key=lambda c:digest(c['id']));judgments={};receipts=[]
     for start in range(0,len(pending),9):
         batch=pending[start:start+9]
-        value,receipt=invoke(model,judge_payload(batch),judge_schema(),output/f'judge-{start//9:04d}',
+        value,receipt=invoke_judge(model,batch,output/f'judge-{start//9:04d}',
                              prefix_root=output/'prefixes',reasoning_effort=effort)
         judgments.update(align_judgments(value,batch));receipts.append(receipt)
+        print(json.dumps({'judged':len(judgments),'scheduled':len(pending)}),flush=True)
     scored=[{**row,'assessment':combine(reports[row['candidate_id']],judgments.get(row['candidate_id']),references[case['id']]),
              'reference_parser':references[case['id']]} for case,row in bound]
     file=write_jsonl(output/'scored.jsonl',scored)

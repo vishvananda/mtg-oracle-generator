@@ -4,14 +4,18 @@ Start from the completed **one-epoch v2 SFT checkpoint**, then test whether a re
 can choose the better of several generated cards. Do not schedule more SFT epochs
 as a prerequisite for RL. Extra SFT is useful if the model still cannot produce a
 faithful candidate; preference training is useful when it can, but chooses poorly.
-No RL GPU job is authorized, scheduled, or automatically chained to the SFT run.
+GPU submission is explicit. The first preference pilot was requested on
+2026-10-09; its launch receipts bind that request and a $10 operator-selected
+ceiling separately from the SFT epoch-completion budget.
 
 The near-term recommendation is **Luna intent judgments + deterministic checks +
 a small, coverage-aware parser signal**. Use Oracle embeddings to retrieve wording
 examples, not as a direct reward for looking like existing cards. The executable
 prototype is [rl_rewards.py](../src/rl_rewards.py), with a
-[draft pilot recipe](../configs/rl-pilot.json). These are preparation tools, not a
-finished DPO/GRPO trainer.
+[draft pilot recipe](../configs/rl-pilot.json). The executable
+[DPO pilot](../src/rl_gpu.py), [HF launcher](../src/rl_jobs.py), and
+[independent review](../src/rl_review.py) now implement the offline path. GRPO
+remains a later option. Implementation is not evidence of a quality improvement.
 
 ## Which signals help?
 
@@ -175,8 +179,9 @@ window is about **$1.25**. This is a proposed bounded benchmark, not an estimate
 the whole RL phase. Measure generation tokens/second, judge latency/usage and
 update throughput first; multiple samples and external rewards can make RL much
 slower than SFT. Re-query HF pricing before launch. Codex token usage is recorded
-separately; subscription usage is not an API dollar invoice. Existing permission
-to finish the SFT epoch does not authorize new RL spending.
+separately; subscription usage is not an API dollar invoice. Permission to finish
+the SFT epoch alone does not authorize new RL spending; the preference pilot
+has its own user request and launch receipts.
 
 ## Evaluation boundary
 
@@ -237,3 +242,51 @@ preference file plus an audit sidecar. Its input contract is documented in that
 module. Export does not submit training or declare the pairs independently
 reviewed. Full datasets, embeddings and eventual weights belong on HF; GitHub
 contains code, the rubric, small hand-authored diagnostics and aggregate reports.
+
+## Executable offline pilot
+
+`rl_gpu.py` uses the same locked Torch/Transformers/PEFT/TRL environment as SFT.
+Sampling produces four stochastic completions per training prompt and a separate
+greedy development baseline. The first recipe uses batch 24, temperature 0.8,
+top-p 0.95, no top-k cutoff, and a 2,048-token completion limit. Both sampling and
+post-DPO generation use the same NF4 base preparation and BF16 autocast.
+
+After Luna scoring, `rl_review.py` sends chosen and rejected cards independently
+to `gpt-6.1-sol`, hiding both their role in the pair and their generator. Only
+high-confidence faithful, cleanly worded winners against high-confidence semantic
+failures survive. Every judge call replaces source IDs with short constrained
+labels; labels such as `mutation` or `faithful` never enter the prompt. A saved
+mapping binds results back to their original records. Exact checked batches can
+be replayed after interruption without paying for them again.
+
+The DPO phase requires at least 32 independently reviewed pairs. It takes at most
+one pass through those pairs, capped at 100 updates, effective batch 8, learning
+rate 5e-6, beta 0.1, and sigmoid loss. These are fixed pilot choices. It loads the
+SFT adapter twice: a trainable `default` and frozen `reference`. It checks equal
+initial weights and logits, precomputes reference log probabilities with TRL,
+and verifies that only policy weights changed. It rejects truncation instead of
+discarding parts of a preference. A tiny CPU integration check validates the
+adapter/reference machinery; it is not a GPU throughput or model-quality result.
+
+`rl_jobs.py package` stages only prompts, reviewed preferences and locked code;
+source targets and final-test records never enter the sampling package. Run its
+`launch` command with a separate authorization JSON containing
+`scope: "one_preference_pilot"`, the user's actual instruction, and `ceiling_usd`.
+This pilot launcher accepts at most $10, checks live HF prices, reserves each
+job's entire timeout cost, and preserves ambiguous submissions rather than retrying
+them. Its sampling timeout is 120 minutes and its DPO/evaluation timeout is 90
+minutes. This is a ceiling, not a promised cost. It uses the HF 2.1.1 client
+environment already described for the SFT jobs.
+
+`rl_pipeline.py --help` documents the optional explicit orchestration entrypoint.
+It waits for the completed SFT adapter and calibration reports, launches sampling,
+stops the GPU while host judges run, reviews pairs, trains DPO, and runs a paired
+greedy development comparison. It stops on failed calibration, inadequate pairs,
+incomplete jobs, or exhausted budget. It never promotes a model automatically.
+`rl_evaluate.py` reports schema, mtgish, independent intent fidelity, abstentions
+and the fidelity/parse intersection over the full development denominator.
+
+The first development panel has 64 hand-authored requests across 40 categories,
+including planeswalkers and playing opponents' cards. Several are numeric variants
+of shared templates: report this as a correlated diagnostic, not independent
+representative test accuracy. The original SFT test remains a separate report.

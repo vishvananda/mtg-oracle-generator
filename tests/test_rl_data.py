@@ -129,15 +129,15 @@ class RLData(unittest.TestCase):
             good=copy.deepcopy(case['reference']);bad={**good,'oracle_text':'{T}: Gain 1 life.'}
             rows=[{'case_id':case['id'],'candidate_id':label,'raw':json.dumps(card)} for label,card in [('a',good),('b',bad)]]
             write_jsonl(root/'raw.jsonl',rows)
-            def judge(model,payload,*args,**kwargs):
-                self.assertTrue(all('reference' not in c and 'assessment' not in c for c in payload['cases']))
+            def judge(model,cases,*args,**kwargs):
+                self.assertTrue(all('assessment' not in c for c in cases))
                 reviews=[{'id':c['id'],'confidence':'high','oracle_style':2,
                           'verdict':'pass' if 'Draw' in c['candidate']['oracle_text'] else 'fail',
-                          'violations':[] if 'Draw' in c['candidate']['oracle_text'] else ['Wrong effect']} for c in payload['cases']]
+                          'violations':[] if 'Draw' in c['candidate']['oracle_text'] else ['Wrong effect']} for c in cases]
                 return {'reviews':reviews},{'usage':[{}],'base_initialization_receipt':'test-only'}
             parser=MagicMock();parser.provenance={'test_only':True}
             parser.check.return_value={'status':'parsed','parse_complete':True}
-            with patch('rl_score.MtgishValidator') as factory,patch('rl_score.invoke',side_effect=judge):
+            with patch('rl_score.MtgishValidator') as factory,patch('rl_score.invoke_judge',side_effect=judge):
                 factory.return_value.__enter__.return_value=parser
                 result=score(pilot,root/'raw.jsonl',root/'scored','test-judge')
             self.assertEqual(result['gates'],{'faithful_candidate':1,'intent_failure':1})
