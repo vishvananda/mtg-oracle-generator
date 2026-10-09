@@ -55,7 +55,8 @@
     <progress id="art-progress" max="1" value="0" hidden></progress>
     <p id="art-status" role="status" aria-live="polite">Ready to load. You can unload the text model above to free memory.</p>
     <label for="art-prompt" class="art-prompt-label">Image prompt</label>
-    <textarea id="art-prompt" rows="4" maxlength="4000">Stylized fantasy illustration of a towering red Giant forging a glowing sword beside a volcanic mountain. Painterly details, dramatic lighting, rich textures, clear focal subject. Artwork only, no lettering, borders, or card frame.</textarea>
+    <textarea id="art-prompt" rows="4" maxlength="4000" aria-describedby="art-prompt-help">Stylized fantasy painting of a towering red Giant forging a glowing sword beside a volcanic mountain. Sparks illuminate weathered hands and dark stone; molten rivers glow in the distance. Expressive brushwork, dramatic lighting, rich colors, and a clear focal subject. A single cohesive scene fills the entire image edge to edge, with the surroundings extending naturally beyond the edges.</textarea>
+    <p id="art-prompt-help" class="muted">Describe the subject, action, setting, and mood as a painting. Turn game abilities into visible actions or effects.</p>
     <button id="art-use-card" class="secondary">Use card description</button>
     <div class="sampling">
       <label>Image size<select id="art-size"><option value="256x256">256 × 256 · quick test</option><option value="512x512" selected>512 × 512</option><option value="768x512">768 × 512 · landscape</option><option value="512x768">512 × 768 · portrait</option><option value="1024x1024">1,024 × 1,024</option></select></label>

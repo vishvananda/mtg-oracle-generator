@@ -25,6 +25,12 @@ not a separate prompt-writing model. Step progress is shown during denoising;
 the image appears after VAE decoding. Stop terminates the worker and unloads
 Bonsai immediately. Load again to resume; cached weights are retained.
 
+The image template describes a fantasy painting that fills the image edge to
+edge. It avoids product terms such as "collectible card" and the former list of
+unwanted layout elements, following a user report of generated frames and text.
+The description remains editable: translate mechanics into visible actions or
+effects before generating. This template does not itself interpret game rules.
+
 Image timing history stays in localStorage, with prompt, actual seed, size,
 steps, model/runtime identity, GPU details, load time, step times, and total
 generation time. PNGs are kept in memory until replaced or the page closes;

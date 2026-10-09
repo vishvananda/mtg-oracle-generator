@@ -135,7 +135,9 @@ $('art-use-card').addEventListener('click', () => {
   let card;
   try { card = JSON.parse($('output').textContent); } catch { /* description works before text generation */ }
   const subject = card?.name && card?.type_line ? `${card.name}, ${card.type_line}. ${description}` : description;
-  $('art-prompt').value = `Stylized fantasy illustration for a collectible card: ${subject || 'a towering red Giant in a mountain pass'}. Painterly details, dramatic lighting, a clear focal subject, richly textured environment. Artwork only, no lettering, card frame, borders, or watermark.`.slice(0, 4000);
+  const scene = (subject || 'A towering red Giant in a mountain pass').trim().replace(/[.!?]+$/, '');
+  // Describe the painting itself; mentioning product layouts can make them appear.
+  $('art-prompt').value = `Stylized fantasy painting. ${scene}. Expressive brushwork, dramatic lighting, rich colors, a clear focal subject, and a richly textured environment. A single cohesive scene fills the entire image edge to edge, with the surroundings extending naturally beyond the edges.`.slice(0, 4000);
 });
 $('art-export').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify({ benchmark: 'bonsai-browser-v1', exported_at: new Date().toISOString(), runs }, null, 2)], { type: 'application/json' });
