@@ -10,7 +10,36 @@ import time
 from hf_jobs import collect,save,TERMINAL
 from job_budget import settle_terminal
 from rl_jobs import package,launch
-from rl_gpu import sha
+from rl_gpu import sha,read_prompts
+
+
+def verify_collected(destination,package,stage):
+    """Require complete, hash-matching generations after bucket writes settle."""
+    identity=json.loads((destination/'identity.json').read_text())
+    if identity['package_manifest_sha256']!=sha(package/'manifest.json') or identity['stage']!=stage:
+        raise ValueError('Collected job/package differs')
+    phase=json.loads((destination/'phase-complete.json').read_text())
+    if phase['stage']!=stage:raise ValueError('Collected phase differs')
+    config=json.loads((package/'config.json').read_text())
+    outputs=[('development','sft-development' if stage=='sample' else 'dpo-development','development',1)]
+    if stage=='sample':outputs.append(('candidates','candidates','prompts',config['candidates_per_prompt']))
+    for key,name,source,copies in outputs:
+        path=destination/(name+'.jsonl')
+        receipt=json.loads(path.with_suffix('.manifest.json').read_text())
+        expected={r['id'] for r in read_prompts(package/(source+'.jsonl'))}
+        if (not receipt['complete'] or receipt!=phase[key] or receipt['sha256']!=sha(path)
+                or receipt['cases']!=len(expected) or receipt['completions']!=len(expected)*copies):
+            raise ValueError('Generation receipt is incomplete or changed: '+name)
+        rows=[json.loads(line) for line in path.read_text().splitlines()]
+        expected_pairs={(case_id,case_id+f'-{i:02d}') for case_id in expected for i in range(copies)}
+        if len(rows)!=len(expected_pairs) or {(r['case_id'],r['candidate_id']) for r in rows}!=expected_pairs:
+            raise ValueError('Generation contains missing, unexpected or duplicate candidates: '+name)
+    if stage=='train':
+        summary=json.loads((destination/'training-summary.json').read_text())
+        if any(phase[k]!=v for k,v in summary.items()):raise ValueError('Training summary differs from completed phase')
+        for name in ('adapter_config.json','adapter_model.safetensors'):
+            if not (destination/'adapter'/name).stat().st_size:raise ValueError('Empty trained adapter')
+    return phase
 
 
 def run(root,sft_adapter,sft_record,pilot,cpu_python,authorization):
@@ -34,13 +63,15 @@ def run(root,sft_adapter,sft_record,pilot,cpu_python,authorization):
         job=json.loads(record.read_text())
         if not destination.exists():collect(record,destination)
         # Mounted files can settle a little after the job reaches terminal state.
+        last_error=None
         for attempt in range(19):
-            if (destination/'phase-complete.json').exists():break
-            if attempt==18:raise RuntimeError('Job outputs did not settle')
+            try:
+                verify_collected(destination,pack,stage)
+                break
+            except (OSError,ValueError,KeyError) as error:last_error=error
+            if attempt==18:raise RuntimeError('Job outputs did not settle: '+str(last_error))
             time.sleep(10)
             hf.sync_bucket(f"hf://buckets/{job['bucket']}/{job['output_prefix']}",str(destination),ignore_times=True,quiet=True)
-        identity=json.loads((destination/'identity.json').read_text())
-        if identity['package_manifest_sha256']!=job['package_hash']:raise ValueError('Collected job/package differs')
         live=hf.inspect_job(job_id=job['job_id'],namespace=job['namespace'])
         settle_terminal(ledger,record,{'job_id':live.id,'state':live.status.stage,
             'started_at':live.started_at.isoformat(),'finished_at':live.finished_at.isoformat(),
