@@ -1,0 +1,69 @@
+{
+  "url": "https://tetrarcum.com/",
+  "checks": [
+    "demo artwork has a derived etching mask",
+    "Forge symbol appears on the type line",
+    "Forge symbol is used for the foil stamp",
+    "page is named MTG CardForge and has no outgoing navigation",
+    "desktop can edit before loading models",
+    "initial renderer imports no model runtime",
+    "music is not downloaded before interaction",
+    "card and controls fit 1440x900",
+    "card and controls fit 1366x768",
+    "card and controls fit 1024x640",
+    "carousel shows a planeswalker",
+    "carousel navigation",
+    "opening theme plays after interaction",
+    "sound toggle mutes music",
+    "manual name edit appears in carousel",
+    "artist credit is directly editable",
+    "searchable set picker updates card symbol",
+    "chosen set is saved with the card",
+    "clickable mana symbols build the saved cost",
+    "art-frame click switches to the new renderer\u2019s old frame",
+    "outer-border click selects white stock",
+    "Cold foil is available and saved",
+    "frame can switch back to modern",
+    "artwork URL and file available before loading",
+    "URL artwork is stored as a validated image blob",
+    "edits persist without models",
+    "mute preference survives reload",
+    "invalid artwork keeps the editor open",
+    "manual card export works",
+    "mobile shows carousel and edit button",
+    "mobile hides model loading",
+    "mobile has no horizontal overflow",
+    "mobile art editor uses URL or file",
+    "mobile never requests model code or weights",
+    "fixture generation replaces demo with designed card and artwork",
+    "loaded models expose editable art prompt",
+    "art regeneration preserves rules and records new prompt",
+    "another generation appends to carousel",
+    "cancel retains finished text",
+    "all tested flows have no uncaught JavaScript errors"
+  ],
+  "inference": "UI fixture only; real GPU inference is not claimed",
+  "errors": [],
+  "date": "2026-10-09",
+  "renderer_revision": "07d89cdc7ceaeafc93a4a90e1beaf0a0ba7c3ff8",
+  "renderer_assets": {
+    "card-preview.js": {
+      "bytes": 223671,
+      "gzip_bytes": 69052,
+      "sha256": "3a741a5fd646b10fcaa13dfb9a4fd00a1db135868053c2d4a944b33a65fdd4df"
+    },
+    "card-preview.css": {
+      "bytes": 23731,
+      "gzip_bytes": 5401,
+      "sha256": "778648147d5de47c608a9c56dbba0d88854698303e1a7732440797b06e11a37d"
+    }
+  },
+  "frontend_checks": {
+    "unit_tests_passed": 1214,
+    "focused_renderer_tests_passed": 25,
+    "typecheck": "passed",
+    "production_build": "passed after increasing the optional authoring raw budget by 1 KiB; standalone gzip budget unchanged",
+    "native_game_browser": "failed: timed out waiting for battlefield land hover preview",
+    "earlier_game_webgl_browser": "failed on pre-rebase source: special-the ability overlaps its neighboring row; not a pass for this release"
+  }
+}

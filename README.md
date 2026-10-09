@@ -25,6 +25,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
 | Revised training run | **One full epoch complete**, 19,774 steps; [loss curves and diagnostic measurements](reports/full-epoch-v2/README.md) |
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental 1,000-pair DPO round in Q4_0 alongside GPT-6 Luna; two local drafts, saved choices and chosen-card art |
+| MTG CardForge | [Local card studio](https://tetrarcum.com/): card and art generation, editable 3D preview, mobile manual editing; [source and setup](web/client-benchmark/forge/README.md) |
 | Browser inference benchmark | [Run the card model on your device](https://tetrarchs.com/model-bench/): 2.37 GB, streamed output, sampling controls and timings; optional [Bonsai ternary image generation](https://tetrarchs.com/model-bench/#art-demo), 3.9 GB; [source and reproduction](web/client-benchmark/README.md) |
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
 | Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111c24">
+  <meta name="description" content="Imagine a card. Create its design and artwork privately on your own device, then make every detail yours.">
+  <title>MTG CardForge</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="world" aria-hidden="true"></div><div class="world-shade" aria-hidden="true"></div>
+  <header class="masthead">
+    <a class="wordmark" href="./" aria-label="MTG CardForge"><svg viewBox="0 0 40 44" aria-hidden="true"><path d="M20 2 37 12v20L20 42 3 32V12ZM20 2v40M3 12l17 10 17-10M3 32l17-10 17 10"/></svg><span>MTG CARDFORGE<small>IMAGINE · CREATE</small></span></a>
+    <div class="header-actions"><button id="sound-toggle" class="quiet-button" type="button" aria-pressed="true">Sound on</button></div>
+  </header>
+  <main class="studio">
+    <section class="creation" aria-labelledby="hero-title">
+      <p class="eyebrow"><span></span> A LITTLE IDEA. A LITTLE MAGIC.</p>
+      <h1 id="hero-title">Imagine it.<br><em>Make it real.</em></h1>
+      <p class="intro">A creature. A spell. A world of your own.<br>Bring it to life, then make every detail yours.</p>
+      <div id="load-panel" class="load-panel">
+        <button id="load-button" class="primary load-button" type="button"><span class="button-sigil" aria-hidden="true">✧</span><span id="load-label">Open the forge</span><span aria-hidden="true">↗</span></button>
+        <p class="download-note">Download &amp; load both models · about 6.3 GB<br><span>Saved on this device for a faster return.</span></p>
+        <div id="load-progress" class="load-progress" hidden><progress id="model-progress" max="1" value="0" aria-label="Model loading progress"></progress><p id="load-status" role="status"></p></div>
+        <details class="expectations"><summary>What to expect</summary><p>Use a current Chrome or Edge browser with WebGPU and several GB of free storage and memory. The first download may take a few minutes. Cached models still need to load into memory each visit. Generation speed depends on your device.</p><p>Card design and artwork run here in your browser. Your prompts and creations stay on this device.</p></details>
+      </div>
+      <form id="create-form" class="create-form" hidden>
+        <label for="description">What will you bring into the world?</label>
+        <div class="prompt-well"><textarea id="description" maxlength="3000" rows="4" required spellcheck="true">An ancient dragon that steals forgotten spells from its enemies.</textarea><span class="prompt-ornament" aria-hidden="true">✧</span></div>
+        <div class="prompt-actions"><button id="generate-button" class="primary" type="submit"><span aria-hidden="true">✧</span><span id="generate-label">Create card</span></button><button id="stop-button" class="quiet-button" type="button" hidden>Stop</button></div>
+        <p class="privacy-note"><span aria-hidden="true">●</span> Made on your device. Saved only in this browser.</p>
+      </form>
+      <p id="message" class="message" role="status" aria-live="polite"></p>
+      <div id="generation-progress" class="generation-progress" hidden><span class="spark-spinner" aria-hidden="true">✧</span><div><strong id="generation-stage">Imagining your card…</strong><span id="generation-time">0s</span></div></div>
+    </section>
+    <section id="gallery" class="gallery" aria-label="Card carousel" aria-roledescription="carousel">
+      <div class="gallery-heading"><span id="gallery-kind">FROM THE FORGE</span><span id="card-counter">01 / 05</span></div>
+      <div id="card-stage" class="card-stage">
+        <div class="card-aura" aria-hidden="true"></div><div id="card-holder" class="card-holder"><div id="card-preview" aria-label="Interactive card preview"></div></div>
+        <div id="card-busy" class="card-busy" hidden aria-hidden="true"><div class="orbit"></div><span>✧</span></div>
+        <section id="edit-panel" class="edit-panel" role="dialog" aria-labelledby="edit-heading" hidden>
+          <div class="edit-heading"><h2 id="edit-heading">Edit card</h2><button id="edit-close" class="close-button" type="button" aria-label="Close editor">×</button></div>
+          <form id="edit-form"><div id="edit-fields"></div><p id="edit-error" class="edit-error" role="alert"></p><div class="edit-actions"><button id="edit-save" class="primary" type="submit">Save changes</button><button id="edit-cancel" class="quiet-button" type="button">Cancel</button></div></form>
+        </section>
+      </div>
+      <div class="carousel-controls"><button id="previous" class="round-button" type="button" aria-label="Previous card">←</button><div id="dots" class="dots" aria-label="Choose a card"></div><button id="next" class="round-button" type="button" aria-label="Next card">→</button><button id="pause-carousel" class="quiet-button pause-button" type="button" aria-pressed="false" aria-label="Pause carousel">Ⅱ</button></div>
+      <p id="card-caption" class="card-caption">Vesper, Eclipse Sovereign</p>
+      <p class="edit-hint">Tilt to catch the light. Click any detail to make it yours.</p>
+      <button id="edit-own-card" class="edit-own-button" type="button">✧ <span>Edit your own card</span></button>
+      <p id="mobile-message" class="message mobile-message" role="status" aria-live="polite" hidden></p>
+      <div class="card-tools"><button id="card-details" class="quiet-button" type="button">Card details</button><span>·</span><button id="export-card" class="quiet-button" type="button">Save card</button><span>·</span><label class="finish-control">Finish <select id="finish"><option value="vizier_etched_v1">Etched foil</option><option value="vizier_opal_v1">Opal</option><option value="vizier_prismatic_v1">Prismatic</option><option value="ordinary">Classic</option></select></label></div>
+    </section>
+  </main>
+  <footer class="footer"><span>AN IDEA IS ONLY THE BEGINNING.</span><p>Experimental designs. Rules and balance are yours to refine.</p></footer>
+  <script type="module" src="./main.js"></script>
+</body></html>

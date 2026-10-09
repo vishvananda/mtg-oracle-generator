@@ -1,4 +1,5 @@
 import { BONSAI } from './bonsai-config.js';
+import { isIOS, mobileModelMessage } from './device-support.js';
 
 const $ = (id) => document.getElementById(id);
 const seconds = (ms) => ms == null ? '—' : `${(ms / 1000).toFixed(2)} s`;
@@ -12,7 +13,7 @@ function status(text, error = false) {
   $('art-status').textContent = text; $('art-status').classList.toggle('error', error);
 }
 function controls() {
-  $('art-load').disabled = busy || loaded;
+  $('art-load').disabled = busy || loaded || isIOS;
   $('art-unload').disabled = busy || !loaded;
   $('art-generate').disabled = busy || !loaded;
   $('art-stop').disabled = !busy;
@@ -92,7 +93,7 @@ function onMessage({ data }) {
   } else if (data.type === 'error' || data.type === 'device-lost') fail(data.message);
 }
 $('art-load').addEventListener('click', () => {
-  if (busy || loaded) return;
+  if (busy || loaded || isIOS) return;
   if (!navigator.gpu) { status('Bonsai requires WebGPU. Try a current Chrome or Edge browser.', true); return; }
   busy = true; start = performance.now(); controls(); status('Starting Bonsai…');
   for (const c of Object.values(progress)) c.loaded = 0;
@@ -149,3 +150,4 @@ $('art-export').addEventListener('click', () => {
 });
 window.addEventListener('pagehide', (event) => { if (!event.persisted) worker?.terminate(); });
 history(); controls();
+if (isIOS) status(mobileModelMessage);

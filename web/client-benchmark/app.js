@@ -1,4 +1,5 @@
 import { Wllama } from './vendor/wllama/index.js';
+import { isIOS, mobileModelMessage } from './device-support.js';
 
 const $ = (id) => document.getElementById(id);
 const seconds = (ms) => ms == null ? '—' : `${(ms / 1000).toFixed(2)} s`;
@@ -16,7 +17,7 @@ $('threads').value = Math.min(8, Math.max(1, Math.floor((navigator.hardwareConcu
 
 function status(text, error = false) { $('status').textContent = text; $('status').classList.toggle('error', error); }
 function controls() {
-  $('load').disabled = busy || loaded || !manifest;
+  $('load').disabled = busy || loaded || !manifest || isIOS;
   $('unload').disabled = busy || !loaded;
   $('generate').disabled = busy || !loaded;
   $('stop').disabled = !busy || !controller;
@@ -60,7 +61,7 @@ function backendLabel(requested) {
   return 'GPU requested · offload unconfirmed';
 }
 async function loadModel() {
-  if (busy || loaded) return;
+  if (busy || loaded || isIOS) return;
   busy = true; gpuLayers = null; controls(); status('Preparing model download…');
   const start = performance.now();
   timer = setInterval(() => { $('load-time').textContent = seconds(performance.now() - start); }, 150);
@@ -210,6 +211,6 @@ try {
   $('identity').textContent = `${manifest.label} · wllama ${manifest.runtime}`;
   $('device').textContent = JSON.stringify(device, null, 2);
   $('engine').textContent = navigator.gpu ? 'WebGPU API available · checked on load' : 'CPU mode available';
-  status(crossOriginIsolated ? 'Ready to load. The initial model download is 2.37 GB.' : 'Ready to load. CPU threading is unavailable without browser isolation headers.');
+  status(isIOS ? mobileModelMessage : crossOriginIsolated ? 'Ready to load. The initial model download is 2.37 GB.' : 'Ready to load. CPU threading is unavailable without browser isolation headers.');
   renderHistory(); controls();
 } catch (error) { status(`Setup failed: ${error.message}`, true); }

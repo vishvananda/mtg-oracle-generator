@@ -1,0 +1,1621 @@
+{
+  "source": "https://api.scryfall.com/sets",
+  "updated": "2026-10-09",
+  "sets": [
+    {
+      "code": "FORGE",
+      "name": "MTG CardForge",
+      "released": ""
+    },
+    {
+      "code": "VIZIER",
+      "name": "Vizier · Original designs",
+      "released": ""
+    },
+    {
+      "code": "FRA",
+      "name": "Reality Fracture",
+      "released": "2026-10-02"
+    },
+    {
+      "code": "HOB",
+      "name": "The Hobbit",
+      "released": "2026-08-14"
+    },
+    {
+      "code": "HOC",
+      "name": "The Hobbit Eternal",
+      "released": "2026-08-14"
+    },
+    {
+      "code": "MSH",
+      "name": "Marvel Super Heroes",
+      "released": "2026-06-26"
+    },
+    {
+      "code": "MSC",
+      "name": "Marvel Super Heroes Commander",
+      "released": "2026-06-26"
+    },
+    {
+      "code": "SOS",
+      "name": "Secrets of Strixhaven",
+      "released": "2026-04-24"
+    },
+    {
+      "code": "SOC",
+      "name": "Secrets of Strixhaven Commander",
+      "released": "2026-04-24"
+    },
+    {
+      "code": "SOA",
+      "name": "Secrets of Strixhaven Mystical Archive",
+      "released": "2026-04-24"
+    },
+    {
+      "code": "TMT",
+      "name": "Teenage Mutant Ninja Turtles",
+      "released": "2026-03-06"
+    },
+    {
+      "code": "TMC",
+      "name": "Teenage Mutant Ninja Turtles Eternal",
+      "released": "2026-03-06"
+    },
+    {
+      "code": "ECL",
+      "name": "Lorwyn Eclipsed",
+      "released": "2026-01-23"
+    },
+    {
+      "code": "ECC",
+      "name": "Lorwyn Eclipsed Commander",
+      "released": "2026-01-23"
+    },
+    {
+      "code": "TLA",
+      "name": "Avatar: The Last Airbender",
+      "released": "2025-11-21"
+    },
+    {
+      "code": "TLE",
+      "name": "Avatar: The Last Airbender Eternal",
+      "released": "2025-11-21"
+    },
+    {
+      "code": "MAR",
+      "name": "Marvel Universe",
+      "released": "2025-09-26"
+    },
+    {
+      "code": "SPM",
+      "name": "Marvel's Spider-Man",
+      "released": "2025-09-26"
+    },
+    {
+      "code": "SPE",
+      "name": "Marvel's Spider-Man Eternal",
+      "released": "2025-09-26"
+    },
+    {
+      "code": "OM1",
+      "name": "Through the Omenpaths",
+      "released": "2025-09-23"
+    },
+    {
+      "code": "OMB",
+      "name": "Through the Omenpaths Bonus Sheet",
+      "released": "2025-09-23"
+    },
+    {
+      "code": "EOE",
+      "name": "Edge of Eternities",
+      "released": "2025-08-01"
+    },
+    {
+      "code": "EOC",
+      "name": "Edge of Eternities Commander",
+      "released": "2025-08-01"
+    },
+    {
+      "code": "EOS",
+      "name": "Edge of Eternities: Stellar Sights",
+      "released": "2025-08-01"
+    },
+    {
+      "code": "FIN",
+      "name": "Final Fantasy",
+      "released": "2025-06-13"
+    },
+    {
+      "code": "FIC",
+      "name": "Final Fantasy Commander",
+      "released": "2025-06-13"
+    },
+    {
+      "code": "TDM",
+      "name": "Tarkir: Dragonstorm",
+      "released": "2025-04-11"
+    },
+    {
+      "code": "TDC",
+      "name": "Tarkir: Dragonstorm Commander",
+      "released": "2025-04-11"
+    },
+    {
+      "code": "DFT",
+      "name": "Aetherdrift",
+      "released": "2025-02-14"
+    },
+    {
+      "code": "DRC",
+      "name": "Aetherdrift Commander",
+      "released": "2025-02-14"
+    },
+    {
+      "code": "INR",
+      "name": "Innistrad Remastered",
+      "released": "2025-01-24"
+    },
+    {
+      "code": "PIO",
+      "name": "Pioneer Masters",
+      "released": "2024-12-10"
+    },
+    {
+      "code": "FDN",
+      "name": "Foundations",
+      "released": "2024-11-15"
+    },
+    {
+      "code": "FDC",
+      "name": "Foundations Commander",
+      "released": "2024-11-15"
+    },
+    {
+      "code": "J25",
+      "name": "Foundations Jumpstart",
+      "released": "2024-11-15"
+    },
+    {
+      "code": "DSK",
+      "name": "Duskmourn: House of Horror",
+      "released": "2024-09-27"
+    },
+    {
+      "code": "DSC",
+      "name": "Duskmourn: House of Horror Commander",
+      "released": "2024-09-27"
+    },
+    {
+      "code": "BLB",
+      "name": "Bloomburrow",
+      "released": "2024-08-02"
+    },
+    {
+      "code": "BLC",
+      "name": "Bloomburrow Commander",
+      "released": "2024-08-02"
+    },
+    {
+      "code": "MB2",
+      "name": "Mystery Booster 2",
+      "released": "2024-08-02"
+    },
+    {
+      "code": "ACR",
+      "name": "Assassin's Creed",
+      "released": "2024-07-05"
+    },
+    {
+      "code": "MH3",
+      "name": "Modern Horizons 3",
+      "released": "2024-06-14"
+    },
+    {
+      "code": "M3C",
+      "name": "Modern Horizons 3 Commander",
+      "released": "2024-06-14"
+    },
+    {
+      "code": "OTP",
+      "name": "Breaking News",
+      "released": "2024-04-19"
+    },
+    {
+      "code": "OTJ",
+      "name": "Outlaws of Thunder Junction",
+      "released": "2024-04-19"
+    },
+    {
+      "code": "OTC",
+      "name": "Outlaws of Thunder Junction Commander",
+      "released": "2024-04-19"
+    },
+    {
+      "code": "BIG",
+      "name": "The Big Score",
+      "released": "2024-04-19"
+    },
+    {
+      "code": "PIP",
+      "name": "Fallout",
+      "released": "2024-03-08"
+    },
+    {
+      "code": "CLU",
+      "name": "Ravnica: Clue Edition",
+      "released": "2024-02-23"
+    },
+    {
+      "code": "MKM",
+      "name": "Murders at Karlov Manor",
+      "released": "2024-02-09"
+    },
+    {
+      "code": "MKC",
+      "name": "Murders at Karlov Manor Commander",
+      "released": "2024-02-09"
+    },
+    {
+      "code": "RVR",
+      "name": "Ravnica Remastered",
+      "released": "2024-01-12"
+    },
+    {
+      "code": "REX",
+      "name": "Jurassic World Collection",
+      "released": "2023-11-17"
+    },
+    {
+      "code": "SPG",
+      "name": "Special Guests",
+      "released": "2023-11-17"
+    },
+    {
+      "code": "LCI",
+      "name": "The Lost Caverns of Ixalan",
+      "released": "2023-11-17"
+    },
+    {
+      "code": "LCC",
+      "name": "The Lost Caverns of Ixalan Commander",
+      "released": "2023-11-17"
+    },
+    {
+      "code": "WHO",
+      "name": "Doctor Who",
+      "released": "2023-10-13"
+    },
+    {
+      "code": "WOE",
+      "name": "Wilds of Eldraine",
+      "released": "2023-09-08"
+    },
+    {
+      "code": "WOC",
+      "name": "Wilds of Eldraine Commander",
+      "released": "2023-09-08"
+    },
+    {
+      "code": "WOT",
+      "name": "Wilds of Eldraine: Enchanting Tales",
+      "released": "2023-09-08"
+    },
+    {
+      "code": "CMM",
+      "name": "Commander Masters",
+      "released": "2023-08-04"
+    },
+    {
+      "code": "LTC",
+      "name": "Tales of Middle-earth Commander",
+      "released": "2023-06-23"
+    },
+    {
+      "code": "LTR",
+      "name": "The Lord of the Rings: Tales of Middle-earth",
+      "released": "2023-06-23"
+    },
+    {
+      "code": "MAT",
+      "name": "March of the Machine: The Aftermath",
+      "released": "2023-05-12"
+    },
+    {
+      "code": "MOM",
+      "name": "March of the Machine",
+      "released": "2023-04-21"
+    },
+    {
+      "code": "MOC",
+      "name": "March of the Machine Commander",
+      "released": "2023-04-21"
+    },
+    {
+      "code": "ONE",
+      "name": "Phyrexia: All Will Be One",
+      "released": "2023-02-10"
+    },
+    {
+      "code": "ONC",
+      "name": "Phyrexia: All Will Be One Commander",
+      "released": "2023-02-10"
+    },
+    {
+      "code": "DMR",
+      "name": "Dominaria Remastered",
+      "released": "2023-01-13"
+    },
+    {
+      "code": "J22",
+      "name": "Jumpstart 2022",
+      "released": "2022-12-02"
+    },
+    {
+      "code": "BRO",
+      "name": "The Brothers' War",
+      "released": "2022-11-18"
+    },
+    {
+      "code": "BRC",
+      "name": "The Brothers' War Commander",
+      "released": "2022-11-18"
+    },
+    {
+      "code": "BRR",
+      "name": "The Brothers' War Retro Artifacts",
+      "released": "2022-11-18"
+    },
+    {
+      "code": "BOT",
+      "name": "Transformers",
+      "released": "2022-11-18"
+    },
+    {
+      "code": "GN3",
+      "name": "Game Night: Free-for-All",
+      "released": "2022-10-14"
+    },
+    {
+      "code": "UNF",
+      "name": "Unfinity",
+      "released": "2022-10-07"
+    },
+    {
+      "code": "40K",
+      "name": "Warhammer 40,000 Commander",
+      "released": "2022-10-07"
+    },
+    {
+      "code": "YDMU",
+      "name": "Alchemy: Dominaria",
+      "released": "2022-10-05"
+    },
+    {
+      "code": "DMU",
+      "name": "Dominaria United",
+      "released": "2022-09-09"
+    },
+    {
+      "code": "DMC",
+      "name": "Dominaria United Commander",
+      "released": "2022-09-09"
+    },
+    {
+      "code": "2X2",
+      "name": "Double Masters 2022",
+      "released": "2022-07-08"
+    },
+    {
+      "code": "HBG",
+      "name": "Alchemy Horizons: Baldur's Gate",
+      "released": "2022-07-07"
+    },
+    {
+      "code": "CLB",
+      "name": "Commander Legends: Battle for Baldur's Gate",
+      "released": "2022-06-10"
+    },
+    {
+      "code": "NCC",
+      "name": "New Capenna Commander",
+      "released": "2022-04-29"
+    },
+    {
+      "code": "SNC",
+      "name": "Streets of New Capenna",
+      "released": "2022-04-29"
+    },
+    {
+      "code": "NEO",
+      "name": "Kamigawa: Neon Dynasty",
+      "released": "2022-02-18"
+    },
+    {
+      "code": "NEC",
+      "name": "Neon Dynasty Commander",
+      "released": "2022-02-18"
+    },
+    {
+      "code": "CC2",
+      "name": "Commander Collection: Black",
+      "released": "2022-01-28"
+    },
+    {
+      "code": "VOC",
+      "name": "Crimson Vow Commander",
+      "released": "2021-11-19"
+    },
+    {
+      "code": "VOW",
+      "name": "Innistrad: Crimson Vow",
+      "released": "2021-11-19"
+    },
+    {
+      "code": "MID",
+      "name": "Innistrad: Midnight Hunt",
+      "released": "2021-09-24"
+    },
+    {
+      "code": "MIC",
+      "name": "Midnight Hunt Commander",
+      "released": "2021-09-24"
+    },
+    {
+      "code": "J21",
+      "name": "Jumpstart: Historic Horizons",
+      "released": "2021-08-26"
+    },
+    {
+      "code": "AFR",
+      "name": "Adventures in the Forgotten Realms",
+      "released": "2021-07-23"
+    },
+    {
+      "code": "AFC",
+      "name": "Forgotten Realms Commander",
+      "released": "2021-07-23"
+    },
+    {
+      "code": "MH2",
+      "name": "Modern Horizons 2",
+      "released": "2021-06-18"
+    },
+    {
+      "code": "C21",
+      "name": "Commander 2021",
+      "released": "2021-04-23"
+    },
+    {
+      "code": "STA",
+      "name": "Strixhaven Mystical Archive",
+      "released": "2021-04-23"
+    },
+    {
+      "code": "STX",
+      "name": "Strixhaven: School of Mages",
+      "released": "2021-04-23"
+    },
+    {
+      "code": "TSR",
+      "name": "Time Spiral Remastered",
+      "released": "2021-03-19"
+    },
+    {
+      "code": "KHM",
+      "name": "Kaldheim",
+      "released": "2021-02-05"
+    },
+    {
+      "code": "KHC",
+      "name": "Kaldheim Commander",
+      "released": "2021-02-05"
+    },
+    {
+      "code": "CC1",
+      "name": "Commander Collection: Green",
+      "released": "2020-12-04"
+    },
+    {
+      "code": "CMR",
+      "name": "Commander Legends",
+      "released": "2020-11-20"
+    },
+    {
+      "code": "KLR",
+      "name": "Kaladesh Remastered",
+      "released": "2020-11-12"
+    },
+    {
+      "code": "ZNR",
+      "name": "Zendikar Rising",
+      "released": "2020-09-25"
+    },
+    {
+      "code": "ZNC",
+      "name": "Zendikar Rising Commander",
+      "released": "2020-09-25"
+    },
+    {
+      "code": "ZNE",
+      "name": "Zendikar Rising Expeditions",
+      "released": "2020-09-25"
+    },
+    {
+      "code": "AKR",
+      "name": "Amonkhet Remastered",
+      "released": "2020-08-13"
+    },
+    {
+      "code": "2XM",
+      "name": "Double Masters",
+      "released": "2020-08-07"
+    },
+    {
+      "code": "JMP",
+      "name": "Jumpstart",
+      "released": "2020-07-17"
+    },
+    {
+      "code": "M21",
+      "name": "Core Set 2021",
+      "released": "2020-07-03"
+    },
+    {
+      "code": "SS3",
+      "name": "Signature Spellbook: Chandra",
+      "released": "2020-06-26"
+    },
+    {
+      "code": "IKO",
+      "name": "Ikoria: Lair of Behemoths",
+      "released": "2020-04-24"
+    },
+    {
+      "code": "C20",
+      "name": "Commander 2020",
+      "released": "2020-04-17"
+    },
+    {
+      "code": "UND",
+      "name": "Unsanctioned",
+      "released": "2020-02-29"
+    },
+    {
+      "code": "THB",
+      "name": "Theros Beyond Death",
+      "released": "2020-01-24"
+    },
+    {
+      "code": "J20",
+      "name": "Judge Gift Cards 2020",
+      "released": "2020-01-01"
+    },
+    {
+      "code": "HA1",
+      "name": "Historic Anthology 1",
+      "released": "2019-11-21"
+    },
+    {
+      "code": "GN2",
+      "name": "Game Night 2019",
+      "released": "2019-11-15"
+    },
+    {
+      "code": "PTG",
+      "name": "Ponies: The Galloping",
+      "released": "2019-10-22"
+    },
+    {
+      "code": "ELD",
+      "name": "Throne of Eldraine",
+      "released": "2019-10-04"
+    },
+    {
+      "code": "C19",
+      "name": "Commander 2019",
+      "released": "2019-08-23"
+    },
+    {
+      "code": "M20",
+      "name": "Core Set 2020",
+      "released": "2019-07-12"
+    },
+    {
+      "code": "SS2",
+      "name": "Signature Spellbook: Gideon",
+      "released": "2019-06-28"
+    },
+    {
+      "code": "MH1",
+      "name": "Modern Horizons",
+      "released": "2019-06-14"
+    },
+    {
+      "code": "WAR",
+      "name": "War of the Spark",
+      "released": "2019-05-03"
+    },
+    {
+      "code": "RNA",
+      "name": "Ravnica Allegiance",
+      "released": "2019-01-25"
+    },
+    {
+      "code": "UMA",
+      "name": "Ultimate Masters",
+      "released": "2018-12-07"
+    },
+    {
+      "code": "GNT",
+      "name": "Game Night",
+      "released": "2018-11-16"
+    },
+    {
+      "code": "GRN",
+      "name": "Guilds of Ravnica",
+      "released": "2018-10-05"
+    },
+    {
+      "code": "MED",
+      "name": "Mythic Edition",
+      "released": "2018-10-05"
+    },
+    {
+      "code": "C18",
+      "name": "Commander 2018",
+      "released": "2018-08-10"
+    },
+    {
+      "code": "M19",
+      "name": "Core Set 2019",
+      "released": "2018-07-13"
+    },
+    {
+      "code": "GS1",
+      "name": "Global Series Jiang Yanggu & Mu Yanling",
+      "released": "2018-06-22"
+    },
+    {
+      "code": "SS1",
+      "name": "Signature Spellbook: Jace",
+      "released": "2018-06-15"
+    },
+    {
+      "code": "BBD",
+      "name": "Battlebond",
+      "released": "2018-06-08"
+    },
+    {
+      "code": "CM2",
+      "name": "Commander Anthology Volume II",
+      "released": "2018-06-08"
+    },
+    {
+      "code": "DOM",
+      "name": "Dominaria",
+      "released": "2018-04-27"
+    },
+    {
+      "code": "DDU",
+      "name": "Duel Decks: Elves vs. Inventors",
+      "released": "2018-04-06"
+    },
+    {
+      "code": "A25",
+      "name": "Masters 25",
+      "released": "2018-03-16"
+    },
+    {
+      "code": "RIX",
+      "name": "Rivals of Ixalan",
+      "released": "2018-01-19"
+    },
+    {
+      "code": "UST",
+      "name": "Unstable",
+      "released": "2017-12-08"
+    },
+    {
+      "code": "E02",
+      "name": "Explorers of Ixalan",
+      "released": "2017-11-24"
+    },
+    {
+      "code": "V17",
+      "name": "From the Vault: Transform",
+      "released": "2017-11-24"
+    },
+    {
+      "code": "IMA",
+      "name": "Iconic Masters",
+      "released": "2017-11-17"
+    },
+    {
+      "code": "DDT",
+      "name": "Duel Decks: Merfolk vs. Goblins",
+      "released": "2017-10-24"
+    },
+    {
+      "code": "XLN",
+      "name": "Ixalan",
+      "released": "2017-09-29"
+    },
+    {
+      "code": "H17",
+      "name": "HasCon 2017",
+      "released": "2017-09-20"
+    },
+    {
+      "code": "C17",
+      "name": "Commander 2017",
+      "released": "2017-08-25"
+    },
+    {
+      "code": "HOU",
+      "name": "Hour of Devastation",
+      "released": "2017-07-14"
+    },
+    {
+      "code": "E01",
+      "name": "Archenemy: Nicol Bolas",
+      "released": "2017-06-16"
+    },
+    {
+      "code": "CMA",
+      "name": "Commander Anthology",
+      "released": "2017-06-09"
+    },
+    {
+      "code": "AKH",
+      "name": "Amonkhet",
+      "released": "2017-04-28"
+    },
+    {
+      "code": "MP2",
+      "name": "Amonkhet Invocations",
+      "released": "2017-04-28"
+    },
+    {
+      "code": "W17",
+      "name": "Welcome Deck 2017",
+      "released": "2017-04-15"
+    },
+    {
+      "code": "DDS",
+      "name": "Duel Decks: Mind vs. Might",
+      "released": "2017-03-31"
+    },
+    {
+      "code": "MM3",
+      "name": "Modern Masters 2017",
+      "released": "2017-03-17"
+    },
+    {
+      "code": "AER",
+      "name": "Aether Revolt",
+      "released": "2017-01-20"
+    },
+    {
+      "code": "PCA",
+      "name": "Planechase Anthology",
+      "released": "2016-11-25"
+    },
+    {
+      "code": "PZ2",
+      "name": "Treasure Chest",
+      "released": "2016-11-16"
+    },
+    {
+      "code": "C16",
+      "name": "Commander 2016",
+      "released": "2016-11-11"
+    },
+    {
+      "code": "KLD",
+      "name": "Kaladesh",
+      "released": "2016-09-30"
+    },
+    {
+      "code": "DDR",
+      "name": "Duel Decks: Nissa vs. Ob Nixilis",
+      "released": "2016-09-02"
+    },
+    {
+      "code": "CN2",
+      "name": "Conspiracy: Take the Crown",
+      "released": "2016-08-26"
+    },
+    {
+      "code": "V16",
+      "name": "From the Vault: Lore",
+      "released": "2016-08-19"
+    },
+    {
+      "code": "EMN",
+      "name": "Eldritch Moon",
+      "released": "2016-07-22"
+    },
+    {
+      "code": "EMA",
+      "name": "Eternal Masters",
+      "released": "2016-06-10"
+    },
+    {
+      "code": "SOI",
+      "name": "Shadows over Innistrad",
+      "released": "2016-04-08"
+    },
+    {
+      "code": "W16",
+      "name": "Welcome Deck 2016",
+      "released": "2016-04-08"
+    },
+    {
+      "code": "DDQ",
+      "name": "Duel Decks: Blessed vs. Cursed",
+      "released": "2016-02-26"
+    },
+    {
+      "code": "OGW",
+      "name": "Oath of the Gatewatch",
+      "released": "2016-01-22"
+    },
+    {
+      "code": "C15",
+      "name": "Commander 2015",
+      "released": "2015-11-13"
+    },
+    {
+      "code": "BFZ",
+      "name": "Battle for Zendikar",
+      "released": "2015-10-02"
+    },
+    {
+      "code": "EXP",
+      "name": "Zendikar Expeditions",
+      "released": "2015-10-02"
+    },
+    {
+      "code": "DDP",
+      "name": "Duel Decks: Zendikar vs. Eldrazi",
+      "released": "2015-08-28"
+    },
+    {
+      "code": "V15",
+      "name": "From the Vault: Angels",
+      "released": "2015-08-21"
+    },
+    {
+      "code": "ORI",
+      "name": "Magic Origins",
+      "released": "2015-07-17"
+    },
+    {
+      "code": "MM2",
+      "name": "Modern Masters 2015",
+      "released": "2015-05-22"
+    },
+    {
+      "code": "TPR",
+      "name": "Tempest Remastered",
+      "released": "2015-05-06"
+    },
+    {
+      "code": "DTK",
+      "name": "Dragons of Tarkir",
+      "released": "2015-03-27"
+    },
+    {
+      "code": "DDO",
+      "name": "Duel Decks: Elspeth vs. Kiora",
+      "released": "2015-02-27"
+    },
+    {
+      "code": "FRF",
+      "name": "Fate Reforged",
+      "released": "2015-01-23"
+    },
+    {
+      "code": "EVG",
+      "name": "Duel Decks Anthology: Elves vs. Goblins",
+      "released": "2014-12-05"
+    },
+    {
+      "code": "C14",
+      "name": "Commander 2014",
+      "released": "2014-11-07"
+    },
+    {
+      "code": "KTK",
+      "name": "Khans of Tarkir",
+      "released": "2014-09-26"
+    },
+    {
+      "code": "DDN",
+      "name": "Duel Decks: Speed vs. Cunning",
+      "released": "2014-09-05"
+    },
+    {
+      "code": "V14",
+      "name": "From the Vault: Annihilation",
+      "released": "2014-08-22"
+    },
+    {
+      "code": "M15",
+      "name": "Magic 2015",
+      "released": "2014-07-18"
+    },
+    {
+      "code": "VMA",
+      "name": "Vintage Masters",
+      "released": "2014-06-16"
+    },
+    {
+      "code": "CNS",
+      "name": "Conspiracy",
+      "released": "2014-06-06"
+    },
+    {
+      "code": "MD1",
+      "name": "Modern Event Deck 2014",
+      "released": "2014-05-30"
+    },
+    {
+      "code": "JOU",
+      "name": "Journey into Nyx",
+      "released": "2014-05-02"
+    },
+    {
+      "code": "DDM",
+      "name": "Duel Decks: Jace vs. Vraska",
+      "released": "2014-03-14"
+    },
+    {
+      "code": "BNG",
+      "name": "Born of the Gods",
+      "released": "2014-02-07"
+    },
+    {
+      "code": "C13",
+      "name": "Commander 2013",
+      "released": "2013-11-01"
+    },
+    {
+      "code": "THS",
+      "name": "Theros",
+      "released": "2013-09-27"
+    },
+    {
+      "code": "DDL",
+      "name": "Duel Decks: Heroes vs. Monsters",
+      "released": "2013-09-06"
+    },
+    {
+      "code": "V13",
+      "name": "From the Vault: Twenty",
+      "released": "2013-08-23"
+    },
+    {
+      "code": "M14",
+      "name": "Magic 2014",
+      "released": "2013-07-19"
+    },
+    {
+      "code": "MMA",
+      "name": "Modern Masters",
+      "released": "2013-06-07"
+    },
+    {
+      "code": "DGM",
+      "name": "Dragon's Maze",
+      "released": "2013-05-03"
+    },
+    {
+      "code": "DDK",
+      "name": "Duel Decks: Sorin vs. Tibalt",
+      "released": "2013-03-15"
+    },
+    {
+      "code": "GTC",
+      "name": "Gatecrash",
+      "released": "2013-02-01"
+    },
+    {
+      "code": "CM1",
+      "name": "Commander's Arsenal",
+      "released": "2012-11-02"
+    },
+    {
+      "code": "RTR",
+      "name": "Return to Ravnica",
+      "released": "2012-10-05"
+    },
+    {
+      "code": "DDJ",
+      "name": "Duel Decks: Izzet vs. Golgari",
+      "released": "2012-09-07"
+    },
+    {
+      "code": "V12",
+      "name": "From the Vault: Realms",
+      "released": "2012-08-31"
+    },
+    {
+      "code": "M13",
+      "name": "Magic 2013",
+      "released": "2012-07-13"
+    },
+    {
+      "code": "PC2",
+      "name": "Planechase 2012",
+      "released": "2012-06-01"
+    },
+    {
+      "code": "AVR",
+      "name": "Avacyn Restored",
+      "released": "2012-05-04"
+    },
+    {
+      "code": "DDI",
+      "name": "Duel Decks: Venser vs. Koth",
+      "released": "2012-03-30"
+    },
+    {
+      "code": "DKA",
+      "name": "Dark Ascension",
+      "released": "2012-02-03"
+    },
+    {
+      "code": "PIDW",
+      "name": "IDW Comics Inserts",
+      "released": "2012-01-01"
+    },
+    {
+      "code": "PD3",
+      "name": "Premium Deck Series: Graveborn",
+      "released": "2011-11-18"
+    },
+    {
+      "code": "ISD",
+      "name": "Innistrad",
+      "released": "2011-09-30"
+    },
+    {
+      "code": "DDH",
+      "name": "Duel Decks: Ajani vs. Nicol Bolas",
+      "released": "2011-09-02"
+    },
+    {
+      "code": "V11",
+      "name": "From the Vault: Legends",
+      "released": "2011-08-26"
+    },
+    {
+      "code": "M12",
+      "name": "Magic 2012",
+      "released": "2011-07-15"
+    },
+    {
+      "code": "CMD",
+      "name": "Commander 2011",
+      "released": "2011-06-17"
+    },
+    {
+      "code": "TD2",
+      "name": "Duel Decks: Mirrodin Pure vs. New Phyrexia",
+      "released": "2011-05-14"
+    },
+    {
+      "code": "NPH",
+      "name": "New Phyrexia",
+      "released": "2011-05-13"
+    },
+    {
+      "code": "DDG",
+      "name": "Duel Decks: Knights vs. Dragons",
+      "released": "2011-04-01"
+    },
+    {
+      "code": "MBS",
+      "name": "Mirrodin Besieged",
+      "released": "2011-02-04"
+    },
+    {
+      "code": "ME4",
+      "name": "Masters Edition IV",
+      "released": "2011-01-10"
+    },
+    {
+      "code": "PD2",
+      "name": "Premium Deck Series: Fire and Lightning",
+      "released": "2010-11-19"
+    },
+    {
+      "code": "SOM",
+      "name": "Scars of Mirrodin",
+      "released": "2010-10-01"
+    },
+    {
+      "code": "DDF",
+      "name": "Duel Decks: Elspeth vs. Tezzeret",
+      "released": "2010-09-03"
+    },
+    {
+      "code": "V10",
+      "name": "From the Vault: Relics",
+      "released": "2010-08-27"
+    },
+    {
+      "code": "M11",
+      "name": "Magic 2011",
+      "released": "2010-07-16"
+    },
+    {
+      "code": "ARC",
+      "name": "Archenemy",
+      "released": "2010-06-18"
+    },
+    {
+      "code": "DPA",
+      "name": "Duels of the Planeswalkers",
+      "released": "2010-06-04"
+    },
+    {
+      "code": "ROE",
+      "name": "Rise of the Eldrazi",
+      "released": "2010-04-23"
+    },
+    {
+      "code": "DDE",
+      "name": "Duel Decks: Phyrexia vs. the Coalition",
+      "released": "2010-03-19"
+    },
+    {
+      "code": "WWK",
+      "name": "Worldwake",
+      "released": "2010-02-05"
+    },
+    {
+      "code": "H09",
+      "name": "Premium Deck Series: Slivers",
+      "released": "2009-11-20"
+    },
+    {
+      "code": "DDD",
+      "name": "Duel Decks: Garruk vs. Liliana",
+      "released": "2009-10-30"
+    },
+    {
+      "code": "ZEN",
+      "name": "Zendikar",
+      "released": "2009-10-02"
+    },
+    {
+      "code": "ME3",
+      "name": "Masters Edition III",
+      "released": "2009-09-07"
+    },
+    {
+      "code": "HOP",
+      "name": "Planechase",
+      "released": "2009-09-04"
+    },
+    {
+      "code": "V09",
+      "name": "From the Vault: Exiled",
+      "released": "2009-08-28"
+    },
+    {
+      "code": "M10",
+      "name": "Magic 2010",
+      "released": "2009-07-17"
+    },
+    {
+      "code": "ARB",
+      "name": "Alara Reborn",
+      "released": "2009-04-30"
+    },
+    {
+      "code": "DDC",
+      "name": "Duel Decks: Divine vs. Demonic",
+      "released": "2009-04-10"
+    },
+    {
+      "code": "CON",
+      "name": "Conflux",
+      "released": "2009-02-06"
+    },
+    {
+      "code": "DD2",
+      "name": "Duel Decks: Jace vs. Chandra",
+      "released": "2008-11-07"
+    },
+    {
+      "code": "ALA",
+      "name": "Shards of Alara",
+      "released": "2008-10-03"
+    },
+    {
+      "code": "ME2",
+      "name": "Masters Edition II",
+      "released": "2008-09-22"
+    },
+    {
+      "code": "DRB",
+      "name": "From the Vault: Dragons",
+      "released": "2008-08-29"
+    },
+    {
+      "code": "EVE",
+      "name": "Eventide",
+      "released": "2008-07-25"
+    },
+    {
+      "code": "SHM",
+      "name": "Shadowmoor",
+      "released": "2008-05-02"
+    },
+    {
+      "code": "MOR",
+      "name": "Morningtide",
+      "released": "2008-02-01"
+    },
+    {
+      "code": "LRW",
+      "name": "Lorwyn",
+      "released": "2007-10-12"
+    },
+    {
+      "code": "ME1",
+      "name": "Masters Edition",
+      "released": "2007-09-10"
+    },
+    {
+      "code": "10E",
+      "name": "Tenth Edition",
+      "released": "2007-07-13"
+    },
+    {
+      "code": "FUT",
+      "name": "Future Sight",
+      "released": "2007-05-04"
+    },
+    {
+      "code": "PLC",
+      "name": "Planar Chaos",
+      "released": "2007-02-02"
+    },
+    {
+      "code": "TSP",
+      "name": "Time Spiral",
+      "released": "2006-10-06"
+    },
+    {
+      "code": "CSP",
+      "name": "Coldsnap",
+      "released": "2006-07-21"
+    },
+    {
+      "code": "DIS",
+      "name": "Dissension",
+      "released": "2006-05-05"
+    },
+    {
+      "code": "GPT",
+      "name": "Guildpact",
+      "released": "2006-02-03"
+    },
+    {
+      "code": "PMPS",
+      "name": "Magic Premiere Shop 2005",
+      "released": "2005-10-07"
+    },
+    {
+      "code": "RAV",
+      "name": "Ravnica: City of Guilds",
+      "released": "2005-10-07"
+    },
+    {
+      "code": "9ED",
+      "name": "Ninth Edition",
+      "released": "2005-07-29"
+    },
+    {
+      "code": "SOK",
+      "name": "Saviors of Kamigawa",
+      "released": "2005-06-03"
+    },
+    {
+      "code": "BOK",
+      "name": "Betrayers of Kamigawa",
+      "released": "2005-02-04"
+    },
+    {
+      "code": "UNH",
+      "name": "Unhinged",
+      "released": "2004-11-19"
+    },
+    {
+      "code": "CHK",
+      "name": "Champions of Kamigawa",
+      "released": "2004-10-01"
+    },
+    {
+      "code": "5DN",
+      "name": "Fifth Dawn",
+      "released": "2004-06-04"
+    },
+    {
+      "code": "DST",
+      "name": "Darksteel",
+      "released": "2004-02-06"
+    },
+    {
+      "code": "MRD",
+      "name": "Mirrodin",
+      "released": "2003-10-02"
+    },
+    {
+      "code": "8ED",
+      "name": "Eighth Edition",
+      "released": "2003-07-28"
+    },
+    {
+      "code": "SCG",
+      "name": "Scourge",
+      "released": "2003-05-26"
+    },
+    {
+      "code": "LGN",
+      "name": "Legions",
+      "released": "2003-02-03"
+    },
+    {
+      "code": "ONS",
+      "name": "Onslaught",
+      "released": "2002-10-07"
+    },
+    {
+      "code": "JUD",
+      "name": "Judgment",
+      "released": "2002-05-27"
+    },
+    {
+      "code": "TOR",
+      "name": "Torment",
+      "released": "2002-02-04"
+    },
+    {
+      "code": "DKM",
+      "name": "Deckmasters",
+      "released": "2001-12-01"
+    },
+    {
+      "code": "ODY",
+      "name": "Odyssey",
+      "released": "2001-10-01"
+    },
+    {
+      "code": "APC",
+      "name": "Apocalypse",
+      "released": "2001-06-04"
+    },
+    {
+      "code": "7ED",
+      "name": "Seventh Edition",
+      "released": "2001-04-11"
+    },
+    {
+      "code": "PLS",
+      "name": "Planeshift",
+      "released": "2001-02-05"
+    },
+    {
+      "code": "INV",
+      "name": "Invasion",
+      "released": "2000-10-02"
+    },
+    {
+      "code": "BTD",
+      "name": "Beatdown Box Set",
+      "released": "2000-10-01"
+    },
+    {
+      "code": "PCY",
+      "name": "Prophecy",
+      "released": "2000-06-05"
+    },
+    {
+      "code": "S00",
+      "name": "Starter 2000",
+      "released": "2000-04-01"
+    },
+    {
+      "code": "NEM",
+      "name": "Nemesis",
+      "released": "2000-02-14"
+    },
+    {
+      "code": "BRB",
+      "name": "Battle Royale Box Set",
+      "released": "1999-11-12"
+    },
+    {
+      "code": "MMQ",
+      "name": "Mercadian Masques",
+      "released": "1999-10-04"
+    },
+    {
+      "code": "PGRU",
+      "name": "Guru",
+      "released": "1999-07-12"
+    },
+    {
+      "code": "S99",
+      "name": "Starter 1999",
+      "released": "1999-07-01"
+    },
+    {
+      "code": "UDS",
+      "name": "Urza's Destiny",
+      "released": "1999-06-07"
+    },
+    {
+      "code": "PTK",
+      "name": "Portal Three Kingdoms",
+      "released": "1999-05-01"
+    },
+    {
+      "code": "6ED",
+      "name": "Classic Sixth Edition",
+      "released": "1999-04-21"
+    },
+    {
+      "code": "ULG",
+      "name": "Urza's Legacy",
+      "released": "1999-02-15"
+    },
+    {
+      "code": "ATH",
+      "name": "Anthologies",
+      "released": "1998-11-01"
+    },
+    {
+      "code": "USG",
+      "name": "Urza's Saga",
+      "released": "1998-10-12"
+    },
+    {
+      "code": "UGL",
+      "name": "Unglued",
+      "released": "1998-08-11"
+    },
+    {
+      "code": "EXO",
+      "name": "Exodus",
+      "released": "1998-06-15"
+    },
+    {
+      "code": "STH",
+      "name": "Stronghold",
+      "released": "1998-03-02"
+    },
+    {
+      "code": "TMP",
+      "name": "Tempest",
+      "released": "1997-10-14"
+    },
+    {
+      "code": "WTH",
+      "name": "Weatherlight",
+      "released": "1997-06-09"
+    },
+    {
+      "code": "POR",
+      "name": "Portal",
+      "released": "1997-05-01"
+    },
+    {
+      "code": "PAST",
+      "name": "Astral Cards",
+      "released": "1997-04-01"
+    },
+    {
+      "code": "5ED",
+      "name": "Fifth Edition",
+      "released": "1997-03-24"
+    },
+    {
+      "code": "VIS",
+      "name": "Visions",
+      "released": "1997-02-03"
+    },
+    {
+      "code": "MIR",
+      "name": "Mirage",
+      "released": "1996-10-08"
+    },
+    {
+      "code": "PARL",
+      "name": "Arena League 1996",
+      "released": "1996-08-02"
+    },
+    {
+      "code": "ALL",
+      "name": "Alliances",
+      "released": "1996-06-10"
+    },
+    {
+      "code": "HML",
+      "name": "Homelands",
+      "released": "1995-10-01"
+    },
+    {
+      "code": "CHR",
+      "name": "Chronicles",
+      "released": "1995-07-01"
+    },
+    {
+      "code": "ICE",
+      "name": "Ice Age",
+      "released": "1995-06-03"
+    },
+    {
+      "code": "4ED",
+      "name": "Fourth Edition",
+      "released": "1995-04-01"
+    },
+    {
+      "code": "PMEI",
+      "name": "Media and Collaboration Promos",
+      "released": "1995-01-01"
+    },
+    {
+      "code": "FEM",
+      "name": "Fallen Empires",
+      "released": "1994-11-01"
+    },
+    {
+      "code": "DRK",
+      "name": "The Dark",
+      "released": "1994-08-01"
+    },
+    {
+      "code": "LEG",
+      "name": "Legends",
+      "released": "1994-06-01"
+    },
+    {
+      "code": "3ED",
+      "name": "Revised Edition",
+      "released": "1994-04-11"
+    },
+    {
+      "code": "ATQ",
+      "name": "Antiquities",
+      "released": "1994-03-04"
+    },
+    {
+      "code": "ARN",
+      "name": "Arabian Nights",
+      "released": "1993-12-17"
+    },
+    {
+      "code": "2ED",
+      "name": "Unlimited Edition",
+      "released": "1993-12-01"
+    },
+    {
+      "code": "LEB",
+      "name": "Limited Edition Beta",
+      "released": "1993-10-04"
+    },
+    {
+      "code": "LEA",
+      "name": "Limited Edition Alpha",
+      "released": "1993-08-05"
+    }
+  ]
+}

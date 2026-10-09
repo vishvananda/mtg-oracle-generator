@@ -1,5 +1,9 @@
 # Browser inference benchmark
 
+For the card creation interface, see [MTG CardForge](forge/README.md), live at
+https://tetrarcum.com/. Model loading is disabled on iOS after both models
+independently crashed during loading; Forge provides manual editing there.
+
 Live at **https://tetrarchs.com/model-bench/**. The static page runs the merged
 Qwen3 4B SFT + round-two DPO Q4_0 model in the browser, using pinned
 `@wllama/wllama` and compatibility assets at version 3.8.1. It never calls the
