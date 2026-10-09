@@ -113,6 +113,12 @@ def export_pairs(pilot,scored,output):
     for case_id,rows in sorted(groups.items()):
         if len(rows)!=manifest['candidates_per_prompt']:
             skipped['incomplete_group']+=1;continue
+        same_cards=defaultdict(set)
+        for row in rows:
+            if row['assessment']['schema_valid']:
+                same_cards[digest(json.loads(row['raw']))].add(row['assessment']['gate'])
+        if any({'faithful_candidate','intent_failure'}<=gates for gates in same_cards.values()):
+            skipped['contradictory_judgments_for_same_card']+=1;continue
         if not group_is_usable([r['assessment'] for r in rows]):
             skipped['uncertain_all_bad_or_tied']+=1;continue
         good=[r for r in rows if r['assessment']['gate']=='faithful_candidate'

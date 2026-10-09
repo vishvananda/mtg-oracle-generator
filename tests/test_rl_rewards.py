@@ -77,7 +77,18 @@ class Rewards(unittest.TestCase):
         self.assertEqual(len(align_judgments({'reviews':reviews},cases)),2)
         for bad in [None,reviews[:1],[reviews[0],reviews[0]]]:
             with self.assertRaises(ValueError):align_judgments({'reviews':bad},cases)
-        with self.assertRaises(ValueError):combine(self.report(cases[0]),{**JUDGE,'violations':['contradiction']},PARSED)
+
+    def test_contradictory_judgment_is_audited_and_excludes_its_group(self):
+        report=self.report(fixtures()[0])
+        contradictory={**JUDGE,'violations':['The requested fear reminder text is omitted.']}
+        result=combine(report,contradictory,PARSED)
+        self.assertEqual(result['gate'],'judge_inconsistent')
+        self.assertEqual(result['judgment'],contradictory)
+        self.assertFalse(result['eligible']);self.assertIsNone(result['reward'])
+        good=combine(report,JUDGE,PARSED)
+        bad=combine(report,{**JUDGE,'verdict':'fail','violations':['Wrong effect.']},PARSED)
+        self.assertFalse(group_is_usable([good,bad,result]))
+        self.assertTrue(group_is_usable([good,bad]))
 
 
 if __name__=='__main__':unittest.main()

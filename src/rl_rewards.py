@@ -54,7 +54,9 @@ def combine(report,judgment,reference_parse=None):
     verdict=judgment.get('verdict');style=judgment.get('oracle_style');violations=judgment.get('violations')
     if verdict not in ('pass','fail') or type(style) is not int or style not in (0,1,2) or not isinstance(violations,list):
         raise ValueError('Invalid judge result')
-    if verdict=='pass' and violations:raise ValueError('Passing judgment contains violations')
+    if verdict=='pass' and violations:
+        return {**report,'eligible':False,'reward':None,'gate':'judge_inconsistent',
+                'judgment':judgment,'judge_error':'Passing judgment contains violations'}
     if verdict=='fail':return {**report,'reward':-.6,'gate':'intent_failure','judgment':judgment}
     if style==0:return {**report,'reward':-.5,'gate':'unusable_rules','judgment':judgment}
     status=report['mtgish'].get('status')
