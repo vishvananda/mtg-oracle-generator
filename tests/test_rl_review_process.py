@@ -2,7 +2,7 @@ import json,sys,tempfile,unittest
 from pathlib import Path
 from unittest.mock import patch
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
-from rl_review_process import same_worker,review_process,should_look_ahead,lookahead_minutes
+from rl_review_process import same_worker,review_process,should_look_ahead,lookahead_minutes,batch_limit
 
 
 class ReviewScheduling(unittest.TestCase):
@@ -19,6 +19,18 @@ class ReviewScheduling(unittest.TestCase):
         self.assertLessEqual(10.541751+(minutes+60)*.041667,20)
         ledger['reservations'].append({'maximum_usd':6.66672})
         self.assertIsNone(lookahead_minutes(ledger,20,.041667))
+
+    def test_explicit_fourth_batch_is_allowed_without_enabling_a_fifth(self):
+        self.assertEqual(batch_limit({}),3)
+        limit=batch_limit({'maximum_batches':4})
+        self.assertTrue(should_look_ahead(3,571,267,maximum_batches=limit))
+        self.assertFalse(should_look_ahead(4,835,267,maximum_batches=limit))
+        for value in (0,-1,True,4.0,'4'):
+            with self.assertRaisesRegex(ValueError,'integer'):batch_limit({'maximum_batches':value})
+        ledger={'reservations':[{'maximum_usd':10.541751},{'maximum_usd':6.66672}]}
+        minutes=lookahead_minutes(ledger,28,.041667)
+        self.assertEqual(minutes,180)
+        self.assertLessEqual(17.208471+(minutes+60)*.041667,28)
 
     def test_pid_reuse_or_changed_command_is_not_an_active_review_worker(self):
         receipt={'pid':42,'start_ticks':'100','command':['python','review.py']}

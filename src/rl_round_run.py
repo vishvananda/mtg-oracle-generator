@@ -13,7 +13,7 @@ from job_budget import settle_terminal
 from rl_gpu import sha
 from rl_jobs import package,launch
 from rl_pipeline import verify_collected
-from rl_review_process import review_process,should_look_ahead,lookahead_minutes
+from rl_review_process import review_process,should_look_ahead,lookahead_minutes,batch_limit
 
 
 def checked_audit(root):
@@ -29,6 +29,7 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
     import huggingface_hub as hf
     repo=Path(__file__).resolve().parents[1]
     auth=root/'authorization.json';auth_hash=sha(auth);status=root/'status.json'
+    maximum_batches=batch_limit(json.loads(auth.read_text()))
     def update(phase,**values):
         if sha(auth)!=auth_hash:raise ValueError('Authorization changed')
         save(status,{'phase':phase,'updated_at':datetime.now(timezone.utc).isoformat(),
@@ -109,14 +110,14 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
         ahead=None
         reviews=[audit];pilots=[root/'audit-pilot']
         count=json.loads((reviews[0]/'review.json').read_text())['approved_pairs']
-        for index in range(1,4):
+        for index in range(1,maximum_batches+1):
             if count>=1000:break
             update('preparing_expansion',batch=index,approved_pairs=count)
             batch,pilot,pack,record=sample_inputs(index)
             gpu('sample',pack,record,batch/'sample',180)
             review=batch/'review';parallel=None
             previous_yield=json.loads((reviews[-1]/'review.json').read_text())['approved_pairs'] if len(reviews)>1 else None
-            if not (review/'review.json').exists() and should_look_ahead(index,count,previous_yield):
+            if not (review/'review.json').exists() and should_look_ahead(index,count,previous_yield,maximum_batches=maximum_batches):
                 next_record=root/f'batch-{index+1:02d}/sample-job.json'
                 if next_record.exists():
                     ahead=sample_inputs(index+1)
@@ -149,7 +150,7 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
                 # A yield surprise may make the one ahead unnecessary. Retain
                 # and settle that allocation before starting training.
                 gpu('sample',ahead[2],ahead[3],ahead[0]/'sample',180)
-        if count<1000:raise ValueError('Three batches did not reach 1000 verified pairs; preserve data and inspect yield')
+        if count<1000:raise ValueError(f'{maximum_batches} batches did not reach 1000 verified pairs; preserve data and inspect yield')
         merged=root/'merged-review'
         if not (merged/'review.json').exists():
             args=['merge','--root',root,'--output',merged,'--maximum',2000]

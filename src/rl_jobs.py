@@ -77,7 +77,9 @@ def launch(package,adapter_record,record,stage,ledger,authorization,timeout_minu
     auth=json.loads(authorization.read_text())
     if auth['scope'] not in ('one_preference_pilot','one_preference_round') or not auth['user_instruction'].strip():
         raise ValueError('Explicit preference-pilot authorization required')
-    limit=10 if auth['scope']=='one_preference_pilot' else 20
+    # The user requested a fourth collection batch. The round still reserves
+    # every allocation against its own (currently lower) authorization/ledger.
+    limit=10 if auth['scope']=='one_preference_pilot' else 30
     if auth['ceiling_usd']>limit:raise ValueError('Authorization exceeds the configured experiment bound')
     manifest=json.loads((package/'manifest.json').read_text())
     for name,pin in manifest['files'].items():

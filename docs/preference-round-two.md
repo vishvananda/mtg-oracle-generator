@@ -31,14 +31,17 @@ single judge verdict can establish official rules correctness or balance.
 Start with 2,048 new source families, four sampled Qwen completions each.
 Balance card types, color combinations and description detail; include explicit
 name/rarity exercises. If necessary, add disjoint batches until there are
-1,000–2,000 accepted pairs, stopping after three batches for review if yield is
-insufficient. Each family contributes at most one pair. Keep actual sampled
+1,000–2,000 accepted pairs, stopping at the authorized batch limit if yield is
+insufficient. The initial three-batch limit was extended to four at the user's
+request after the first two batches yielded 261 and 267 pairs. Each family
+contributes at most one pair. Keep actual sampled
 failures as negatives; prefer good Qwen positives, otherwise use a Sol repair.
 
 Once a broad batch establishes collection yield, generation can run one batch
 ahead of the six local review workers. The next sampling job starts while the
 current batch is reviewed, provided the previous yield plus a 50% margin still
-predicts a shortfall. The scheduler respects the three-batch limit and keeps a
+predicts a shortfall. The scheduler reads `maximum_batches` from the authorization
+receipt (default three, now four for this run) and keeps a
 full 60-minute training reservation within the experiment budget. Completed
 reviews are required before any preferences enter training. Local review process
 receipts let an orchestrator restart attach to existing workers without
@@ -106,7 +109,10 @@ HF_PYTHON=/path/to/hf-environment/bin/python
   --quantizer /path/to/llama-quantize
 ```
 
-This round has an operator-selected $20 GPU bound, separate from CLI usage.
+This round began with an operator-selected $20 GPU bound, separate from CLI
+usage. The user's fourth-batch request expands that operator bound to $28,
+including the earlier failed allocation, all sampling and the training job.
+The previous authorization and ledger amendment are retained locally.
 Each job reserves its full timeout cost, then releases unused reservation from
 terminal allocation timestamps. The ledger is a conservative bound, not a
 billing invoice. No paid retries occur automatically. Job receipts, status,

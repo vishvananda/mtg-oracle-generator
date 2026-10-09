@@ -40,6 +40,12 @@ def review_process(command,record,result,cwd):
     json.loads(result.read_text())
 
 
+def batch_limit(authorization):
+    value=authorization.get('maximum_batches',3)
+    if type(value) is not int or value<1:raise ValueError('Positive integer collection batch limit required')
+    return value
+
+
 def should_look_ahead(index,approved,previous_yield,target=1000,maximum_batches=3):
     # Require a completed broad batch. The initial audit is error-enriched.
     # A 50% yield margin limits speculative work near the collection target.
