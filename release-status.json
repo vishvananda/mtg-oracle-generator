@@ -63,8 +63,8 @@
     "release_manifest_sha256": "6717af612023014c56e6c7efd1edcec2bfccf08b3392606a5c9f56e4578ad05d"
   },
   "full_corpus": {
-    "status": "full_epoch_complete_final_test_running",
-    "final_test_evaluated": false,
+    "status": "full_epoch_final_test_evaluated",
+    "final_test_evaluated": true,
     "counts": {
       "train": 316372,
       "validation": 0,
@@ -74,11 +74,11 @@
     "training_report": "reports/full-epoch-v2/README.md"
   },
   "checkpoint_model": {
-    "status": "full_epoch_complete_final_test_running",
+    "status": "full_epoch_final_test_evaluated",
     "repo_id": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
     "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
     "weights_published": true,
-    "final_test_evaluated": false,
+    "final_test_evaluated": true,
     "smoke_revision": "ed32be67f5b8d76fc263c5725c8249dca11d4a0d",
     "smoke_tag": "smoke-step-00000020",
     "training_revision": "decd0eb5344719c298649ca4cf2be4950da4b18d",
@@ -87,15 +87,17 @@
     "training_epoch": 1.0,
     "completed_release_revision": "0fe439c78472635d517dbea942736fa45592800c",
     "completed_release_tag": "small-holdout-v2-full-epoch",
-    "training_report": "reports/full-epoch-v2/README.md"
+    "training_report": "reports/full-epoch-v2/README.md",
+    "evaluated_release_revision": "bfa00523c8380c38456bc72f537713e5af5fb376",
+    "evaluated_release_tag": "small-holdout-v2-full-epoch-evaluated"
   },
   "staged_experiment": {
-    "status": "final_test_running",
+    "status": "full_epoch_final_test_evaluated",
     "initial_job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
     "budget_limit_usd": 60,
     "initial_cycle_maximum_usd": 6.25005,
     "automatic_continuation_after_review": false,
-    "final_test_evaluated": false,
+    "final_test_evaluated": true,
     "original_smoke_status": "completed",
     "prepared_training": true,
     "microbatch": 16,
@@ -110,7 +112,7 @@
     "canceled_job_url": "https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3",
     "cancellation_reason": "User requested smaller holdout with rare-ability, type and color coverage",
     "maximum_prior_cost_bound_usd": 7.250058,
-    "active_job_url": "https://huggingface.co/jobs/vishvananda/6ac8491b095c578089300dbd",
+    "active_job_url": null,
     "fresh_base": true,
     "split_policy": "coverage-protected-two-way-v2",
     "target_optimizer_steps": 19774,
@@ -121,9 +123,13 @@
     "automatic_time_limit_resume": true,
     "budget_policy": "User authorized completion of this existing epoch and final evaluation; prior $60 ceiling may be raised as necessary with an audit record.",
     "additional_epochs": false,
-    "automatic_rl": false
+    "automatic_rl": false,
+    "final_test_base_schema_valid": 36,
+    "final_test_adapter_schema_valid": 400,
+    "final_test_base_mtgish_accepted": 2,
+    "final_test_adapter_mtgish_accepted": 260
   },
-  "updated_at": "2026-10-09T01:56:57.032771+00:00",
+  "updated_at": "2026-10-09T03:44:24.376575+00:00",
   "workshop_preview": {
     "status": "deployed",
     "url": "https://tetrarchs.com/cards/new",
@@ -145,7 +151,7 @@
     "deployed_at": "2026-10-09T01:55:41.660971+00:00"
   },
   "preference_pilot": {
-    "status": "sample_gpu_running",
+    "status": "independent_pair_review",
     "method": "DPO",
     "gpu_ceiling_usd": 10,
     "candidates_planned": 2048,
@@ -162,6 +168,10 @@
       "revision": "af62f738f77829e137d48a518a406a5d2deff635",
       "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1",
       "preferences_published": false
-    }
+    },
+    "candidate_pairs": 77,
+    "candidates_judged": 2048,
+    "inconsistent_judgment_candidates": 1,
+    "contradictory_identical_card_groups": 5
   }
 }

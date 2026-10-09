@@ -25,7 +25,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
 | Revised training run | **One full epoch complete**, 19,774 steps; [loss curves and diagnostic measurements](reports/full-epoch-v2/README.md) |
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): completed epoch in Q4_0 alongside GPT-6 Luna |
-| Full training and final-test mtgish results | **Pending** — no final-test score claimed |
+| Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
 ## Use the data and fine-tune
@@ -78,7 +78,13 @@ For remote GPU jobs, use its CPU token-cache preparation step first: eight
 workers tokenize and verify the data once, and each GPU phase loads the same
 verified Arrow files without repeating full-corpus preprocessing.
 
-## Latest development results
+## Latest results
+
+The revised full epoch is complete. Its locked 400-case final test produced
+100% schema-valid outputs and 65.0% whole-card mtgish acceptance, compared with
+9.0% and 0.5% for the pinned untuned base. These are parser and format metrics,
+not intent accuracy. See the [full-epoch report](reports/full-epoch-v2/README.md).
+The older development result below belongs to the earlier split and checkpoint.
 
 The first one-hour segment on the full corpus reached 6.15% of one epoch.
 On the fixed 256-case development panel, schema compliance improved from
@@ -122,9 +128,10 @@ parsing, failure denominators, and comparison of base versus adapter.
 and adapter staging. No private editor or compiler is required.
 
 [Preference training](docs/rl-plan.md) compares Luna intent judgments, parser
-rewards and Oracle embeddings. The first requested DPO pilot is sampling four
+rewards and Oracle embeddings. The first requested DPO pilot sampled four
 candidates from the completed SFT epoch for each of 512 training-only
-requests. Luna scores intent; Sol independently reviews proposed pairs. A frozen
+requests. Luna scored intent; Sol is independently reviewing 77 proposed pairs.
+Inconsistent judgments are excluded with their audit records preserved. A frozen
 64-request development panel measures the change separately from the 400-case
 final SFT test. The pilot has a $10 GPU ceiling and does not deploy automatically.
 See the [earlier reward diagnostics](reports/rl-preparation/README.md) for the

@@ -258,6 +258,11 @@ failures survive. Every judge call replaces source IDs with short constrained
 labels; labels such as `mutation` or `faithful` never enter the prompt. A saved
 mapping binds results back to their original records. Exact checked batches can
 be replayed after interruption without paying for them again.
+An internally contradictory judgment (such as `pass` with listed violations)
+is recorded as ineligible without a reward. A family where identical card JSON
+receives both faithful and failing intent assessments is excluded as well.
+These cases do not abort scoring of the remaining families or become training
+labels by guessing which judgment was intended.
 
 The DPO phase requires at least 32 independently reviewed pairs. It takes at most
 one pass through those pairs, capped at 100 updates, effective batch 8, learning

@@ -3,7 +3,7 @@
   "training_epoch": 1.0,
   "train_cases": 316372,
   "final_test_cases": 400,
-  "final_test_evaluated": false,
+  "final_test_evaluated": true,
   "training_diagnostic": {
     "cases": 256,
     "source_split": "train",
@@ -41,5 +41,6 @@
   "serving_sha256": "74ca26df1823c9188c57e61f94a87cac722ea007724334edc073cc4078c067cb",
   "generation_backend_note": "Local merged Q4_0 differs from NF4 evaluation.",
   "summary_note": "Transformers resume train_loss divides continuation loss by cumulative global_step. Use the complete logged history; do not interpret its 0.00379 as final mean loss.",
-  "intent_evaluation": "Not inferred from loss, token accuracy, or three serving smoke probes."
+  "intent_evaluation": "Not inferred from loss, token accuracy, or three serving smoke probes.",
+  "final_test_report": "comparison.json"
 }
