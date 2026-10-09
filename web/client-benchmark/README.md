@@ -15,7 +15,7 @@ The optional [Bonsai image section](https://tetrarchs.com/model-bench/#art-demo)
 on the same page has a separate load button, prompt, step progress, generation
 timer, PNG download, and JSON timing export. It runs **Bonsai Image 4B ternary**
 locally through WebGPU. No image inference service or API key is required.
-Defaults are 512×512, four denoising steps, guidance 1, and a fresh random seed.
+Defaults are 768×512 landscape, four denoising steps, guidance 1, and a fresh random seed.
 The text model and image model can be loaded independently; unload either to
 release its memory. For timings, generate with one model at a time.
 
@@ -25,15 +25,22 @@ not a separate prompt-writing model. Step progress is shown during denoising;
 the image appears after VAE decoding. Stop terminates the worker and unloads
 Bonsai immediately. Load again to resume; cached weights are retained.
 
-The image template references the illustration style of Magic: The Gathering,
-with painterly realism, detailed materials, dramatic lighting, and atmospheric
-depth. It describes a standalone painting that fills the image edge to edge.
-It avoids product terms such as "collectible card" or "art proof" and the former
-list of unwanted layout elements, following a user report of generated frames
-and text. The explicit style reference is an experiment; compare outputs with
-the same seed to judge whether it improves the art without restoring layouts.
+The image template describes a detailed fantasy painting with painterly realism,
+detailed materials, dramatic lighting, and atmospheric depth, filling the image
+edge to edge. The default prompt specifies a wide landscape composition;
+"Use card description" matches its composition wording to the selected size.
+Both product terms ("collectible card", "art proof") and the explicit Magic:
+The Gathering style reference are omitted after user trials produced layouts
+and lettering. The former list of unwanted layout elements is also omitted.
 The description remains editable: translate mechanics into visible actions or
 effects before generating. This template does not itself interpret game rules.
+
+**Negative prompts are unsupported by the pinned WebGPU runtime.** Its option
+normalizer accepts one prompt, discards unknown options such as `negative_prompt`,
+and rejects guidance values other than 1. A negative-prompt field would have no
+effect, so the demo does not expose one. The [Bonsai model documentation](https://huggingface.co/prism-ml/bonsai-image-ternary-4B-mlx-2bit#best-practices)
+also specifies guidance 1 without classifier-free guidance and recommends four
+steps; extra steps are not necessarily a quality improvement.
 
 Image timing history stays in localStorage, with prompt, actual seed, size,
 steps, model/runtime identity, GPU details, load time, step times, and total
