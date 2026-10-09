@@ -264,6 +264,27 @@ receives both faithful and failing intent assessments is excluded as well.
 These cases do not abort scoring of the remaining families or become training
 labels by guessing which judgment was intended.
 
+In the first run, Luna proposed 77 pairs and Sol approved only 20. Most rejected
+pairs had two acceptable cards: Luna had treated omitted reminder text or an
+editable name as a semantic failure. The controlled calibration did not expose
+this problem, so it should not be read as reliable real-world judge accuracy.
+
+`rl_recover.py` retains those 20 approved pairs and reviews the remaining sampled
+alternatives in the rejected families, plus training families with no Luna-approved
+candidate. It can add the family's existing training Oracle target as a possible
+positive. Sol sees that source card as an unlabeled candidate and must independently
+approve it for the request; it is never assumed correct automatically. Source
+cards cannot serve as negatives. Generated positives are preferred when available.
+Only individually verified, high-confidence faithful/wrong pairs survive, and
+conflicting verdicts on identical card JSON still exclude a family. Each family
+contributes at most one pair. The recovery records whether the chosen response
+came from Qwen or the training reference, preserves earlier reviews, and does not
+access the final SFT test or the development panel.
+
+Pass a completed recovery using `rl_pipeline.py --review-directory RECOVERY`.
+The same 32-pair minimum, training settings and GPU budget apply. This is offline
+reference-assisted DPO, not an on-policy RL update using only sampled positives.
+
 The DPO phase requires at least 32 independently reviewed pairs. It takes at most
 one pass through those pairs, capped at 100 updates, effective batch 8, learning
 rate 5e-6, beta 0.1, and sigmoid loss. These are fixed pilot choices. It loads the

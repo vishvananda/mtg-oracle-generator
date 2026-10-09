@@ -129,7 +129,7 @@
     "final_test_base_mtgish_accepted": 2,
     "final_test_adapter_mtgish_accepted": 260
   },
-  "updated_at": "2026-10-09T03:44:24.376575+00:00",
+  "updated_at": "2026-10-09T03:55:47.232759+00:00",
   "workshop_preview": {
     "status": "deployed",
     "url": "https://tetrarchs.com/cards/new",
@@ -151,7 +151,7 @@
     "deployed_at": "2026-10-09T01:55:41.660971+00:00"
   },
   "preference_pilot": {
-    "status": "independent_pair_review",
+    "status": "recovering_preference_pairs",
     "method": "DPO",
     "gpu_ceiling_usd": 10,
     "candidates_planned": 2048,
@@ -172,6 +172,11 @@
     "candidate_pairs": 77,
     "candidates_judged": 2048,
     "inconsistent_judgment_candidates": 1,
-    "contradictory_identical_card_groups": 5
+    "contradictory_identical_card_groups": 5,
+    "initial_approved_pairs": 20,
+    "recovery_families": 94,
+    "additional_sol_reviews": 356,
+    "reference_positives_allowed": true,
+    "dpo_started": false
   }
 }

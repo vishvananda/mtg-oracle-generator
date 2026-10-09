@@ -130,8 +130,10 @@ and adapter staging. No private editor or compiler is required.
 [Preference training](docs/rl-plan.md) compares Luna intent judgments, parser
 rewards and Oracle embeddings. The first requested DPO pilot sampled four
 candidates from the completed SFT epoch for each of 512 training-only
-requests. Luna scored intent; Sol is independently reviewing 77 proposed pairs.
-Inconsistent judgments are excluded with their audit records preserved. A frozen
+requests. Luna proposed 77 pairs; independent Sol review accepted 20. A follow-up
+review checks remaining samples and training Oracle references to recover better
+pairs before renting another GPU. Inconsistent judgments are excluded with their
+audit records preserved. A frozen
 64-request development panel measures the change separately from the 400-case
 final SFT test. The pilot has a $10 GPU ceiling and does not deploy automatically.
 See the [earlier reward diagnostics](reports/rl-preparation/README.md) for the

@@ -42,7 +42,7 @@ def verify_collected(destination,package,stage):
     return phase
 
 
-def run(root,sft_adapter,sft_record,pilot,cpu_python,authorization):
+def run(root,sft_adapter,sft_record,pilot,cpu_python,authorization,review_directory=None):
     import huggingface_hub as hf
     root.mkdir(parents=True,exist_ok=True);repo=Path(__file__).resolve().parents[1]
     status=root/'status.json';ledger=root/'budget.json';auth_hash=sha(authorization)
@@ -99,14 +99,17 @@ def run(root,sft_adapter,sft_record,pilot,cpu_python,authorization):
         update('exporting_pairs')
         if not (root/'pairs/manifest.json').exists():
             command('rl_data.py','export-pairs','--pilot',pilot,'--scored',root/'scored/scored.jsonl','--output',root/'pairs')
-        update('independent_pair_review')
-        if not (root/'review/review.json').exists():
-            command('rl_review.py','--pilot',pilot,'--pairs',root/'pairs','--output',root/'review',
+        review=review_directory or root/'review'
+        update('independent_pair_review',review_directory=str(review))
+        if review_directory and not (review/'review.json').exists():raise ValueError('Explicit recovery review is incomplete')
+        if not (review/'review.json').exists():
+            command('rl_review.py','--pilot',pilot,'--pairs',root/'pairs','--output',review,
                 '--model','gpt-6.1-sol','--effort','medium')
-        reviewed=json.loads((root/'review/review.json').read_text())
+        reviewed=json.loads((review/'review.json').read_text())
+        if reviewed['pilot_manifest_sha256']!=sha(pilot/'manifest.json'):raise ValueError('Reviewed pilot differs')
         if reviewed['approved_pairs']<32:raise ValueError('Fewer than 32 independently reviewed pairs; inspect candidate coverage/repairs')
         train_pack=root/'train-package'
-        if not train_pack.exists():package(train_pack,sft_adapter,pilot,dev,root/'review/preferences.jsonl',root/'review/review.json')
+        if not train_pack.exists():package(train_pack,sft_adapter,pilot,dev,review/'preferences.jsonl',review/'review.json')
         gpu('train',train_pack,root/'train-job.json',root/'train')
         summary=json.loads((root/'train/training-summary.json').read_text())
         if summary['stopped_for_budget'] or summary['steps']!=summary['planned_steps']:
@@ -122,8 +125,9 @@ def run(root,sft_adapter,sft_record,pilot,cpu_python,authorization):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('root','sft-adapter','sft-record','pilot','cpu-python','authorization'):p.add_argument('--'+name,type=Path,required=True)
+    p.add_argument('--review-directory',type=Path,help='Completed independently reviewed recovery, preserving the original review')
     a=p.parse_args()
-    try:run(a.root,a.sft_adapter,a.sft_record,a.pilot,a.cpu_python,a.authorization)
+    try:run(a.root,a.sft_adapter,a.sft_record,a.pilot,a.cpu_python,a.authorization,a.review_directory)
     except BlockingIOError:raise
     except Exception as error:
         save(a.root/'status.json',{'phase':'stopped_for_review','error':str(error),'automatic_retry':False,'automatic_promotion':False})
