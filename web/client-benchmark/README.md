@@ -25,9 +25,13 @@ not a separate prompt-writing model. Step progress is shown during denoising;
 the image appears after VAE decoding. Stop terminates the worker and unloads
 Bonsai immediately. Load again to resume; cached weights are retained.
 
-The image template describes a fantasy painting that fills the image edge to
-edge. It avoids product terms such as "collectible card" and the former list of
-unwanted layout elements, following a user report of generated frames and text.
+The image template references the illustration style of Magic: The Gathering,
+with painterly realism, detailed materials, dramatic lighting, and atmospheric
+depth. It describes a standalone painting that fills the image edge to edge.
+It avoids product terms such as "collectible card" or "art proof" and the former
+list of unwanted layout elements, following a user report of generated frames
+and text. The explicit style reference is an experiment; compare outputs with
+the same seed to judge whether it improves the art without restoring layouts.
 The description remains editable: translate mechanics into visible actions or
 effects before generating. This template does not itself interpret game rules.
 

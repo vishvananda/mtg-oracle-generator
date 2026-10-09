@@ -136,8 +136,8 @@ $('art-use-card').addEventListener('click', () => {
   try { card = JSON.parse($('output').textContent); } catch { /* description works before text generation */ }
   const subject = card?.name && card?.type_line ? `${card.name}, ${card.type_line}. ${description}` : description;
   const scene = (subject || 'A towering red Giant in a mountain pass').trim().replace(/[.!?]+$/, '');
-  // Describe the painting itself; mentioning product layouts can make them appear.
-  $('art-prompt').value = `Stylized fantasy painting. ${scene}. Expressive brushwork, dramatic lighting, rich colors, a clear focal subject, and a richly textured environment. A single cohesive scene fills the entire image edge to edge, with the surroundings extending naturally beyond the edges.`.slice(0, 4000);
+  // Reference the illustration style while describing a standalone painting.
+  $('art-prompt').value = `Highly detailed fantasy painting in the illustration style of Magic: The Gathering. ${scene}. Painterly realism, expressive brushwork, intricate material textures, dramatic light and shadow, atmospheric depth, and rich, carefully balanced colors. A strong focal subject and dynamic composition tell a clear visual story. Finished standalone illustration: a single cohesive scene fills the entire image edge to edge, with the surroundings extending naturally beyond the edges.`.slice(0, 4000);
 });
 $('art-export').addEventListener('click', () => {
   const blob = new Blob([JSON.stringify({ benchmark: 'bonsai-browser-v1', exported_at: new Date().toISOString(), runs }, null, 2)], { type: 'application/json' });
