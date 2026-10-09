@@ -24,7 +24,7 @@ def checked_audit(root):
     return review
 
 
-def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,local_binary,converter,quantizer):
+def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,local_binary,converter,quantizer,recovery=None):
     import huggingface_hub as hf
     repo=Path(__file__).resolve().parents[1]
     auth=root/'authorization.json';auth_hash=sha(auth);status=root/'status.json'
@@ -43,7 +43,13 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
             live=collect(record);update(stage+'_gpu',**live)
             if live['state'] in TERMINAL:break
             time.sleep(30)
-        if live['state']!='COMPLETED':raise RuntimeError('GPU job stopped; inspect receipt before any paid retry')
+        if live['state']!='COMPLETED':
+            failed=json.loads(record.read_text())
+            state=hf.inspect_job(job_id=failed['job_id'],namespace=failed['namespace'])
+            if state.started_at and state.finished_at:
+                settle_terminal(root/'budget.json',record,{'job_id':state.id,'state':state.status.stage,
+                    'started_at':state.started_at.isoformat(),'finished_at':state.finished_at.isoformat()})
+            raise RuntimeError('GPU job stopped; inspect receipt before any paid retry')
         if not destination.exists():collect(record,destination)
         job=json.loads(record.read_text())
         for attempt in range(19):
@@ -63,8 +69,16 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
                     if p.is_file() and '__pycache__' not in p.parts]
         identity={'commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=repo,text=True).strip(),
                   'files':{str(p.relative_to(repo)):sha(p) for p in sorted(code_files)}}
+        recovery_plan=json.loads(recovery.read_text()) if recovery else {}
+        if recovery and (not recovery_plan['reason'].strip() or recovery_plan['replacement_commit']!=identity['commit']):
+            raise ValueError('Recovery must describe the inspected failure and pin the replacement commit')
         pin=root/'pipeline-code.json'
-        if pin.exists() and json.loads(pin.read_text())!=identity:raise ValueError('Pipeline code changed; inspect before resuming')
+        if pin.exists() and json.loads(pin.read_text())!=identity:
+            if not recovery or recovery_plan['previous_pipeline_code_sha256']!=sha(pin):
+                raise ValueError('Pipeline code changed; inspect before resuming')
+            history=root/'pipeline-code-history';history.mkdir(exist_ok=True)
+            shutil.copyfile(pin,history/(sha(pin)+'.json'))
+            save(history/(sha(recovery)+'.json'),recovery_plan)
         save(pin,identity)
         em=json.loads((root/'evaluation/manifest.json').read_text())
         for name,pin in em['files'].items():
@@ -76,7 +90,7 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
             rows=list(map(json.loads,(root/'evaluation/development-prompts.jsonl').read_text().splitlines()))
             for row in rows:row['prompt'][0]['content']=(root/'serving-system.txt').read_text()
             write_jsonl(dev,rows)
-        configuration={'seed':17,'generation_batch_size':48,'minimum_pairs':1000,'max_steps':250,
+        configuration={'seed':17,'generation_batch_size':24,'minimum_pairs':1000,'max_steps':250,
                        'training_seconds':2400,'save_total_limit':12,'evaluate_midpoint':True}
         reviews=[audit];pilots=[root/'audit-pilot']
         count=json.loads((reviews[0]/'review.json').read_text())['approved_pairs']
@@ -87,9 +101,13 @@ def run(root,cpu_python,export_python,sft_adapter,sft_record,dataset,old_pilot,l
             if not (pilot/'manifest.json').exists():
                 command('rl_round_expand.py','prepare','--root',root,'--dataset',dataset,
                     '--old-pilot',old_pilot,'--index',index,'--count',2048)
-            pack=batch/'sample-package'
+            override=recovery_plan.get('sampling',{}).get(str(index))
+            pack=root/override['package'] if override else batch/'sample-package'
+            record=root/override['record'] if override else batch/'sample-job.json'
+            if override and not (pack/'resume-provenance.json').exists():
+                raise ValueError('Recovery package lacks validated sampling provenance')
             if not pack.exists():package(pack,sft_adapter,pilot,dev,config=configuration)
-            gpu('sample',pack,batch/'sample-job.json',batch/'sample',180)
+            gpu('sample',pack,record,batch/'sample',180)
             review=batch/'review';update('sol_review_and_repair',batch=index,approved_pairs=count)
             if not (review/'review.json').exists():
                 command('rl_teacher.py','--pilot',pilot,'--candidates',batch/'sample/candidates.jsonl',
@@ -179,8 +197,9 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for n in ('root','cpu-python','export-python','sft-adapter','sft-record','dataset','old-pilot','local-binary','converter','quantizer'):
         p.add_argument('--'+n,type=Path,required=True)
+    p.add_argument('--recovery',type=Path,help='Reviewed recovery receipt pinning code and explicit replacement sample jobs')
     a=p.parse_args()
-    try:run(a.root,a.cpu_python,a.export_python,a.sft_adapter,a.sft_record,a.dataset,a.old_pilot,a.local_binary,a.converter,a.quantizer)
+    try:run(a.root,a.cpu_python,a.export_python,a.sft_adapter,a.sft_record,a.dataset,a.old_pilot,a.local_binary,a.converter,a.quantizer,a.recovery)
     except BlockingIOError:raise
     except Exception as error:
         save(a.root/'status.json',{'phase':'stopped_for_review','error':str(error),'automatic_paid_retry':False,'automatic_promotion':False})

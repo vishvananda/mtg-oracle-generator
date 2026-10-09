@@ -70,40 +70,97 @@ def render_preferences(rows,tokenizer,max_length):
     return rendered
 
 
-def generate(model,tokenizer,rows,output,copies,batch_size,max_tokens,seed,sample):
+def completed_candidates(path,rows,copies):
+    """Accept only known, unique completed slots, including malformed model text."""
+    expected={(r['id'],r['id']+f'-{i:02d}') for r in rows for i in range(copies)}
+    saved={}
+    if path is None:return saved
+    for line in path.read_text().splitlines():
+        row=json.loads(line);key=(row['case_id'],row['candidate_id'])
+        if key not in expected or key in saved:raise ValueError('Unknown or duplicate resumed candidate')
+        if (not isinstance(row['raw'],str) or type(row['output_tokens']) is not int
+                or row['output_tokens']<1 or type(row['hit_token_limit']) is not bool):
+            raise ValueError('Incomplete resumed candidate')
+        saved[key]=row
+    return saved
+
+
+def adaptive_generate(items,batch_size,attempt,oom_type,cleanup,on_reduction):
+    """Retry only allocation failures, after releasing the failed traceback."""
+    offset=0;size=batch_size
+    while offset<len(items):
+        group=items[offset:offset+size];failed=False
+        try:result=attempt(group)
+        except oom_type:
+            if len(group)==1:raise
+            failed=True
+        if failed:
+            cleanup();new_size=max(1,len(group)//2)
+            on_reduction(len(group),new_size);size=new_size;continue
+        yield group,result
+        offset+=len(group)
+
+
+def generate(model,tokenizer,rows,output,copies,batch_size,max_tokens,seed,sample,resume=None):
+    import gc
     import torch
     from transformers import set_seed
     if output.exists():raise ValueError('Generation output already exists')
     scheduled=[(r,i) for r in rows for i in range(copies)]
     scheduled.sort(key=lambda pair:(len(pair[0]['prompt'][1]['content']),pair[0]['id'],pair[1]))
+    saved=completed_candidates(resume,rows,copies)
+    pending=[(r,i) for r,i in scheduled if (r['id'],r['id']+f'-{i:02d}') not in saved]
     model.eval();model.config.use_cache=True;tokenizer.padding_side='left'
-    set_seed(seed);started=time.monotonic();tokens_total=0;done=0
+    started=time.monotonic();tokens_total=sum(r['output_tokens'] for r in saved.values());done=len(saved)
+    reductions=[];batch_sizes=set()
+    def attempt(group):
+        # Stable per-batch seeds make each continuation reproducible. A changed
+        # batch grouping deliberately has a different stream, recorded below.
+        batch_seed=int(hashlib.sha256(json.dumps([seed,[(r['id'],i) for r,i in group]]).encode()).hexdigest()[:8],16)
+        set_seed(batch_seed)
+        prompts=[tokenizer.apply_chat_template(r['prompt'],tokenize=False,add_generation_prompt=True,
+                    enable_thinking=False) for r,_ in group]
+        batch=tokenizer(prompts,return_tensors='pt',padding=True,add_special_tokens=False).to(model.device)
+        width=batch['input_ids'].shape[1]
+        if width+max_tokens>model.config.max_position_embeddings:raise ValueError('Context overflow')
+        before=time.monotonic()
+        options={'temperature':.8,'top_p':.95,'top_k':0} if sample else {}
+        generated=model.generate(**batch,do_sample=sample,max_new_tokens=max_tokens,
+                   pad_token_id=tokenizer.eos_token_id,use_cache=True,**options)
+        # Release every GPU output before the next attempt; saved rows are CPU data.
+        result=generated[:,width:].cpu().tolist()
+        elapsed=time.monotonic()-before
+        values=[]
+        for (row,i),tokens in zip(group,result):
+            if tokenizer.eos_token_id in tokens:tokens=tokens[:tokens.index(tokenizer.eos_token_id)+1]
+            values.append({'case_id':row['id'],'candidate_id':row['id']+f'-{i:02d}',
+                'raw':tokenizer.decode(tokens,skip_special_tokens=True),'output_tokens':len(tokens),
+                'hit_token_limit':len(tokens)>=max_tokens and tokens[-1]!=tokenizer.eos_token_id,
+                'batch_seconds':elapsed})
+        return values
+    def cleanup():gc.collect();torch.cuda.empty_cache()
+    def reduced(old,new):
+        value={'after_completions':done,'previous_batch_size':old,'next_batch_size':new}
+        reductions.append(value);print(json.dumps({'generation_oom_recovery':value}),flush=True)
     with output.open('x') as stream,torch.inference_mode(),torch.autocast('cuda',dtype=torch.bfloat16):
-        for start in range(0,len(scheduled),batch_size):
-            group=scheduled[start:start+batch_size]
-            prompts=[tokenizer.apply_chat_template(r['prompt'],tokenize=False,add_generation_prompt=True,
-                        enable_thinking=False) for r,_ in group]
-            batch=tokenizer(prompts,return_tensors='pt',padding=True,add_special_tokens=False).to(model.device)
-            width=batch['input_ids'].shape[1]
-            if width+max_tokens>model.config.max_position_embeddings:raise ValueError('Context overflow')
-            before=time.monotonic()
-            options={'temperature':.8,'top_p':.95,'top_k':0} if sample else {}
-            result=model.generate(**batch,do_sample=sample,max_new_tokens=max_tokens,
-                       pad_token_id=tokenizer.eos_token_id,use_cache=True,**options)
-            elapsed=time.monotonic()-before
-            for (row,i),sequence in zip(group,result):
-                tokens=sequence[width:].tolist()
-                if tokenizer.eos_token_id in tokens:tokens=tokens[:tokens.index(tokenizer.eos_token_id)+1]
-                value={'case_id':row['id'],'candidate_id':row['id']+f'-{i:02d}',
-                    'raw':tokenizer.decode(tokens,skip_special_tokens=True),'output_tokens':len(tokens),
-                    'hit_token_limit':len(tokens)>=max_tokens and tokens[-1]!=tokenizer.eos_token_id,
-                    'batch_seconds':elapsed}
-                stream.write(json.dumps(value,ensure_ascii=False)+'\n');tokens_total+=len(tokens);done+=1
+        for row in saved.values():stream.write(json.dumps(row,ensure_ascii=False)+'\n')
+        stream.flush()
+        if saved:print(json.dumps({'generation':output.name,'reused_completions':done,'remaining':len(pending)}),flush=True)
+        for group,values in adaptive_generate(pending,batch_size,attempt,torch.OutOfMemoryError,cleanup,reduced):
+            batch_sizes.add(len(group))
+            for value in values:
+                stream.write(json.dumps(value,ensure_ascii=False)+'\n');tokens_total+=value['output_tokens'];done+=1
             stream.flush();print(json.dumps({'generation':output.name,'done':done,'scheduled':len(scheduled),
-                'tokens':tokens_total,'seconds':time.monotonic()-started}),flush=True)
+                'tokens':tokens_total,'seconds':time.monotonic()-started,
+                'gpu_allocated_gib':torch.cuda.memory_allocated()/1024**3,
+                'gpu_reserved_gib':torch.cuda.memory_reserved()/1024**3,
+                'gpu_peak_gib':torch.cuda.max_memory_allocated()/1024**3}),flush=True)
     receipt={'complete':True,'cases':len(rows),'completions':done,'sha256':sha(output),'output_tokens':tokens_total,
-             'seconds':time.monotonic()-started,'decoding':{'do_sample':sample,'temperature':.8 if sample else None,
+             'seconds':time.monotonic()-started,'reused_completions':len(saved),'resume_sha256':sha(resume) if resume else None,
+             'oom_reductions':reductions,'actual_batch_sizes':sorted(batch_sizes),
+             'decoding':{'do_sample':sample,'temperature':.8 if sample else None,
              'top_p':.95 if sample else None,'top_k':0 if sample else None,'seed':seed,'batch_size':batch_size,
+             'rng_protocol':'sha256(seed, batch candidate IDs), reset per batch; resumed rows retain their original stream',
              'max_new_tokens':max_tokens,'enable_thinking':False},'backend':'transformers NF4 + SFT/DPO adapter'}
     save(output.with_suffix('.manifest.json'),receipt);return receipt
 
@@ -154,7 +211,8 @@ def run(package,adapter,output,stage):
     dev=read_prompts(package/'development.jsonl')
     if stage=='sample':
         generated=generate(model,tokenizer,read_prompts(package/'prompts.jsonl'),output/'candidates.jsonl',
-             config['candidates_per_prompt'],config['generation_batch_size'],config['max_new_tokens'],config['seed'],True)
+             config['candidates_per_prompt'],config['generation_batch_size'],config['max_new_tokens'],config['seed'],True,
+             package/'resume-candidates.jsonl' if (package/'resume-candidates.jsonl').exists() else None)
         development=generate(model,tokenizer,dev,output/'sft-development.jsonl',1,
              config['generation_batch_size'],config['max_new_tokens'],config['seed'],False)
         result={'stage':stage,'candidates':generated,'development':development}

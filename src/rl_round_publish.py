@@ -103,6 +103,12 @@ def prepare(root):
         for name in ('review.json','audit.jsonl','candidates-reviewed.jsonl','requirements.jsonl'):
             shutil.copyfile(folder/name,dest/name)
         shutil.copyfile(candidates,dest/'candidates.jsonl')
+        receipt=candidates.with_suffix('.manifest.json')
+        if receipt.exists():shutil.copyfile(receipt,dest/'candidates.manifest.json')
+        if label.startswith('batch-'):
+            for package in sorted((root/label).glob('sample*-package*')):
+                provenance=package/'resume-provenance.json'
+                if provenance.exists():shutil.copyfile(provenance,dest/(package.name+'-resume-provenance.json'))
     card=f'''---
 language: [en]
 license: other

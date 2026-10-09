@@ -105,6 +105,23 @@ logs, raw predictions and usage records live in the run directory. Source code,
 inputs, model and parser artifacts are hash-pinned; altered inputs require
 inspection rather than silently continuing a different experiment.
 
+The first sampling allocation ran out of GPU memory after 1,968 of 8,192
+completions at batch size 48. Recovery retains those exact output rows and pins
+their original package/model identity. New allocations start at batch size 24,
+halve the batch on an allocation failure, release the failed call's tensors,
+and record allocated/reserved/peak GPU memory. A single example that still
+cannot fit fails explicitly. The allocator uses
+[`expandable_segments`](https://docs.pytorch.org/docs/2.8/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+to reduce fragmentation from changing allocation sizes.
+
+A recovery package pins the original job and partial-output hash; unrelated
+prompts/models and duplicate or unknown candidate slots are rejected. Malformed
+model responses are preserved for fair scoring. New batches use deterministic
+seeds derived from their candidate IDs. This is a documented continuation with
+different batching/RNG, not a bit-identical replay of the interrupted job.
+An inspected recovery receipt passed with `--recovery` identifies the replacement
+job and code commit; failed receipts and previous code manifests are retained.
+
 The pipeline prepares loss curves and paired validation reports, then publishes
 curated datasets, complete LoRA checkpoints and evaluation diagnostics to Hugging
 Face. Raw worker conversations, optimizer states, reference adapters and local

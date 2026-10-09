@@ -6,7 +6,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]/'src'))
-from rl_gpu import verify_inputs,read_prompts,render_preferences,sha,save
+from rl_gpu import verify_inputs,read_prompts,render_preferences,sha,save,completed_candidates,adaptive_generate
 
 
 class Tokenizer:
@@ -17,6 +17,36 @@ class Tokenizer:
 
 
 class PreferenceContracts(unittest.TestCase):
+    def test_resumption_preserves_invalid_outputs_and_rejects_bad_slots(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'partial.jsonl';prompts=[{'id':'a'}]
+            row={'case_id':'a','candidate_id':'a-00','raw':'not valid JSON',
+                 'output_tokens':3,'hit_token_limit':False}
+            path.write_text(json.dumps(row)+'\n')
+            self.assertEqual(list(completed_candidates(path,prompts,4).values()),[row])
+            path.write_text((json.dumps(row)+'\n')*2)
+            with self.assertRaisesRegex(ValueError,'duplicate'):completed_candidates(path,prompts,4)
+            row['candidate_id']='b-00';path.write_text(json.dumps(row)+'\n')
+            with self.assertRaisesRegex(ValueError,'Unknown'):completed_candidates(path,prompts,4)
+
+    def test_allocation_retry_halves_batch_without_dropping_or_duplicating_candidates(self):
+        class OOM(Exception):pass
+        attempted=[];reductions=[];cleaned=[]
+        def attempt(group):
+            attempted.append(group)
+            if len(group)>2:raise OOM('simulated GPU allocation failure')
+            return [i*10 for i in group]
+        got=list(adaptive_generate(list(range(7)),6,attempt,OOM,lambda:cleaned.append(True),
+                                   lambda old,new:reductions.append((old,new))))
+        self.assertEqual([i for group,_ in got for i in group],list(range(7)))
+        self.assertEqual([i for _,values in got for i in values],[i*10 for i in range(7)])
+        self.assertEqual(reductions,[(6,3),(3,1)])
+        self.assertEqual(len(cleaned),2)
+        def broken(group):raise ValueError('unrelated bug')
+        with self.assertRaisesRegex(ValueError,'unrelated'):list(adaptive_generate([1,2],2,broken,OOM,lambda:None,lambda *_:None))
+        def impossible(group):raise OOM('single example cannot fit')
+        with self.assertRaisesRegex(OOM,'single example'):list(adaptive_generate([1],1,impossible,OOM,lambda:None,lambda *_:None))
+
     def test_generation_inputs_reject_assistant_targets_and_duplicates(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'prompts.jsonl'

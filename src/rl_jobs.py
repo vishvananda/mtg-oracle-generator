@@ -9,14 +9,14 @@ from data_utils import digest
 from hf_jobs import cost_cap,save,sync_allowlist
 from job_budget import reserve
 from job_image import verify_job_image
-from rl_gpu import sha,read_prompts
+from rl_gpu import sha,read_prompts,completed_candidates
 
 CONFIG={'seed':29,'candidates_per_prompt':4,'generation_batch_size':24,'max_new_tokens':2048,
     'max_length':4096,'minimum_pairs':32,'max_steps':100,'effective_batch_size':8,
     'learning_rate':5e-6,'beta':.1,'training_seconds':1800}
 
 
-def package(output,adapter,pilot,development,preferences=None,review=None,config=None):
+def package(output,adapter,pilot,development,preferences=None,review=None,config=None,resume=None):
     if output.exists():raise ValueError('Use a new immutable package')
     root=Path(__file__).resolve().parents[1]
     m=json.loads((pilot/'manifest.json').read_text())
@@ -36,6 +36,28 @@ def package(output,adapter,pilot,development,preferences=None,review=None,config
     if chosen['candidates_per_prompt']!=m['candidates_per_prompt']:
         raise ValueError('Candidate budget differs from pilot manifest')
     save(output/'config.json',chosen)
+    if resume:
+        original,partial=resume
+        previous=json.loads((original/'manifest.json').read_text())
+        identity=json.loads((partial/'identity.json').read_text())
+        if identity['stage']!='sample' or identity['package_manifest_sha256']!=sha(original/'manifest.json'):
+            raise ValueError('Partial samples belong to a different job package')
+        for name,pin in previous['files'].items():
+            if sha(original/name)!=pin:raise ValueError('Original sampling package changed')
+        for name in ('prompts.jsonl','development.jsonl'):
+            if sha(output/name)!=previous['files'][name]:raise ValueError('Resumed sampling prompts changed')
+        if previous['adapter_files']!={name:sha(adapter/name) for name in ('adapter_config.json','adapter_model.safetensors')}:
+            raise ValueError('Resumed sampling model changed')
+        old_config=json.loads((original/'config.json').read_text())
+        for key in ('seed','candidates_per_prompt','max_new_tokens'):
+            if chosen[key]!=old_config[key]:raise ValueError('Resumed sampling recipe changed: '+key)
+        rows=completed_candidates(partial/'candidates.jsonl',prompts,chosen['candidates_per_prompt'])
+        if not rows:raise ValueError('No samples to resume')
+        shutil.copyfile(partial/'candidates.jsonl',output/'resume-candidates.jsonl')
+        save(output/'resume-provenance.json',{'original_package_sha256':sha(original/'manifest.json'),
+            'partial_identity':identity,'source_job':json.loads((partial/'job-result.json').read_text()),
+            'reused_candidates':len(rows),'reused_sha256':sha(output/'resume-candidates.jsonl'),
+            'note':'Existing outputs preserved; continuation uses smaller adaptive batches and a new per-batch RNG stream.'})
     if preferences:
         if not review:raise ValueError('Independent pair review required')
         value=json.loads(review.read_text())
@@ -92,7 +114,8 @@ def launch(package,adapter_record,record,stage,ledger,authorization,timeout_minu
         '--stage',stage,'--package','/package','--adapter','/adapter','--output','/outputs'],
         flavor=hardware.name,timeout=str(minutes)+'m',attempts=1,name=name,secrets={'HF_TOKEN':token},volumes=volumes,
         env={'HF_HUB_DISABLE_TELEMETRY':'1','TOKENIZERS_PARALLELISM':'false','OMP_NUM_THREADS':'4',
-             'UV_NO_PROGRESS':'1','PYTHONDONTWRITEBYTECODE':'1'},token=token)
+             'UV_NO_PROGRESS':'1','PYTHONDONTWRITEBYTECODE':'1',
+             'PYTORCH_CUDA_ALLOC_CONF':'expandable_segments:True'},token=token)
     receipt.update(job_id=job.id,url=job.url,state=job.status.stage);save(record,receipt)
     return {k:receipt[k] for k in ('job_id','url','state','hardware_cost_cap_usd')}
 
@@ -103,10 +126,17 @@ if __name__=='__main__':
     for name in ('output','adapter','pilot','development'):prep.add_argument('--'+name,type=Path,required=True)
     for name in ('preferences','review'):prep.add_argument('--'+name,type=Path)
     prep.add_argument('--config',type=Path)
+    prep.add_argument('--resume-package',type=Path,help='Original immutable sample package')
+    prep.add_argument('--resume-output',type=Path,help='Collected failed job with complete saved candidate rows')
     launch_p=sub.add_parser('launch')
     for name in ('package','adapter-record','record','ledger','authorization'):launch_p.add_argument('--'+name,type=Path,required=True)
     launch_p.add_argument('--stage',choices=['sample','train'],required=True)
     launch_p.add_argument('--timeout-minutes',type=int)
     a=p.parse_args()
-    result=package(a.output,a.adapter,a.pilot,a.development,a.preferences,a.review,json.loads(a.config.read_text()) if a.config else None) if a.command=='package' else launch(a.package,a.adapter_record,a.record,a.stage,a.ledger,a.authorization,a.timeout_minutes)
+    if a.command=='package':
+        if bool(a.resume_package)!=bool(a.resume_output):p.error('Both --resume-package and --resume-output are required')
+        result=package(a.output,a.adapter,a.pilot,a.development,a.preferences,a.review,
+            json.loads(a.config.read_text()) if a.config else None,
+            (a.resume_package,a.resume_output) if a.resume_package else None)
+    else:result=launch(a.package,a.adapter_record,a.record,a.stage,a.ledger,a.authorization,a.timeout_minutes)
     print(json.dumps(result,indent=2))
