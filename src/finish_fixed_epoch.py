@@ -38,7 +38,7 @@ def expected_identity(package):
     config=json.loads((package/'train-config.json').read_text())
     data=json.loads((package/'data/manifest.json').read_text())
     return {'dataset_manifest_sha256':manifest['dataset_manifest_sha256'],
-        'config_sha256':digest(json.dumps(config,sort_keys=True)),
+        'config_sha256':digest(json.dumps(config,sort_keys=True).encode()),
         'trainer_sha256':digest((package/'train_qlora.py').read_bytes()),
         'train_sha256':data['files']['train.sft.jsonl']['sha256'],
         'validation_sha256':data['files'].get('validation.sft.jsonl',{}).get('sha256'),

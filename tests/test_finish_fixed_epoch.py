@@ -14,9 +14,19 @@ from hf_jobs import plan
 from job_budget import reserve
 from run_package import continue_package
 from test_full_run import fixture
+from train_qlora import training_identity
 
 
 class FixedEpoch(unittest.TestCase):
+    def test_watcher_accepts_the_trainers_config_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);fixture(root);package=root/'package'
+            config=json.loads((package/'train-config.json').read_text())
+            actual=training_identity(package/'data',config)
+            expected=expected_identity(package)
+            self.assertEqual(expected['config_sha256'],actual['config_sha256'])
+            self.assertEqual(expected['dataset_manifest_sha256'],actual['dataset_manifest_sha256'])
+
     def prepared_segment(self,root,step,complete=False):
         manifest=fixture(root)
         # Enough fixture examples to model an interrupted epoch without modifying
