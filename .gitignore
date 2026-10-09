@@ -12,4 +12,5 @@ __pycache__/
 *.bin
 *.pt
 *.log
+node_modules/
 *.egg-info/

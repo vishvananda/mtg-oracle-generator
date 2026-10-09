@@ -1,0 +1,15 @@
+{
+  "name": "oracle-browser-benchmark",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs"
+  },
+  "dependencies": {
+    "@wllama/wllama": "3.8.1",
+    "@wllama/wllama-compat": "3.8.1"
+  },
+  "devDependencies": {
+    "playwright": "1.60.0"
+  }
+}

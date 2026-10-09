@@ -1,0 +1,18 @@
+Oracle browser benchmark
+
+Application: https://github.com/vishvananda/mtg-oracle-generator
+MIT license: app-LICENSE.txt
+
+Runtime: @wllama/wllama and @wllama/wllama-compat 3.8.1
+https://github.com/ngxson/wllama
+MIT license: wllama-LICENSE.txt
+Embedded llama.cpp revision: b11364-46ca246
+https://github.com/ggml-org/llama.cpp
+MIT license: llama.cpp-LICENSE.txt
+
+Model: Qwen3-4B-Instruct-2507, fine-tuned with SFT and round-two DPO,
+merged and quantized to Q4_0; split into shards for browser use.
+Base: https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507
+Fine-tune: https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009
+Model license: Apache 2.0 (model-LICENSE.txt).
+Card-source rights and attribution are separate; see DATA_LICENSE.md in the model repository.

@@ -1,0 +1,213 @@
+{
+  "target": "https://tetrarchs.com/model-bench/",
+  "full_model_run": {
+    "at": "2026-10-09T21:37:59.114Z",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "model": "Qwen3 4B \u00b7 SFT + DPO round two \u00b7 Q4_0",
+    "device": {
+      "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "logical_cpus": 88,
+      "reported_memory_gb": 32,
+      "cross_origin_isolated": true,
+      "gpu": null
+    },
+    "load": {
+      "total_ms": 14275.370000004768,
+      "download_or_cache_ms": 24.52999997138977,
+      "initialization_ms": 14215.555000066757,
+      "model_was_cached": true,
+      "requested": "cpu",
+      "backend": "CPU \u00b7 8 threads",
+      "gpu_layers": null,
+      "settings": {
+        "n_ctx": 2048,
+        "n_threads": 8,
+        "n_gpu_layers": 0,
+        "n_batch": 256,
+        "n_ubatch": 128,
+        "n_parallel": 1,
+        "seed": 17,
+        "jinja": true,
+        "default_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "runtime": {
+        "wllama": "3.8.1",
+        "llama": "b11364-46ca246"
+      }
+    },
+    "backend": "CPU \u00b7 8 threads",
+    "description": "A 3/3 red Giant creature that costs {3}{R}, with no abilities.",
+    "output": "{\"colors\":[\"R\"],\"mana_cost\":\"{3}{R}\",\"name\":\"Iron Giant\",\"oracle_text\":\"\",\"power\":\"3\",\"rarity\":\"common\",\"toughness\":\"3\",\"type_line\":\"Creature \u2014 Giant\"}",
+    "first_token_ms": 441964.2699999809,
+    "generation_ms": 475081.80500006676,
+    "tokens_per_second": 1.268694867639083,
+    "usage": null,
+    "runtime_timings": {
+      "cache_n": 0,
+      "prompt_n": 777,
+      "prompt_ms": 440347.314,
+      "prompt_per_token_ms": 566.7275598455599,
+      "prompt_per_second": 1.7645162699913732,
+      "predicted_n": 45,
+      "predicted_ms": 34681.31,
+      "predicted_per_token_ms": 788.2115909090909,
+      "predicted_per_second": 1.268694867639083
+    },
+    "finish": "stop",
+    "settings": {
+      "max_tokens": 512,
+      "temperature": 0,
+      "seed": 17,
+      "cache_prompt": false
+    },
+    "json_syntax_valid": true,
+    "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa"
+  },
+  "checks": {
+    "full_card_json": true,
+    "short_prompt_streaming": true,
+    "short_prompt_cancellation": true,
+    "no_server_inference": true,
+    "isolation_headers": true
+  },
+  "diagnostic_system_prompt": "Return a JSON object with one field: greeting.",
+  "diagnostic_run": {
+    "at": "2026-10-09T21:49:11.453Z",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+    "model": "Qwen3 4B \u00b7 SFT + DPO round two \u00b7 Q4_0",
+    "device": {
+      "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "logical_cpus": 88,
+      "reported_memory_gb": 32,
+      "cross_origin_isolated": true,
+      "gpu": null
+    },
+    "load": {
+      "total_ms": 13903.475000023842,
+      "download_or_cache_ms": 31.43500006198883,
+      "initialization_ms": 13825.805000066757,
+      "model_was_cached": true,
+      "requested": "cpu",
+      "backend": "CPU \u00b7 8 threads",
+      "gpu_layers": null,
+      "settings": {
+        "n_ctx": 2048,
+        "n_threads": 8,
+        "n_gpu_layers": 0,
+        "n_batch": 256,
+        "n_ubatch": 128,
+        "n_parallel": 1,
+        "seed": 17,
+        "jinja": true,
+        "default_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "runtime": {
+        "wllama": "3.8.1",
+        "llama": "b11364-46ca246"
+      }
+    },
+    "backend": "CPU \u00b7 8 threads",
+    "description": "Say hello.",
+    "output": "{\"greeting\":\"Hello!\"}",
+    "first_token_ms": 15581.689999938011,
+    "generation_ms": 18692.579999923706,
+    "tokens_per_second": 1.609881915161523,
+    "usage": null,
+    "runtime_timings": {
+      "cache_n": 0,
+      "prompt_n": 26,
+      "prompt_ms": 14303.695,
+      "prompt_per_token_ms": 550.1421153846154,
+      "prompt_per_second": 1.8177121366192441,
+      "predicted_n": 8,
+      "predicted_ms": 4348.145,
+      "predicted_per_token_ms": 621.1635714285715,
+      "predicted_per_second": 1.609881915161523
+    },
+    "finish": "stop",
+    "settings": {
+      "max_tokens": 512,
+      "temperature": 0,
+      "seed": 17,
+      "cache_prompt": true
+    },
+    "json_syntax_valid": true
+  },
+  "cancelled_run": {
+    "at": "2026-10-09T21:49:30.200Z",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+    "model": "Qwen3 4B \u00b7 SFT + DPO round two \u00b7 Q4_0",
+    "device": {
+      "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+      "logical_cpus": 88,
+      "reported_memory_gb": 32,
+      "cross_origin_isolated": true,
+      "gpu": null
+    },
+    "load": {
+      "total_ms": 13903.475000023842,
+      "download_or_cache_ms": 31.43500006198883,
+      "initialization_ms": 13825.805000066757,
+      "model_was_cached": true,
+      "requested": "cpu",
+      "backend": "CPU \u00b7 8 threads",
+      "gpu_layers": null,
+      "settings": {
+        "n_ctx": 2048,
+        "n_threads": 8,
+        "n_gpu_layers": 0,
+        "n_batch": 256,
+        "n_ubatch": 128,
+        "n_parallel": 1,
+        "seed": 17,
+        "jinja": true,
+        "default_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "runtime": {
+        "wllama": "3.8.1",
+        "llama": "b11364-46ca246"
+      }
+    },
+    "backend": "CPU \u00b7 8 threads",
+    "description": "Say hello.",
+    "output": "{\"g",
+    "first_token_ms": 1875.9800000190735,
+    "generation_ms": 2503.930000066757,
+    "tokens_per_second": 1.6241280462551666,
+    "usage": null,
+    "runtime_timings": {
+      "cache_n": 25,
+      "prompt_n": 1,
+      "prompt_ms": 623.591,
+      "prompt_per_token_ms": 623.591,
+      "prompt_per_second": 1.6036151900845266,
+      "predicted_n": 2,
+      "predicted_ms": 615.715,
+      "predicted_per_token_ms": 615.715,
+      "predicted_per_second": 1.6241280462551666
+    },
+    "finish": "cancelled",
+    "settings": {
+      "max_tokens": 512,
+      "temperature": 0,
+      "seed": 17,
+      "cache_prompt": true
+    },
+    "error": "Operation aborted",
+    "json_syntax_valid": false
+  },
+  "errors": [],
+  "notes": [
+    "Full-card run uses the published workshop prompt. Short diagnostic and cancellation use the separately recorded diagnostic prompt.",
+    "Initial smoke assertion expected optional usage; runtime_timings supplies the token count instead. The successful full-card result was preserved.",
+    "No WebGPU device was tested on this host."
+  ]
+}

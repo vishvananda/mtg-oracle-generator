@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Oracle · Browser benchmark</title>
+<link rel="stylesheet" href="./style.css">
+<main>
+  <nav><a href="/cards/new">← Card workshop</a><span>LOCAL INFERENCE LAB</span></nav>
+  <h1>Oracle, on your machine.</h1>
+  <p class="intro">Describe a card and watch the fine-tuned model write it in your browser. The first download is <strong>2.37 GB</strong>; model files are cached on this device.</p>
+  <p id="identity" class="muted">Qwen3 4B · SFT + DPO round two · Q4_0</p>
+  <p class="muted">Use a current Chrome or Edge with WebGPU for the fastest test. A cold CPU run can take several minutes.</p>
+  <section aria-label="Model settings">
+    <div class="settings">
+      <label>Backend<select id="backend"><option value="auto">Auto · prefer WebGPU</option><option value="cpu">CPU · WebAssembly</option></select></label>
+      <label>CPU threads<input id="threads" type="number" min="1" max="32" value="8"></label>
+      <label>Context<select id="context"><option value="2048">2,048 tokens</option><option value="4096" selected>4,096 tokens</option></select></label>
+      <label>Output limit<select id="max-tokens"><option value="128">128 tokens</option><option value="512" selected>512 tokens</option><option value="1024">1,024 tokens</option></select></label>
+    </div>
+    <div class="actions"><button id="load" disabled>Load model</button><button id="unload" class="secondary" disabled>Unload</button><span id="engine" class="muted">Checking this browser…</span></div>
+    <progress id="progress" max="1" value="0" hidden></progress>
+    <p id="status" role="status" aria-live="polite">Initializing…</p>
+  </section>
+  <section>
+    <label for="description">Your card description</label>
+    <textarea id="description" rows="4" maxlength="4000">A midsize red Giant that rummages when it enters.</textarea>
+    <div class="examples"><button data-example="A midsize red Giant that rummages when it enters.">Giant</button><button data-example="A black, white, and blue creature that lets me play cards from the top of an opponent's library.">Opponent’s library</button><button data-example="A planeswalker with a loyalty ability that creates a 3/3 creature and an ultimate that exiles each opponent's library.">Planeswalker</button></div>
+    <div class="actions"><button id="generate" disabled>Generate card</button><button id="stop" class="secondary" disabled>Stop</button><label class="inline"><input id="cache" type="checkbox"> Reuse prompt cache</label></div>
+    <p class="muted">Greedy decoding, seed 17. Leave prompt caching off for comparable runs. Generation stays on this device; there is no server inference fallback.</p>
+  </section>
+  <div class="metrics" aria-label="Benchmark timings">
+    <div><span>Model load</span><strong id="load-time">—</strong><small>Includes download / cache read</small></div>
+    <div><span>First token</span><strong id="first-time">—</strong><small>From Generate to first visible text</small></div>
+    <div><span>Total generation</span><strong id="total-time">—</strong><small>Excludes model loading</small></div>
+    <div><span>Decode speed</span><strong id="speed">—</strong><small id="tokens">Runtime token count</small></div>
+  </div>
+  <section><div class="output-header"><h2>Streamed output</h2><span id="json-status" class="muted"></span></div><pre id="output" tabindex="0">Load the model to begin.</pre></section>
+  <section><div class="output-header"><h2>Runs on this browser</h2><button id="export" class="secondary" disabled>Download results</button></div><p class="muted">Results, descriptions, and outputs are saved in this browser only. Download the JSON to compare machines.</p><div class="table-scroll"><table><thead><tr><th>Run</th><th>Backend</th><th>First token</th><th>Total</th><th>Tokens/s</th></tr></thead><tbody id="history"></tbody></table></div></section>
+  <details><summary>Device and runtime details</summary><pre id="device"></pre><pre id="logs"></pre></details>
+  <footer>Experimental card generation. JSON syntax is checked here; Oracle validators and artwork remain in the <a href="/cards/new">workshop</a>. <a href="./notices/model-and-runtime.txt">Model and runtime notices</a>.</footer>
+</main>
+<script type="module" src="./app.js"></script>
+</html>

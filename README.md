@@ -25,9 +25,10 @@ intent fidelity, game balance, or official Magic rules correctness.
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
 | Revised training run | **One full epoch complete**, 19,774 steps; [loss curves and diagnostic measurements](reports/full-epoch-v2/README.md) |
 | Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): experimental 1,000-pair DPO round in Q4_0 alongside GPT-6 Luna; two local drafts, saved choices and chosen-card art |
+| Browser inference benchmark | [Run the 2.37 GB model on your device](https://tetrarchs.com/model-bench/): streamed output, WebGPU/CPU selection, first-token and total timings; [source and reproduction](web/client-benchmark/README.md) |
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
 | Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |
-| Custom-card data pilot | [500 MSEM designs](reports/custom-card-pilot/README.md): 137 parse unchanged, 151 after conservative wording normalization; 146 nonvanilla review candidates after additional official-card deduplication |
+| Custom-card collection | [All 14,969 eligible MSEM designs](reports/custom-card-full/README.md): 3,997 parse after conservative cleanup; **3,852 distinct review candidates** after duplicate and vanilla-card filtering |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
