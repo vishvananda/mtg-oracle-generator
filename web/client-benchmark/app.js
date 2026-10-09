@@ -22,6 +22,10 @@ function controls() {
   $('stop').disabled = !busy || !controller;
   for (const id of ['backend', 'threads', 'context']) $(id).disabled = busy || loaded;
   for (const id of ['description', 'max-tokens', 'cache']) $(id).disabled = busy;
+  const greedy = Number($('temperature').value) === 0;
+  $('temperature').disabled = busy;
+  for (const id of ['random-seed', 'top-p', 'top-k']) $(id).disabled = busy || greedy;
+  $('seed').disabled = busy || greedy || $('random-seed').checked;
   for (const button of document.querySelectorAll('[data-example]')) button.disabled = busy;
 }
 function log(level, ...args) {
@@ -37,7 +41,8 @@ function renderHistory() {
   for (const run of [...runs].reverse()) {
     const tr = document.createElement('tr');
     for (const value of [new Date(run.at).toLocaleTimeString() + (run.finish === 'stop' ? '' : ` · ${run.finish}`),
-      run.backend, seconds(run.first_token_ms), seconds(run.generation_ms), run.tokens_per_second?.toFixed(2) ?? '—']) {
+      run.backend, `T ${run.settings.temperature} · seed ${run.settings.seed} · cache ${run.settings.cache_prompt ? 'on' : 'off'}`,
+      seconds(run.first_token_ms), seconds(run.generation_ms), run.tokens_per_second?.toFixed(2) ?? '—']) {
       const td = document.createElement('td'); td.textContent = value; tr.append(td);
     }
     $('history').append(tr);
@@ -86,9 +91,10 @@ async function loadModel() {
     $('progress').value = 1;
     status(`Loading model on ${requested === 'gpu' ? 'WebGPU' : 'CPU'}…`);
     const initStart = performance.now();
+    // In wllama 3.8.1 a load-time seed overrides every request seed. Set seeds only per request.
     const settings = { n_ctx: Number($('context').value), n_threads: Math.min(32, Math.max(1, Number($('threads').value) || 1)),
       n_gpu_layers: requested === 'gpu' ? 99 : 0, n_batch: 256, n_ubatch: 128, n_parallel: 1,
-      seed: 17, jinja: true, default_template_kwargs: { enable_thinking: false } };
+      jinja: true, default_template_kwargs: { enable_thinking: false } };
     await engine.loadModel(model, settings);
     loaded = true;
     loadInfo = { total_ms: performance.now() - start, download_or_cache_ms: downloadMs,
@@ -110,6 +116,14 @@ async function generate() {
   if (busy || !loaded) return;
   const description = $('description').value.trim();
   if (!description) { status('Enter a card description.', true); return; }
+  for (const id of ['temperature', 'seed', 'top-p', 'top-k']) {
+    if (!$(id).disabled && !$(id).reportValidity()) return;
+  }
+  const temperature = Number($('temperature').value);
+  const seedMode = temperature === 0 ? 'greedy' : $('random-seed').checked ? 'random' : 'fixed';
+  const seed = seedMode === 'greedy' ? 17 : seedMode === 'random'
+    ? crypto.getRandomValues(new Uint32Array(1))[0] >>> 1 : Number($('seed').value);
+  $('seed').value = seed;
   busy = true; controller = new AbortController(); controls();
   $('output').textContent = ''; $('json-status').textContent = '';
   for (const id of ['first-time', 'total-time', 'speed']) $(id).textContent = '—';
@@ -120,8 +134,11 @@ async function generate() {
     system_prompt_sha256: manifest.system_prompt_sha256,
     model: manifest.label, device: { ...device }, load: loadInfo, backend: loadInfo.backend,
     description, output: '', first_token_ms: null, generation_ms: null, tokens_per_second: null,
-    usage: null, runtime_timings: null, finish: 'unknown',
-    settings: { max_tokens: Number($('max-tokens').value), temperature: 0, seed: 17, cache_prompt: $('cache').checked } };
+    usage: null, runtime_timings: null, finish: 'unknown', seed_mode: seedMode,
+    settings: { max_tokens: Number($('max-tokens').value), temperature, seed,
+      top_p: temperature === 0 ? 1 : Number($('top-p').value),
+      top_k: temperature === 0 ? 0 : Number($('top-k').value), min_p: 0,
+      cache_prompt: $('cache').checked } };
   timer = setInterval(() => { $('total-time').textContent = seconds(performance.now() - start); }, 100);
   try {
     await engine.createChatCompletion({
@@ -169,6 +186,8 @@ async function generate() {
 }
 $('load').addEventListener('click', loadModel);
 $('generate').addEventListener('click', generate);
+$('temperature').addEventListener('input', controls);
+$('random-seed').addEventListener('change', controls);
 $('stop').addEventListener('click', () => { controller?.abort(); status('Stopping…'); });
 $('unload').addEventListener('click', async () => {
   busy = true; controls();

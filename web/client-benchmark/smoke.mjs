@@ -25,6 +25,7 @@ try {
   await page.locator('#backend').selectOption('cpu');
   await page.locator('#context').selectOption('2048');
   await page.locator('#threads').fill(process.env.BENCH_THREADS || '8');
+  await page.locator('#temperature').fill('0');
   await page.locator('#load').click();
   await page.waitForFunction(() => !document.querySelector('#generate').disabled || document.querySelector('#status').classList.contains('error'), null, { timeout: 420000 });
   if (await page.locator('#generate').isDisabled()) throw new Error(await page.locator('#status').textContent());

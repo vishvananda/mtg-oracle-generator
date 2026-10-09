@@ -18,10 +18,34 @@ on older browsers. Compatibility and GPU performance require testing on the
 actual device; the deployment host's browser test exercises CPU mode.
 
 Click **Load model**, then **Generate card**. The model cache avoids repeat
-weight downloads. The default is one generation, greedy decoding, seed 17,
-4,096 context tokens, and 512 output tokens. Prompt caching is off by default;
+weight downloads. The default is one generation, temperature 0.7, top-p 0.8,
+top-k 20, a fresh random seed, 4,096 context tokens, and 512 output tokens.
+Prompt caching is off by default;
 enable it explicitly for warm-prompt experiments. Changing backend, threads,
-or context requires unloading the model first. Output limits remain editable.
+or context requires unloading the model first. Sampling and output limits
+remain editable between requests without reloading the model.
+
+Temperature 0 selects greedy decoding (the original benchmark behavior) and
+disables the other sampling controls. Higher temperatures allow more varied
+outputs, potentially at the cost of correctness. The advanced controls expose
+top-p (probability mass) and top-k (candidate count); 1 and 0 disable their
+respective filters. Min-p is explicitly disabled.
+
+Random mode chooses a concrete seed for each request and displays it in the seed
+field. Turn random mode off to reuse that seed. History and exported results
+include the actual seed, sampling values, and cache setting. A seed assists
+repeatability on the same runtime/device; it does not guarantee identical
+results across devices or numerical backends. Prompt caching reuses computation
+and remains compatible with fresh random sampling.
+
+Do not set `seed` in `loadModel`: wllama 3.8.1 overlays that value on every
+completion and overrides the per-request seed. This page sets it per request.
+
+The real-model sampling check used a separate short naming prompt. Two random
+seeds produced different names; reusing the second seed reproduced its output
+while retaining 32 cached prompt tokens. Temperature 0 and narrow mobile layout
+also passed. These are sampling checks, not full-card quality measurements; see
+[sampling-validation.json](sampling-validation.json).
 
 Measurements distinguish:
 
@@ -81,7 +105,8 @@ model files, and local test outputs are ignored.
 This runs the real full model in Chromium CPU mode, observes streamed text,
 checks complete JSON and timing fields, then cancels a second request. It also
 checks that generation makes no network POST or workshop inference request.
-It requires several GB of free storage and memory.
+It explicitly selects temperature 0 to retain the original benchmark settings
+and requires several GB of free storage and memory.
 
 ```bash
 CHROME_BIN=/path/to/chrome \

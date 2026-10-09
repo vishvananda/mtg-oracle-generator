@@ -1,0 +1,279 @@
+{
+  "diagnostic_system_prompt": "Return only a JSON object with a name field.",
+  "runs": [
+    {
+      "at": "2026-10-09T22:12:07.782Z",
+      "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+      "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "model": "Qwen3 4B · SFT + DPO round two · Q4_0",
+      "device": {
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+        "logical_cpus": 88,
+        "reported_memory_gb": 32,
+        "cross_origin_isolated": true,
+        "gpu": null
+      },
+      "load": {
+        "total_ms": 13337.259999990463,
+        "download_or_cache_ms": 26.490000009536743,
+        "initialization_ms": 13266.264999985695,
+        "model_was_cached": true,
+        "requested": "cpu",
+        "backend": "CPU · 8 threads",
+        "gpu_layers": null,
+        "settings": {
+          "n_ctx": 2048,
+          "n_threads": 8,
+          "n_gpu_layers": 0,
+          "n_batch": 256,
+          "n_ubatch": 128,
+          "n_parallel": 1,
+          "jinja": true,
+          "default_template_kwargs": {
+            "enable_thinking": false
+          }
+        },
+        "runtime": {
+          "wllama": "3.8.1",
+          "llama": "b11364-46ca246"
+        }
+      },
+      "backend": "CPU · 8 threads",
+      "description": "Invent a short fantasy name for a Giant.",
+      "output": "{\"name\":\"Ologhar, the Unbowed\"}",
+      "first_token_ms": 19289.365000009537,
+      "generation_ms": 25285.539999961853,
+      "tokens_per_second": 1.6554187857751521,
+      "usage": null,
+      "runtime_timings": {
+        "cache_n": 0,
+        "prompt_n": 33,
+        "prompt_ms": 17986.945,
+        "prompt_per_token_ms": 545.0589393939393,
+        "prompt_per_second": 1.8346639743436144,
+        "predicted_n": 13,
+        "predicted_ms": 7248.921,
+        "predicted_per_token_ms": 604.0767500000001,
+        "predicted_per_second": 1.6554187857751521
+      },
+      "finish": "stop",
+      "seed_mode": "random",
+      "settings": {
+        "max_tokens": 128,
+        "temperature": 0.7,
+        "seed": 1926342937,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0,
+        "cache_prompt": true
+      },
+      "json_syntax_valid": true
+    },
+    {
+      "at": "2026-10-09T22:12:33.128Z",
+      "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+      "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "model": "Qwen3 4B · SFT + DPO round two · Q4_0",
+      "device": {
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+        "logical_cpus": 88,
+        "reported_memory_gb": 32,
+        "cross_origin_isolated": true,
+        "gpu": null
+      },
+      "load": {
+        "total_ms": 13337.259999990463,
+        "download_or_cache_ms": 26.490000009536743,
+        "initialization_ms": 13266.264999985695,
+        "model_was_cached": true,
+        "requested": "cpu",
+        "backend": "CPU · 8 threads",
+        "gpu_layers": null,
+        "settings": {
+          "n_ctx": 2048,
+          "n_threads": 8,
+          "n_gpu_layers": 0,
+          "n_batch": 256,
+          "n_ubatch": 128,
+          "n_parallel": 1,
+          "jinja": true,
+          "default_template_kwargs": {
+            "enable_thinking": false
+          }
+        },
+        "runtime": {
+          "wllama": "3.8.1",
+          "llama": "b11364-46ca246"
+        }
+      },
+      "backend": "CPU · 8 threads",
+      "description": "Invent a short fantasy name for a Giant.",
+      "output": "{\"name\":\"Mork, the Moonshaker\"}",
+      "first_token_ms": 1795.5349999666214,
+      "generation_ms": 7412.354999899864,
+      "tokens_per_second": 1.6174222846972004,
+      "usage": null,
+      "runtime_timings": {
+        "cache_n": 32,
+        "prompt_n": 1,
+        "prompt_ms": 589.974,
+        "prompt_per_token_ms": 589.974,
+        "prompt_per_second": 1.694989948709604,
+        "predicted_n": 12,
+        "predicted_ms": 6800.945,
+        "predicted_per_token_ms": 618.2677272727273,
+        "predicted_per_second": 1.6174222846972004
+      },
+      "finish": "stop",
+      "seed_mode": "random",
+      "settings": {
+        "max_tokens": 128,
+        "temperature": 0.7,
+        "seed": 162350483,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0,
+        "cache_prompt": true
+      },
+      "json_syntax_valid": true
+    },
+    {
+      "at": "2026-10-09T22:12:40.662Z",
+      "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+      "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "model": "Qwen3 4B · SFT + DPO round two · Q4_0",
+      "device": {
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+        "logical_cpus": 88,
+        "reported_memory_gb": 32,
+        "cross_origin_isolated": true,
+        "gpu": null
+      },
+      "load": {
+        "total_ms": 13337.259999990463,
+        "download_or_cache_ms": 26.490000009536743,
+        "initialization_ms": 13266.264999985695,
+        "model_was_cached": true,
+        "requested": "cpu",
+        "backend": "CPU · 8 threads",
+        "gpu_layers": null,
+        "settings": {
+          "n_ctx": 2048,
+          "n_threads": 8,
+          "n_gpu_layers": 0,
+          "n_batch": 256,
+          "n_ubatch": 128,
+          "n_parallel": 1,
+          "jinja": true,
+          "default_template_kwargs": {
+            "enable_thinking": false
+          }
+        },
+        "runtime": {
+          "wllama": "3.8.1",
+          "llama": "b11364-46ca246"
+        }
+      },
+      "backend": "CPU · 8 threads",
+      "description": "Invent a short fantasy name for a Giant.",
+      "output": "{\"name\":\"Mork, the Moonshaker\"}",
+      "first_token_ms": 1837.2599999904633,
+      "generation_ms": 7293.794999957085,
+      "tokens_per_second": 1.6513181647249917,
+      "usage": null,
+      "runtime_timings": {
+        "cache_n": 32,
+        "prompt_n": 1,
+        "prompt_ms": 611.874,
+        "prompt_per_token_ms": 611.874,
+        "prompt_per_second": 1.6343234064529624,
+        "predicted_n": 12,
+        "predicted_ms": 6661.345,
+        "predicted_per_token_ms": 605.5768181818182,
+        "predicted_per_second": 1.6513181647249917
+      },
+      "finish": "stop",
+      "seed_mode": "fixed",
+      "settings": {
+        "max_tokens": 128,
+        "temperature": 0.7,
+        "seed": 162350483,
+        "top_p": 0.8,
+        "top_k": 20,
+        "min_p": 0,
+        "cache_prompt": true
+      },
+      "json_syntax_valid": true
+    },
+    {
+      "at": "2026-10-09T22:12:48.045Z",
+      "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+      "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "model": "Qwen3 4B · SFT + DPO round two · Q4_0",
+      "device": {
+        "user_agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+        "logical_cpus": 88,
+        "reported_memory_gb": 32,
+        "cross_origin_isolated": true,
+        "gpu": null
+      },
+      "load": {
+        "total_ms": 13337.259999990463,
+        "download_or_cache_ms": 26.490000009536743,
+        "initialization_ms": 13266.264999985695,
+        "model_was_cached": true,
+        "requested": "cpu",
+        "backend": "CPU · 8 threads",
+        "gpu_layers": null,
+        "settings": {
+          "n_ctx": 2048,
+          "n_threads": 8,
+          "n_gpu_layers": 0,
+          "n_batch": 256,
+          "n_ubatch": 128,
+          "n_parallel": 1,
+          "jinja": true,
+          "default_template_kwargs": {
+            "enable_thinking": false
+          }
+        },
+        "runtime": {
+          "wllama": "3.8.1",
+          "llama": "b11364-46ca246"
+        }
+      },
+      "backend": "CPU · 8 threads",
+      "description": "Invent a short fantasy name for a Giant.",
+      "output": "{\"name\":\"Ognyon\"}",
+      "first_token_ms": 1816.7150000333786,
+      "generation_ms": 5479.929999947548,
+      "tokens_per_second": 1.6445884098865253,
+      "usage": null,
+      "runtime_timings": {
+        "cache_n": 32,
+        "prompt_n": 1,
+        "prompt_ms": 601.31,
+        "prompt_per_token_ms": 601.31,
+        "prompt_per_second": 1.6630357053765945,
+        "predicted_n": 9,
+        "predicted_ms": 4864.439,
+        "predicted_per_token_ms": 608.054875,
+        "predicted_per_second": 1.6445884098865253
+      },
+      "finish": "stop",
+      "seed_mode": "greedy",
+      "settings": {
+        "max_tokens": 128,
+        "temperature": 0,
+        "seed": 17,
+        "top_p": 1,
+        "top_k": 0,
+        "min_p": 0,
+        "cache_prompt": true
+      },
+      "json_syntax_valid": true
+    }
+  ],
+  "errors": [],
+  "random_outputs_differ": true
+}

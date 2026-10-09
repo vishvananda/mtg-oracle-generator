@@ -25,8 +25,18 @@
     <label for="description">Your card description</label>
     <textarea id="description" rows="4" maxlength="4000">A midsize red Giant that rummages when it enters.</textarea>
     <div class="examples"><button data-example="A midsize red Giant that rummages when it enters.">Giant</button><button data-example="A black, white, and blue creature that lets me play cards from the top of an opponent's library.">Opponent’s library</button><button data-example="A planeswalker with a loyalty ability that creates a 3/3 creature and an ultimate that exiles each opponent's library.">Planeswalker</button></div>
+    <div class="sampling">
+      <label>Temperature<input id="temperature" type="number" min="0" max="2" step="0.05" value="0.7" required aria-describedby="sampling-help"></label>
+      <label>Seed<input id="seed" type="number" min="0" max="2147483647" step="1" value="17" required disabled></label>
+      <label class="inline"><input id="random-seed" type="checkbox" checked> New random seed each run</label>
+    </div>
+    <p id="sampling-help" class="muted">Temperature 0 repeats the most likely output; 0.7 adds variety. Higher values allow more variation and can introduce mistakes. Turn off random seed to reuse the last seed.</p>
+    <details><summary>Advanced sampling</summary><div class="sampling">
+      <label>Top-p<input id="top-p" type="number" min="0.01" max="1" step="0.01" value="0.8" required></label>
+      <label>Top-k<input id="top-k" type="number" min="0" max="200" step="1" value="20" required></label>
+    </div><p class="muted">Top-p limits the total probability of token choices; top-k limits their count. Use 1 and 0, respectively, to disable those limits.</p></details>
     <div class="actions"><button id="generate" disabled>Generate card</button><button id="stop" class="secondary" disabled>Stop</button><label class="inline"><input id="cache" type="checkbox"> Reuse prompt cache</label></div>
-    <p class="muted">Greedy decoding, seed 17. Leave prompt caching off for comparable runs. Generation stays on this device; there is no server inference fallback.</p>
+    <p class="muted">Prompt caching also works with random sampling. Use matching sampling and cache settings when comparing machines. Generation stays on this device.</p>
   </section>
   <div class="metrics" aria-label="Benchmark timings">
     <div><span>Model load</span><strong id="load-time">—</strong><small>Includes download / cache read</small></div>
@@ -35,7 +45,7 @@
     <div><span>Decode speed</span><strong id="speed">—</strong><small id="tokens">Runtime token count</small></div>
   </div>
   <section><div class="output-header"><h2>Streamed output</h2><span id="json-status" class="muted"></span></div><pre id="output" tabindex="0">Load the model to begin.</pre></section>
-  <section><div class="output-header"><h2>Runs on this browser</h2><button id="export" class="secondary" disabled>Download results</button></div><p class="muted">Results, descriptions, and outputs are saved in this browser only. Download the JSON to compare machines.</p><div class="table-scroll"><table><thead><tr><th>Run</th><th>Backend</th><th>First token</th><th>Total</th><th>Tokens/s</th></tr></thead><tbody id="history"></tbody></table></div></section>
+  <section><div class="output-header"><h2>Runs on this browser</h2><button id="export" class="secondary" disabled>Download results</button></div><p class="muted">Results, descriptions, and outputs are saved in this browser only. Download the JSON to compare machines.</p><div class="table-scroll"><table><thead><tr><th>Run</th><th>Backend</th><th>Sampling</th><th>First token</th><th>Total</th><th>Tokens/s</th></tr></thead><tbody id="history"></tbody></table></div></section>
   <details><summary>Device and runtime details</summary><pre id="device"></pre><pre id="logs"></pre></details>
   <footer>Experimental card generation. JSON syntax is checked here; Oracle validators and artwork remain in the <a href="/cards/new">workshop</a>. <a href="./notices/model-and-runtime.txt">Model and runtime notices</a>.</footer>
 </main>
