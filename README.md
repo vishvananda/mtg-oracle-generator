@@ -23,8 +23,8 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Names + rarity pilot dataset | Packaged locally: 19,065 train / 572 validation; not uploaded |
 | Completed Qwen3 4B training pilot | 16,000 train / 480 validation; predates names and rarity |
 | First full-corpus training segment | [963-step development report](reports/full-corpus-step-963/README.md): 254/256 schema-valid outputs; 126/256 accepted by mtgish |
-| Revised training run | [Training running](https://huggingface.co/jobs/vishvananda/6ac72dd6e7a0dae8a2780d6d); automatic checkpoint continuation if the job reaches its time limit; stops after one epoch |
-| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): checkpoint 963 in Q4_0 alongside GPT-6 Luna |
+| Revised training run | Reached step 19,385 / 19,774; [finishing the same epoch](https://huggingface.co/jobs/vishvananda/6ac840d0095c5780893009ca) from the saved optimizer state |
+| Interactive preview | [Card workshop](https://tetrarchs.com/cards/new): checkpoint 19,385 in Q4_0 alongside GPT-6 Luna |
 | Full training and final-test mtgish results | **Pending** — no final-test score claimed |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -84,8 +84,8 @@ The first one-hour segment on the full corpus reached 6.15% of one epoch.
 On the fixed 256-case development panel, schema compliance improved from
 **8.59% to 99.22%** and whole-card mtgish acceptance from **0% to 49.22%**
 against the untuned Qwen baseline. Complex mechanics still have intent errors.
-That run was canceled to improve the split. Checkpoint 963 remains available as an
-intermediate workshop preview alongside Luna; its report uses the original split. The CPU preview uses a merged
+That run was canceled to improve the split. Its report uses the original split;
+the workshop now serves checkpoint 19,385 from the revised run alongside Luna. The CPU preview uses a merged
 Q4_0 model, so the NF4 development scores do not measure that serving artifact.
 The panel emphasizes difficult card types and is not a full-corpus accuracy
 estimate. See the [loss curves, parser coverage and qualitative review](reports/full-corpus-step-963/README.md).
@@ -121,10 +121,14 @@ parsing, failure denominators, and comparison of base versus adapter.
 [Publishing](docs/publishing.md) covers GitHub, HF dataset/model cards, hashes,
 and adapter staging. No private editor or compiler is required.
 
-[Post-training preparation](docs/rl-plan.md) compares Luna intent judgments,
-parser rewards and Oracle embeddings, with an offline scoring/pair-export harness
-and a 512-prompt pilot. See the [measured reward diagnostics](reports/rl-preparation/README.md).
-This is preparation only; no RL training is scheduled automatically.
+[Preference training](docs/rl-plan.md) compares Luna intent judgments, parser
+rewards and Oracle embeddings. The first requested DPO pilot waits for the
+completed SFT epoch, then samples four candidates for each of 512 training-only
+requests. Luna scores intent; Sol independently reviews proposed pairs. A frozen
+64-request development panel measures the change separately from the 400-case
+final SFT test. The pilot has a $10 GPU ceiling and does not deploy automatically.
+See the [earlier reward diagnostics](reports/rl-preparation/README.md) for the
+motivation and parser-reward limitations.
 
 Run CPU checks with `python -m unittest discover -s tests -v`. Original code and
 documentation use [MIT](LICENSE); card content and base models retain their own

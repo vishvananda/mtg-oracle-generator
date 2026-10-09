@@ -119,21 +119,33 @@
     "additional_epochs": false,
     "automatic_rl": false
   },
-  "updated_at": "2026-10-08T06:30:35.098482+00:00",
+  "updated_at": "2026-10-09T01:39:25.886989+00:00",
   "workshop_preview": {
     "status": "deployed",
     "url": "https://tetrarchs.com/cards/new",
-    "checkpoint": 963,
+    "checkpoint": 19385,
     "quantization": "Q4_0",
-    "model_sha256": "b0a843a56749e1ce8367992fb135199b556f64ab5a6fbddf3cc0669c0c4b797c",
+    "model_sha256": "9a015c156eccea054e50f8d52da9e16d35c9ce80699edfa7f80d3624334e305e",
     "training_scope": "partial_epoch_preview",
-    "training_epoch": 0.06148640020431618,
+    "training_epoch": 0.9803277030444018,
     "models": [
-      "Qwen3-4B checkpoint 963",
+      "Qwen3-4B checkpoint 19385",
       "gpt-6-luna"
     ],
     "generation_mode": "unconstrained with frozen training prompt and optional terminology guide",
     "backend_commit": "344db86",
     "browser_checked": true
+  },
+  "preference_pilot": {
+    "status": "waiting_for_final_sft",
+    "method": "DPO",
+    "gpu_ceiling_usd": 10,
+    "candidates_planned": 2048,
+    "development_cases": 64,
+    "calibration_cases": 219,
+    "luna_calibration_agreement": 219,
+    "sol_calibration_agreement": 219,
+    "independent_pair_review": true,
+    "automatic_promotion": false
   }
 }
