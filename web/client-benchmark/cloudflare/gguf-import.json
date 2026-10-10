@@ -1,0 +1,27 @@
+[
+  {
+    "path": "models/af725e31/oracle-q4-00001-of-00005.gguf",
+    "bytes": 510142880,
+    "sha256": "efbf9b482e0b761a0c693fae181bc54b14e8cf998bfba391f9cd0296e9e6b672"
+  },
+  {
+    "path": "models/af725e31/oracle-q4-00002-of-00005.gguf",
+    "bytes": 511134496,
+    "sha256": "93d8c4ddf17091a503984e098e13c0061281363602c374db737f9386052cac2e"
+  },
+  {
+    "path": "models/af725e31/oracle-q4-00003-of-00005.gguf",
+    "bytes": 511134560,
+    "sha256": "5cf66c92680b8bd2bc29f6ba32306f15734169767b3cab0416c282d829a452de"
+  },
+  {
+    "path": "models/af725e31/oracle-q4-00004-of-00005.gguf",
+    "bytes": 511134560,
+    "sha256": "ecd92b589ad93ffb2b91225bd322e2b33e6de393fa7a82071e73703507c44c1c"
+  },
+  {
+    "path": "models/af725e31/oracle-q4-00005-of-00005.gguf",
+    "bytes": 325999136,
+    "sha256": "56a68eb688becacb5993fe207b43b851e714de8d799de61d56b9767352b84f20"
+  }
+]

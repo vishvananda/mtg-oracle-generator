@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-10",
+  "url": "https://cardforge.fyi/",
+  "pages_project": "cardforge",
+  "deployment_url": "https://9c2e0c19.cardforge-8am.pages.dev",
+  "forge_version": "d74b4de06fcf",
+  "architecture": "Cloudflare Pages for static app; R2 for model objects; browser inference",
+  "pages_files": 93,
+  "pages_bytes": 59605911,
+  "r2_objects": 46,
+  "r2_bytes": 6257824703,
+  "largest_model_object_bytes": 511134560,
+  "all_objects_below_512000000_bytes": true,
+  "weight_objects_range_checked": 21,
+  "range_bytes_match_local": true,
+  "repeated_weight_requests_cache_hit": 21,
+  "missing_objects_not_cached": true,
+  "browser_checks": {
+    "base": "https://cardforge.fyi/",
+    "checks": [
+      "Pages is cross-origin isolated",
+      "Details links mtgish to its GitHub repository",
+      "card and art model manifests target R2",
+      "both actual model runtimes import successfully",
+      "oracle-q4-00001-of-00005.gguf: CORS exposes exact byte-range response",
+      "oracle-q4-00001-of-00005.gguf: valid GGUF header",
+      "oracle-q4-00002-of-00005.gguf: CORS exposes exact byte-range response",
+      "oracle-q4-00002-of-00005.gguf: valid GGUF header",
+      "oracle-q4-00003-of-00005.gguf: CORS exposes exact byte-range response",
+      "oracle-q4-00003-of-00005.gguf: valid GGUF header",
+      "oracle-q4-00004-of-00005.gguf: CORS exposes exact byte-range response",
+      "oracle-q4-00004-of-00005.gguf: valid GGUF header",
+      "oracle-q4-00005-of-00005.gguf: CORS exposes exact byte-range response",
+      "oracle-q4-00005-of-00005.gguf: valid GGUF header",
+      "text_encoder-mlx-4bit/model.safetensors: CORS exposes exact byte-range response",
+      "transformer-packed-mflux/diffusion_pytorch_model.safetensors: CORS exposes exact byte-range response",
+      "no browser errors"
+    ],
+    "errors": []
+  },
+  "www": {
+    "valid_tls": true,
+    "redirect": "browser before app initialization",
+    "final_url": "https://cardforge.fyi/?logo=dual#launch",
+    "dns": "Mapped to the IPv4 returned by Cloudflare authoritative DNS and 1.1.1.1; local resolver retained negative A cache"
+  },
+  "temporary_import_worker_removed": true,
+  "text_model_smoke": {
+    "download_completed": true,
+    "model_initialized": true,
+    "inference_completed": false,
+    "result": "CPU/Wasm-only headless test reached generation but exceeded the 600-second test timeout; not a WebGPU device benchmark"
+  },
+  "limitations": [
+    "Full image generation remains a physical WebGPU device check.",
+    "No completed inference timing is claimed for this launch check."
+  ],
+  "evidence_sha256": {
+    "model-assets.json": "909a4bced1ff56436a0096d94deefda97c725e4de3bff6493bd1defbc6e90c11",
+    "image-upload.json": "e19d8a34fb37551516407ec45632065ab3c25d030539792f2a01ff731fe79979",
+    "gguf-upload.json": "c20847418139c66c60a6baaabe64478233bec487ab4b1b09e12bfa3f0589ff7a",
+    "metadata-upload.json": "91ae9c7c11d45c7e772b87776e16fb52cd6c76283885101361f70f278e3411cb",
+    "r2-ranges.json": "af6d4e87741a3d21df4092a2290337c96bd713a5815c14e5bde012d365d5aa6b",
+    "cache-after-purge.json": "d6a40a0ab1e373e60a2f7bc88ef05afb9fc066a76d145d1b1fa1acb984a6ee55",
+    "production-check/receipt.json": "dcfdc6590eb48e5023c62c95fe164ab5742d198029ac1e2c58f875b58d0b1f78",
+    "www-check.json": "8136dd4f44bb16832098ca5d8fac2af14cc418926391345ff2c3318cf044b695"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "rules": [{
+    "allowed": {
+      "origins": ["https://cardforge.fyi", "https://www.cardforge.fyi", "https://cardforge-8am.pages.dev", "https://*.cardforge-8am.pages.dev"],
+      "methods": ["GET", "HEAD"],
+      "headers": ["Range"]
+    },
+    "exposeHeaders": ["Content-Length", "Content-Range", "Accept-Ranges", "ETag"],
+    "maxAgeSeconds": 86400
+  }]
+}

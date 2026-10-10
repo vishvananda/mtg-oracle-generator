@@ -1,0 +1,13 @@
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+  Cross-Origin-Resource-Policy: same-origin
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Cache-Control: public, max-age=0, must-revalidate
+
+https://cardforge-8am.pages.dev/*
+  X-Robots-Tag: noindex
+
+https://:version.cardforge-8am.pages.dev/*
+  X-Robots-Tag: noindex

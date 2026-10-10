@@ -14,3 +14,5 @@ __pycache__/
 *.log
 node_modules/
 *.egg-info/
+
+/web/client-benchmark/pages-dist/

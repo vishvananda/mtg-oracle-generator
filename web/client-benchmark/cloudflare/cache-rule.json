@@ -1,0 +1,21 @@
+{
+  "action": "set_cache_settings",
+  "action_parameters": {
+    "cache": true,
+    "edge_ttl": {
+      "mode": "respect_origin",
+      "status_code_ttl": [
+        {
+          "status_code_range": {
+            "from": 400,
+            "to": 599
+          },
+          "value": -1
+        }
+      ]
+    }
+  },
+  "description": "Cache CardForge versioned model objects",
+  "enabled": true,
+  "expression": "(http.host eq \"models.cardforge.fyi\" and (starts_with(http.request.uri.path, \"/models/\") or starts_with(http.request.uri.path, \"/image-models/\")))"
+}

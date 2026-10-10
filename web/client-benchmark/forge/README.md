@@ -1,8 +1,8 @@
 # MTG CardForge
 
-Live at **https://tetrarcum.com/**; also served at
-https://tetrarchs.com/forge/. `cardforge.fyi` is reserved for a later Pages + R2 launch. Iteration continues
-on the current host. Desktop users can load the card and art models,
+Production: **https://cardforge.fyi/**, hosted on Cloudflare Pages with model
+weights on R2. [Deployment instructions](../R2.md) cover rebuilding and verification.
+Iteration remains at https://tetrarcum.com/ and https://tetrarchs.com/forge/. Desktop users can load the card and art models,
 describe a card, and generate both locally. The five rotating showcase cards
 are handcrafted examples with generated artwork, not model evaluation results.
 They open with Vesper, Eclipse Sovereign, followed by a planeswalker, a forest
@@ -376,7 +376,7 @@ user's new track without changing the UI or model code.
 
 ## Oracle checks, model revisions and local sharing
 
-The card footer now checks Oracle text in a Web Worker. The status shows the parser error directly; open **Details** for mtgish's
+The card footer checks Oracle text in a Web Worker. Details links the mtgish credit to its upstream GitHub repository. The status shows the parser error directly; open **Details** for mtgish's
 error context or correction details. A checked result means the
 complete card parsed; it does not certify balance, legality or intent. Validation
 works before loading either generation model, including on mobile. See

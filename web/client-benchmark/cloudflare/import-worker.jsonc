@@ -1,0 +1,10 @@
+{
+  "name": "cardforge-import-20261010",
+  "main": "import-worker.js",
+  "account_id": "bbccf87cd5ef4772ded82f4ce9636427",
+  "compatibility_date": "2026-10-10",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": {"SOURCE_ROOT": "https://tetrarchs.com/model-bench/"},
+  "r2_buckets": [{"binding": "MODELS", "bucket_name": "cardforge-models"}]
+}
