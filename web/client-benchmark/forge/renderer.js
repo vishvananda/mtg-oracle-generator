@@ -21,7 +21,7 @@ export async function mountRenderer(host,card,onPart) {
   for(const [button,part,label]of [[set,'set','Edit set symbol'],[artist,'artist','Edit artist credit']]){button.type='button';button.className=`${part}-edit-target detail-edit-target`;button.setAttribute('aria-label',label);button.title=label;button.onclick=()=>requestPart(part);}
   const rails={border:[],frame:[]};
   for(const part of ['border','frame'])for(let side=0;side<(part==='frame'?1:4);side++){
-    const button=document.createElement('button');button.type='button';button.className=`${part}-edit-target detail-edit-target`;button.setAttribute('aria-label',part==='border'?'Edit border color':'Edit art frame');button.title=part==='border'?'Black or white border':'Modern or old frame';if(side)button.tabIndex=-1;button.onclick=()=>requestPart(part);rails[part].push(button);
+    const button=document.createElement('button');button.type='button';button.className=`${part}-edit-target detail-edit-target`;button.setAttribute('aria-label',part==='border'?'Edit border color':'Edit art frame');button.title=part==='border'?'Black, white or silver border':'Modern or old frame';if(side)button.tabIndex=-1;button.onclick=()=>requestPart(part);rails[part].push(button);
   }
   function placeArtButton(){
     const tilt=root.querySelector('.card-tilt'),face=root.querySelector('.rendered-card-face');

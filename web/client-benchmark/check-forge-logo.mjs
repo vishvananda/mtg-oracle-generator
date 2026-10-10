@@ -24,7 +24,8 @@ try{
   check('cube is the first-visit default',await page.locator('#jewel-toggle').getAttribute('data-design')==='cube');
   check('unused dual animation is not downloaded',!requests.some(u=>u.endsWith('/jewel-dual.webp')));
   check('header retains the small gold cube',await page.locator('.masthead .wordmark svg').count()===1&&await page.locator('.masthead img').count()===0);
-  check('large jewel sits above Imagine it',await page.evaluate(()=>{const j=document.querySelector('#jewel-toggle').getBoundingClientRect(),h=document.querySelector('#hero-title').getBoundingClientRect();return j.width>=240&&j.bottom<=h.top&&j.top>64;}));
+  check('large jewel sits above Imagine it',await page.evaluate(()=>{const j=document.querySelector('#jewel-toggle').getBoundingClientRect(),h=document.querySelector('#hero-title').getBoundingClientRect();return j.width>=370&&j.bottom<=h.top;}));
+  check('animation is centered above the load button',await page.evaluate(()=>{const a=document.querySelector('#jewel-toggle').getBoundingClientRect(),b=document.querySelector('#load-button').getBoundingClientRect();return Math.abs(a.x+a.width/2-b.x-b.width/2)<1;}));
   check('logo imports no 3D engine or model runtime',!requests.some(u=>/three|logo-studio|local-models|\.wasm|\.gguf/.test(u)));
   check('logo creates no canvas or WebGL context',await page.locator('#jewel-toggle canvas').count()===0);
   const first=await page.locator('#jewel-toggle img').screenshot();await page.waitForTimeout(800);
@@ -37,7 +38,7 @@ try{
     const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const ctx=c.getContext('2d');ctx.drawImage(im,0,0);
     const pixels=ctx.getImageData(0,0,c.width,c.height).data;let clear=0,glass=0,opaque=0;
     for(let i=3;i<pixels.length;i+=4){if(pixels[i]===0)clear++;else if(pixels[i]<250)glass++;else opaque++;}
-    im.close();return c.width>=384&&clear>pixels.length/12&&glass/(glass+opaque)>.15&&opaque>1000;
+    im.close();return c.width>=384&&clear>pixels.length/12&&glass/(glass+opaque)>.025&&opaque>1000;
   }));
   await page.locator('#jewel-toggle').click();await settled(page,'dual');
   check('click changes to the dual and keeps the card visible',await page.locator('.card-design-preview').isVisible());

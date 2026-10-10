@@ -9,7 +9,7 @@ They open with Vesper, Eclipse Sovereign, followed by a planeswalker, a forest
 legend, an ability-copying land and a legendary artificer. The default visible
 artist credit is MTG CardForge and remains editable.
 
-**Edit your own card** is available immediately, without downloading models.
+**Edit this card** is available immediately, without downloading models.
 Click names, cost, type, rules, stats, artist credit, set symbol, border, frame or artwork to edit.
 Names and rules use native inputs directly on the card. Click away or tap **Done**
 to save; Enter saves the name, Ctrl/Command+Enter saves rules, and Escape cancels.
@@ -29,11 +29,11 @@ is started. Editing and treatment changes retain the last complete card while
 refreshing. Initial loading leaves the card blank. Editing hints use a subtle hover highlight and a visible keyboard focus
 outline.
 The set picker has 323 named sets with supported symbols, including Forge.
-Click the outer border for black/white stock, or the frame around the artwork
+Click the outer border for black, white or silver stock, or the frame around the artwork
 for modern/old frames. Both can follow the selected set automatically. Mana
 costs offer clickable colored, generic, hybrid, snow and Phyrexian symbols.
 The finish menu comes directly from the renderer and includes Cold foil.
-Land frame accents follow explicit mana production and basic land subtypes;
+Land frame and legendary crown accents follow explicit mana production and basic land subtypes;
 colored activation costs alone do not color the frame. This presentation inference
 does not change the saved card’s actual colors. Set, frame, border and finish choices
 are retained with each saved card. Before loading the
@@ -68,10 +68,13 @@ collapsed behind the download note. Music and sound cues are optional;
 the page remains fully usable with sound disabled.
 
 The small gold cube remains in the header. A larger, gently spinning jeweled
-cube sits above “Imagine it” on desktop, reusing Aurum's pearl materials,
+cube sits above “Imagine it” on desktop, centered on the load button. It extends
+upward without moving the headline or controls, reusing Aurum's pearl materials,
 spindle-cut gemstones and refraction shader. The surrounding image is transparent;
 gemstone facets are slightly translucent while gold and pearls stay opaque.
-Click the jewel to compare the dual tetrahedron; new visits default to the cube.
+Each small gemstone sits at the midpoint of its gold edge. The dual uses an ivory,
+obsidian, red, forest green and sapphire blue mana palette; its gemstones use
+the linear-light midpoint of the two endpoint colors. Click the jewel to compare the dual tetrahedron; new visits default to the cube.
 `?logo=dual` and `?logo=cube` select either directly. Reduced motion uses a still.
 Mobile keeps the carousel and does not download the large jewel animation.
 No extra WebGL context or 3D library is loaded by the page. The background's
@@ -90,6 +93,14 @@ CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-for
 CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-forge-rarity.mjs
 CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-forge-carousel.mjs
 # All three accept FORGE_BROWSER=webkit and FORGE_EVIDENCE=/path/to/output.
+```
+
+The [silver and renderer receipt](../forge-silver-verification-20261010.json) records
+silver-border persistence and rendering, corrected legendary land crowns,
+planeswalker stamp placement, and the final jewel sizing and alignment.
+
+```bash
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-forge-silver.mjs
 ```
 
 ## Models and runtime
@@ -116,7 +127,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`1797a4c9e46e0dfbb179a3e7273cadc260dba090`, rebased onto the editor’s
+`7a1177f0f6bb50507220bdda59f4e5df2231a2db`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -253,7 +264,8 @@ Line-mode mouse wheels scale each line to 24px.
   frame/color updates after committing, so the wheel cannot move under the hand.
 - Clicking the colored frame opens three direct choices: **Match set**,
   **Modern**, **Old frame**. One click applies the selection and closes it.
-  The outer border similarly offers Match set, Black and White.
+  The outer border similarly offers Match set, Black, White and Silver. Silver works with modern and old frames,
+  in Regular and foil finishes.
 - While typing rules, **+ Mana** inserts at the caret. Close the text input to
   manipulate its printed symbols individually. The carousel pauses while editing.
 
@@ -303,7 +315,8 @@ The 2026-10-10 pass compares the blue **Jace, Unraveler of Secrets** with
 [its SOI printing](https://scryfall.com/card/soi/69/jace-unraveler-of-secrets).
 It fixes an unstyled accessibility copy leaking into the standalone text box,
 expands the inset paper to fit its frame, distributes ability spacing, reduces
-loyalty cost text, and restores the starting shield's proportions. DOM and canvas
+loyalty cost text, and restores the starting shield's proportions. The foil set
+symbol follows the rules-panel center in both three- and four-ability layouts. DOM and canvas
 share the layout and badge offsets. The comparison uses current Oracle text,
 which includes the later Legendary supertype, so it is not a pixel-identical
 reproduction of the historical printing.

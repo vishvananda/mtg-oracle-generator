@@ -1,0 +1,529 @@
+{
+  "date": "2026-10-10",
+  "deployment": {
+    "release": "/srv/mtg-oracle-client/releases/20261010T054523Z",
+    "previous_release": "/srv/mtg-oracle-client/releases/20261010T052253Z",
+    "build": {
+      "version": "e41406608a7d",
+      "built_at": "2026-10-10T05:45:23.249Z"
+    }
+  },
+  "renderer_revision": "7a1177f0f6bb50507220bdda59f4e5df2231a2db",
+  "renderer": {
+    "schema": 1,
+    "capability": "card-design-preview-v1",
+    "files": {
+      "card-preview.js": {
+        "bytes": 226686,
+        "gzip_bytes": 69816,
+        "sha256": "76f5df3eb08da1d8aebb432cefc3c982567f38bdeaa46eb2e777f5aa541dce9e"
+      },
+      "card-preview.css": {
+        "bytes": 24869,
+        "gzip_bytes": 5620,
+        "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073"
+      }
+    },
+    "modules": [
+      "src/app/EmbeddedCardDesignPreview.vue?vue&type=script&setup=true&lang.ts",
+      "src/app/card-design-options.ts",
+      "src/card-preview-entry.ts",
+      "src/shared/art/art-install-store.ts",
+      "src/shared/art/browser-etched-art.ts",
+      "src/shared/art/browser-etched-pixels.ts",
+      "src/shared/art/browser-etched-worker.ts?worker&inline",
+      "src/shared/art/cached-card-asset.ts",
+      "src/shared/art/derived-etching-cache.ts",
+      "src/shared/art/scryfall-images.ts",
+      "src/shared/art/useBrowserEtchedArt.ts",
+      "src/shared/cards/CardDesignPreview.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/CardDesignPreview.vue?vue&type=style&index=0&lang.css",
+      "src/shared/cards/CardTilt.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/CardTilt.vue?vue&type=style&index=0&lang.css",
+      "src/shared/cards/EtchedSetMark.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/ExtraCardRules.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/FoilLayer.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/ManaSymbol.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/PremiumCard.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/RenderedCardFace.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/RetroCardFace.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/SpecialCardRules.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/SymbolText.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/card-design.ts",
+      "src/shared/cards/card-renderer.css",
+      "src/shared/cards/finish-profiles.ts",
+      "src/shared/cards/foil-preview-shader.ts",
+      "src/shared/cards/foil-preview.ts",
+      "src/shared/cards/foil-reflection-shader.ts",
+      "src/shared/cards/inspection-tilt.ts",
+      "src/shared/cards/local-foil-coating.ts",
+      "src/shared/cards/mana.css",
+      "src/shared/cards/premium-face-input.ts",
+      "src/shared/cards/premium-face-pass.ts",
+      "src/shared/cards/premium-face-textures.ts",
+      "src/shared/cards/premium.css",
+      "src/shared/cards/presentation/art-apertures.ts",
+      "src/shared/cards/presentation/assets.ts",
+      "src/shared/cards/presentation/canvas-ability-emblem.ts",
+      "src/shared/cards/presentation/canvas-assets.ts",
+      "src/shared/cards/presentation/canvas-etching.ts",
+      "src/shared/cards/presentation/canvas-face.ts",
+      "src/shared/cards/presentation/canvas-status.ts",
+      "src/shared/cards/presentation/canvas-text.ts",
+      "src/shared/cards/presentation/extra-rule-paint.ts",
+      "src/shared/cards/presentation/extra-rules.ts",
+      "src/shared/cards/presentation/face-layout.ts",
+      "src/shared/cards/presentation/illustration-layout.ts",
+      "src/shared/cards/presentation/power-toughness-layout.ts",
+      "src/shared/cards/presentation/profile.ts",
+      "src/shared/cards/presentation/retro-font.ts",
+      "src/shared/cards/presentation/retro-frame.ts",
+      "src/shared/cards/presentation/retro-paint.ts",
+      "src/shared/cards/presentation/set-symbol-ink.ts",
+      "src/shared/cards/presentation/set-symbols.ts",
+      "src/shared/cards/presentation/special-frames.ts",
+      "src/shared/cards/presentation/special-rule-paint.ts",
+      "src/shared/cards/presentation/split-layout.ts"
+    ]
+  },
+  "changes": [
+    "Silver stock for modern and old frames, all foil finishes, persisted and exported.",
+    "Colored legendary land crowns match their frames.",
+    "Foil set marks centered in planeswalker rules panels.",
+    "Half-size edge gemstones, mana-colored hedron pearls, linear-light midpoint gem tints.",
+    "Hero 50% larger centered above load button without moving headline/button.",
+    "Edit this card label."
+  ],
+  "checks": {
+    "chromium": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "border choices offer Match set, Black, White and Silver",
+        "silver applies immediately and closes the panel",
+        "modern Regular paints silver stock with dark footer ink",
+        "modern vizier_prismatic_v1 paints silver border pixels",
+        "modern vizier_etched_v1 paints silver border pixels",
+        "modern vizier_cold_v1 paints silver border pixels",
+        "modern vizier_opal_v1 paints silver border pixels",
+        "old frame recolors its border mask silver",
+        "retro vizier_prismatic_v1 paints silver border pixels",
+        "retro vizier_etched_v1 paints silver border pixels",
+        "retro vizier_cold_v1 paints silver border pixels",
+        "retro vizier_opal_v1 paints silver border pixels",
+        "silver survives reload with the old frame",
+        "white is still selectable",
+        "black is still selectable",
+        "four border options fit a narrow phone viewport",
+        "card export retains silver border",
+        "three-ability walker stamp is centered in the rules panel",
+        "four-ability walker stamp moves up with the taller rules panel",
+        "no JavaScript errors"
+      ],
+      "pixels": {
+        "modern-vizier_prismatic_v1": [
+          187,
+          201,
+          189,
+          255
+        ],
+        "modern-vizier_etched_v1": [
+          207,
+          204,
+          197,
+          255
+        ],
+        "modern-vizier_cold_v1": [
+          209,
+          227,
+          249,
+          255
+        ],
+        "modern-vizier_opal_v1": [
+          177,
+          193,
+          200,
+          255
+        ],
+        "retro-vizier_prismatic_v1": [
+          187,
+          201,
+          189,
+          255
+        ],
+        "retro-vizier_etched_v1": [
+          207,
+          204,
+          197,
+          255
+        ],
+        "retro-vizier_cold_v1": [
+          209,
+          227,
+          249,
+          255
+        ],
+        "retro-vizier_opal_v1": [
+          177,
+          193,
+          200,
+          255
+        ]
+      },
+      "errors": []
+    },
+    "webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "border choices offer Match set, Black, White and Silver",
+        "silver applies immediately and closes the panel",
+        "modern Regular paints silver stock with dark footer ink",
+        "modern vizier_prismatic_v1 paints silver border pixels",
+        "modern vizier_etched_v1 paints silver border pixels",
+        "modern vizier_cold_v1 paints silver border pixels",
+        "modern vizier_opal_v1 paints silver border pixels",
+        "old frame recolors its border mask silver",
+        "retro vizier_prismatic_v1 paints silver border pixels",
+        "retro vizier_etched_v1 paints silver border pixels",
+        "retro vizier_cold_v1 paints silver border pixels",
+        "retro vizier_opal_v1 paints silver border pixels",
+        "silver survives reload with the old frame",
+        "white is still selectable",
+        "black is still selectable",
+        "four border options fit a narrow phone viewport",
+        "card export retains silver border",
+        "three-ability walker stamp is centered in the rules panel",
+        "four-ability walker stamp moves up with the taller rules panel",
+        "no JavaScript errors"
+      ],
+      "pixels": {
+        "modern-vizier_prismatic_v1": [
+          187,
+          201,
+          189,
+          255
+        ],
+        "modern-vizier_etched_v1": [
+          207,
+          204,
+          197,
+          255
+        ],
+        "modern-vizier_cold_v1": [
+          209,
+          227,
+          249,
+          255
+        ],
+        "modern-vizier_opal_v1": [
+          178,
+          192,
+          200,
+          255
+        ],
+        "retro-vizier_prismatic_v1": [
+          187,
+          201,
+          189,
+          255
+        ],
+        "retro-vizier_etched_v1": [
+          207,
+          204,
+          197,
+          255
+        ],
+        "retro-vizier_cold_v1": [
+          209,
+          227,
+          249,
+          255
+        ],
+        "retro-vizier_opal_v1": [
+          178,
+          192,
+          200,
+          255
+        ]
+      },
+      "errors": []
+    },
+    "live": {
+      "engine": "chromium",
+      "base": "https://tetrarchs.com/forge/",
+      "checks": [
+        "border choices offer Match set, Black, White and Silver",
+        "silver applies immediately and closes the panel",
+        "modern Regular paints silver stock with dark footer ink",
+        "modern vizier_prismatic_v1 paints silver border pixels",
+        "modern vizier_etched_v1 paints silver border pixels",
+        "modern vizier_cold_v1 paints silver border pixels",
+        "modern vizier_opal_v1 paints silver border pixels",
+        "old frame recolors its border mask silver",
+        "retro vizier_prismatic_v1 paints silver border pixels",
+        "retro vizier_etched_v1 paints silver border pixels",
+        "retro vizier_cold_v1 paints silver border pixels",
+        "retro vizier_opal_v1 paints silver border pixels",
+        "silver survives reload with the old frame",
+        "white is still selectable",
+        "black is still selectable",
+        "four border options fit a narrow phone viewport",
+        "card export retains silver border",
+        "three-ability walker stamp is centered in the rules panel",
+        "four-ability walker stamp moves up with the taller rules panel",
+        "no JavaScript errors"
+      ],
+      "pixels": {
+        "modern-vizier_prismatic_v1": [
+          187,
+          201,
+          189,
+          255
+        ],
+        "modern-vizier_etched_v1": [
+          207,
+          204,
+          197,
+          255
+        ],
+        "modern-vizier_cold_v1": [
+          209,
+          227,
+          249,
+          255
+        ],
+        "modern-vizier_opal_v1": [
+          177,
+          193,
+          200,
+          255
+        ],
+        "retro-vizier_prismatic_v1": [
+          187,
+          201,
+          189,
+          255
+        ],
+        "retro-vizier_etched_v1": [
+          207,
+          204,
+          197,
+          255
+        ],
+        "retro-vizier_cold_v1": [
+          209,
+          227,
+          249,
+          255
+        ],
+        "retro-vizier_opal_v1": [
+          177,
+          193,
+          200,
+          255
+        ]
+      },
+      "errors": []
+    },
+    "logo": {
+      "url": "http://127.0.0.1:8793/forge/",
+      "browser": "chromium",
+      "checks": [
+        "cube is the first-visit default",
+        "unused dual animation is not downloaded",
+        "header retains the small gold cube",
+        "large jewel sits above Imagine it",
+        "animation is centered above the load button",
+        "logo imports no 3D engine or model runtime",
+        "logo creates no canvas or WebGL context",
+        "the native WebP visibly rotates",
+        "jewel has no CSS glow or shadow",
+        "large source preserves background alpha and translucent stones",
+        "click changes to the dual and keeps the card visible",
+        "new visits default to the requested cube",
+        "comparison URL still selects the dual",
+        "Space and Enter switch the jewel accessibly",
+        "reduced motion switches to a still image",
+        "motion preference changes resume the spin",
+        "desktop page still fits 1440x900",
+        "desktop page still fits 1366x768",
+        "desktop page still fits 1024x640",
+        "mobile downloads no large animation",
+        "mobile keeps the gold mark and card carousel",
+        "mobile header fits 390px without overlap",
+        "mobile header fits 320px without overlap",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "carousel": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "initial card stays blank while artwork loads",
+        "both neighboring artworks start before navigation",
+        "unrelated cards are not eagerly downloaded",
+        "preloading never adds visible or editable card copies",
+        "snapshot preserves outgoing foil pixels",
+        "outgoing card stays faded while waiting (300ms sample)",
+        "incomplete incoming card stays hidden (300ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "rapid navigation reveals only the latest requested card",
+        "late neighboring assets cannot restore a stale card",
+        "legendary land gets the blue/red frame",
+        "legendary land gets the matching blue/red crown",
+        "land retains its land panels",
+        "foil is ready before the land appears",
+        "regular land uses the same blue/red frame",
+        "editing the land preserves its actual colorless data",
+        "frame accents follow produced mana and land subtypes, not activation costs",
+        "reduced motion has no card transition animations",
+        "no model runtime is fetched",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    }
+  },
+  "frontend_checks": {
+    "unit_tests": 1219,
+    "unit_suites": 162,
+    "related_tests": [
+      28,
+      44
+    ],
+    "typecheck": "passed",
+    "architecture": "passed",
+    "build": "passed",
+    "full_check": "failed at two previously observed full-game browser scenarios",
+    "failures": [
+      "timed out waiting for battlefield land hover preview",
+      "special-the: an ability overlaps its neighboring row"
+    ]
+  },
+  "live_assets": [
+    {
+      "url": "https://tetrarchs.com/forge/build.json",
+      "sha256": "a689f2d4b4f04da4ae7dea904a2d51cc59efaf2cdb06cf63dc17ac8747649b44",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/index.html",
+      "sha256": "92e175870285c969159fe63ca149ebdd704eb54b1d8ea05a8ba655fd15656ca5",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/main.js",
+      "sha256": "d34b88e170a5434519caffe5d6c514646ec75331b27762198bf37fc2fab6b638",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/cards.js",
+      "sha256": "79ee16dd961526717447d4384427302b599d25a8fe4100a6487cf5b9eddeaf0a",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/style.css",
+      "sha256": "ea1760071fa2e4e6c49eecae88a90792e3c93a2154c3272b4beda4600d16681b",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/renderer.js",
+      "sha256": "7b6bb76e79e772c9f7a42d37c16f9e6680ce8b6bb031a8467fee5c93d153a109",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/renderer/card-preview.js",
+      "sha256": "76f5df3eb08da1d8aebb432cefc3c982567f38bdeaa46eb2e777f5aa541dce9e",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/renderer/card-preview.css",
+      "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/assets/jewel-cube.webp",
+      "sha256": "e09de612a0c879bb5ebfaee5202bf1e00da159acce7035fa51dc7f0044e73718",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/assets/jewel-dual.webp",
+      "sha256": "cb2df27b5825ecadebbdd88e87b6a3b7644f39c80fe85476789b4207986c8902",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/build.json",
+      "sha256": "a689f2d4b4f04da4ae7dea904a2d51cc59efaf2cdb06cf63dc17ac8747649b44",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/index.html",
+      "sha256": "92e175870285c969159fe63ca149ebdd704eb54b1d8ea05a8ba655fd15656ca5",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/main.js",
+      "sha256": "d34b88e170a5434519caffe5d6c514646ec75331b27762198bf37fc2fab6b638",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/cards.js",
+      "sha256": "79ee16dd961526717447d4384427302b599d25a8fe4100a6487cf5b9eddeaf0a",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/style.css",
+      "sha256": "ea1760071fa2e4e6c49eecae88a90792e3c93a2154c3272b4beda4600d16681b",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/renderer.js",
+      "sha256": "7b6bb76e79e772c9f7a42d37c16f9e6680ce8b6bb031a8467fee5c93d153a109",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/renderer/card-preview.js",
+      "sha256": "76f5df3eb08da1d8aebb432cefc3c982567f38bdeaa46eb2e777f5aa541dce9e",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/renderer/card-preview.css",
+      "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/assets/jewel-cube.webp",
+      "sha256": "e09de612a0c879bb5ebfaee5202bf1e00da159acce7035fa51dc7f0044e73718",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/assets/jewel-dual.webp",
+      "sha256": "cb2df27b5825ecadebbdd88e87b6a3b7644f39c80fe85476789b4207986c8902",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    }
+  ]
+}

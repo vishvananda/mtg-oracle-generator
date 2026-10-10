@@ -93,7 +93,7 @@
 @media(pointer:coarse){.direct-wheel .scroll-cell:not([aria-pressed=true]){min-height:32px;scale:1.2}.direct-actions{bottom:-39px}.direct-action{width:34px;height:34px}.direct-edit-layer .direct-add{min-width:24px;min-height:24px;line-height:24px}}
 @media(prefers-reduced-motion:reduce){.direct-wheel *{animation:none!important;transition:none!important}}
 .edit-panel.quick-options{width:max-content;max-width:calc(100vw - 32px);padding:14px}
-.quick-options #edit-fields{display:flex;gap:8px}
+.quick-options #edit-fields{display:flex;flex-wrap:wrap;gap:8px}
 .quick-options .edit-actions{display:none}
 .direct-option{border:1px solid #c4b48366;border-radius:7px;background:#20343b;color:#eee2c9;padding:15px 13px;font:13px system-ui;cursor:pointer}
 .direct-option[aria-pressed=true]{border-color:#edce83;background:#e2c58826}
@@ -131,7 +131,8 @@ body{min-height:100svh;display:flex;flex-direction:column}
 .mobile-mode .footer{padding-top:10px;font-size:10px;line-height:1.4}
 
 /* A larger, translucent jewel above the headline; the header keeps its gold mark. */
-.jewel-toggle{display:block;width:clamp(170px,28svh,280px);height:clamp(170px,28svh,280px);margin:0 auto 4px;padding:0;border:0;border-radius:12px;background:transparent}
+.jewel-stage{--jewel-size:clamp(170px,28svh,280px);position:relative;max-width:358px;height:calc(var(--jewel-size) + 4px);display:flex;justify-content:center}
+.jewel-toggle{display:block;position:absolute;bottom:4px;width:calc(var(--jewel-size) * 1.5);height:calc(var(--jewel-size) * 1.5);flex-shrink:0;margin:0;padding:0;border:0;border-radius:12px;background:transparent}
 .jewel-toggle img{display:block;width:100%;height:100%;pointer-events:none;filter:none}
 .jewel-toggle:hover img{filter:none}
 @media(max-width:760px){.wordmark{font-size:11px;letter-spacing:.16em}}

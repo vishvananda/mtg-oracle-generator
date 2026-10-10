@@ -31,7 +31,7 @@ function controls(){
   $('finish').disabled=busy;$('export-card').disabled=busy||previewPending;
   $('delete-card').hidden=$('delete-divider').hidden=Boolean(active().demo);
   $('delete-card').disabled=busy||loading;$('undo-delete').disabled=busy||loading;$('dismiss-delete').disabled=historyBusy;
-  $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent=active().demo?'Edit your own card':'Edit this card';
+  $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent='Edit this card';
   $('pause-carousel').setAttribute('aria-pressed',String(paused));$('pause-carousel').setAttribute('aria-label',paused?'Play carousel':'Pause carousel');$('pause-carousel').textContent=paused?'▷':'Ⅱ';
   document.body.classList.toggle('studio-ready',models.ready);
   preview?.setBusy(busy);
@@ -213,7 +213,7 @@ function openEditor(part,detail={}){
   $('edit-save').textContent='Save changes';
   $('edit-panel').classList.toggle('quick-options',['frame','border'].includes(part));
   if(part==='frame'||part==='border'){
-    const key=part==='frame'?'frame_style':'border_color',options=part==='frame'?[['auto','Match set'],['modern','Modern'],['retro','Old frame']]:[['auto','Match set'],['black','Black'],['white','White']];
+    const key=part==='frame'?'frame_style':'border_color',options=part==='frame'?[['auto','Match set'],['modern','Modern'],['retro','Old frame']]:[['auto','Match set'],['black','Black'],['white','White'],['silver','Silver']];
     for(const [value,label] of options){const button=document.createElement('button');button.type='button';button.className='direct-option';button.textContent=label;button.setAttribute('aria-pressed',String((c[key]||'auto')===value));button.onclick=()=>{adoptDemo();active()[key]=value;active().updated_at=new Date().toISOString();closeEditor(false);draw();void persist();sound.play('click');};$('edit-fields').append(button);}
   }
   if(part==='artist')field('artist','Artist credit',c.artist);

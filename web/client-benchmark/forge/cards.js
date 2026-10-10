@@ -42,5 +42,5 @@ export function faceFor(card) {
   return {name:card.name, manaSymbols:card.mana_cost?.match(/\{([^}]+)\}/g)?.map(s=>s.slice(1,-1))||[],
     typeLine:card.type_line, colors:frameColors(card), rarity:card.rarity,
     rulesText:(card.oracle_text||'').replaceAll('CARDNAME',card.name), power:card.power??null, toughness:card.toughness??null, loyalty:card.loyalty??null,
-    illustration:card.illustration||null, artist:card.artist??'MTG CardForge', setCode:card.set_code||'FORGE', frameStyle:['modern','retro'].includes(card.frame_style)?card.frame_style:undefined, borderColor:['black','white'].includes(card.border_color)?card.border_color:undefined};
+    illustration:card.illustration||null, artist:card.artist??'MTG CardForge', setCode:card.set_code||'FORGE', frameStyle:['modern','retro'].includes(card.frame_style)?card.frame_style:undefined, borderColor:['black','white','silver'].includes(card.border_color)?card.border_color:undefined};
 }

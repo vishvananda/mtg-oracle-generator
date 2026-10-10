@@ -41,6 +41,7 @@ try{
   check('late neighboring assets cannot restore a stale card',(await page.locator('.rendered-card-title').innerText()).includes('Crownroot')&&await page.locator('.preview-last-card').count()===0);
   await page.locator('#next').click();await ready(page);await page.waitForTimeout(350);
   check('legendary land gets the blue/red frame',await page.locator('.rendered-card-frame img').evaluate(e=>e.src.endsWith('/frames/UR.webp')));
+  check('legendary land gets the matching blue/red crown',await page.locator('.rendered-card-crown img').evaluate(e=>e.src.endsWith('/legendary_crowns/UR.webp')));
   check('land retains its land panels',await page.locator('.rendered-card-background img').evaluate(e=>e.src.endsWith('/bg/Land.webp')));
   check('foil is ready before the land appears',await page.locator('.premium-card').evaluate(e=>e.hasAttribute('data-foil-webgl-face')||document.documentElement.classList.contains('foil-static-fallback')));
   await page.screenshot({path:`${out}/land-etched.png`});

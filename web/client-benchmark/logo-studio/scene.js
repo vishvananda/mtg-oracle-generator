@@ -64,7 +64,7 @@ function pearl(parent,vertex){
 function midpoint(a,b){return new THREE.Color(a).lerp(new THREE.Color(b),.5);}
 function gemstone(parent,a,b,tint){
   const d=b.clone().sub(a),length=d.length(),center=a.clone().add(b).multiplyScalar(.5),direction=d.clone().normalize();
-  const scale=Math.min(.90,(length-.72)/1.36),halfGem=.68*scale;
+  const scale=.5*Math.min(.90,(length-.72)/1.36),halfGem=.68*scale;
   rod(parent,a.clone().addScaledVector(direction,.19),center.clone().addScaledVector(direction,-halfGem+.025));
   rod(parent,center.clone().addScaledVector(direction,halfGem-.025),b.clone().addScaledVector(direction,-.19));
   const absorption=V(...tint.toArray().map(c=>-Math.log(Math.max(.008,c))*.85));
@@ -80,8 +80,8 @@ function gemstone(parent,a,b,tint){
 function design(kind){
   const group=new THREE.Group(),vertices=[],edges=[];
   if(kind==='dual'){
-    vertices.push({color:'#f6efe5',position:V(0,Math.sqrt(2)*1.12,0)},{color:'#10131d',position:V(0,-Math.sqrt(2)*1.12,0)});
-    ['#e62d44','#4db05b','#2767e8'].forEach((color,i)=>{const angle=i*2*Math.PI/3+.12;vertices.push({color,position:V(Math.cos(angle)*1.12,0,Math.sin(angle)*1.12)});});
+    vertices.push({color:'#f3ead7',position:V(0,Math.sqrt(2)*1.12,0)},{color:'#10121b',position:V(0,-Math.sqrt(2)*1.12,0)});
+    ['#bf392f','#145b37','#174789'].forEach((color,i)=>{const angle=i*2*Math.PI/3+.12;vertices.push({color,position:V(Math.cos(angle)*1.12,0,Math.sin(angle)*1.12)});});
     for(let i=2;i<5;i++){edges.push([0,i],[1,i],[i,2+(i-1)%3]);}
   }else{
     for(let i=0;i<8;i++)vertices.push({color:[0,3,5,6].includes(i)?'#f6efe5':'#e6ca93',position:V(i&1?.97:-.97,i&2?.97:-.97,i&4?.97:-.97)});
