@@ -1,0 +1,174 @@
+{
+  "date": "2026-10-10",
+  "deployment": {
+    "previous": "/srv/mtg-oracle-client/releases/20261010T070244Z",
+    "release": "/srv/mtg-oracle-client/releases/20261010T070954Z",
+    "build": {
+      "version": "8011afa35eb9",
+      "built_at": "2026-10-10T07:08:47.195Z"
+    }
+  },
+  "urls": [
+    "https://tetrarcum.com/",
+    "https://tetrarchs.com/forge/"
+  ],
+  "native_before": [
+    {
+      "name": "Vesper, Eclipse Sovereign",
+      "type_line": "Legendary Creature — Dragon",
+      "oracle_text": "Flying, menace\nWhenever Vesper deals combat damage to a player, exile the top two cards of that player's library. Until the end of your next turn, you may play those cards, and you may spend mana as though it were mana of any type to cast those spells.",
+      "status": "rejected",
+      "diagnostic": {
+        "column": 98,
+        "context": "ce\nWhenever Vesper deals combat damage to a player, exile the top two cards of that player's library⟪HERE⟫. Until the end of your next turn, you may play those cards, and you may spend mana as though it were mana of any type to cast those spells.\n5/5",
+        "farthest_token_index": 61,
+        "line": 5,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "."
+      }
+    },
+    {
+      "name": "Neris, Keeper of Lost Tides",
+      "type_line": "Legendary Planeswalker — Neris",
+      "oracle_text": "+1: Scry 2.\n−2: Return target nonland permanent to its owner's hand.\n−7: You get an emblem with \"Whenever you draw a card, create a token that's a copy of target creature you control.\"",
+      "status": "rejected",
+      "diagnostic": {
+        "column": 26,
+        "context": "Neris, Keeper of Lost Tides\nLegendary Planeswalker - ⟪HERE⟫Neris\n{2}{U}{U}\n[+1]: Scry 2.\n[−2]: Return target nonland permanent to its owner's hand.\n[−7]: You get an emblem with \"Whenever you draw a card, create a token that's a copy of tar",
+        "farthest_token_index": 17,
+        "line": 2,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "Neris"
+      }
+    },
+    {
+      "name": "Crownroot, Spring Eternal",
+      "type_line": "Legendary Creature — Elk Spirit",
+      "oracle_text": "Vigilance\nWhenever another nontoken creature you control dies, create a 1/1 green Saproling creature token.\nTap five untapped creatures you control: Return target permanent card from your graveyard to your hand.",
+      "status": "parsed",
+      "diagnostic": null
+    },
+    {
+      "name": "Observatory Beyond the Veil",
+      "type_line": "Legendary Land",
+      "oracle_text": "This land enters tapped unless you control a legendary creature.\n{T}: Add {U} or {R}.\n{2}{U}{R}, {T}: Copy target activated or triggered ability you control. You may choose new targets for the copy.",
+      "status": "parsed",
+      "diagnostic": null
+    },
+    {
+      "name": "Rhaz, Emberbound Artisan",
+      "type_line": "Legendary Creature — Giant Artificer",
+      "oracle_text": "Whenever you discard a card, create a Treasure token.\n{R}, Sacrifice an artifact: Exile the top card of your library. You may play that card this turn.",
+      "status": "parsed",
+      "diagnostic": null
+    }
+  ],
+  "neris_abilities_without_subtype": {
+    "applied_rewrites": [],
+    "card_specific_rewrites": true,
+    "error": "No match",
+    "intent_fidelity": "not_checked",
+    "mtgish": "",
+    "normalized_input": "Neris, Keeper of Lost Tides\nLegendary Planeswalker\n{2}{U}{U}\n[+1]: Scry 2.\n[−2]: Return target nonland permanent to its owner's hand.\n[−7]: You get an emblem with \"Whenever you draw a card, create a token that's a copy of target creature you control\".\n4",
+    "oracle_correctness": "not_proven",
+    "parse_complete": false,
+    "parse_diagnostic": {
+      "column": 57,
+      "context": "rget nonland permanent to its owner's hand.\n[−7]: You get an emblem with \"Whenever you draw a card, ⟪HERE⟫create a token that's a copy of target creature you control\".\n4",
+      "farthest_token_index": 83,
+      "line": 6,
+      "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+      "stage": "english",
+      "token": "create"
+    },
+    "representation_warning": "",
+    "scope": "whole_card",
+    "status": "rejected",
+    "workflow": "upstream-standard-v2"
+  },
+  "design_changes": {
+    "Vesper": "One card instead of two; play permission lasts while exiled instead of ending on your next turn; may spend mana as any color instead of any type. Keeps flying, menace, combat-damage trigger, name, cost and 5/5.",
+    "Neris": "Remove unsupported custom Neris planeswalker subtype; change emblem from card-draw trigger to beginning of your end step. Keeps name, cost, loyalty 4, +1 Scry 2 and -2 bounce."
+  },
+  "live_browser": {
+    "base": "https://tetrarcum.com/",
+    "checks": [
+      "Vesper, Eclipse Sovereign: complete card parses in browser",
+      "Neris, Keeper of Lost Tides: complete card parses in browser",
+      "Crownroot, Spring Eternal: complete card parses in browser",
+      "Observatory Beyond the Veil: complete card parses in browser",
+      "Rhaz, Emberbound Artisan: complete card parses in browser",
+      "no JavaScript errors",
+      "no generation models needed"
+    ],
+    "cards": [
+      {
+        "name": "Vesper, Eclipse Sovereign",
+        "type_line": "Legendary Creature — Dragon",
+        "oracle_text": "Flying, menace\nWhenever Vesper deals combat damage to a player, exile the top card of that player's library. You may play that card for as long as it remains exiled, and you may spend mana as though it were mana of any color to cast it.",
+        "status": "passed",
+        "label": "☑ Oracle text parses"
+      },
+      {
+        "name": "Neris, Keeper of Lost Tides",
+        "type_line": "Legendary Planeswalker",
+        "oracle_text": "+1: Scry 2.\n−2: Return target nonland permanent to its owner's hand.\n−7: You get an emblem with \"At the beginning of your end step, create a token that's a copy of target creature you control.\"",
+        "status": "passed",
+        "label": "☑ Oracle text parses"
+      },
+      {
+        "name": "Crownroot, Spring Eternal",
+        "type_line": "Legendary Creature — Elk Spirit",
+        "oracle_text": "Vigilance\nWhenever another nontoken creature you control dies, create a 1/1 green Saproling creature token.\nTap five untapped creatures you control: Return target permanent card from your graveyard to your hand.",
+        "status": "passed",
+        "label": "☑ Oracle text parses"
+      },
+      {
+        "name": "Observatory Beyond the Veil",
+        "type_line": "Legendary Land",
+        "oracle_text": "This land enters tapped unless you control a legendary creature.\n{T}: Add {U} or {R}.\n{2}{U}{R}, {T}: Copy target activated or triggered ability you control. You may choose new targets for the copy.",
+        "status": "passed",
+        "label": "☑ Oracle text parses"
+      },
+      {
+        "name": "Rhaz, Emberbound Artisan",
+        "type_line": "Legendary Creature — Giant Artificer",
+        "oracle_text": "Whenever you discard a card, create a Treasure token.\n{R}, Sacrifice an artifact: Exile the top card of your library. You may play that card this turn.",
+        "status": "passed",
+        "label": "☑ Oracle text parses"
+      }
+    ],
+    "errors": []
+  },
+  "repair_regression": {
+    "base": "http://127.0.0.1:8793/forge/",
+    "checks": [
+      "validator runs before model loading",
+      "repair is hidden without a loaded model",
+      "parser error is visible without opening details",
+      "failure exposes parser context and explains limitations",
+      "successful repair creates a second card",
+      "original stays intact",
+      "repair can only change Oracle wording",
+      "repair retains artwork and attribution",
+      "model receives the old card and parser feedback",
+      "change prompt creates a revised copy",
+      "revisions do not trigger artwork generation",
+      "unsuccessful repair keeps the existing card",
+      "custom short-name failure has an actionable hint",
+      "comma-separated short name parses with the same ability text",
+      "no JavaScript errors"
+    ],
+    "errors": [],
+    "inference": "UI fixture; separate native Q4_0 experiment uses the real model"
+  },
+  "parser_modified": false,
+  "notes": [
+    "These are deliberate demo design changes for supported syntax, not a claim that the original text was illegal.",
+    "All five complete cards pass the same unmodified browser mtgish worker used in the UI.",
+    "Existing saved copies are not rewritten. Browse examples loads the corrected demos.",
+    "Verified matching cards.js content, TLS and isolation headers on both published origins."
+  ]
+}

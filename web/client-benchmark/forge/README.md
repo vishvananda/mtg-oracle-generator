@@ -431,3 +431,26 @@ CHROME_BIN=/path/to/chrome node check-forge-motion-art.mjs
 CHROME_BIN=/path/to/chrome node check-forge-revision.mjs
 CHROME_BIN=/path/to/chrome node check-forge-share.mjs
 ```
+
+## Showcase parser coverage
+
+The [showcase validation receipt](../forge-demo-oracle-verification-20261010.json)
+records the original diagnostics, design changes and live browser results.
+All five shipped examples are checked through the same unmodified mtgish Wasm
+worker as user-created cards (`check-forge-demos.mjs`). Vesper and Neris originally
+used unsupported compositions; these were design changes, not typo corrections:
+
+- Vesper now exiles one card face up after combat damage, with permission to play
+  it for as long as it remains exiled and spend mana as any color. The original
+  two-card, next-turn permission was outside the parser's supported combinations.
+- Neris keeps its name, mana cost, starting loyalty and +1/−2 abilities. The type
+  is **Legendary Planeswalker** without the unrecognized custom subtype. Its −7
+  emblem now copies a creature at the beginning of your end step, rather than
+  after each card draw; the latter emblem composition is unsupported.
+
+These changes affect the example carousel. User-saved copies remain untouched.
+Parser acceptance demonstrates supported syntax, not comprehensive rules legality.
+
+```bash
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-demos.mjs
+```
