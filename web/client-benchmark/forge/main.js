@@ -12,8 +12,13 @@ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let generated=[],cards=demos.map(c=>({...c})),index=0,preview,busy=false,loading=false,editor=null,paused=reduced.matches,lastChange=Date.now(),timer,hovering=false;
 let pendingArt=null;
 const active=()=>cards[index];
+let previewError=false,pendingEditor=null;
+$('card-preview').addEventListener('preview-error',()=>{previewError=true;message('The card could not finish loading. Reload the page to retry.',true);});
+$('card-preview').addEventListener('preview-pending',()=>controls());
+$('card-preview').addEventListener('preview-ready',()=>{controls();if(previewError){previewError=false;message('');}if(pendingEditor){const next=pendingEditor;pendingEditor=null;if(next.id===active().id)openEditor(next.part);}});
 function message(text,error=false){for(const id of ['message','mobile-message']){$(id).textContent=text;$(id).classList.toggle('error',error);}}
 function controls(){
+  const previewPending=$('card-preview').getAttribute('aria-busy')==='true'&&!$('card-preview').dataset.previewAvailable;
   $('load-panel').hidden=models.ready;
   $('create-form').hidden=!models.ready;
   $('load-button').disabled=busy||loading;
@@ -22,8 +27,8 @@ function controls(){
   $('description').disabled=busy||loading;
   $('stop-button').hidden=!busy||loading;
   $('previous').disabled=busy||cards.length<2;$('next').disabled=busy||cards.length<2;
-  $('finish').disabled=busy;$('card-details').disabled=busy;$('export-card').disabled=busy;
-  $('edit-own-card').disabled=busy||loading;$('edit-own-card').querySelector('span').textContent=active().demo?'Edit your own card':'Edit this card';
+  $('finish').disabled=busy;$('card-details').disabled=busy||previewPending;$('export-card').disabled=busy||previewPending;
+  $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent=active().demo?'Edit your own card':'Edit this card';
   $('pause-carousel').setAttribute('aria-pressed',String(paused));$('pause-carousel').setAttribute('aria-label',paused?'Play carousel':'Pause carousel');$('pause-carousel').textContent=paused?'▷':'Ⅱ';
   document.body.classList.toggle('studio-ready',models.ready);
   preview?.setBusy(busy);
@@ -136,6 +141,7 @@ async function importArtwork(data){
 }
 function openEditor(part){
   if(busy||loading)return;
+  if($('card-preview').getAttribute('aria-busy')==='true'){pendingEditor={part,id:active().id};return;}
   if(editor?.inline){if(editor.part===part)return;editor.inline.commit();}
   else if(editor)closeEditor(false);
   if(part==='name'||part==='rules'){

@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "test:chunks": "node --test bonsai-chunks.test.mjs",
+    "check:model-assets": "python3 check-model-assets.py dist"
   },
   "dependencies": {
     "@wllama/wllama": "3.8.1",

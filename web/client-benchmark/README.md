@@ -56,6 +56,8 @@ use Download PNG to save them. Prompts and images are not uploaded.
 The model is `prism-ml/bonsai-image-ternary-4B-mlx-2bit` at revision
 `2c24c81b934a658ba5590cf39088ba929985b4a8`, approximately 3.9 GB including its text
 encoder and decoder. The original weights are served locally without conversion.
+The two large safetensors files are served through 256 MiB transport chunks;
+see [R2 hosting](R2.md) for the strict 512 MB audit and migration procedure.
 All downloaded weights and configurations are checked against the upstream
 manifest. Its README entry has a stale hash and is intentionally omitted;
 weight verification is not relaxed. The model's Apache-2.0 LICENSE and NOTICE
@@ -73,8 +75,8 @@ requires rechecking its boundaries and pipeline interface.
 
 The image runtime's first fetch reaches Hugging Face; image weights and our UI
 come from tetrarchs.com. CORS and the existing isolation headers permit this.
-CacheStorage retains runtime/configuration responses and range-read weight
-chunks. WebGPU is required; there is no CPU or server inference fallback for
+CacheStorage retains runtime/configuration responses; IndexedDB retains
+the runtime’s tensor cache. Transport chunking preserves those tensor keys. WebGPU is required; there is no CPU or server inference fallback for
 Bonsai. The worker handles GPU loss and load errors without affecting text
 generation.
 

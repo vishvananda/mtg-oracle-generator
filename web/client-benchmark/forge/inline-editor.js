@@ -1,5 +1,7 @@
+import {holdCardSize,matchCardType} from './editing-geometry.js';
 /** Native inputs on the printed card: keyboard/IME support, no contenteditable HTML. */
 export function editOnCard(host,part,value,{save,cancel}) {
+  const releaseSize=holdCardSize(host.closest('.card-stage'));
   const name=part==='name',wrap=document.createElement('div');
   wrap.className=`inline-card-editor inline-card-${part}`;
   const input=document.createElement(name?'input':'textarea');
@@ -12,14 +14,15 @@ export function editOnCard(host,part,value,{save,cancel}) {
   const hint=document.createElement('span');hint.id='inline-edit-hint';hint.textContent=name?'Enter to save · Esc to cancel':'Ctrl / ⌘ Enter to save · Esc to cancel';
   const done=document.createElement('button');done.type='button';done.textContent='Done';done.setAttribute('aria-label','Save card text');
   const undo=document.createElement('button');undo.type='button';undo.textContent='Cancel';
-  tools.append(hint,undo,done);wrap.append(input,tools);
+  const field=document.createElement('div');field.className='inline-card-field';field.append(input);
+  tools.append(hint,undo,done);wrap.append(field,tools);
   host.classList.add('inline-editing',`inline-editing-${part}`);
   const tilt=host.querySelector('.card-tilt');tilt.append(wrap);
   let closed=false;
   function finish(commit,restore=false){
     if(closed)return;closed=true;const next=input.value;
-    observer.disconnect();document.removeEventListener('pointerdown',outside,true);
-    wrap.remove();host.classList.remove('inline-editing',`inline-editing-${part}`);
+    observer.disconnect();document.fonts.removeEventListener('loadingdone',position);document.removeEventListener('pointerdown',outside,true);
+    wrap.remove();host.classList.remove('inline-editing',`inline-editing-${part}`);releaseSize();
     if(commit)save(next,restore);else cancel(restore);
   }
   function outside(event){if(!wrap.contains(event.target))finish(true);}
@@ -37,7 +40,7 @@ export function editOnCard(host,part,value,{save,cancel}) {
       font=getComputedStyle(label||source);
     }else font=getComputedStyle(source.querySelector('.rendered-special-text,.rendered-card-rule-line')||source);
     Object.assign(wrap.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
-    Object.assign(input.style,{fontFamily:font.fontFamily,fontWeight:font.fontWeight,fontSize:`${Math.max(16,parseFloat(font.fontSize))}px`});
+    matchCardType(input,font);
   }
   // The preview's drag-to-tilt must never capture text selection or scroll.
   for(const event of ['pointerdown','pointermove','pointerup','pointercancel','click'])wrap.addEventListener(event,e=>e.stopPropagation());
@@ -48,7 +51,7 @@ export function editOnCard(host,part,value,{save,cancel}) {
   });
   wrap.addEventListener('focusout',e=>{if(!wrap.contains(e.relatedTarget))finish(true);});
   done.onclick=()=>finish(true,true);undo.onclick=()=>finish(false,true);
-  const observer=new ResizeObserver(position);observer.observe(tilt);position();
+  const observer=new ResizeObserver(position);observer.observe(tilt);document.fonts.addEventListener('loadingdone',position);position();
   document.addEventListener('pointerdown',outside,true);
   // Focus synchronously so the iPhone opens its keyboard from the tap gesture.
   input.focus({preventScroll:true});if(name)input.select();

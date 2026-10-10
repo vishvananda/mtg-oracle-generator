@@ -28,11 +28,13 @@ directory = args.output / relative
 if directory.exists():
     parser.error('Use a fresh model output directory')
 directory.mkdir(parents=True)
-subprocess.run([str(args.splitter.resolve()), '--split-max-size', '512M',
+subprocess.run([str(args.splitter.resolve()), '--split-max-size', '480M',
                 str(args.gguf.resolve()), str((directory / 'oracle-q4').resolve())], check=True)
 shards = sorted(directory.glob('*.gguf'))
 if not shards:
     raise ValueError('Splitter produced no model files')
+if any(p.stat().st_size >= 512_000_000 for p in shards):
+    raise ValueError('A model shard exceeds the strict Cloudflare cache size budget')
 shutil.copyfile(args.system_prompt, args.output / 'system-prompt.txt')
 manifest = {'label': args.label, 'runtime': '3.8.1', 'source_sha256': source_hash,
             'source_bytes': args.gguf.stat().st_size,

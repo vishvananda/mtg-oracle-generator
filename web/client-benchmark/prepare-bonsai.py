@@ -5,6 +5,8 @@ import hashlib
 import json
 from pathlib import Path
 import urllib.request
+import subprocess
+import sys
 
 MODEL = 'prism-ml/bonsai-image-ternary-4B-mlx-2bit'
 REVISION = '2c24c81b934a658ba5590cf39088ba929985b4a8'
@@ -54,3 +56,4 @@ with ThreadPoolExecutor(max_workers=3) as pool:
         print(message, flush=True)
 (args.output / 'manifest.json').write_bytes(manifest_bytes)
 print(f'Complete: {MODEL}@{REVISION}, {sum(entry["size"] for entry in files):,} verified bytes (README omitted)', flush=True)
+subprocess.run([sys.executable, str(Path(__file__).with_name('chunk-model-assets.py')), str(args.output)], check=True)

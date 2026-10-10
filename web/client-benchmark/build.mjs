@@ -1,6 +1,6 @@
 import { cp, mkdir, copyFile } from 'node:fs/promises';
 await mkdir('dist/vendor', { recursive: true });
-for (const file of ['index.html', 'style.css', 'app.js', 'device-support.js', 'bonsai.js', 'bonsai-config.js', 'bonsai-loader.js', 'bonsai-worker.js']) await copyFile(file, `dist/${file}`);
+for (const file of ['index.html', 'style.css', 'app.js', 'device-support.js', 'bonsai.js', 'bonsai-config.js', 'bonsai-loader.js', 'bonsai-worker.js', 'bonsai-chunks.js']) await copyFile(file, `dist/${file}`);
 await cp('forge', 'dist/forge', { recursive: true });
 await cp('node_modules/@wllama/wllama/esm', 'dist/vendor/wllama', { recursive: true });
 await cp('node_modules/@wllama/wllama-compat/wasm', 'dist/vendor/compat', { recursive: true });

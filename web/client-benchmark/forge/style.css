@@ -25,7 +25,7 @@
 #card-preview.inline-editing .card-tilt { transform:none!important; }
 #card-preview.inline-editing .card-design-preview { touch-action:auto;user-select:text; }
 .inline-card-editor { position:absolute;z-index:20;text-align:left;color:#17140f; }
-.inline-card-input { display:block;width:100%;height:100%;box-sizing:border-box;min-width:0;margin:0;border:0;border-radius:3px;padding:0 2px;background:#e8edf0;color:#17140f;outline:2px solid #d9b76d;outline-offset:2px;caret-color:#152b46;box-shadow:0 0 0 5px #101e2b55;resize:none;user-select:text;touch-action:auto;line-height:1.18; }
+.inline-card-input { position:absolute;left:0;top:0;transform-origin:top left;display:block;width:100%;height:100%;box-sizing:border-box;min-width:0;margin:0;border:0;border-radius:3px;padding:0;background:#e8edf0;color:#17140f;outline:0;caret-color:#152b46;box-shadow:none;resize:none;user-select:text;touch-action:auto;line-height:1.18; }
 .inline-card-rules .inline-card-input { padding:6px 8px 31px;background:#e6e5db; }
 .inline-card-tools { position:absolute;right:0;top:calc(100% + 7px);display:flex;align-items:center;gap:6px;padding:3px 5px;border-radius:5px;background:#101c29ed;color:#ece7da;font:10px/1.2 system-ui;white-space:nowrap;box-shadow:0 3px 12px #0005; }
 .inline-card-rules .inline-card-tools { top:auto;bottom:3px;right:3px; }
@@ -33,3 +33,17 @@
 .inline-card-tools button:first-of-type { background:transparent;color:#eee5d3; }
 .inline-card-tools button:focus-visible { outline:2px solid white;outline-offset:2px; }
 @media(max-width:760px){.inline-card-tools span{display:none}.inline-card-tools button{min-height:32px;padding:6px 12px}}
+
+/* Preserve card scale, native text metrics and the user's ability to pinch-zoom. */
+.card-stage.card-size-held { width:var(--editing-card-width)!important; }
+#card-preview { -webkit-text-size-adjust:100%;text-size-adjust:100%; }
+.inline-card-field { position:absolute;inset:0;overflow:hidden;border-radius:3px;box-shadow:0 0 0 1px #f4edce99,0 0 0 4px #101e2b44; }
+.inline-card-input { -webkit-appearance:none;appearance:none;-webkit-text-size-adjust:100%;text-size-adjust:100%; }
+/* Mouse/touch editing hints are quiet; keyboard navigation remains visible. */
+#card-preview :is(.card-design-region,.art-edit-target,.detail-edit-target):is(:hover,[aria-pressed="true"]) { outline:none;background:#fff1;box-shadow:inset 0 0 0 1px #ffffff24; }
+#card-preview :is(.card-design-region,.art-edit-target,.detail-edit-target):focus-visible { outline:2px solid #e1e8e9aa;outline-offset:2px; }
+
+#card-preview { position:relative; }
+.preview-rendering { opacity:0;pointer-events:none; }
+#card-preview > .preview-last-card { position:absolute;inset:0;pointer-events:none;filter:drop-shadow(18px 24px 22px #0009); }
+#card-preview[data-preview-available] > .preview-rendering { pointer-events:auto; }

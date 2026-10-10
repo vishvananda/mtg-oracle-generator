@@ -1,7 +1,8 @@
 # MTG CardForge
 
 Live at **https://tetrarcum.com/**; also served at
-https://tetrarchs.com/forge/. Desktop users can load the card and art models,
+https://tetrarchs.com/forge/. `cardforge.fyi` is reserved for a later Pages + R2 launch. Iteration continues
+on the current host. Desktop users can load the card and art models,
 describe a card, and generate both locally. The five rotating showcase cards
 are handcrafted examples with generated artwork, not model evaluation results.
 They open with Vesper, Eclipse Sovereign, followed by a planeswalker, a forest
@@ -12,8 +13,15 @@ artist credit is MTG CardForge and remains editable.
 Click names, cost, type, rules, stats, artist credit, set symbol, border, frame or artwork to edit.
 Names and rules use native inputs directly on the card. Click away or tap **Done**
 to save; Enter saves the name, Ctrl/Command+Enter saves rules, and Escape cancels.
-The card stays still during selection and typing. Rules preserve newlines;
+The card stays still during selection and typing, including while a mobile
+keyboard changes the viewport height. Input font, visual size and spacing match
+the printed text; the native control stays at least 16px to avoid iOS focus zoom.
+Rules preserve newlines;
 self-references display the card's name. No model download is needed.
+The previous complete card, including foil pixels, remains visible until the next
+card’s images, fonts and treatment are ready. Initial loading leaves the card
+blank. Editing hints use a subtle hover highlight and a visible keyboard focus
+outline.
 The set picker has 323 named sets with supported symbols, including Forge.
 Click the outer border for black/white stock, or the frame around the artwork
 for modern/old frames. Both can follow the selected set automatically. Mana
@@ -131,6 +139,22 @@ type checking and production builds within the existing budgets. The combined
 `npm run check` hit a five-second Tetranum test timeout under parallel build/test
 load; that same test passed in the focused and reduced-concurrency runs. Its
 full-game browser gates were therefore skipped, not recorded as passing.
+
+The [mobile and transport receipt](../forge-polish-verification-20261010.json)
+records 50 live UI checks, 19 focused mobile/loading checks, eight transport
+checks and SHA-256 verification of all published model assets. Crownroot's
+Regular frame was compared with Etched at phone and keyboard-sized viewports
+in Chromium and WebKit. Its reported iPhone offset did not reproduce; the
+receipt does not claim that issue fixed. Physical iOS keyboard behavior and
+fresh GPU inference remain device checks.
+
+```bash
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ \
+  node check-forge-polish.mjs
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ \
+  node check-forge-regular.mjs
+# FORGE_BROWSER=webkit uses an installed Playwright WebKit for the latter.
+```
 
 ## Planned symbol and number editing
 

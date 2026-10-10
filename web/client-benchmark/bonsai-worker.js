@@ -1,5 +1,6 @@
 import { BONSAI } from './bonsai-config.js';
 import { loadBonsaiRuntime } from './bonsai-loader.js';
+import { loadChunkedFetch } from './bonsai-chunks.js';
 
 let pipeline, busy = false, unloading = false;
 const send = (type, data = {}) => postMessage({ type, ...data });
@@ -12,7 +13,10 @@ self.onmessage = async ({ data }) => {
       send('stage', { message: 'Preparing Bonsai WebGPU runtime…' });
       const { Flux2KleinPipeline } = await loadBonsaiRuntime();
       const start = performance.now();
-      pipeline = await Flux2KleinPipeline.from_pretrained(new URL(BONSAI.model_path, import.meta.url).href, {
+      const modelRoot = new URL(BONSAI.model_path, import.meta.url).href;
+      const chunkedFetch = await loadChunkedFetch(modelRoot);
+      pipeline = await Flux2KleinPipeline.from_pretrained(modelRoot, {
+        fetch: chunkedFetch,
         cacheName: 'tetrarchs-bonsai-ternary-2c24c81',
         onProgress: (progress) => send('progress', { progress }),
       });
