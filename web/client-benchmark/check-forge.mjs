@@ -20,6 +20,7 @@ try{
   check('page is named MTG CardForge with only the legal policy link',await page.title()==='MTG CardForge'&&await page.locator('a').count()===2&&await page.locator('footer a').getAttribute('href')==='https://company.wizards.com/en/legal/fancontentpolicy');
   check('fan content notice is visible',await page.locator('footer').isVisible()&&(await page.locator('footer').textContent()).includes('Not approved/endorsed by Wizards.'));
   check('desktop can edit before loading models',await page.locator('#edit-own-card').isVisible()&&await page.locator('#load-button').isVisible());
+  check('Card details is removed and examples cannot be deleted',await page.locator('#card-details').count()===0&&!(await page.locator('#delete-card').isVisible()));
   check('initial renderer imports no model runtime',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\.wasm|\.gguf|bonsai-worker/.test(e.name))));
   check('music is not downloaded before interaction',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>e.name.includes('opening.m4a'))));
   await page.screenshot({path:`${out}/desktop.png`});
@@ -50,9 +51,8 @@ try{
   await page.locator('[data-card-design-part="rules"]').click();await page.locator('#edit-oracle_text').waitFor();
   check('switching fields saves and opens the next inline edit',await page.locator('#card-caption').innerText()==='A Temporary Name'&&await page.locator('#edit-oracle_text').isVisible());
   await page.keyboard.press('Escape');await page.locator('[data-card-design-part="name"]').click();await page.locator('#edit-name').fill('My First Creation');
-  await page.locator('#card-details').click();await page.locator('#edit-panel').waitFor();
-  check('clicking outside saves and opens the requested control',await page.locator('#card-caption').innerText()==='My First Creation'&&await page.locator('#edit-panel').isVisible());
-  await page.keyboard.press('Escape');
+  const outsideDownload=page.waitForEvent('download');await page.locator('#export-card').click();await outsideDownload;
+  check('clicking Save card commits inline text and exports',await page.locator('#card-caption').innerText()==='My First Creation'&&!(await page.locator('#edit-name').count()));
 
   await page.locator('.artist-edit-target').click();await page.locator('#edit-artist').fill('Forge Tester');await page.locator('#edit-save').click();await settled(page);
   check('artist credit is directly editable',await page.locator('.rendered-card-footer-artist').innerText()==='Forge Tester');
@@ -87,6 +87,22 @@ try{
   check('mute preference survives reload',await page.locator('#sound-toggle').innerText()==='Sound off');
   await page.locator('.art-edit-target').click();await page.locator('#edit-art_file').setInputFiles({name:'bad.png',mimeType:'image/png',buffer:Buffer.from('not an image')});await page.locator('#edit-save').click();await settled(page);await page.waitForFunction(()=>document.querySelector('#edit-error').textContent.includes('not a supported image'));check('invalid artwork keeps the editor open',await page.locator('#edit-panel').isVisible());await page.keyboard.press('Escape');
   const download=page.waitForEvent('download');await page.locator('#export-card').click();const file=await download;check('manual card export works',file.suggestedFilename()==='my-first-creation.json');
+  const beforeDelete=await stored(page);
+  const artHash=()=>page.evaluate(async()=>{const {savedCards}=await import(new URL('./storage.js',location.href));const [card]=await savedCards();return [...new Uint8Array(await crypto.subtle.digest('SHA-256',await card.art_blob.arrayBuffer()))].join(',');});
+  const beforeArt=await artHash();
+  await page.locator('#delete-card').click();await page.locator('#undo-delete').waitFor();await settled(page);
+  check('deleting the last saved card returns to intact examples',(await stored(page)).length===0&&await page.locator('#dots button').count()===5&&!(await page.locator('#delete-card').isVisible()));
+  check('deletion offers keyboard-focused Undo',await page.locator('#undo-delete').evaluate(e=>document.activeElement===e));
+  await page.locator('#undo-delete').click();await page.locator('#delete-notice').waitFor({state:'hidden'});await settled(page);
+  check('Undo restores every saved field and the artwork bytes',JSON.stringify(await stored(page))===JSON.stringify(beforeDelete)&&await artHash()===beforeArt);
+  await page.reload();await settled(page);
+  check('restored card survives reload',await page.locator('#card-caption').innerText()==='My First Creation'&&await artHash()===beforeArt);
+  await page.evaluate(()=>{window.restoreForgeClear=IDBObjectStore.prototype.clear;IDBObjectStore.prototype.clear=function(){throw new DOMException('Injected storage failure','QuotaExceededError');};});
+  await page.locator('#delete-card').click();await page.waitForFunction(()=>document.querySelector('#message').textContent.includes('could not be deleted'));
+  check('failed deletion keeps the card in storage and on screen',(await stored(page)).length===1&&await page.locator('#card-caption').innerText()==='My First Creation'&&!(await page.locator('#delete-notice').isVisible()));
+  await page.evaluate(()=>{IDBObjectStore.prototype.clear=window.restoreForgeClear;delete window.restoreForgeClear;});
+  await page.locator('#delete-card').click();await page.locator('#undo-delete').waitFor();await settled(page);await page.reload();await settled(page);
+  check('confirmed deletion persists across reloads',(await stored(page)).length===0&&!(await page.locator('#delete-card').isVisible()));
   await context.close();
 
   const mobile=await pageFor({...devices['iPhone 13'],defaultBrowserType:undefined});
@@ -102,6 +118,10 @@ try{
   check('mobile art editor uses URL or file',await mobile.page.locator('#edit-art_url').isVisible()&&!(await mobile.page.locator('#edit-art_prompt').count()));
   await mobile.page.screenshot({path:`${out}/mobile-art-editor.png`,fullPage:true});
   check('mobile never requests model code or weights',await mobile.page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\.wasm|\.gguf|bonsai-worker/.test(e.name))));
+  await mobile.page.keyboard.press('Escape');await mobile.page.locator('#delete-card').tap();await mobile.page.locator('#undo-delete').waitFor();await settled(mobile.page);
+  check('mobile deletion returns to examples without a modal',(await stored(mobile.page)).length===0&&!(await mobile.page.locator('#edit-panel').isVisible()));
+  await mobile.page.locator('#undo-delete').tap();await mobile.page.locator('#delete-notice').waitFor({state:'hidden'});await settled(mobile.page);
+  check('mobile Undo restores the selected card',await mobile.page.locator('#card-caption').innerText()==='Mobile Creation');
   await mobile.context.close();
 
   const fixture=await browser.newContext({viewport:{width:1440,height:1000}});
@@ -117,6 +137,11 @@ try{
   saved=await stored(generated);check('art regeneration preserves rules and records new prompt',saved[0].oracle_text==='Flying'&&saved[0].art_prompt==='A phoenix over a mountain.');
   await generated.locator('#generate-button').click();await generated.locator('#card-busy').waitFor({state:'hidden'});check('another generation appends to carousel',(await stored(generated)).length===2);
   await generated.locator('#generate-button').click();await generated.waitForTimeout(350);await generated.locator('#stop-button').click();await generated.locator('#card-busy').waitFor({state:'hidden'});check('cancel retains finished text',await generated.locator('#message').innerText()==='Stopped. Any completed card text has been kept.');
+  const beforeRemovingOne=await stored(generated),deletedId=beforeRemovingOne.at(-1).id;
+  await generated.locator('#delete-card').click();await generated.locator('#undo-delete').waitFor();await settled(generated);
+  check('deleting one creation preserves all neighboring cards',JSON.stringify(await stored(generated))===JSON.stringify(beforeRemovingOne.slice(0,-1)));
+  await generated.locator('#undo-delete').click();await generated.locator('#delete-notice').waitFor({state:'hidden'});await settled(generated);
+  check('Undo reinserts the creation and selects it',JSON.stringify(await stored(generated))===JSON.stringify(beforeRemovingOne)&&await generated.locator('#dots button[aria-current=true]').getAttribute('aria-label')===`Show ${beforeRemovingOne.find(c=>c.id===deletedId).name}`);
   await fixture.close();
   check('all tested flows have no uncaught JavaScript errors',errors.length===0);
 } finally {await browser.close();await writeFile(`${out}/receipt.json`,JSON.stringify({...receipt,errors},null,2)+'\n');}

@@ -10,6 +10,7 @@ let models={ready:false,cancel(){},dispose(){}};
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let generated=[],cards=demos.map(c=>({...c})),index=0,preview,busy=false,loading=false,editor=null,paused=reduced.matches,lastChange=Date.now(),timer,hovering=false;
 let pendingArt=null;
+let deletedCard=null,historyBusy=false;
 const active=()=>cards[index];
 let previewError=false,pendingEditor=null;
 $('card-preview').addEventListener('preview-error',()=>{previewError=true;message('The card could not finish loading. Reload the page to retry.',true);});
@@ -24,10 +25,12 @@ function controls(){
   $('load-label').textContent=loading?'Opening the forge…':'Open the forge';
   $('generate-button').disabled=busy||loading;
   $('description').disabled=busy||loading;
-  $('stop-button').hidden=!busy||loading;
+  $('stop-button').hidden=!busy||loading||historyBusy;
   $('previous').disabled=busy||cards.length<2;$('next').disabled=busy||cards.length<2;
   $('browse-examples').hidden=!generated.length;$('browse-examples').disabled=busy||loading;$('browse-examples').textContent=active().demo?'Back to your cards':'Browse examples';
-  $('finish').disabled=busy;$('card-details').disabled=busy||previewPending;$('export-card').disabled=busy||previewPending;
+  $('finish').disabled=busy;$('export-card').disabled=busy||previewPending;
+  $('delete-card').hidden=$('delete-divider').hidden=Boolean(active().demo);
+  $('delete-card').disabled=busy||loading;$('undo-delete').disabled=busy||loading;$('dismiss-delete').disabled=historyBusy;
   $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent=active().demo?'Edit your own card':'Edit this card';
   $('pause-carousel').setAttribute('aria-pressed',String(paused));$('pause-carousel').setAttribute('aria-label',paused?'Play carousel':'Pause carousel');$('pause-carousel').textContent=paused?'▷':'Ⅱ';
   document.body.classList.toggle('studio-ready',models.ready);
@@ -47,6 +50,39 @@ function draw(reveal=false){
 }
 function show(i){if(busy||editor)return;index=(i+cards.length)%cards.length;lastChange=Date.now();draw(true);}
 async function persist(){try{await saveCards(generated);}catch{message('This browser could not save the card. Use Save card to keep a copy.',true);}}
+function dismissDeletion(){
+  if(deletedCard?.illustration?.startsWith('blob:'))URL.revokeObjectURL(deletedCard.illustration);
+  deletedCard=null;$('delete-notice').hidden=true;
+}
+async function deleteCard(){
+  if(busy||loading||active().demo)return;
+  closeEditor(false);const card=active(),next=generated.filter(c=>c.id!==card.id);
+  busy=historyBusy=true;controls();
+  try{
+    // Commit storage first: failed writes leave the card and gallery intact.
+    await saveCards(next);dismissDeletion();deletedCard=card;generated=next;
+    cards=generated.length?generated:demos.map(c=>({...c}));index=Math.min(index,cards.length-1);
+    pendingEditor=null;if(pendingArt?.id===card.id)pendingArt=null;
+    $('delete-message').textContent=`Deleted “${card.name}”.`;$('delete-notice').hidden=false;message('');
+  }catch{message('This card could not be deleted from browser storage. It is still available.',true);}
+  finally{busy=historyBusy=false;lastChange=Date.now();draw();}
+  if(deletedCard===card)$('undo-delete').focus();
+}
+async function undoDeletion(){
+  if(busy||loading||!deletedCard)return;
+  closeEditor(false);
+  if(generated.length>=20){message('Your gallery is full (20 cards), so this card cannot be restored.',true);return;}
+  const card=deletedCard,next=[...generated,card].sort((a,b)=>a.created_at.localeCompare(b.created_at));
+  busy=historyBusy=true;controls();
+  try{
+    await saveCards(next);generated=next;cards=generated;index=generated.findIndex(c=>c.id===card.id);
+    deletedCard=null;$('delete-notice').hidden=true;message('Card restored.');
+  }catch{message('This card could not be restored to browser storage. You can try Undo again.',true);}
+  finally{busy=historyBusy=false;lastChange=Date.now();draw();}
+  if(!deletedCard)$('edit-own-card').focus();
+}
+$('delete-card').onclick=()=>void deleteCard();$('undo-delete').onclick=()=>void undoDeletion();
+$('dismiss-delete').onclick=()=>{if(!historyBusy)dismissDeletion();};
 function adoptDemo(){
   if(!active().demo)return;
   const copy={...active(),id:crypto.randomUUID(),demo:false,created_at:new Date().toISOString()};
@@ -171,7 +207,7 @@ function openEditor(part,detail={}){
   }
   const c=active();editor={part,id:c.id};sound.play('edit');lastChange=Date.now();
   $('edit-fields').replaceChildren();$('edit-error').textContent='';$('edit-panel').hidden=false;$('gallery').classList.add('editing');
-  $('edit-heading').textContent=({name:'Give it a name',mana:'Mana cost',type:'Type & rarity',rules:'Shape its abilities',stats:'Strength & resilience',art:'Imagine the artwork',details:'The finishing touches',set:'Choose a set',artist:'Artist credit',border:'Choose the border',frame:'Choose the frame'})[part];
+  $('edit-heading').textContent=({name:'Give it a name',mana:'Mana cost',type:'Type & rarity',rules:'Shape its abilities',stats:'Strength & resilience',art:'Imagine the artwork',set:'Choose a set',artist:'Artist credit',border:'Choose the border',frame:'Choose the frame'})[part];
   $('edit-save').textContent='Save changes';
   $('edit-panel').classList.toggle('quick-options',['frame','border'].includes(part));
   if(part==='frame'||part==='border'){
@@ -179,15 +215,14 @@ function openEditor(part,detail={}){
     for(const [value,label] of options){const button=document.createElement('button');button.type='button';button.className='direct-option';button.textContent=label;button.setAttribute('aria-pressed',String((c[key]||'auto')===value));button.onclick=()=>{adoptDemo();active()[key]=value;active().updated_at=new Date().toISOString();closeEditor(false);draw();void persist();sound.play('click');};$('edit-fields').append(button);}
   }
   if(part==='artist')field('artist','Artist credit',c.artist);
-  if(part==='details'){field('artist','Artist',c.artist);field('rarity','Rarity',c.rarity,{options:['common','uncommon','rare','mythic','special','bonus']});}
   if(part==='art'){
     artFields(c,models.ready&&!isMobileDevice?'generate':'url');
   }
-  const anchor={name:'5%',mana:'5%',type:'46%',rules:'54%',stats:'58%',details:'58%',art:'17%',set:'30%',artist:'58%',border:'30%',frame:'30%'}[part];$('edit-panel').style.top=matchMedia('(max-width:760px)').matches?'auto':anchor;
+  const anchor={name:'5%',mana:'5%',type:'46%',rules:'54%',stats:'58%',art:'17%',set:'30%',artist:'58%',border:'30%',frame:'30%'}[part];$('edit-panel').style.top=matchMedia('(max-width:760px)').matches?'auto':anchor;
   draw();$('edit-fields').querySelector('input:not([type="hidden"]),textarea,select,button')?.focus();
 }
 function closeEditor(restore=true){if(editor?.inline){editor.inline.commit();return;}const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),$('finish').value,null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
-$('edit-close').onclick=()=>closeEditor();$('edit-cancel').onclick=()=>closeEditor();$('card-details').onclick=()=>openEditor('details');
+$('edit-close').onclick=()=>closeEditor();$('edit-cancel').onclick=()=>closeEditor();
 $('edit-own-card').onclick=()=>openEditor('name');
 $('browse-examples').onclick=()=>{if(busy||loading)return;closeEditor(false);cards=active().demo?generated:demos.map(c=>({...c}));index=0;pendingEditor=null;lastChange=Date.now();draw(true);};
 $('edit-panel').addEventListener('keydown',e=>{

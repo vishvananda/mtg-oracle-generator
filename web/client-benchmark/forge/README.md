@@ -43,6 +43,12 @@ The restriction is conservative device detection, not a measured RAM limit.
 
 Use **Browse examples** and **Back to your cards** to switch galleries without
 changing saved designs. Editing a sample creates a saved copy.
+**Delete card** removes the selected saved creation. **Undo** restores its full
+design and artwork until the notice is dismissed, another card is deleted or
+the page is closed. Deleting the last creation returns to the examples; the
+example cards themselves cannot be deleted. Undo needs an available slot in
+the 20-card history; it never removes another card to make room. Artist and rarity stay editable
+directly on the card, so there is no separate Card details button.
 
 The latest 20 creations and their artwork are stored in IndexedDB on this
 origin. **Save card** exports JSON with embedded artwork. Browser storage may
@@ -53,6 +59,16 @@ It currently supports single-face designs. The footer carries the standard notic
 Repeated slogans, captions and editing hints are omitted; device requirements stay
 collapsed behind the download note. Music and sound cues are optional;
 the page remains fully usable with sound disabled.
+
+The gently spinning header jewel reuses Aurum's pearl materials, spindle-cut
+gemstones and refraction shader, baked into a transparent animation. Click it
+to compare the default dual tetrahedron with a champagne cube; the choice is
+remembered. `?logo=dual` and `?logo=cube` select either directly. Reduced motion
+uses a still image. No extra WebGL context or 3D library is loaded by the page.
+See [the jewel studio](../logo-studio/README.md) for source and reproduction.
+The [jewel and deletion receipt](../forge-jewels-verification-20261010.json)
+records desktop/mobile browser checks, artwork-preserving Undo, storage-error
+handling, WebKit layout checks and the deployed asset hashes.
 
 ## Models and runtime
 

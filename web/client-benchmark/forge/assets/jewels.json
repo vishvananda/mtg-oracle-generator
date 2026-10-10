@@ -1,0 +1,21 @@
+{
+  "duration_ms": 24000,
+  "designs": {
+    "dual": {
+      "frames": 360,
+      "width": 192,
+      "height": 192,
+      "bytes": 1734724,
+      "still_bytes": 6414,
+      "all_frames_unclipped": true
+    },
+    "cube": {
+      "frames": 360,
+      "width": 192,
+      "height": 192,
+      "bytes": 2459192,
+      "still_bytes": 8590,
+      "all_frames_unclipped": true
+    }
+  }
+}

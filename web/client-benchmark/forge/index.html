@@ -10,7 +10,7 @@
 <body>
   <div class="world" aria-hidden="true"></div><div class="world-shade" aria-hidden="true"></div>
   <header class="masthead">
-    <a class="wordmark" href="./" aria-label="MTG CardForge"><svg viewBox="0 0 40 44" aria-hidden="true"><path d="M20 2 37 12v20L20 42 3 32V12ZM20 2v40M3 12l17 10 17-10M3 32l17-10 17 10"/></svg><span>MTG CARDFORGE</span></a>
+    <div class="brand"><button id="jewel-toggle" class="jewel-toggle" type="button" aria-label="Dual tetrahedron jewel. Switch to cube" title="Switch to cube jewel"><img src="./assets/jewel-dual-still.webp" alt="" width="256" height="256"></button><a class="wordmark" href="./" aria-label="MTG CardForge"><span>MTG CARDFORGE</span></a></div>
     <div class="header-actions"><button id="sound-toggle" class="quiet-button" type="button" aria-pressed="true">Sound on</button></div>
   </header>
   <main class="studio">
@@ -45,9 +45,11 @@
       <button id="edit-own-card" class="edit-own-button" type="button">✧ <span>Edit your own card</span></button>
       <p id="mobile-message" class="message mobile-message" role="status" aria-live="polite" hidden></p>
       <button id="browse-examples" class="quiet-button browse-examples" type="button" hidden>Browse examples</button>
-      <div class="card-tools"><button id="card-details" class="quiet-button" type="button">Card details</button><span>·</span><button id="export-card" class="quiet-button" type="button">Save card</button><span>·</span><label class="finish-control">Finish <select id="finish"><option value="vizier_etched_v1">Etched foil</option><option value="vizier_opal_v1">Opal</option><option value="vizier_prismatic_v1">Prismatic</option><option value="ordinary">Classic</option></select></label></div>
+      <div class="card-tools"><button id="delete-card" class="quiet-button" type="button" hidden>Delete card</button><span id="delete-divider" aria-hidden="true" hidden>·</span><button id="export-card" class="quiet-button" type="button">Save card</button><span>·</span><label class="finish-control">Finish <select id="finish"><option value="vizier_etched_v1">Etched foil</option><option value="vizier_opal_v1">Opal</option><option value="vizier_prismatic_v1">Prismatic</option><option value="ordinary">Classic</option></select></label></div>
     </section>
   </main>
+  <div id="delete-notice" class="delete-notice" role="status" hidden><span id="delete-message">Card deleted.</span><button id="undo-delete" class="quiet-button" type="button">Undo</button><button id="dismiss-delete" class="quiet-button" type="button" aria-label="Dismiss deletion notice">×</button></div>
   <footer class="footer"><p>MTG CardForge is unofficial Fan Content permitted under the <a href="https://company.wizards.com/en/legal/fancontentpolicy" target="_blank" rel="noopener noreferrer">Fan Content Policy</a>. Not approved/endorsed by Wizards. Portions of the materials used are property of Wizards of the Coast. ©Wizards of the Coast LLC.</p></footer>
+  <script type="module" src="./jewel-logo.js"></script>
   <script type="module" src="./main.js"></script>
 </body></html>

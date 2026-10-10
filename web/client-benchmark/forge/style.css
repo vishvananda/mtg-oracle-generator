@@ -124,7 +124,21 @@ body{min-height:100svh;display:flex;flex-direction:column}
 .footer{display:block;text-align:center;padding:14px 6vw 18px;font-size:11px;line-height:1.5;color:#aeb8b8}
 .footer p{max-width:900px;margin:0 auto}
 .footer a{color:#d6c8a9;text-decoration:underline;text-underline-offset:2px;white-space:normal}
-@media(min-width:761px){.card-stage{width:min(100%,calc((100svh - 275px)*488/680))}}
+/* Native Safari controls need a few more pixels than Chromium below the card. */
+@media(min-width:761px){.card-stage{width:min(100%,calc((100svh - 283px)*488/680))}}
 .mobile-mode .studio{padding-bottom:12px}
 .mobile-mode .card-stage{width:min(100%,calc((100svh - 340px)*.718))}
 .mobile-mode .footer{padding-top:10px;font-size:10px;line-height:1.4}
+
+/* Transparent, pre-rendered Aurum jewels: no second WebGL scene on the device. */
+.brand{display:flex;align-items:center;gap:8px;min-width:0}
+.jewel-toggle{position:relative;display:grid;place-items:center;flex:none;width:66px;height:64px;margin:0;padding:0;border:0;border-radius:50%;background:none}
+.jewel-toggle img{display:block;width:80px;height:80px;max-width:none;pointer-events:none;filter:drop-shadow(0 3px 5px #0007)}
+.jewel-toggle:hover img{filter:drop-shadow(0 0 6px #dfc78f55)}
+@media(max-width:760px){.brand{gap:6px}.jewel-toggle{width:48px;height:58px}.jewel-toggle img{width:66px;height:66px}.wordmark{font-size:11px;letter-spacing:.16em}}
+@media(max-width:360px){.brand{gap:3px}.wordmark{font-size:10px;letter-spacing:.12em}.masthead{padding-left:4vw;padding-right:4vw}.card-aura{left:0;right:0}}
+.delete-notice{position:fixed;z-index:40;bottom:18px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:16px;width:max-content;max-width:calc(100vw - 32px);padding:10px 15px;border:1px solid #cfb97a88;border-radius:7px;background:#14242ef5;box-shadow:0 5px 30px #0008;color:#eee4ce;font-size:12px}
+.delete-notice>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.delete-notice button{flex:none;padding:7px 2px;min-height:32px}
+#undo-delete{color:#f0cf84;text-decoration:underline;text-underline-offset:3px}
+#dismiss-delete{font-size:20px;line-height:1}
