@@ -16,11 +16,58 @@ import argparse
 import json
 import math
 from pathlib import Path
+import shutil
 import tempfile
 import time
 
 from rl_gpu import sha, save, generate, read_prompts, adapter_hash
 from prepared_training import load_prepared
+
+
+def activate_training_adapter(model):
+    """TRL 0.23 re-prepares QLoRA models and freezes already-loaded adapters."""
+    if set(model.peft_config) != {'default'}:
+        raise ValueError('Remove comparator adapters before constructing the optimizer')
+    model.set_adapter('default')
+    trainable = [n for n,p in model.named_parameters() if p.requires_grad]
+    if not trainable or any('lora_' not in n or '.default.' not in n for n in trainable):
+        raise ValueError('Expected only the original SFT LoRA parameters to be trainable')
+    return trainable
+
+
+def reuse_baselines(package, output, manifest, prompts):
+    """Reuse complete baselines only with identical inputs, weights and recipe."""
+    if not manifest.get('baseline_reuse'):
+        return {}
+    original = json.loads((package/'baseline-package-manifest.json').read_text())
+    identity = json.loads((package/'baseline-identity.json').read_text())
+    if (identity['package_sha256'] != sha(package/'baseline-package-manifest.json')
+        or identity['package_sha256'] != manifest['baseline_reuse']['package_sha256']
+        or original['adapters'] != manifest['adapters'] or identity['adapters'] != manifest['adapters']
+        or original['dataset_manifest_sha256'] != manifest['dataset_manifest_sha256']):
+        raise ValueError('Baseline parent identity mismatch')
+    for name in ('config.json','evaluation-prompts.jsonl','rl_gpu.py'):
+        if original['files'][name] != sha(package/name):
+            raise ValueError('Baseline generation protocol changed: '+name)
+    expected = {(r['id'], r['id']+'-00') for r in prompts}
+    results = {}
+    for arm in ('sft','dpo'):
+        path = package/('baseline-'+arm+'.jsonl')
+        receipt = json.loads(path.with_suffix('.manifest.json').read_text())
+        rows = [json.loads(line) for line in path.read_text().splitlines()]
+        if (not receipt['complete'] or receipt['sha256'] != sha(path)
+            or receipt['cases'] != len(expected) or receipt['completions'] != len(expected)
+            or len(rows) != len(expected) or {(r['case_id'],r['candidate_id']) for r in rows} != expected):
+            raise ValueError('Incomplete or changed baseline: '+arm)
+        results[arm] = receipt
+    if results['sft']['decoding'] != results['dpo']['decoding'] or results['sft']['backend'] != results['dpo']['backend']:
+        raise ValueError('Baseline generation protocols differ')
+    for arm, receipt in results.items():
+        shutil.copyfile(package/('baseline-'+arm+'.jsonl'),output/(arm+'.jsonl'))
+        save(output/(arm+'.manifest.json'),receipt)
+    save(output/'baseline-reuse.json',manifest['baseline_reuse'])
+    print(json.dumps({'reused_baselines':list(results),'completions':2*len(expected)}),flush=True)
+    return results
 
 
 def verify(package, sft, dpo):
@@ -67,17 +114,19 @@ def run(package,sft,dpo,output):
         model=PeftModel.from_pretrained(base,sft,is_trainable=True,adapter_name='default')
         model.load_adapter(dpo,adapter_name='dpo',is_trainable=False)
         prompts=read_prompts(package/'evaluation-prompts.jsonl')
-        generation={}
+        generation=reuse_baselines(package,output,manifest,prompts)
         def predict(arm):
             return generate(model,tokenizer,prompts,output/(arm+'.jsonl'),1,
                 config['generation_batch_size'],config['max_new_tokens'],config['seed'],False)
-        model.set_adapter('dpo')
-        generation['dpo']=predict('dpo')
+        if 'dpo' not in generation:
+            model.set_adapter('dpo')
+            generation['dpo']=predict('dpo')
         model.set_adapter('default')
-        initial_hash=adapter_hash(model,'default')
-        generation['sft']=predict('sft')
+        baseline_hash=adapter_hash(model,'default')
+        if 'sft' not in generation:
+            generation['sft']=predict('sft')
         model.delete_adapter('dpo');model.set_adapter('default')
-        if adapter_hash(model,'default')!=initial_hash:raise ValueError('Baseline generation changed SFT weights')
+        if adapter_hash(model,'default')!=baseline_hash:raise ValueError('Baseline generation changed SFT weights')
         tokenizer.padding_side='right';model.config.use_cache=False
         args=SFTConfig(output_dir=str(output/'checkpoints'),num_train_epochs=1,max_steps=-1,
             max_length=config['max_length'],completion_only_loss=True,packing=False,
@@ -92,9 +141,15 @@ def run(package,sft,dpo,output):
             eos_token=tokenizer.eos_token)
         trainer=SFTTrainer(model=model,processing_class=tokenizer,args=args,
             train_dataset=data['train'],eval_dataset=data['validation'])
-        trainable=[n for n,p in trainer.model.named_parameters() if p.requires_grad]
-        if not trainable or any('lora_' not in n or '.default.' not in n for n in trainable):
-            raise ValueError('Expected only the original SFT LoRA parameters to be trainable')
+        # Re-enable the existing adapter after TRL's k-bit preparation, before
+        # creating the optimizer. Keep every base/comparator parameter frozen.
+        trainable=activate_training_adapter(trainer.model)
+        # TRL also casts the LoRA weights to bf16. Compare updates in the same
+        # dtype so casting alone cannot pass the changed-weights check.
+        initial_hash=adapter_hash(trainer.model,'default')
+        save(output/'trainable-parameters.json',{'names':trainable,
+            'parameters':sum(p.numel() for p in trainer.model.parameters() if p.requires_grad),
+            'baseline_adapter_hash':baseline_hash,'pre_training_adapter_hash':initial_hash})
         batch=next(iter(trainer.get_train_dataloader()))
         if not (batch['labels']==-100).any():raise ValueError('Prompt mask missing')
         for labels in batch['labels']:
@@ -124,6 +179,7 @@ def run(package,sft,dpo,output):
             'validation_sample':metadata['validation_sample'],'loss_mask_verified':True,
             'peak_allocated_gib':torch.cuda.max_memory_allocated()/1024**3,
             'initial_adapter_hash':initial_hash,'final_adapter_hash':adapter_hash(model,'default'),
+            'baseline_adapter_hash':baseline_hash,
             'stopped_for_budget':budget.stopped,'parent_training_identity':previous['training_identity'],
             'automatic_promotion':False}
         save(output/'training-summary.json',summary)

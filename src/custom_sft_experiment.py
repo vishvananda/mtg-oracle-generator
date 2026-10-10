@@ -76,7 +76,7 @@ def launch(root, package, run):
         'hardware_cost_cap_usd':cap,'timeout_minutes':minutes,
         'flavor':hardware.name,'unit_cost_usd':hardware.unit_cost_usd,'unit_label':hardware.unit_label,
         'state':'submitting','automatic_retry':False,'image':sft['image']}
-    reserve(root/'budget.json',run['maximum_compute_usd'],record,cap)
+    reserve(Path(run.get('budget_ledger',root/'budget.json')),run['maximum_compute_usd'],record,cap)
     save(record,receipt)
     job=hf.run_job(image=sft['image'],command=['uv','run','--frozen','--python','3.12',
         '/package/custom_sft_gpu.py','--package','/package','--sft','/sft','--dpo','/dpo','--output','/outputs'],
@@ -187,18 +187,21 @@ def run(root, run_file):
             result=collect(root/'job.json');update('gpu_job',**result)
             if result['state'] in TERMINAL:break
             time.sleep(30)
-        if result['state']!='COMPLETED':raise ValueError('GPU job failed; no automatic paid retry')
         import huggingface_hub as hf
+        live=hf.inspect_job(job_id=job['job_id'],namespace=job['namespace'])
+        if live.started_at and live.finished_at:
+            settle_terminal(Path(run.get('budget_ledger',root/'budget.json')),root/'job.json',{'job_id':live.id,'state':live.status.stage,
+                'started_at':live.started_at.isoformat(),'finished_at':live.finished_at.isoformat(),
+                'observed_at':datetime.now(timezone.utc).isoformat()})
+        if result['state']!='COMPLETED':
+            if not (root/'gpu-failed').exists():collect(root/'job.json',root/'gpu-failed')
+            raise ValueError('GPU job failed; partial outputs collected; no automatic paid retry')
         for attempt in range(12):
             hf.sync_bucket(f"hf://buckets/{job['bucket']}/{job['output_prefix']}",str(root/'gpu'),quiet=True,ignore_times=True)
             try:phase=verify_outputs(root);break
             except (OSError,KeyError,ValueError):
                 if attempt==11:raise
                 time.sleep(10)
-        live=hf.inspect_job(job_id=job['job_id'],namespace=job['namespace'])
-        settle_terminal(root/'budget.json',root/'job.json',{'job_id':live.id,'state':live.status.stage,
-            'started_at':live.started_at.isoformat(),'finished_at':live.finished_at.isoformat(),
-            'observed_at':datetime.now(timezone.utc).isoformat()})
         update('blind_evaluation')
         comparison=root/'comparison'
         if not (comparison/'comparison.json').exists():

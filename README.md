@@ -30,7 +30,7 @@ intent fidelity, game balance, or official Magic rules correctness.
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
 | Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |
 | Custom-card collection | [All 14,969 eligible MSEM designs](reports/custom-card-full/README.md): 3,997 parse after conservative cleanup; **3,852 distinct review candidates** after duplicate and vanilla-card filtering |
-| Additional custom-card training | [4,076-example pilot](reports/custom-sft-pilot/README.md): 511 reviewed custom training families plus original-corpus replay; 64-family holdout and SFT/DPO/custom comparisons; HF job running, no improvement claimed yet |
+| Additional custom-card training | [4,076-example pilot](reports/custom-sft-pilot/README.md): 511 reviewed custom training families plus original-corpus replay; 64-family holdout and SFT/DPO/custom comparisons; corrected HF job submitted after adapter-freeze failure, no improvement claimed yet |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 

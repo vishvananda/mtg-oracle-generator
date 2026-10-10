@@ -70,11 +70,28 @@ system prompt and 2,048-token output budget. It trains only the SFT adapter;
 the DPO comparator is removed before constructing the optimizer. The candidate
 is saved before final generation. Checkpoints are saved every 64 updates.
 
+TRL 0.23's k-bit preparation freezes an already-loaded PEFT adapter. After
+constructing the trainer, reactivate only `default`, assert that every trainable
+parameter belongs to that LoRA adapter, and then allow optimizer construction.
+Take the pre-training weight hash after TRL's dtype conversion so a dtype change
+alone cannot count as a learned update. The recovery regression test exercises
+the actual TRL freezing path on CPU; a real GPU run still verifies quantization.
+
 The initial job has a 120-minute timeout, a 60-minute training-loop limit, and
 a $5.01 maximum compute reservation. HF quoted $0.041667/minute for A100-large
 when checked on 2026-10-10. The launcher rechecks the live rate and refuses a
 larger reservation. This is a ceiling, not an estimated invoice. There is no
 automatic paid retry. Codex teacher/reviewer usage is recorded separately.
+
+Failed jobs retain their partial outputs and settle their reservation from
+terminal allocation timestamps. A manually prepared recovery can set
+`budget_ledger` to the original ledger, preserving the combined ceiling, and use
+a fresh run directory/package/job receipt. Never overwrite a submitted package.
+Complete baselines can be packaged as `baseline-{sft,dpo}.jsonl` and matching
+manifests, plus `baseline-identity.json` and `baseline-package-manifest.json`.
+The new package manifest must bind these files and identify the source job and
+package in `baseline_reuse`. Reuse rejects changed prompts, generation code,
+configuration, dataset, parent adapters, or incomplete/changed predictions.
 
 Afterward, local mtgish checks and blinded Sol judging produce separate panels:
 

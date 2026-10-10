@@ -1,8 +1,25 @@
 # Additional custom-card SFT pilot
 
-[HF job](https://huggingface.co/jobs/vishvananda/6ac9f6cf095c5780893104f7)
-started on 2026-10-10. **Results are pending; no quality improvement is claimed.**
+[Corrected HF job](https://huggingface.co/jobs/vishvananda/6aca52ccfee2c90070188f39)
+was submitted on 2026-10-10. **Results are pending; no quality improvement is claimed.**
 The live CardForge model remains the round-two DPO quant.
+
+The [first attempt](https://huggingface.co/jobs/vishvananda/6ac9f6cf095c5780893104f7)
+completed both 320-request baseline generations, then stopped before training:
+TRL 0.23 re-prepared the already-loaded QLoRA model and froze its adapter. Our
+trainability assertion caught this. The corrected pipeline reactivates only
+the original SFT adapter after trainer initialization, before creating the
+optimizer. A regression test reproduces the real TRL freeze path on a tiny CPU
+model, performs an update, and verifies that base weights stay frozen. This is
+an API contract test, not a GPU or quality result.
+
+The manually restarted job reuses all 640 baseline outputs after verifying their
+hashes, complete case IDs, parent adapters, dataset, generation code, prompts,
+and configuration. The dataset and learning recipe are unchanged. The initial
+job used 11m 7s of allocation; its conservative cost bound is **$0.584** (elapsed
+minutes rounded up plus two minutes, not an invoice). The recovery reserves
+at most **$3.751** for 90 minutes on the same A100, sharing the original **$5.01**
+experiment ceiling. There is no automatic paid retry.
 
 The frozen dataset contains **4,076 training examples**: 2,038 custom-card
 examples from 511 families and 2,038 original-training replay examples, including
@@ -24,10 +41,10 @@ subscription-dollar cost. Local preparation verified 4,140 completion masks
 set contains 2,643,382 tokens; the longest complete sequence is 1,009 tokens.
 
 The candidate starts from completed SFT, uses a new optimizer, one epoch at
-2e-5 learning rate, and approximately 255 updates. One A100 allocation generates
+2e-5 learning rate, and approximately 255 updates. The A100 workflow generates
 the SFT, served DPO, and candidate NF4 comparisons with identical prompts and
-decoding. Its maximum timeout cost is about $5.00; actual usage will be reported
-after completion. Loss curves, blind intent labels, parser counts, and paired
+decoding. Combined usage will be reported after completion. Loss curves,
+blind intent labels, parser counts, and paired
 family-level intervals are produced automatically. Any apparent improvement
 still requires confirmation using the deployment Q4_0 quant before promotion.
 
