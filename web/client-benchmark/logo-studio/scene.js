@@ -69,7 +69,10 @@ function gemstone(parent,a,b,tint){
   rod(parent,center.clone().addScaledVector(direction,halfGem-.025),b.clone().addScaledVector(direction,-.19));
   const absorption=V(...tint.toArray().map(c=>-Math.log(Math.max(.008,c))*.85));
   const uniforms={uPlanes:{value:cuts.spindle.planes},uPlaneCount:{value:cuts.spindle.planeCount},uInvModel:{value:new THREE.Matrix4()},uWorld:{value:new THREE.Matrix4()},uIor:{value:1.77},uDispersion:{value:1.15},uBrilliance:{value:1.15},uTransmission:{value:.90},uTime:{value:0},uLightAngle:{value:0},uLightMode:{value:0},uBlack:{value:0},uTint:{value:tint},uAbsorption:{value:absorption}};
-  const material=new THREE.ShaderMaterial({uniforms,vertexShader:gemVertex,fragmentShader:gemFragment,side:THREE.FrontSide}),gem=new THREE.Mesh(cuts.spindle.geometry,material);
+  // Preserve Aurum's optics while allowing the page behind the stone to show
+  // through. Reflections at grazing angles remain stronger; gold/pearls stay opaque.
+  const translucentFragment=gemFragment.replace('gl_FragColor=vec4(c,1.);','gl_FragColor=vec4(c,mix(.76,.96,f));');
+  const material=new THREE.ShaderMaterial({uniforms,vertexShader:gemVertex,fragmentShader:translucentFragment,side:THREE.FrontSide,transparent:true,depthWrite:false}),gem=new THREE.Mesh(cuts.spindle.geometry,material);
   gem.position.copy(center);gem.quaternion.setFromUnitVectors(V(1,0,0),direction);gem.scale.setScalar(scale);parent.add(gem);
   gem.onBeforeRender=()=>{uniforms.uWorld.value.copy(gem.matrixWorld);uniforms.uInvModel.value.copy(gem.matrixWorld).invert();material.uniformsNeedUpdate=true;};
   for(const sign of [-1,1]){const collar=new THREE.Mesh(new THREE.TorusGeometry(.065*scale,.013,8,20),polished);collar.position.copy(center).addScaledVector(direction,sign*(halfGem-.055*scale));collar.quaternion.setFromUnitVectors(V(0,0,1),direction);parent.add(collar);}

@@ -3,18 +3,18 @@
   "designs": {
     "dual": {
       "frames": 360,
-      "width": 192,
-      "height": 192,
-      "bytes": 1734724,
-      "still_bytes": 6414,
+      "width": 384,
+      "height": 384,
+      "bytes": 6133042,
+      "still_bytes": 22958,
       "all_frames_unclipped": true
     },
     "cube": {
       "frames": 360,
-      "width": 192,
-      "height": 192,
-      "bytes": 2459192,
-      "still_bytes": 8590,
+      "width": 384,
+      "height": 384,
+      "bytes": 8686580,
+      "still_bytes": 30978,
       "all_frames_unclipped": true
     }
   }

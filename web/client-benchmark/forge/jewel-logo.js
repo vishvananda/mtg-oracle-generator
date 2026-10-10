@@ -1,14 +1,13 @@
 // Aurum optics are baked offline. A native image leaves the GPU to the cards
 // and local models; switching designs downloads only the selected animation.
+import {isMobileDevice} from '/model-bench/device-support.js';
 const button=document.querySelector('#jewel-toggle');
 const image=button.querySelector('img');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 const valid=kind=>kind==='dual'||kind==='cube';
-let stored;
-try{stored=localStorage.getItem('forge-jewel');}catch{}
 const query=new URLSearchParams(location.search).get('logo');
-let kind=valid(query)?query:valid(stored)?stored:'dual';
-let visible=true,revision=0;
+let kind=valid(query)?query:'cube';
+let visible=false,revision=0;
 function update(){
   const request=++revision;
   const still=reduced.matches||document.hidden||!visible;
@@ -27,13 +26,12 @@ function update(){
 }
 button.addEventListener('click',()=>{
   kind=kind==='dual'?'cube':'dual';
-  try{localStorage.setItem('forge-jewel',kind);}catch{}
   update();
 });
 reduced.addEventListener('change',update);
 document.addEventListener('visibilitychange',update);
 new IntersectionObserver(entries=>{
-  const next=entries[0].isIntersecting;
-  if(next!==visible){visible=next;update();}
+  const next=!isMobileDevice&&entries[0].isIntersecting;
+  visible=next;update();
 }).observe(button);
 update();

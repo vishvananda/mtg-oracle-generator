@@ -1,6 +1,7 @@
 import {typeWords,hit,ruleItems} from './direct-geometry.js';
 import { faceFor } from './cards.js';
 import {presentWhenReady} from './preview-ready.js';
+import {neighborPreloader} from './preload.js';
 export async function mountRenderer(host,card,onPart) {
   const root=document.createElement('div');root.className='preview-rendering';
   host.setAttribute('aria-busy','true');
@@ -52,6 +53,7 @@ export async function mountRenderer(host,card,onPart) {
   const observer=new MutationObserver(()=>{cancelAnimationFrame(scheduled);scheduled=requestAnimationFrame(placeArtButton);});
   observer.observe(root,{childList:true,subtree:true});placeArtButton();
   const presentation=presentWhenReady(host,root,mounted,placeArtButton);
+  const preload=neighborPreloader(mountCardDesignPreview,new URL('./renderer/card-preview.css',import.meta.url).href);
   void presentation.update({face:faceFor(card),finishId:'vizier_etched_v1'});
-  return {finishes:mounted.presentation.finishes,manaSymbol:mounted.presentation.manaSymbolAsset,setSymbol:setSymbolAsset,update(card,finish,selectedPart){currentCard=card;void presentation.update({face:faceFor(card),finishId:finish,selectedPart});},setBusy(busy){root.inert=busy;},focus(part){(part==='art'?art:part==='set'?set:part==='artist'?artist:rails[part]?.[0]||root.querySelector(`[data-card-design-part="${part}"]`))?.focus();},unmount(){presentation.dispose();observer.disconnect();cancelAnimationFrame(scheduled);mounted.unmount();}};
+  return {finishes:mounted.presentation.finishes,manaSymbol:mounted.presentation.manaSymbolAsset,setSymbol:setSymbolAsset,preload(cards){preload.schedule(cards.map(faceFor));},update(card,finish,selectedPart,transition=false){preload.cancel();currentCard=card;void presentation.update({face:faceFor(card),finishId:finish,selectedPart},{transition});},setBusy(busy){root.inert=busy;},focus(part){(part==='art'?art:part==='set'?set:part==='artist'?artist:rails[part]?.[0]||root.querySelector(`[data-card-design-part="${part}"]`))?.focus();},unmount(){preload.cancel();presentation.dispose();observer.disconnect();cancelAnimationFrame(scheduled);mounted.unmount();}};
 }

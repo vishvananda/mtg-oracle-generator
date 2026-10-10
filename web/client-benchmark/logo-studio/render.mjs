@@ -3,7 +3,7 @@ import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
 import {chromium} from 'playwright';
 const root=resolve(import.meta.dirname,'..'),out=resolve(process.env.LOGO_FRAMES||'/tmp/cardforge-jewel-frames');
-const frames=Number(process.env.LOGO_FRAME_COUNT||360),size=Number(process.env.LOGO_SIZE||256);
+const frames=Number(process.env.LOGO_FRAME_COUNT||360),size=Number(process.env.LOGO_SIZE||384);
 const server=createServer(async(req,res)=>{
   const path=resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
   if(!path.startsWith(root+'/')){res.writeHead(403).end();return;}

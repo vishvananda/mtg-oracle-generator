@@ -1,6 +1,6 @@
 const decoded=new Map();
 const frame=()=>new Promise(resolve=>requestAnimationFrame(resolve));
-function imageReady(url){
+export function imageReady(url){
   if(!decoded.has(url)){
     const image=new Image();image.crossOrigin='anonymous';image.src=url;
     const ready=image.decode().catch(error=>{decoded.delete(url);throw error;});
@@ -15,9 +15,7 @@ function cancellable(promise,signal){
     promise.then(resolve,reject).finally(()=>signal.removeEventListener('abort',abort));
   });
 }
-async function assetsReady(root,face,signal){
-  // Vue, style calculation and the foil watcher must see the new face first.
-  await cancellable(frame(),signal);
+export function assetUrls(root,face){
   const urls=new Set(face.illustration?[face.illustration]:[]);
   for(const node of root.querySelectorAll('*')){
     if(node instanceof HTMLImageElement&&node.src)urls.add(node.src);
@@ -28,7 +26,12 @@ async function assetsReady(root,face,signal){
       }
     }
   }
-  await cancellable(Promise.all([...urls].map(imageReady)),signal);
+  return urls;
+}
+async function assetsReady(root,face,signal){
+  // Vue, style calculation and the foil watcher must see the new face first.
+  await cancellable(frame(),signal);
+  await cancellable(Promise.all([...assetUrls(root,face)].map(imageReady)),signal);
   // The foil canvas can finish before the hidden DOM artwork has decoded. It
   // must also be ready before an inline edit reveals that native face.
   await cancellable(Promise.all([...root.querySelectorAll('img')].filter(image=>image.src).map(image=>image.decode())),signal);
@@ -66,20 +69,32 @@ function snapshotCard(root){
 }
 /** Keep the last complete card (including its foil pixels) until the next is ready. */
 export function presentWhenReady(host,root,mounted,placeTargets){
-  let requested='',complete='',controller,lastCard,pending=Promise.resolve(),disposed=false;
-  async function update(value){
+  let requested='',complete='',controller,lastCard,pending=Promise.resolve(),disposed=false,fadeOut=null,reveal=null;
+  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+  async function update(value,{transition=false}={}){
     const key=JSON.stringify([value.face,value.finishId]);
     if(key===requested){mounted.update({selectedPart:value.selectedPart});return pending;}
     requested=key;controller?.abort();controller=new AbortController();const signal=controller.signal;
-    if(complete&&!lastCard){lastCard=snapshotCard(root);if(lastCard)host.append(lastCard);}
+    if(complete&&!lastCard){
+      lastCard=snapshotCard(root);if(lastCard){lastCard.style.opacity=getComputedStyle(root).opacity;host.append(lastCard);}
+    }
+    reveal?.cancel();reveal=null;
+    // A navigation snapshot only fades once, even when a second request arrives.
+    if(transition&&lastCard&&!fadeOut){
+      const animation=lastCard.animate([{opacity:getComputedStyle(lastCard).opacity},{opacity:0}],{duration:reduced.matches?0:180,fill:'forwards',easing:'ease-out'});
+      fadeOut=animation.finished.catch(()=>{});
+    }
     root.classList.add('preview-rendering');host.setAttribute('aria-busy','true');delete host.dataset.previewError;host.dispatchEvent(new CustomEvent('preview-pending'));
     mounted.update(value);
     const current=controller,timeout=setTimeout(()=>current.abort(new Error('The card assets took too long to load.')),20000);
     pending=(async()=>{
       try{
-        await assetsReady(root,value.face,signal);await coatingReady(root,value.finishId,signal);signal.throwIfAborted();
+        await assetsReady(root,value.face,signal);await coatingReady(root,value.finishId,signal);
+        if(fadeOut)await cancellable(fadeOut,signal);signal.throwIfAborted();
         root.classList.remove('preview-rendering');host.setAttribute('aria-busy','false');host.dataset.previewAvailable='true';
-        lastCard?.remove();lastCard=null;complete=key;placeTargets();
+        const animateIn=Boolean(fadeOut)||transition;
+        lastCard?.remove();lastCard=null;fadeOut=null;complete=key;placeTargets();
+        if(animateIn&&!reduced.matches)reveal=root.animate([{opacity:0},{opacity:1}],{duration:320,easing:'ease-out'});
         host.dispatchEvent(new CustomEvent('preview-ready'));
       }catch(error){
         if(current!==controller||disposed)return;
@@ -89,5 +104,5 @@ export function presentWhenReady(host,root,mounted,placeTargets){
     })();
     return pending;
   }
-  return {update,dispose(){disposed=true;controller?.abort();lastCard?.remove();}};
+  return {update,dispose(){disposed=true;controller?.abort();reveal?.cancel();lastCard?.remove();}};
 }

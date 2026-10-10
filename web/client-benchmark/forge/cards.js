@@ -25,9 +25,22 @@ export function parseDraft(text) {
     rarity:['common','uncommon','rare','mythic','special','bonus'].includes(draft.rarity)?draft.rarity:'rare',
     ...Object.fromEntries(['power','toughness','loyalty'].filter(k=>draft[k]!=null).map(k=>[k,String(draft[k]).slice(0,20)]))};
 }
+// Frame accents are presentation data, not the land's actual card colors.
+export function frameColors(card) {
+  if(!/\bLand\b/i.test(card.type_line||''))return card.colors;
+  const colors=new Set(card.colors||[]);
+  const text=card.oracle_text||'';
+  for(const clause of text.matchAll(/\badd\s+([^.;\n]+)/gi)){
+    for(const symbol of clause[1].matchAll(/\{([WUBRG])\}/gi))colors.add(symbol[1].toUpperCase());
+    if(/(?:any|each) color/i.test(clause[1]))for(const color of 'WUBRG')colors.add(color);
+  }
+  const subtypes=(card.type_line||'').split(/[—–]/)[1]||'';
+  for(const [subtype,color]of [['Plains','W'],['Island','U'],['Swamp','B'],['Mountain','R'],['Forest','G']])if(new RegExp(`\\b${subtype}\\b`,'i').test(subtypes))colors.add(color);
+  return [...'WUBRG'].filter(color=>colors.has(color));
+}
 export function faceFor(card) {
   return {name:card.name, manaSymbols:card.mana_cost?.match(/\{([^}]+)\}/g)?.map(s=>s.slice(1,-1))||[],
-    typeLine:card.type_line, colors:card.colors, rarity:card.rarity,
+    typeLine:card.type_line, colors:frameColors(card), rarity:card.rarity,
     rulesText:(card.oracle_text||'').replaceAll('CARDNAME',card.name), power:card.power??null, toughness:card.toughness??null, loyalty:card.loyalty??null,
     illustration:card.illustration||null, artist:card.artist??'MTG CardForge', setCode:card.set_code||'FORGE', frameStyle:['modern','retro'].includes(card.frame_style)?card.frame_style:undefined, borderColor:['black','white'].includes(card.border_color)?card.border_color:undefined};
 }

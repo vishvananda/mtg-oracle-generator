@@ -20,16 +20,23 @@ Inputs are transparent; the old ink is hidden while editing. Foil temporarily
 uses the textured native face so its baked text does not show through.
 Rules preserve newlines;
 self-references display the card's name. No model download is needed.
-The previous complete card, including foil pixels, remains visible until the next
-card’s images, fonts and treatment are ready. Initial loading leaves the card
-blank. Editing hints use a subtle hover highlight and a visible keyboard focus
+Carousel navigation fades the outgoing card out and keeps it faded until the
+next card’s images, fonts and foil treatment are ready, then fades the new card
+in. Rapid navigation only reveals the latest selection. Neighbor artwork, frames
+and symbols are prefetched after the current card is ready, using disposable
+ordinary faces in an isolated, hidden root; no extra foil renderer or etching job
+is started. Editing and treatment changes retain the last complete card while
+refreshing. Initial loading leaves the card blank. Editing hints use a subtle hover highlight and a visible keyboard focus
 outline.
 The set picker has 323 named sets with supported symbols, including Forge.
 Click the outer border for black/white stock, or the frame around the artwork
 for modern/old frames. Both can follow the selected set automatically. Mana
 costs offer clickable colored, generic, hybrid, snow and Phyrexian symbols.
 The finish menu comes directly from the renderer and includes Cold foil.
-Set, frame, border and finish choices are retained with each saved card. Before loading the
+Land frame accents follow explicit mana production and basic land subtypes;
+colored activation costs alone do not color the frame. This presentation inference
+does not change the saved card’s actual colors. Set, frame, border and finish choices
+are retained with each saved card. Before loading the
 models, artwork can be imported from an HTTPS URL or a file. After loading,
 the art editor also offers an editable prompt and **Regenerate art**, which
 preserves the card text. Image imports are validated in the browser, limited
@@ -60,15 +67,30 @@ Repeated slogans, captions and editing hints are omitted; device requirements st
 collapsed behind the download note. Music and sound cues are optional;
 the page remains fully usable with sound disabled.
 
-The gently spinning header jewel reuses Aurum's pearl materials, spindle-cut
-gemstones and refraction shader, baked into a transparent animation. Click it
-to compare the default dual tetrahedron with a champagne cube; the choice is
-remembered. `?logo=dual` and `?logo=cube` select either directly. Reduced motion
-uses a still image. No extra WebGL context or 3D library is loaded by the page.
+The small gold cube remains in the header. A larger, gently spinning jeweled
+cube sits above “Imagine it” on desktop, reusing Aurum's pearl materials,
+spindle-cut gemstones and refraction shader. The surrounding image is transparent;
+gemstone facets are slightly translucent while gold and pearls stay opaque.
+Click the jewel to compare the dual tetrahedron; new visits default to the cube.
+`?logo=dual` and `?logo=cube` select either directly. Reduced motion uses a still.
+Mobile keeps the carousel and does not download the large jewel animation.
+No extra WebGL context or 3D library is loaded by the page. The background's
+dark overlay is lighter on both desktop and mobile.
 See [the jewel studio](../logo-studio/README.md) for source and reproduction.
 The [jewel and deletion receipt](../forge-jewels-verification-20261010.json)
 records desktop/mobile browser checks, artwork-preserving Undo, storage-error
 handling, WebKit layout checks and the deployed asset hashes.
+
+The [hero and carousel receipt](../forge-hero-verification-20261010.json) records
+translucent jewel checks, desktop/mobile layouts, smooth rarity gestures, delayed
+carousel loading, neighboring asset prefetch, and the blue/red land frame.
+
+```bash
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-forge-logo.mjs
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-forge-rarity.mjs
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ node check-forge-carousel.mjs
+# All three accept FORGE_BROWSER=webkit and FORGE_EVIDENCE=/path/to/output.
+```
 
 ## Models and runtime
 
@@ -196,16 +218,21 @@ the previously seen `special-the` ability-row overlap; it is not a passing gate.
 ## Symbol and number editing
 
 Symbols and numbers use wheels **on their printed positions**, with neighboring
-choices above/below. There is no scroller dialog. Hold outside the neutral zone
+choices above/below. There is no scroller dialog. For vertical wheels, hold outside the neutral zone
 (16px with a mouse, 24px on touch) to start scrolling after a 300ms dwell.
-Holding farther from the center accelerates it, capped at four notches/second.
+This vertical motion accelerates with distance, capped at four notches/second.
 Moving upward pulls previous choices downward into the slot.
 Returning to center, leaving, releasing touch, blurring or hiding the page stops
 repeat scrolling. A short synthesized click plays at each snap when sound is on.
 Touch uses 54px spacing to expose choices around the finger. Reduced motion
 removes the snap animation. Mouse wheel/trackpad and arrow keys also work.
-Trackpad scrolling needs 90px per step and ignores repeated steps within 180ms
-to limit jumps from a burst of events; line-mode mouse wheels use three lines.
+Vertical trackpad scrolling needs 90px per step and ignores repeated steps within
+180ms to limit burst jumps. Horizontal rarity moves continuously after an 8px
+mouse / 12px touch neutral zone, with speed eased over 180ms and capped at
+2.4 notches/second. Moving farther sideways gradually accelerates it. Centering
+or releasing snaps to the nearest rarity. Trackpad gestures retain their starting
+axis through small diagonal jitter, and settle after 180ms without input.
+Line-mode mouse wheels scale each line to 24px.
 
 - Click a printed mana symbol to change it; **+** adds another and **−** removes
   the selected symbol. Committing orders mana and combines generic amounts.

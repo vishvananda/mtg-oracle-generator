@@ -19,20 +19,31 @@ try{
   const context=await browser.newContext({viewport:{width:1440,height:900}});
   await context.addInitScript(()=>localStorage.setItem('forge-sound','off'));
   const page=await context.newPage();track(page);const requests=[];page.on('request',r=>requests.push(r.url()));
-  await page.goto(base);await settled(page,'dual');
+  await page.goto(base);await settled(page,'cube');
   await cardReady(page);
-  check('dual tetrahedron is the first-visit default',await page.locator('#jewel-toggle').getAttribute('data-design')==='dual');
-  check('unused cube animation is not downloaded',!requests.some(u=>u.endsWith('/jewel-cube.webp')));
+  check('cube is the first-visit default',await page.locator('#jewel-toggle').getAttribute('data-design')==='cube');
+  check('unused dual animation is not downloaded',!requests.some(u=>u.endsWith('/jewel-dual.webp')));
+  check('header retains the small gold cube',await page.locator('.masthead .wordmark svg').count()===1&&await page.locator('.masthead img').count()===0);
+  check('large jewel sits above Imagine it',await page.evaluate(()=>{const j=document.querySelector('#jewel-toggle').getBoundingClientRect(),h=document.querySelector('#hero-title').getBoundingClientRect();return j.width>=240&&j.bottom<=h.top&&j.top>64;}));
   check('logo imports no 3D engine or model runtime',!requests.some(u=>/three|logo-studio|local-models|\.wasm|\.gguf/.test(u)));
-  check('logo creates no canvas or WebGL context',await page.locator('.brand canvas').count()===0);
+  check('logo creates no canvas or WebGL context',await page.locator('#jewel-toggle canvas').count()===0);
   const first=await page.locator('#jewel-toggle img').screenshot();await page.waitForTimeout(800);
   check('the native WebP visibly rotates',!first.equals(await page.locator('#jewel-toggle img').screenshot()));
-  await page.screenshot({path:`${out}/desktop-dual.png`});
-  await page.locator('#jewel-toggle').click();await settled(page,'cube');
-  check('click changes to the cube and keeps the card visible',await page.locator('.card-design-preview').isVisible());
   await page.screenshot({path:`${out}/desktop-cube.png`});
-  await page.reload();await settled(page,'cube');await cardReady(page);check('choice persists across reloads',true);
-  await page.goto(url('dual'));await settled(page,'dual');await cardReady(page);check('comparison URL overrides the stored choice',true);
+  await page.locator('#jewel-toggle').hover();
+  check('jewel has no CSS glow or shadow',await page.locator('#jewel-toggle img').evaluate(e=>getComputedStyle(e).filter==='none'));
+  check('large source preserves background alpha and translucent stones',await page.evaluate(async()=>{
+    const im=await createImageBitmap(await fetch(new URL('./assets/jewel-cube-still.webp',location.href)).then(r=>r.blob()));
+    const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const ctx=c.getContext('2d');ctx.drawImage(im,0,0);
+    const pixels=ctx.getImageData(0,0,c.width,c.height).data;let clear=0,glass=0,opaque=0;
+    for(let i=3;i<pixels.length;i+=4){if(pixels[i]===0)clear++;else if(pixels[i]<250)glass++;else opaque++;}
+    im.close();return c.width>=384&&clear>pixels.length/12&&glass/(glass+opaque)>.15&&opaque>1000;
+  }));
+  await page.locator('#jewel-toggle').click();await settled(page,'dual');
+  check('click changes to the dual and keeps the card visible',await page.locator('.card-design-preview').isVisible());
+  await page.screenshot({path:`${out}/desktop-dual.png`});
+  await page.reload();await settled(page,'cube');await cardReady(page);check('new visits default to the requested cube',true);
+  await page.goto(url('dual'));await settled(page,'dual');await cardReady(page);check('comparison URL still selects the dual',true);
   await page.locator('#jewel-toggle').focus();await page.keyboard.press('Space');await settled(page,'cube');
   await page.keyboard.press('Enter');await settled(page,'dual');
   check('Space and Enter switch the jewel accessibly',(await page.locator('#jewel-toggle').getAttribute('aria-label')).includes('Switch to cube'));
@@ -48,12 +59,12 @@ try{
   const phone=await mobile.newPage();track(phone);const mobileRequests=[];phone.on('request',r=>mobileRequests.push(r.url()));
   await phone.goto(url('cube'));await settled(phone,'cube',true);
   await cardReady(phone);
-  check('reduced-motion first visit downloads no animation',!mobileRequests.some(u=>/jewel-(cube|dual)\.webp$/.test(u)));
-  await phone.locator('#jewel-toggle').tap();await settled(phone,'dual',true);check('touch switches designs without navigating',new URL(phone.url()).pathname===new URL(base).pathname);
+  check('mobile downloads no large animation',!mobileRequests.some(u=>/jewel-(cube|dual)\.webp$/.test(u)));
+  check('mobile keeps the gold mark and card carousel',await phone.locator('.wordmark svg').isVisible()&&await phone.locator('.card-design-preview').isVisible()&&!(await phone.locator('#jewel-toggle').isVisible()));
   for(const width of [390,320]){
     await phone.setViewportSize({width,height:844});
     check(`mobile header fits ${width}px without overlap`,await phone.evaluate(()=>{
-      const brand=document.querySelector('.brand').getBoundingClientRect(),sound=document.querySelector('#sound-toggle').getBoundingClientRect();
+      const brand=document.querySelector('.wordmark').getBoundingClientRect(),sound=document.querySelector('#sound-toggle').getBoundingClientRect();
       return brand.right+5<=sound.left&&document.documentElement.scrollWidth<=innerWidth;
     }));
     await phone.screenshot({path:`${out}/mobile-${width}.png`,fullPage:true});

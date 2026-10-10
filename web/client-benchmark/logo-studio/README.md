@@ -15,18 +15,22 @@ No screenshots or remote assets are needed to reproduce the images.
 - **Cube:** eight alternating ivory / pale-gold pearls and twelve champagne
   spindle stones. The midpoint color requirement applies only to the dual.
 
-The browser gets a transparent, 192 × 192 animated WebP: 360 frames over a
-24-second rotation. It does **not** load Three.js or execute the gem shaders.
-This keeps a second WebGL renderer away from the card renderer and local models.
-The header only downloads the chosen animation, remembers the choice, and uses
-a still image when reduced motion is requested or the logo/page is hidden.
-The dual loop is 1.73 MB and the cube is 2.46 MB, fetched only when selected;
-the stills are 6.4 / 8.6 KB. This trades a larger download for avoiding live
-gemstone ray tracing. It is not a device benchmark against live WebGL, and
-the current header does not support interactive rotation. The complete scene
-remains available for an interactive version.
-Query parameters `?logo=dual` and `?logo=cube` override a stored choice for
-comparison. Clicking the logo changes designs; the adjacent wordmark is Home.
+The browser gets a transparent, 384 × 384 animated WebP: 360 frames over a
+24-second rotation. The original optical calculations are preserved; `scene.js`
+adjusts the output alpha from 0.76 to 0.96 with Fresnel strength so the page
+shows through gemstone facets. Pearls and gold stay opaque. There is no added
+CSS glow or shadow. The page does **not** load Three.js or execute the gem shaders.
+This keeps another WebGL renderer away from the card renderer and local models.
+
+The large jewel above the desktop headline defaults to the cube. Only the chosen
+animation is downloaded; reduced motion or a hidden jewel/page uses a still.
+Mobile keeps the small gold wireframe header mark and fetches no animation.
+The dual loop is 6.13 MB and the cube is 8.69 MB; stills are 23 / 31 KB. Encoding
+uses WebP quality 88, method 4, with full alpha quality (stills use quality 94).
+This is not a device benchmark against live WebGL. The complete scene remains
+available for an interactive version; the baked image cannot be freely rotated.
+`?logo=dual` and `?logo=cube` select a design for comparison. Clicking the large
+jewel switches designs; the header wordmark remains Home.
 
 From `web/client-benchmark`:
 
@@ -34,7 +38,7 @@ From `web/client-benchmark`:
 npm ci
 python3 -m venv /tmp/cardforge-logo-venv
 /tmp/cardforge-logo-venv/bin/pip install -r logo-studio/requirements.txt
-CHROME_BIN=/path/to/chrome LOGO_SIZE=192 LOGO_FRAME_COUNT=360 \
+CHROME_BIN=/path/to/chrome LOGO_SIZE=384 LOGO_FRAME_COUNT=360 \
   node logo-studio/render.mjs
 /tmp/cardforge-logo-venv/bin/python logo-studio/encode.py \
   /tmp/cardforge-jewel-frames forge/assets

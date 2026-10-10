@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("frames", type=Path)
 parser.add_argument("output", type=Path)
 parser.add_argument("--duration", type=int, default=24000)
+parser.add_argument("--quality", type=int, default=88)
 args = parser.parse_args()
 assert features.check("webp_anim"), "Pillow must support animated WebP"
 args.output.mkdir(parents=True, exist_ok=True)
@@ -23,9 +24,10 @@ for kind in ("dual", "cube"):
                  for i in range(len(images))]
     animated = args.output / f"jewel-{kind}.webp"
     still = args.output / f"jewel-{kind}-still.webp"
+    print(f"Encoding {kind} at {images[0].width}px with full alpha…", flush=True)
     images[0].save(animated, save_all=True, append_images=images[1:], duration=durations,
-                   loop=0, quality=82, method=6, minimize_size=True)
-    images[0].save(still, quality=90, method=6)
+                   loop=0, quality=args.quality, method=4, alpha_quality=100)
+    images[0].save(still, quality=94, method=4, alpha_quality=100)
     with Image.open(animated) as encoded:
         assert encoded.n_frames == len(images) and encoded.info["loop"] == 0
         assert encoded.mode == "RGBA", "The logo must retain transparency"

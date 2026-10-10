@@ -1,0 +1,620 @@
+{
+  "date": "2026-10-10",
+  "deployment": {
+    "release": "/srv/mtg-oracle-client/releases/20261010T052253Z",
+    "previous_release": "/srv/mtg-oracle-client/releases/20261010T045446Z",
+    "build": {
+      "version": "a99e5a25c31d",
+      "built_at": "2026-10-10T05:22:43.241Z"
+    }
+  },
+  "changes": [
+    "Larger translucent Aurum cube above the desktop headline; restored gold cube header mark.",
+    "Less dark background overlay on desktop and mobile.",
+    "Continuous horizontal rarity motion with eased speed and nearest snap; trackpad axis lock.",
+    "Carousel remains faded until the latest requested card is ready; prefetches both neighbors without extra foil renderers.",
+    "Land frame accents use produced mana and basic subtypes without changing saved card colors."
+  ],
+  "checks": {
+    "ui": {
+      "url": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "demo artwork has a derived etching mask",
+        "Forge symbol appears on the type line",
+        "Forge symbol is used for the foil stamp",
+        "page is named MTG CardForge with only the legal policy link",
+        "fan content notice is visible",
+        "desktop can edit before loading models",
+        "Card details is removed and examples cannot be deleted",
+        "initial renderer imports no model runtime",
+        "music is not downloaded before interaction",
+        "card and controls fit 1440x900",
+        "card and controls fit 1366x768",
+        "card and controls fit 1024x640",
+        "carousel shows a planeswalker",
+        "standalone rules accessibility copy is visually clipped",
+        "loyalty costs fit inside their badges",
+        "carousel navigation",
+        "opening theme plays after interaction",
+        "sound toggle mutes music",
+        "manual name edit appears in carousel",
+        "name edits inside the card without a popup",
+        "editing freezes card tilt",
+        "Escape restores the previous name",
+        "rules editing supports real multiline text",
+        "rules save on the card",
+        "switching fields saves and opens the next inline edit",
+        "clicking Save card commits inline text and exports",
+        "artist credit is directly editable",
+        "searchable set picker updates card symbol",
+        "chosen set is saved with the card",
+        "scrollable mana symbols build and order the saved cost",
+        "art-frame click switches to the new renderer\u2019s old frame",
+        "outer-border click selects white stock",
+        "Cold foil is available and saved",
+        "frame can switch back to modern",
+        "artwork URL and file available before loading",
+        "URL artwork is stored as a validated image blob",
+        "edits persist without models",
+        "mute preference survives reload",
+        "invalid artwork keeps the editor open",
+        "manual card export works",
+        "deleting the last saved card returns to intact examples",
+        "deletion offers keyboard-focused Undo",
+        "Undo restores every saved field and the artwork bytes",
+        "restored card survives reload",
+        "failed deletion keeps the card in storage and on screen",
+        "confirmed deletion persists across reloads",
+        "mobile shows carousel and edit button",
+        "mobile fan content notice is visible",
+        "mobile hides model loading",
+        "mobile has no horizontal overflow",
+        "mobile focuses its inline name field without a popup",
+        "mobile art editor uses URL or file",
+        "mobile never requests model code or weights",
+        "mobile deletion returns to examples without a modal",
+        "mobile Undo restores the selected card",
+        "fixture generation replaces demo with designed card and artwork",
+        "loaded models expose editable art prompt",
+        "art regeneration preserves rules and records new prompt",
+        "another generation appends to carousel",
+        "cancel retains finished text",
+        "deleting one creation preserves all neighboring cards",
+        "Undo reinserts the creation and selects it",
+        "all tested flows have no uncaught JavaScript errors"
+      ],
+      "inference": "UI fixture only; real GPU inference is not claimed",
+      "errors": []
+    },
+    "jewel_chromium": {
+      "url": "http://127.0.0.1:8793/forge/",
+      "browser": "chromium",
+      "checks": [
+        "cube is the first-visit default",
+        "unused dual animation is not downloaded",
+        "header retains the small gold cube",
+        "large jewel sits above Imagine it",
+        "logo imports no 3D engine or model runtime",
+        "logo creates no canvas or WebGL context",
+        "the native WebP visibly rotates",
+        "jewel has no CSS glow or shadow",
+        "large source preserves background alpha and translucent stones",
+        "click changes to the dual and keeps the card visible",
+        "new visits default to the requested cube",
+        "comparison URL still selects the dual",
+        "Space and Enter switch the jewel accessibly",
+        "reduced motion switches to a still image",
+        "motion preference changes resume the spin",
+        "desktop page still fits 1440x900",
+        "desktop page still fits 1366x768",
+        "desktop page still fits 1024x640",
+        "mobile downloads no large animation",
+        "mobile keeps the gold mark and card carousel",
+        "mobile header fits 390px without overlap",
+        "mobile header fits 320px without overlap",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "carousel_chromium": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "initial card stays blank while artwork loads",
+        "both neighboring artworks start before navigation",
+        "unrelated cards are not eagerly downloaded",
+        "preloading never adds visible or editable card copies",
+        "snapshot preserves outgoing foil pixels",
+        "outgoing card stays faded while waiting (300ms sample)",
+        "incomplete incoming card stays hidden (300ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "rapid navigation reveals only the latest requested card",
+        "late neighboring assets cannot restore a stale card",
+        "legendary land gets the blue/red frame",
+        "land retains its land panels",
+        "foil is ready before the land appears",
+        "regular land uses the same blue/red frame",
+        "editing the land preserves its actual colorless data",
+        "frame accents follow produced mana and land subtypes, not activation costs",
+        "reduced motion has no card transition animations",
+        "no model runtime is fetched",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "carousel_webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "initial card stays blank while artwork loads",
+        "both neighboring artworks start before navigation",
+        "unrelated cards are not eagerly downloaded",
+        "preloading never adds visible or editable card copies",
+        "snapshot preserves outgoing foil pixels",
+        "outgoing card stays faded while waiting (300ms sample)",
+        "incomplete incoming card stays hidden (300ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "rapid navigation reveals only the latest requested card",
+        "late neighboring assets cannot restore a stale card",
+        "legendary land gets the blue/red frame",
+        "land retains its land panels",
+        "foil is ready before the land appears",
+        "regular land uses the same blue/red frame",
+        "editing the land preserves its actual colorless data",
+        "frame accents follow produced mana and land subtypes, not activation costs",
+        "reduced motion has no card transition animations",
+        "no model runtime is fetched",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "mobile_and_loading": {
+      "engine": "chromium",
+      "url": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "mobile title matches printed font, size, line height and tracking",
+        "scaled input creates no viewport overflow",
+        "pinch zoom remains enabled",
+        "keyboard-sized viewport preserves card width and height",
+        "title still matches after keyboard resize",
+        "card stays full size while the keyboard is closing",
+        "normal responsive sizing resumes after the keyboard closes",
+        "rules input matches the printed font and size",
+        "old-frame title keeps its Goudy font and metrics",
+        "first card is blank while its artwork loads",
+        "no fallback copy is exposed on first load",
+        "snapshot retains the previous card while the next loads",
+        "retained preview includes its rendered foil pixels",
+        "previous card remains faded while the next loads",
+        "new fallback card remains hidden",
+        "rapid navigation shows the latest requested card",
+        "late assets do not replace the newer card",
+        "editable areas use a soft highlight instead of dashed outlines",
+        "keyboard controls keep a visible focus indicator",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": [],
+      "limits": "Browser mobile emulation and simulated viewport resize; physical iOS keyboard not exercised."
+    },
+    "jewel_webkit": {
+      "url": "http://127.0.0.1:8793/forge/",
+      "browser": "webkit",
+      "checks": [
+        "cube is the first-visit default",
+        "unused dual animation is not downloaded",
+        "header retains the small gold cube",
+        "large jewel sits above Imagine it",
+        "logo imports no 3D engine or model runtime",
+        "logo creates no canvas or WebGL context",
+        "the native WebP visibly rotates",
+        "jewel has no CSS glow or shadow",
+        "large source preserves background alpha and translucent stones",
+        "click changes to the dual and keeps the card visible",
+        "new visits default to the requested cube",
+        "comparison URL still selects the dual",
+        "Space and Enter switch the jewel accessibly",
+        "reduced motion switches to a still image",
+        "motion preference changes resume the spin",
+        "desktop page still fits 1440x900",
+        "desktop page still fits 1366x768",
+        "desktop page still fits 1024x640",
+        "mobile downloads no large animation",
+        "mobile keeps the gold mark and card carousel",
+        "mobile header fits 390px without overlap",
+        "mobile header fits 320px without overlap",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "rarity_webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "small horizontal movements keep the current rarity",
+        "rarity moves fractionally before its first snap",
+        "speed starts below its target and ramps up",
+        "moving farther sideways gradually increases speed",
+        "horizontal movement preserves the chosen set",
+        "set names stay still while rarity slides",
+        "small diagonal drift stays on the rarity axis",
+        "returning to center snaps and stops",
+        "a held sideways movement advances rarity",
+        "leftward movement reverses rarity without changing set",
+        "trackpad motion shows partial progress",
+        "trackpad gesture snaps one rarity despite diagonal noise",
+        "selected rarity persists",
+        "no JavaScript errors"
+      ],
+      "samples": {
+        "near": {
+          "x": 1,
+          "y": 0,
+          "speed": 0.26976614406150784,
+          "target": 0.582334242534245,
+          "progress": 0.024100372773879233,
+          "translate": "-1.113889px"
+        },
+        "farEarly": {
+          "x": 1,
+          "y": 0,
+          "speed": 0.7251731507005498,
+          "target": 2.251479664947761,
+          "progress": 0.05818351085680507,
+          "translate": "-2.689169px"
+        },
+        "farLater": {
+          "x": 1,
+          "y": 0,
+          "speed": 1.7655025139114318,
+          "target": 2.251479664947761,
+          "progress": 0.36197742550121587,
+          "translate": "-16.730144px"
+        }
+      },
+      "errors": []
+    },
+    "direct_editing": {
+      "base": "http://127.0.0.1:8793/forge/",
+      "engine": "chromium",
+      "checks": [
+        "stats wheel opens directly on card without popup",
+        "selected stat replaces the printed number",
+        "wheel changes number without scrolling the page",
+        "small pointer movements stay in the neutral zone",
+        "passing over choices does not start scrolling",
+        "held pointer accelerates at a controlled pace (1 vs 3)",
+        "trackpad bursts cannot skip many choices",
+        "returning to center stops repeat",
+        "leaving wheel stops repeat",
+        "Escape restores original stats",
+        "mana wheel is centered on actual printed symbol",
+        "mana merges and sorts only on commit",
+        "edited card can return to example carousel",
+        "five examples remain available",
+        "set wheel stays centered on the printed set mark",
+        "horizontal keys change rarity",
+        "typing jumps directly to a set",
+        "incoming sets show names beside all four symbols",
+        "set outlines survive rarity coloring",
+        "reading a set name does not scroll rarity",
+        "clicking a set name selects exactly that set",
+        "set selection applies",
+        "direct type edits retain supertypes and multiword subtypes",
+        "added types have a visible labeled remove action",
+        "removing an extra type retains the other words",
+        "last card type cannot be removed even with supertypes",
+        "Delete also preserves the last card type",
+        "type and supertype removal persist without dropping subtypes",
+        "frame menu contains three direct choices",
+        "one click applies old frame and closes menu",
+        "colored frame has broad hit area",
+        "ability cost opens on-card without editing all rules",
+        "signed ability cost persists",
+        "edited ability survives reload",
+        "touch neighbors have larger spacing",
+        "editing creates no horizontal overflow",
+        "held touch scrolls in the requested direction",
+        "lifting finger stops repeat",
+        "mobile set and rarity fan fits the viewport",
+        "mobile incoming set labels fit the viewport",
+        "mobile remove action has a visible touch target",
+        "mobile added type can be removed",
+        "no uncaught errors"
+      ],
+      "errors": [],
+      "limits": "Browser automation including emulated touch; not physical Safari/iPhone."
+    },
+    "live_carousel": {
+      "engine": "chromium",
+      "base": "https://tetrarchs.com/forge/",
+      "checks": [
+        "initial card stays blank while artwork loads",
+        "both neighboring artworks start before navigation",
+        "unrelated cards are not eagerly downloaded",
+        "preloading never adds visible or editable card copies",
+        "snapshot preserves outgoing foil pixels",
+        "outgoing card stays faded while waiting (300ms sample)",
+        "incomplete incoming card stays hidden (300ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "rapid navigation reveals only the latest requested card",
+        "late neighboring assets cannot restore a stale card",
+        "legendary land gets the blue/red frame",
+        "land retains its land panels",
+        "foil is ready before the land appears",
+        "regular land uses the same blue/red frame",
+        "editing the land preserves its actual colorless data",
+        "frame accents follow produced mana and land subtypes, not activation costs",
+        "reduced motion has no card transition animations",
+        "no model runtime is fetched",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "live_rarity": {
+      "engine": "chromium",
+      "base": "https://tetrarcum.com/",
+      "checks": [
+        "small horizontal movements keep the current rarity",
+        "rarity moves fractionally before its first snap",
+        "speed starts below its target and ramps up",
+        "moving farther sideways gradually increases speed",
+        "horizontal movement preserves the chosen set",
+        "set names stay still while rarity slides",
+        "small diagonal drift stays on the rarity axis",
+        "returning to center snaps and stops",
+        "a held sideways movement advances rarity",
+        "leftward movement reverses rarity without changing set",
+        "trackpad motion shows partial progress",
+        "trackpad gesture snaps one rarity despite diagonal noise",
+        "selected rarity persists",
+        "touch moves rarity horizontally and settles on release",
+        "lifting the finger stops movement",
+        "no JavaScript errors"
+      ],
+      "samples": {
+        "near": {
+          "x": 1,
+          "y": 0,
+          "speed": 0.39751148425767535,
+          "target": 0.6222222222222221,
+          "progress": 0.047930857938843274,
+          "translate": "-2.2153px"
+        },
+        "farEarly": {
+          "x": 1,
+          "y": 0,
+          "speed": 1.3888034224477717,
+          "target": 2.273971193415638,
+          "progress": 0.19433923654188673,
+          "translate": "-8.98212px"
+        },
+        "farLater": {
+          "x": 1,
+          "y": 0,
+          "speed": 1.9825720758719523,
+          "target": 2.273971193415638,
+          "progress": 0.5471153188991386,
+          "translate": "-25.287px"
+        }
+      },
+      "errors": []
+    }
+  },
+  "transport": [
+    {
+      "url": "https://tetrarchs.com/forge/build.json",
+      "status": 200,
+      "bytes": 65,
+      "sha256": "0070a9de1f5abfc35074009ee5e84a9195e098acb046853a8e155bd230a32292"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/index.html",
+      "status": 200,
+      "bytes": 6616,
+      "sha256": "5e337aee83240356317c592be8b66592158326ee1b06b76487d49ddc879fd32e"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/style.css",
+      "status": 200,
+      "bytes": 27556,
+      "sha256": "89c5a21b81417a9d86f1f1cf389baa80479d80fb263bb5f7c0105ea35ec187cf"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/main.js",
+      "status": 200,
+      "bytes": 22090,
+      "sha256": "4e743a5c54c407912dde37cbfd476cc16ed8c96929f55011abd57b1907dee8b8"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/cards.js",
+      "status": 200,
+      "bytes": 7194,
+      "sha256": "a731254513a2c71aa7bf5d14b21e17155c833f668dba85738a9a43725b66b68b"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/renderer.js",
+      "status": 200,
+      "bytes": 6935,
+      "sha256": "cf2b423b1ec56d22d035da306a1cfa2f9c379c1cb64231d9ddb3cc1a9dae98a5"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/preload.js",
+      "status": 200,
+      "bytes": 2533,
+      "sha256": "7377f395ddebfb12917e88b78724374812ac7ad6a685302c6f618c5cefaf7fe1"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/preview-ready.js",
+      "status": 200,
+      "bytes": 6267,
+      "sha256": "1c6a848e5e2716be0d52d4953a6eb72483e6cd438f960cac49ed58d98dd2da88"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/scroll-picker.js",
+      "status": 200,
+      "bytes": 10562,
+      "sha256": "a5d211bc67231090f111fa44cff1b9164a829af4a2b5a9e9ee7aacc4cdce4b9a"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/jewel-logo.js",
+      "status": 200,
+      "bytes": 1617,
+      "sha256": "863d78962435ac970c88ba22c76c4cd7ed98e3e7507e9bf2464de0f1bbf08e5a"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/assets/jewel-cube.webp",
+      "status": 200,
+      "bytes": 8686580,
+      "sha256": "649461efbd12c3adcee16ef924a5bd25391d91baf266be468e71f162fcce7a51"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/assets/jewel-dual.webp",
+      "status": 200,
+      "bytes": 6133042,
+      "sha256": "099c9cc913b45e2690fef0fc712fb483801b9e2dd83500d88efe601f7ec2d355"
+    },
+    {
+      "url": "https://tetrarcum.com/build.json",
+      "status": 200,
+      "bytes": 65,
+      "sha256": "0070a9de1f5abfc35074009ee5e84a9195e098acb046853a8e155bd230a32292"
+    },
+    {
+      "url": "https://tetrarcum.com/index.html",
+      "status": 200,
+      "bytes": 6616,
+      "sha256": "5e337aee83240356317c592be8b66592158326ee1b06b76487d49ddc879fd32e"
+    },
+    {
+      "url": "https://tetrarcum.com/style.css",
+      "status": 200,
+      "bytes": 27556,
+      "sha256": "89c5a21b81417a9d86f1f1cf389baa80479d80fb263bb5f7c0105ea35ec187cf"
+    },
+    {
+      "url": "https://tetrarcum.com/main.js",
+      "status": 200,
+      "bytes": 22090,
+      "sha256": "4e743a5c54c407912dde37cbfd476cc16ed8c96929f55011abd57b1907dee8b8"
+    },
+    {
+      "url": "https://tetrarcum.com/cards.js",
+      "status": 200,
+      "bytes": 7194,
+      "sha256": "a731254513a2c71aa7bf5d14b21e17155c833f668dba85738a9a43725b66b68b"
+    },
+    {
+      "url": "https://tetrarcum.com/renderer.js",
+      "status": 200,
+      "bytes": 6935,
+      "sha256": "cf2b423b1ec56d22d035da306a1cfa2f9c379c1cb64231d9ddb3cc1a9dae98a5"
+    },
+    {
+      "url": "https://tetrarcum.com/preload.js",
+      "status": 200,
+      "bytes": 2533,
+      "sha256": "7377f395ddebfb12917e88b78724374812ac7ad6a685302c6f618c5cefaf7fe1"
+    },
+    {
+      "url": "https://tetrarcum.com/preview-ready.js",
+      "status": 200,
+      "bytes": 6267,
+      "sha256": "1c6a848e5e2716be0d52d4953a6eb72483e6cd438f960cac49ed58d98dd2da88"
+    },
+    {
+      "url": "https://tetrarcum.com/scroll-picker.js",
+      "status": 200,
+      "bytes": 10562,
+      "sha256": "a5d211bc67231090f111fa44cff1b9164a829af4a2b5a9e9ee7aacc4cdce4b9a"
+    },
+    {
+      "url": "https://tetrarcum.com/jewel-logo.js",
+      "status": 200,
+      "bytes": 1617,
+      "sha256": "863d78962435ac970c88ba22c76c4cd7ed98e3e7507e9bf2464de0f1bbf08e5a"
+    },
+    {
+      "url": "https://tetrarcum.com/assets/jewel-cube.webp",
+      "status": 200,
+      "bytes": 8686580,
+      "sha256": "649461efbd12c3adcee16ef924a5bd25391d91baf266be468e71f162fcce7a51"
+    },
+    {
+      "url": "https://tetrarcum.com/assets/jewel-dual.webp",
+      "status": 200,
+      "bytes": 6133042,
+      "sha256": "099c9cc913b45e2690fef0fc712fb483801b9e2dd83500d88efe601f7ec2d355"
+    }
+  ],
+  "jewels": {
+    "duration_ms": 24000,
+    "designs": {
+      "dual": {
+        "frames": 360,
+        "width": 384,
+        "height": 384,
+        "bytes": 6133042,
+        "still_bytes": 22958,
+        "all_frames_unclipped": true
+      },
+      "cube": {
+        "frames": 360,
+        "width": 384,
+        "height": 384,
+        "bytes": 8686580,
+        "still_bytes": 30978,
+        "all_frames_unclipped": true
+      }
+    }
+  },
+  "source_sha256": {
+    "forge/index.html": "6c3176975bcf8cb7e55afaa3d09dd93a4ed9129a1e1fbb98703d657555b6d9c2",
+    "forge/main.js": "06b6cff91a07f0513baa61b05d183738ed71cd54f65960d58637e88f5167d8d6",
+    "forge/style.css": "89c5a21b81417a9d86f1f1cf389baa80479d80fb263bb5f7c0105ea35ec187cf",
+    "forge/cards.js": "a731254513a2c71aa7bf5d14b21e17155c833f668dba85738a9a43725b66b68b",
+    "forge/renderer.js": "0618b2af54ddb26773106e4008a1d744eea36209770dabca2d3ce9cdba03aec4",
+    "forge/preview-ready.js": "1c6a848e5e2716be0d52d4953a6eb72483e6cd438f960cac49ed58d98dd2da88",
+    "forge/preload.js": "5ea0df6b0f2205d25601e9ed101ac19bfea1ec968dbba448b66ba9cd3b5c4347",
+    "forge/scroll-picker.js": "a5d211bc67231090f111fa44cff1b9164a829af4a2b5a9e9ee7aacc4cdce4b9a",
+    "forge/jewel-logo.js": "863d78962435ac970c88ba22c76c4cd7ed98e3e7507e9bf2464de0f1bbf08e5a",
+    "logo-studio/scene.js": "6ddd06d0d25c990400dcfedc20bc5345d72f25ff114d7ae4ab78e35217023a23",
+    "logo-studio/optics.js": "9c6d3ec0b1a6db548bc89e239cb8ee3d4956ad72de6e870081fac7d59d26872f"
+  },
+  "renderer_files": {
+    "card-preview.js": {
+      "bytes": 226509,
+      "gzip_bytes": 69741,
+      "sha256": "69ff1b6208fab464bd5a590de598fd15f9bbe2e7bf712f12abe251c63b4221d8"
+    },
+    "card-preview.css": {
+      "bytes": 24869,
+      "gzip_bytes": 5620,
+      "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073"
+    }
+  },
+  "evidence_directory": "/home/vishvananda/vizier-editor-artifacts/forge-20261010-hero",
+  "earlier_checks": {
+    "build": "cd5ace09b2ee",
+    "suites": [
+      "jewel_webkit",
+      "rarity_webkit",
+      "direct_editing"
+    ],
+    "note": "Before the later background, carousel and land changes; corresponding jewel/rarity source unchanged. Final carousel verified in Chromium and WebKit; final full UI and live rarity checks also pass."
+  },
+  "limits": [
+    "Chromium and Linux WebKit automation with phone emulation; no physical Safari/iPhone measurements.",
+    "Jewel is a baked WebP animation, not a new live WebGL benchmark. The Aurum optical calculations are retained, with gemstone output alpha adjusted from 0.76 to 0.96.",
+    "Model generation uses the explicit existing UI fixture; no new GPU inference or model quality benchmark.",
+    "Land accent inference covers explicit Add clauses and basic land subtypes; it is not a complete Oracle rules interpreter."
+  ]
+}

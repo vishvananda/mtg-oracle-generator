@@ -15,7 +15,7 @@ const active=()=>cards[index];
 let previewError=false,pendingEditor=null;
 $('card-preview').addEventListener('preview-error',()=>{previewError=true;message('The card could not finish loading. Reload the page to retry.',true);});
 $('card-preview').addEventListener('preview-pending',()=>controls());
-$('card-preview').addEventListener('preview-ready',()=>{controls();if(previewError){previewError=false;message('');}if(pendingEditor){const next=pendingEditor;pendingEditor=null;if(next.id===active().id)openEditor(next.part,next.detail);}});
+$('card-preview').addEventListener('preview-ready',()=>{controls();preloadNeighbors();if(previewError){previewError=false;message('');}if(pendingEditor){const next=pendingEditor;pendingEditor=null;if(next.id===active().id)openEditor(next.part,next.detail);}});
 function message(text,error=false){for(const id of ['message','mobile-message']){$(id).textContent=text;$(id).classList.toggle('error',error);}}
 function controls(){
   const previewPending=$('card-preview').getAttribute('aria-busy')==='true'&&!$('card-preview').dataset.previewAvailable;
@@ -37,15 +37,17 @@ function controls(){
   preview?.setBusy(busy);
   for(const b of $('dots').children)b.disabled=busy;
 }
+function preloadNeighbors(){
+  if(preview&&!busy&&cards.length>1)preview.preload([cards[(index+1)%cards.length],cards[(index+cards.length-1)%cards.length]]);
+}
 function draw(reveal=false){
   $('finish').value=active().finish_id||'vizier_etched_v1';
-  preview?.update(active(),busy?'ordinary':$('finish').value,editor?.part);
+  preview?.update(active(),busy?'ordinary':$('finish').value,editor?.part,reveal);
   $('card-caption').textContent=active().name;
   $('card-counter').textContent=`${String(index+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
   $('gallery-kind').textContent=active().demo?'Examples':'Your cards';
   $('dots').replaceChildren();
   cards.forEach((card,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Show ${card.name}`);b.setAttribute('aria-current',String(i===index));b.onclick=()=>show(i);$('dots').append(b);});
-  if(reveal&&!reduced.matches){$('card-holder').classList.remove('reveal');void $('card-holder').offsetWidth;$('card-holder').classList.add('reveal');}
   controls();
 }
 function show(i){if(busy||editor)return;index=(i+cards.length)%cards.length;lastChange=Date.now();draw(true);}
