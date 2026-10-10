@@ -15,7 +15,8 @@ console.log('Built dist/. Add model.json, system-prompt.txt and model shards bef
 const appFiles=(await readdir('dist/forge')).filter(f=>/\.(js|css|html)$/.test(f)).sort();
 const texts=await Promise.all(appFiles.map(f=>readFile(`dist/forge/${f}`,'utf8')));
 const rendererManifest=await readFile('dist/forge/renderer/manifest.json','utf8').catch(()=> '');
-const version=createHash('sha256').update(texts.join('\n')+rendererManifest).digest('hex').slice(0,12);
+const parserManifest=await readFile('dist/forge/mtgish/manifest.json','utf8').catch(()=> '');
+const version=createHash('sha256').update(texts.join('\n')+rendererManifest+parserManifest).digest('hex').slice(0,12);
 for(let i=0;i<appFiles.length;i++){
   const text=texts[i].replace(/(["'])(\.\/[^"'\s?]+\.(?:js|css|json))\1/g,(_,quote,path)=>`${quote}${path}?v=${version}${quote}`);
   await writeFile(`dist/forge/${appFiles[i]}`,text);

@@ -26,7 +26,7 @@ try{
   check('header retains the small gold cube',await page.locator('.masthead .wordmark svg').count()===1&&await page.locator('.masthead img').count()===0);
   check('large jewel sits above Imagine it',await page.evaluate(()=>{const j=document.querySelector('#jewel-toggle').getBoundingClientRect(),h=document.querySelector('#hero-title').getBoundingClientRect();return j.width>=370&&j.bottom<=h.top;}));
   check('animation is centered above the load button',await page.evaluate(()=>{const a=document.querySelector('#jewel-toggle').getBoundingClientRect(),b=document.querySelector('#load-button').getBoundingClientRect();return Math.abs(a.x+a.width/2-b.x-b.width/2)<1;}));
-  check('logo imports no 3D engine or model runtime',!requests.some(u=>/three|logo-studio|local-models|\.wasm|\.gguf/.test(u)));
+  check('logo imports no 3D engine or model runtime',!requests.some(u=>/three|logo-studio|local-models|\/vendor\/.*\.wasm|\.gguf/.test(u)));
   check('logo creates no canvas or WebGL context',await page.locator('#jewel-toggle canvas').count()===0);
   const first=await page.locator('#jewel-toggle img').screenshot();await page.waitForTimeout(800);
   check('the native WebP visibly rotates',!first.equals(await page.locator('#jewel-toggle img').screenshot()));

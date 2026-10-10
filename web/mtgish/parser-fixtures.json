@@ -1,0 +1,886 @@
+[
+  {
+    "card": {
+      "id": "demo-dragon",
+      "name": "Vesper, Eclipse Sovereign",
+      "mana_cost": "{3}{U}{B}{R}",
+      "type_line": "Legendary Creature \u2014 Dragon",
+      "colors": [
+        "U",
+        "B",
+        "R"
+      ],
+      "rarity": "mythic",
+      "power": "5",
+      "toughness": "5",
+      "oracle_text": "Flying, menace\nWhenever Vesper deals combat damage to a player, exile the top two cards of that player's library. Until the end of your next turn, you may play those cards, and you may spend mana as though it were mana of any type to cast those spells.",
+      "image": "dusk-wing.webp",
+      "description": "An ancient dragon that steals forgotten spells from its enemies.",
+      "art_prompt": "A regal black dragon with subtle gold scales glides through storm clouds over a ruined gothic city at dusk. Violet lightning illuminates the towers below. Highly detailed fantasy painting in a wide landscape composition. Painterly realism, expressive brushwork, intricate material textures, dramatic lighting, atmospheric depth, and rich, carefully balanced colors. A single cohesive scene fills the image edge to edge.",
+      "demo": true,
+      "artist": "MTG CardForge",
+      "illustration": "file:///home/vishvananda/vizier-editor/mtg-oracle-generator/web/client-benchmark/forge/assets/dusk-wing.webp"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Vesper, Eclipse Sovereign\nLegendary Creature - Dragon\n{3}{U}{B}{R}\nFlying, menace\nWhenever Vesper deals combat damage to a player, exile the top two cards of that player's library. Until the end of your next turn, you may play those cards, and you may spend mana as though it were mana of any type to cast those spells.\n5/5",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 98,
+        "context": "ce\nWhenever Vesper deals combat damage to a player, exile the top two cards of that player's library\u27eaHERE\u27eb. Until the end of your next turn, you may play those cards, and you may spend mana as though it were mana of any type to cast those spells.\n5/5",
+        "farthest_token_index": 61,
+        "line": 5,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "."
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "id": "demo-scholar",
+      "name": "Neris, Keeper of Lost Tides",
+      "mana_cost": "{2}{U}{U}",
+      "type_line": "Legendary Planeswalker \u2014 Neris",
+      "colors": [
+        "U"
+      ],
+      "rarity": "mythic",
+      "loyalty": "4",
+      "oracle_text": "+1: Scry 2.\n\u22122: Return target nonland permanent to its owner's hand.\n\u22127: You get an emblem with \"Whenever you draw a card, create a token that's a copy of target creature you control.\"",
+      "image": "tide-archivist.webp",
+      "description": "A merfolk planeswalker who reshapes reality from the memories of a sunken library.",
+      "art_prompt": "A merfolk scholar in flowing blue robes levitates a luminous pearl inside a flooded ancient library. Luminous fish weave between coral-encrusted shelves. Highly detailed fantasy painting in a wide landscape composition. Painterly realism, expressive brushwork, intricate material textures, dramatic lighting, atmospheric depth, and rich, carefully balanced colors. A single cohesive scene fills the image edge to edge.",
+      "demo": true,
+      "artist": "MTG CardForge",
+      "illustration": "file:///home/vishvananda/vizier-editor/mtg-oracle-generator/web/client-benchmark/forge/assets/tide-archivist.webp"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Neris, Keeper of Lost Tides\nLegendary Planeswalker - Neris\n{2}{U}{U}\n[+1]: Scry 2.\n[\u22122]: Return target nonland permanent to its owner's hand.\n[\u22127]: You get an emblem with \"Whenever you draw a card, create a token that's a copy of target creature you control\".\n4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 26,
+        "context": "Neris, Keeper of Lost Tides\nLegendary Planeswalker - \u27eaHERE\u27ebNeris\n{2}{U}{U}\n[+1]: Scry 2.\n[\u22122]: Return target nonland permanent to its owner's hand.\n[\u22127]: You get an emblem with \"Whenever you draw a card, create a token that's a copy of tar",
+        "farthest_token_index": 17,
+        "line": 2,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "Neris"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "id": "demo-stag",
+      "name": "Crownroot, Spring Eternal",
+      "mana_cost": "{3}{G}{G}",
+      "type_line": "Legendary Creature \u2014 Elk Spirit",
+      "colors": [
+        "G"
+      ],
+      "rarity": "mythic",
+      "power": "4",
+      "toughness": "6",
+      "oracle_text": "Vigilance\nWhenever another nontoken creature you control dies, create a 1/1 green Saproling creature token.\nTap five untapped creatures you control: Return target permanent card from your graveyard to your hand.",
+      "image": "grove-guardian.webp",
+      "description": "An ancient stag spirit that turns the fallen into new life and awakens the forest to reclaim forgotten relics.",
+      "art_prompt": "An enormous ancient stag with branching antlers covered in white flowers protects a moss-covered doorway in an enchanted forest. Morning light, floating pollen, roots and ferns. Highly detailed fantasy painting in a wide landscape composition. Painterly realism, expressive brushwork, intricate material textures, dramatic lighting, atmospheric depth, and rich, carefully balanced colors. A single cohesive scene fills the image edge to edge.",
+      "demo": true,
+      "artist": "MTG CardForge",
+      "illustration": "file:///home/vishvananda/vizier-editor/mtg-oracle-generator/web/client-benchmark/forge/assets/grove-guardian.webp"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Crownroot, Spring Eternal\", Typeline: (Supertypes: [Legendary], Cardtypes: [Creature], Subtypes: [Elk, Spirit]), ManaCost: [ManaCostGeneric(3), ManaCostG, ManaCostG], Rules: [Vigilance, TriggerA(WhenAPermanentDies(And([Other(ThisPermanent), And([IsNonToken, IsCardtype(Creature), ControlledByAPlayer(SinglePlayer(You))])])), ActionList([CreateTokens([TokenWithPT(PT(1, 1), Colors([Green]), [], [Creature], SubtypesList([Saproling]), [])], [])])), Activated(TapNumberPermanents(Integer(5), And([IsUntapped, IsCardtype(Creature), ControlledByAPlayer(SinglePlayer(You))])), Targeted([TargetGraveyardCard(And([IsPermanent, InAPlayersGraveyard(SinglePlayer(You))]))], ActionList([PutGraveyardCardIntoHand(Ref_TargetGraveyardCard)])))], CardPT: (Power: 4, Toughness: 6))",
+      "normalized_input": "Crownroot, Spring Eternal\nLegendary Creature - Elk Spirit\n{3}{G}{G}\nVigilance\nWhenever another nontoken creature you control dies, create a 1/1 green Saproling creature token.\nTap five untapped creatures you control: Return target permanent card from your graveyard to your hand.\n4/6",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "id": "demo-observatory",
+      "name": "Observatory Beyond the Veil",
+      "mana_cost": "",
+      "type_line": "Legendary Land",
+      "colors": [],
+      "rarity": "rare",
+      "oracle_text": "This land enters tapped unless you control a legendary creature.\n{T}: Add {U} or {R}.\n{2}{U}{R}, {T}: Copy target activated or triggered ability you control. You may choose new targets for the copy.",
+      "image": "observatory.webp",
+      "description": "A forgotten observatory that catches the echo of a spell in a distant constellation.",
+      "art_prompt": "An ancient open-air observatory on a mountain terrace at twilight, overlooking a misty valley and a distant ruined tower. A crescent moon, deep blue clouds, warm embers. Highly detailed fantasy painting in a wide landscape composition. Painterly realism, expressive brushwork, intricate material textures, dramatic lighting, atmospheric depth, and rich, carefully balanced colors. A single cohesive scene fills the image edge to edge.",
+      "demo": true,
+      "artist": "MTG CardForge",
+      "illustration": "file:///home/vishvananda/vizier-editor/mtg-oracle-generator/web/client-benchmark/forge/assets/observatory.webp"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Observatory Beyond the Veil\", Typeline: (Supertypes: [Legendary], Cardtypes: [Land], Subtypes: []), Rules: [AsPermanentEnters(ThisPermanent, [Unless(PlayerPassesFilter(You, ControlsA(And([IsSupertype(Legendary), IsCardtype(Creature)]))), [EntersTapped])]), Activated(TapPermanent(ThisPermanent), ActionList([AddMana(Or([ManaProduceU, ManaProduceR]))])), Activated(And([PayMana([ManaCostGeneric(2), ManaCostU, ManaCostR]), TapPermanent(ThisPermanent)]), Targeted([TargetAbility(And([Or([ActivatedAbility, TriggeredAbility]), ControlledByAPlayer(SinglePlayer(You))]))], ActionList([CopyAbilityAndMayChooseNewTargets(Ref_TargetAbility)])))])",
+      "normalized_input": "Observatory Beyond the Veil\nLegendary Land\nThis land enters tapped unless you control a legendary creature.\n{T}: Add {U} or {R}.\n{2}{U}{R}, {T}: Copy target activated or triggered ability you control. You may choose new targets for the copy.",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "id": "demo-giant",
+      "name": "Rhaz, Emberbound Artisan",
+      "mana_cost": "{2}{R}{R}",
+      "type_line": "Legendary Creature \u2014 Giant Artificer",
+      "colors": [
+        "R"
+      ],
+      "rarity": "rare",
+      "power": "4",
+      "toughness": "4",
+      "oracle_text": "Whenever you discard a card, create a Treasure token.\n{R}, Sacrifice an artifact: Exile the top card of your library. You may play that card this turn.",
+      "image": "ember-giant.webp",
+      "description": "A giant artificer who turns discarded ideas into treasure and burns his inventions for flashes of inspiration.",
+      "art_prompt": "A towering red-skinned giant blacksmith hammers a white-hot blade on a volcanic anvil. Sparks curl into the smoky twilight, black basalt mountains behind him. Highly detailed fantasy painting in a wide landscape composition. Painterly realism, expressive brushwork, intricate material textures, dramatic lighting, atmospheric depth, and rich, carefully balanced colors. A single cohesive scene fills the image edge to edge.",
+      "demo": true,
+      "artist": "MTG CardForge",
+      "illustration": "file:///home/vishvananda/vizier-editor/mtg-oracle-generator/web/client-benchmark/forge/assets/ember-giant.webp"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Rhaz, Emberbound Artisan\", Typeline: (Supertypes: [Legendary], Cardtypes: [Creature], Subtypes: [Giant, Artificer]), ManaCost: [ManaCostGeneric(2), ManaCostR, ManaCostR], Rules: [TriggerA(WhenAPlayerDiscardsACard(SinglePlayer(You), AnyCard), ActionList([CreateTokens([TreasureToken], [])])), Activated(And([PayMana([ManaCostR]), SacrificeAPermanent(IsCardtype(Artifact))]), ActionList([Exile([TheTopCardOfLibrary], []), CreatePlayerEffectUntil(You, [MayPlayExiledCard(TheCardExiledThisWay)], UntilEndOfTurn)]))], CardPT: (Power: 4, Toughness: 4))",
+      "normalized_input": "Rhaz, Emberbound Artisan\nLegendary Creature - Giant Artificer\n{2}{R}{R}\nWhenever you discard a card, create a Treasure token.\n{R}, Sacrifice an artifact: Exile the top card of your library. You may play that card this turn.\n4/4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Flying\nWhen CARDNAME enters, draw a card.",
+      "case": "add-keyword-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen Cloudwing Sentinel enters, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Cloudwing Sentinel",
+      "oracle_text": "Flying, vigilance\nWhen this creature enters, draw a card.",
+      "power": "2",
+      "rarity": "uncommon",
+      "toughness": "2",
+      "type_line": "Creature \u2014 Bird",
+      "case": "add-keyword-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, Vigilance, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying, vigilance\nWhen this creature enters, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Flying\nWhen CARDNAME enters, draw a card.",
+      "case": "stats-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen Cloudwing Sentinel enters, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Cloudwing Sentinel",
+      "oracle_text": "Flying\nWhen this creature enters, draw a card.",
+      "power": "3",
+      "rarity": "uncommon",
+      "toughness": "4",
+      "type_line": "Creature \u2014 Bird",
+      "case": "stats-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 3, Toughness: 4))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen this creature enters, draw a card.\n3/4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Flying\nWhen CARDNAME enters, draw a card.",
+      "case": "trigger-amount-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen Cloudwing Sentinel enters, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Cloudwing Sentinel",
+      "oracle_text": "Flying\nWhen this creature enters, draw two cards.",
+      "power": "2",
+      "rarity": "uncommon",
+      "toughness": "2",
+      "type_line": "Creature \u2014 Bird",
+      "case": "trigger-amount-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawNumberCards(Integer(2))]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen this creature enters, draw two cards.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Flying\nWhen CARDNAME enters, draw a card.",
+      "case": "change-name-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen Cloudwing Sentinel enters, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Mistwing Scholar",
+      "oracle_text": "Flying\nWhen this creature enters, draw a card.",
+      "power": "2",
+      "rarity": "uncommon",
+      "toughness": "2",
+      "type_line": "Creature \u2014 Bird",
+      "case": "change-name-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Mistwing Scholar\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Mistwing Scholar\nCreature - Bird\n{2}{U}\nFlying\nWhen this creature enters, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Flying\nWhen CARDNAME enters, draws two card.",
+      "case": "repair-draw-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen Cloudwing Sentinel enters, draws two card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 33,
+        "context": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen Cloudwing Sentinel enters, \u27eaHERE\u27ebdraws two card.\n2/2",
+        "farthest_token_index": 24,
+        "line": 5,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "draws"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Cloudwing Sentinel",
+      "oracle_text": "Flying\nWhen this creature enters, draw two cards.",
+      "power": "2",
+      "rarity": "uncommon",
+      "toughness": "2",
+      "type_line": "Creature \u2014 Bird",
+      "case": "repair-draw-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, TriggerA(WhenAPermanentEntersTheBattlefield(SinglePermanent(ThisPermanent)), ActionList([DrawNumberCards(Integer(2))]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\nWhen this creature enters, draw two cards.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Flying\n{T}: Draw one card then discard one card.",
+      "case": "repair-loot-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\n{T}: Draw one card then discard one card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 15,
+        "context": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\n{T}: Draw one \u27eaHERE\u27ebcard then discard one card.\n2/2",
+        "farthest_token_index": 24,
+        "line": 5,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "card"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Cloudwing Sentinel",
+      "oracle_text": "Flying\n{T}: Draw a card, then discard a card.",
+      "power": "2",
+      "rarity": "uncommon",
+      "toughness": "2",
+      "type_line": "Creature \u2014 Bird",
+      "case": "repair-loot-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Cloudwing Sentinel\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bird]), ManaCost: [ManaCostGeneric(2), ManaCostU], Rules: [Flying, Activated(TapPermanent(ThisPermanent), ActionList([DrawACard, DiscardACard]))], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nFlying\n{T}: Draw a card, then discard a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Neris, Tide Seeker",
+      "rarity": "mythic",
+      "mana_cost": "{2}{U}{U}",
+      "type_line": "Legendary Planeswalker \u2014 Neris",
+      "colors": [
+        "U"
+      ],
+      "loyalty": "4",
+      "oracle_text": "+1: Scry two.\n\u22122: Return target creature to its owners hand.\n\u22127: Draw seven cards.",
+      "case": "repair-walker-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Neris, Tide Seeker\nLegendary Planeswalker - Neris\n{2}{U}{U}\n[+1]: Scry two.\n[\u22122]: Return target creature to its owners hand.\n[\u22127]: Draw seven cards.\n4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 26,
+        "context": "Neris, Tide Seeker\nLegendary Planeswalker - \u27eaHERE\u27ebNeris\n{2}{U}{U}\n[+1]: Scry two.\n[\u22122]: Return target creature to its owners hand.\n[\u22127]: Draw seven cards.\n4",
+        "farthest_token_index": 13,
+        "line": 2,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "Neris"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "loyalty": "4",
+      "mana_cost": "{2}{U}{U}",
+      "name": "Neris, Tide Seeker",
+      "oracle_text": "+1: Scry two.\n\u22122: Return target creature to its owner's hand.\n\u22127: Draw seven cards.",
+      "rarity": "mythic",
+      "type_line": "Legendary Planeswalker \u2014 Neris",
+      "case": "repair-walker-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Neris, Tide Seeker\nLegendary Planeswalker - Neris\n{2}{U}{U}\n[+1]: Scry two.\n[\u22122]: Return target creature to its owner's hand.\n[\u22127]: Draw seven cards.\n4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 26,
+        "context": "Neris, Tide Seeker\nLegendary Planeswalker - \u27eaHERE\u27ebNeris\n{2}{U}{U}\n[+1]: Scry two.\n[\u22122]: Return target creature to its owner's hand.\n[\u22127]: Draw seven cards.\n4",
+        "farthest_token_index": 13,
+        "line": 2,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "Neris"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Cloudwing Sentinel",
+      "rarity": "uncommon",
+      "mana_cost": "{2}{U}",
+      "type_line": "Creature \u2014 Bird",
+      "colors": [
+        "U"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "Whenever you cast a spell that is exactly two or more colors, draw a card.",
+      "case": "repair-ambiguous-before"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nWhenever you cast a spell that is exactly two or more colors, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 32,
+        "context": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nWhenever you cast a spell that \u27eaHERE\u27ebis exactly two or more colors, draw a card.\n2/2",
+        "farthest_token_index": 25,
+        "line": 4,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "is"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "colors": [
+        "U"
+      ],
+      "mana_cost": "{2}{U}",
+      "name": "Cloudwing Sentinel",
+      "oracle_text": "Whenever you cast a spell that is exactly two or more colors, draw a card.",
+      "power": "2",
+      "rarity": "uncommon",
+      "toughness": "2",
+      "type_line": "Creature \u2014 Bird",
+      "case": "repair-ambiguous-after"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nWhenever you cast a spell that is exactly two or more colors, draw a card.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 32,
+        "context": "Cloudwing Sentinel\nCreature - Bird\n{2}{U}\nWhenever you cast a spell that \u27eaHERE\u27ebis exactly two or more colors, draw a card.\n2/2",
+        "farthest_token_index": 25,
+        "line": 4,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "is"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Training Draft",
+      "mana_cost": "{2}{G}",
+      "type_line": "Creature \u2014 Bear",
+      "colors": [
+        "G"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": ""
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Training Draft\", Typeline: (Supertypes: [], Cardtypes: [Creature], Subtypes: [Bear]), ManaCost: [ManaCostGeneric(2), ManaCostG], CardPT: (Power: 2, Toughness: 2))",
+      "normalized_input": "Training Draft\nCreature - Bear\n{2}{G}\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Jace, Test Walker",
+      "mana_cost": "{2}{U}{U}",
+      "type_line": "Legendary Planeswalker \u2014 Jace",
+      "colors": [
+        "G"
+      ],
+      "power": "",
+      "toughness": "",
+      "oracle_text": "+1: Scry 2.\n\u22122: Draw two cards.\n\u22127: Draw seven cards.",
+      "loyalty": "4"
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Jace, Test Walker\", Typeline: (Supertypes: [Legendary], Cardtypes: [Planeswalker], Subtypes: [Jace]), ManaCost: [ManaCostGeneric(2), ManaCostU, ManaCostU], Rules: [Activated(Loyalty(+1), ActionList([Scry(Integer(2))])), Activated(Loyalty(-2), ActionList([DrawNumberCards(Integer(2))])), Activated(Loyalty(-7), ActionList([DrawNumberCards(Integer(7))]))], Loyalty: Integer(4))",
+      "normalized_input": "Jace, Test Walker\nLegendary Planeswalker - Jace\n{2}{U}{U}\n[+1]: Scry 2.\n[\u22122]: Draw two cards.\n[\u22127]: Draw seven cards.\n4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Named Token",
+      "mana_cost": "{2}{G}",
+      "type_line": "Creature \u2014 Bear",
+      "colors": [
+        "G"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "When CARDNAME enters, create a 2/2 blue Drake creature token named Talrand\u2019s Invocation with flying."
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Named Token\nCreature - Bear\n{2}{G}\nWhen Named Token enters, create a 2/2 blue Drake creature token named Talrand\u2019s Invocation with flying.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 71,
+        "context": " Token\nCreature - Bear\n{2}{G}\nWhen Named Token enters, create a 2/2 blue Drake creature token named \u27eaHERE\u27ebTalrand\u2019s Invocation with flying.\n2/2",
+        "farthest_token_index": 40,
+        "line": 4,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "Talrand"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Quoted Bird",
+      "mana_cost": "{2}{G}",
+      "type_line": "Creature \u2014 Bear",
+      "colors": [
+        "G"
+      ],
+      "power": "2",
+      "toughness": "2",
+      "oracle_text": "When CARDNAME enters, create a token named Storm Crow."
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Quoted Bird\nCreature - Bear\n{2}{G}\nWhen Quoted Bird enters, create a token named Storm Crow.\n2/2",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 41,
+        "context": "Quoted Bird\nCreature - Bear\n{2}{G}\nWhen Quoted Bird enters, create a token \u27eaHERE\u27ebnamed Storm Crow.\n2/2",
+        "farthest_token_index": 28,
+        "line": 4,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "named"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  },
+  {
+    "card": {
+      "name": "Wrath",
+      "mana_cost": "{2}{G}",
+      "type_line": "Sorcery",
+      "colors": [
+        "G"
+      ],
+      "power": "",
+      "toughness": "",
+      "oracle_text": "Destroy all artifacts, creatures, and lands. Each player discards their hand."
+    },
+    "expected": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "No match",
+      "intent_fidelity": "not_checked",
+      "mtgish": "",
+      "normalized_input": "Wrath\nSorcery\n{2}{G}\nDestroy all artifacts, creatures, and lands. Each player discards their hand.",
+      "oracle_correctness": "not_proven",
+      "parse_complete": false,
+      "parse_diagnostic": {
+        "column": 58,
+        "context": "Wrath\nSorcery\n{2}{G}\nDestroy all artifacts, creatures, and lands. Each player \u27eaHERE\u27ebdiscards their hand.",
+        "farthest_token_index": 26,
+        "line": 4,
+        "note": "Upstream debug farthest match, not a guaranteed error cause. Coordinates refer to normalized_input for english, generated mtgish for mtgish.",
+        "stage": "english",
+        "token": "discards"
+      },
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "rejected",
+      "workflow": "upstream-standard-v2"
+    }
+  }
+]

@@ -1,4 +1,5 @@
 // Reuse the benchmark's exact model URLs and cache namespaces.
+import {revisionMessages} from './revision-prompt.js';
 import { Wllama } from '/model-bench/vendor/wllama/index.js';
 import { isIOS, mobileModelMessage } from '/model-bench/device-support.js';
 const base = new URL('/model-bench/',location.origin);
@@ -51,11 +52,13 @@ export class LocalModels {
   request(message,progress=()=>{}) {
     return new Promise((resolve,reject)=>{if(!this.worker){reject(new Error('Load the models before generating artwork.'));return;} this.pending={resolve,reject,progress};this.worker.postMessage(message);});
   }
-  async card(description,report) {
+  async card(description,report) {return this.complete([{role:'system',content:this.systemPrompt},{role:'user',content:description}],report,.7);}
+  async revise(card,change,report,diagnostic=null){return this.complete(revisionMessages(this.systemPrompt,card,change,diagnostic),report,.2);}
+  async complete(messages,report,temperature) {
     if(!this.textReady) throw new Error('Load the models first.');
     this.controller=new AbortController(); const signal=this.controller.signal, seed=randomSeed(); let text='';
     try {
-      await this.engine.createChatCompletion({messages:[{role:'system',content:this.systemPrompt},{role:'user',content:description}],max_tokens:768,temperature:.7,top_p:.8,top_k:20,min_p:0,seed,cache_prompt:true,chat_template_kwargs:{enable_thinking:false},stream:true,return_progress:true,abortSignal:signal,
+      await this.engine.createChatCompletion({messages,max_tokens:768,temperature,top_p:.8,top_k:20,min_p:0,seed,cache_prompt:true,chat_template_kwargs:{enable_thinking:false},stream:true,return_progress:true,abortSignal:signal,
         onData:chunk=>{const delta=chunk.choices?.[0]?.delta?.content;if(delta){text+=delta;report('Writing your card…',text);}else if(chunk.prompt_progress)report('Imagining your card…',text);}});
       if(signal.aborted) throw new DOMException('Generation stopped.','AbortError');
       return {text,seed};

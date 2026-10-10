@@ -58,7 +58,7 @@ try{
   await page.emulateMedia({reducedMotion:'reduce'});await page.locator('#browse-examples').click();await ready(page);
   await page.locator('#next').click();await ready(page);
   check('reduced motion has no card transition animations',await page.locator('#card-preview').evaluate(e=>e.getAnimations({subtree:true}).every(a=>a.playState!=='running')));
-  check('no model runtime is fetched',!requests.some(u=>/local-models|\.gguf|\.wasm/.test(u)));
+  check('no model runtime is fetched',!requests.some(u=>/local-models|\.gguf|\/vendor\/.*\.wasm/.test(u)));
   check('no JavaScript errors',errors.length===0);
   await context.close();
 }finally{await browser.close();await writeFile(`${out}/receipt.json`,JSON.stringify({engine,base,checks,errors},null,2)+'\n');}

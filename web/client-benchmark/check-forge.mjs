@@ -21,7 +21,7 @@ try{
   check('fan content notice is visible',await page.locator('footer').isVisible()&&(await page.locator('footer').textContent()).includes('Not approved/endorsed by Wizards.'));
   check('desktop can edit before loading models',await page.locator('#edit-own-card').isVisible()&&await page.locator('#load-button').isVisible());
   check('Card details is removed and examples cannot be deleted',await page.locator('#card-details').count()===0&&!(await page.locator('#delete-card').isVisible()));
-  check('initial renderer imports no model runtime',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\.wasm|\.gguf|bonsai-worker/.test(e.name))));
+  check('initial renderer imports no model runtime',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\/vendor\/.*\.wasm|\.gguf|bonsai-worker/.test(e.name))));
   check('music is not downloaded before interaction',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>e.name.includes('opening.m4a'))));
   await page.screenshot({path:`${out}/desktop.png`});
   for(const [width,height]of [[1440,900],[1366,768],[1024,640]]){await page.setViewportSize({width,height});check(`card and controls fit ${width}x${height}`,await page.evaluate(()=>document.querySelector('.card-tools').getBoundingClientRect().bottom<=innerHeight&&document.documentElement.scrollHeight<=innerHeight+1));}
@@ -51,7 +51,7 @@ try{
   await page.locator('[data-card-design-part="rules"]').click();await page.locator('#edit-oracle_text').waitFor();
   check('switching fields saves and opens the next inline edit',await page.locator('#card-caption').innerText()==='A Temporary Name'&&await page.locator('#edit-oracle_text').isVisible());
   await page.keyboard.press('Escape');await page.locator('[data-card-design-part="name"]').click();await page.locator('#edit-name').fill('My First Creation');
-  const outsideDownload=page.waitForEvent('download');await page.locator('#export-card').click();await outsideDownload;
+  const outsideDownload=page.waitForEvent('download');await page.locator('#save-text').click();await page.getByRole('button',{name:'Save editable card (.json)',exact:true}).click();await page.getByRole('button',{name:'Close sharing'}).click();await outsideDownload;
   check('clicking Save card commits inline text and exports',await page.locator('#card-caption').innerText()==='My First Creation'&&!(await page.locator('#edit-name').count()));
 
   await page.locator('.artist-edit-target').click();await page.locator('#edit-artist').fill('Forge Tester');await page.locator('#edit-save').click();await settled(page);
@@ -86,7 +86,7 @@ try{
   await page.reload();await page.locator('.card-design-preview').waitFor();await settled(page);check('edits persist without models',await page.locator('#card-caption').innerText()==='My First Creation'&&(await stored(page))[0].oracle_text.endsWith('\nVigilance'));
   check('mute preference survives reload',await page.locator('#sound-toggle').innerText()==='Sound off');
   await page.locator('.art-edit-target').click();await page.locator('#edit-art_file').setInputFiles({name:'bad.png',mimeType:'image/png',buffer:Buffer.from('not an image')});await page.locator('#edit-save').click();await settled(page);await page.waitForFunction(()=>document.querySelector('#edit-error').textContent.includes('not a supported image'));check('invalid artwork keeps the editor open',await page.locator('#edit-panel').isVisible());await page.keyboard.press('Escape');
-  const download=page.waitForEvent('download');await page.locator('#export-card').click();const file=await download;check('manual card export works',file.suggestedFilename()==='my-first-creation.json');
+  const download=page.waitForEvent('download');await page.locator('#save-text').click();await page.getByRole('button',{name:'Save editable card (.json)',exact:true}).click();await page.getByRole('button',{name:'Close sharing'}).click();const file=await download;check('manual card export works',file.suggestedFilename()==='my-first-creation.json');
   const beforeDelete=await stored(page);
   const artHash=()=>page.evaluate(async()=>{const {savedCards}=await import(new URL('./storage.js',location.href));const [card]=await savedCards();return [...new Uint8Array(await crypto.subtle.digest('SHA-256',await card.art_blob.arrayBuffer()))].join(',');});
   const beforeArt=await artHash();
@@ -117,7 +117,7 @@ try{
   await mobile.page.locator('#edit-name').fill('Mobile Creation');await mobile.page.getByRole('button',{name:'Save card text',exact:true}).click();await mobile.page.locator('.art-edit-target').click();await mobile.page.locator('#edit-art_url').waitFor();
   check('mobile art editor uses URL or file',await mobile.page.locator('#edit-art_url').isVisible()&&!(await mobile.page.locator('#edit-art_prompt').count()));
   await mobile.page.screenshot({path:`${out}/mobile-art-editor.png`,fullPage:true});
-  check('mobile never requests model code or weights',await mobile.page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\.wasm|\.gguf|bonsai-worker/.test(e.name))));
+  check('mobile never requests model code or weights',await mobile.page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\/vendor\/.*\.wasm|\.gguf|bonsai-worker/.test(e.name))));
   await mobile.page.keyboard.press('Escape');await mobile.page.locator('#delete-card').tap();await mobile.page.locator('#undo-delete').waitFor();await settled(mobile.page);
   check('mobile deletion returns to examples without a modal',(await stored(mobile.page)).length===0&&!(await mobile.page.locator('#edit-panel').isVisible()));
   await mobile.page.locator('#undo-delete').tap();await mobile.page.locator('#delete-notice').waitFor({state:'hidden'});await settled(mobile.page);

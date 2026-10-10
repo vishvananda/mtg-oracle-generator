@@ -42,17 +42,38 @@ try{
  await border(p,'Black');check('black is still selectable',await p.locator('.rendered-card-face').evaluate(e=>getComputedStyle(e).getPropertyValue('--retro-white').trim()==='#080808'));
  await p.setViewportSize({width:320,height:780});await p.locator('.border-edit-target').first().focus();await p.keyboard.press('Enter');
  check('four border options fit a narrow phone viewport',await p.getByRole('button',{name:'Silver',exact:true}).evaluate(e=>e.getBoundingClientRect().right<=innerWidth&&e.getBoundingClientRect().left>=0));
- await p.getByRole('button',{name:'Silver',exact:true}).click();await ready(p);const download=p.waitForEvent('download');await p.locator('#export-card').click();const record=await download;const stream=await record.createReadStream();let json='';for await(const part of stream)json+=part;
+ await p.getByRole('button',{name:'Silver',exact:true}).click();await ready(p);const download=p.waitForEvent('download');await p.locator('#save-text').click();await p.getByRole('button',{name:'Save editable card (.json)',exact:true}).click();await p.getByRole('button',{name:'Close sharing'}).click();const record=await download;const stream=await record.createReadStream();let json='';for await(const part of stream)json+=part;
  check('card export retains silver border',JSON.parse(json).border_color==='silver');
  await p.setViewportSize({width:1280,height:900});await p.locator('#browse-examples').click();await ready(p);
+ const ordinaryStampRatio=await p.evaluate(()=>document.querySelector('.etched-set-mark').getBoundingClientRect().width/document.querySelector('.rendered-card-face').getBoundingClientRect().width);
  await p.locator('#dots button').nth(1).click();await ready(p);
+ check('planeswalker stamp matches ordinary card width',await p.evaluate(r=>Math.abs(document.querySelector('.etched-set-mark').getBoundingClientRect().width/document.querySelector('.rendered-card-face').getBoundingClientRect().width-r)<.002,ordinaryStampRatio));
  const centered=()=>p.evaluate(()=>{
   const stamp=document.querySelector('.etched-set-mark').getBoundingClientRect(),rules=document.querySelector('.rendered-special-rules').getBoundingClientRect();
   return {deltaX:Math.abs(stamp.x+stamp.width/2-rules.x-rules.width/2),deltaY:Math.abs(stamp.y+stamp.height/2-rules.y-rules.height/2),inside:stamp.y>rules.y&&stamp.bottom<rules.bottom};
  });
  let alignment=await centered();check('three-ability walker stamp is centered in the rules panel',alignment.deltaX<1&&alignment.deltaY<1&&alignment.inside);
  await p.screenshot({path:`${out}/walker-three.png`});
+ for(const [selector,label]of [['.rendered-card-stats','loyalty scroller'],['.rendered-special-badge > span','Loyalty ability cost scroller']]){
+  if(label==='loyalty scroller'){await p.locator('[data-card-design-part="stats"]').focus();await p.keyboard.press('Enter');}
+  else{await p.mouse.move(1,1);await p.waitForTimeout(250);const at=await p.locator(selector).first().boundingBox();await p.locator('[data-card-design-part="rules"]').dispatchEvent('click',{detail:1,clientX:at.x+at.width/2,clientY:at.y+at.height/2});}
+  await p.mouse.move(1,1);
+  const wheel=p.getByRole('group',{name:label,exact:true});await wheel.waitFor();
+  check(`${label} has white ink on dark translucent neighbors`,await wheel.locator('.scroll-cell:not([aria-pressed=true]):not(:disabled)').evaluateAll(nodes=>nodes.length>0&&nodes.every(e=>{const s=getComputedStyle(e),c=s.backgroundColor.match(/[\d.]+/g).map(Number);return s.color==='rgb(255, 255, 255)'&&c.slice(0,3).every(n=>n<60)&&c[3]>.8&&s.textShadow==='none';})));
+  await p.screenshot({path:`${out}/${label.startsWith('loyalty')?'starting':'ability'}-loyalty-wheel.png`});await wheel.press('Escape');await ready(p);
+ }
  await p.locator('[data-card-design-part="rules"]').focus();await p.keyboard.press('Enter');
+ const text=p.locator('#edit-oracle_text');await text.fill('Pay ');await text.press('End');
+ check('rules insertion shows generic, all five colors, colorless, tap and untap',await p.locator('.inline-symbol-tools button').count()===9&&await p.locator('.inline-symbol-tools img').count()===9&&await p.locator('.inline-symbol-tools > span').textContent()==='+');
+ for(const color of ['generic','white','blue','black','red','green','colorless'])await p.getByRole('button',{name:`Insert ${color} mana`,exact:true}).click();
+ check('each mana choice inserts at the cursor without closing the editor',await text.inputValue()==='Pay {1}{W}{U}{B}{R}{G}{C}');
+ await text.evaluate(e=>{e.setSelectionRange(4,7);e.dispatchEvent(new Event('select'));});await p.getByRole('button',{name:'Insert blue mana',exact:true}).click();
+ check('mana insertion replaces a selected symbol',await text.inputValue()==='Pay {U}{W}{U}{B}{R}{G}{C}');
+ for(const symbol of ['tap','untap'])await p.getByRole('button',{name:`Insert ${symbol} symbol`,exact:true}).click();
+ check('tap and untap insert beside the same text cursor',await text.inputValue()==='Pay {U}{T}{Q}{W}{U}{B}{R}{G}{C}');
+ await p.setViewportSize({width:320,height:780});
+ check('mana insertion toolbar fits a narrow phone viewport',await p.locator('.inline-symbol-tools').evaluate(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth;}));
+ await p.setViewportSize({width:1280,height:900});
  await p.locator('#edit-oracle_text').fill('+1: Scry 2.\n0: Draw a card.\n−2: Return target nonland permanent to its owner’s hand.\n−7: Draw seven cards.');
  await p.locator('#edit-oracle_text').press('Control+Enter');await ready(p);
  alignment=await centered();check('four-ability walker stamp moves up with the taller rules panel',alignment.deltaX<1&&alignment.deltaY<1&&alignment.inside);

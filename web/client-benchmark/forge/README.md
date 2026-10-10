@@ -127,7 +127,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`7a1177f0f6bb50507220bdda59f4e5df2231a2db`, rebased onto the editor’s
+`0b5bcca`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -354,3 +354,52 @@ or part of the model dataset. It streams only after a gesture, loops at a
 quiet level, pauses in the background, and shares the remembered Sound toggle
 with the original synthesized interface cues. Replace that file to try the
 user's new track without changing the UI or model code.
+
+## Oracle checks, model revisions and local sharing
+
+The card footer now checks Oracle text in a Web Worker. Expand the information
+icon for mtgish's error context or correction details. A checked result means the
+complete card parsed; it does not certify balance, legality or intent. Validation
+works before loading either generation model, including on mobile. See
+[build, parity and model experiment instructions](../../mtgish/README.md).
+
+After loading models, **Revise this card** accepts a change request plus the
+existing card JSON. **Fix it** appears for a rejected parse and passes the parser
+feedback to the same local model. Revisions keep the original card; a repair
+must parse before it is added, and only Oracle text can change. Artwork remains
+editable separately. The default generation prompt specifies a legendary UR
+4/4 Dragon for `{3}{U}{R}` with flying and an attack-triggered draw then discard.
+It was tested against the deployed quant and passed mtgish.
+
+The **Save** group has image, video and text icon buttons with accessible labels.
+Each opens a prepared preview with Download and, when supported for that file,
+Share. The native share sheet chooses the destination; the site never posts to
+an account or uploads the image itself. Cancellation is harmless. Unsupported
+video recording offers the image alternative. OS/app destinations vary and must
+be tested on actual phones; browser tests stub the final share-sheet call.
+Chromium automation records and decodes actual MP4. The Linux WebKit build
+lacks MediaRecorder, so it verifies the image path and video-unavailable fallback;
+Safari/iPhone recording still needs a physical-device check.
+
+- Images: 732 × 1020 PNG with the selected foil and rounded transparent corners.
+- Video: 720 × 1080, about six seconds, no audio. A quick two-way tilt flashes
+  the foil, followed by a slower rock, then a centered 2.2-second hold. Uses MP4
+  with H.264 when available, otherwise WebM. It records the same artifact for
+  Share and Download. Keep the page visible while recording.
+- Text: readable card text in `.txt`, plus a separate editable JSON download
+  including artwork. JSON retains the existing export format.
+
+The standalone renderer's `createCardDesignCapture` API uses the production
+face painter, etching and foil shader on a temporary export canvas, at full
+resolution independent of the displayed card size. Export frees its WebGL
+context, textures and recording tracks afterward. It needs no model download,
+third-party screenshot library, backend storage or social API credentials.
+
+Relevant consumer checks are `check-forge-validator.mjs`,
+`check-forge-revision.mjs` and `check-forge-share.mjs`. The revision UI check uses
+fixtures for inference; the separate experiment above calls the actual model.
+
+Starting loyalty and signed loyalty-cost wheels use dark translucent neighbors
+with white ink. While editing rules text, the + symbol row inserts generic,
+W/U/B/R/G, colorless, tap and untap symbols at the current selection. It wraps
+on narrow screens; existing printed mana symbols retain their on-card wheels.

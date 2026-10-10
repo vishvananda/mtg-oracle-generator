@@ -1,0 +1,1189 @@
+{
+  "recorded_at": "2026-10-10T06:20:53.068607+00:00",
+  "deployment": {
+    "release": "/srv/mtg-oracle-client/releases/20261010T062342Z",
+    "previous_release": "/srv/mtg-oracle-client/releases/20261010T061918Z",
+    "build": {
+      "version": "dbcf237b32b4",
+      "built_at": "2026-10-10T06:22:07.320Z"
+    }
+  },
+  "renderer_revision": "0b5bcca9197de26b5fa82032b08cf8e665ee656c",
+  "renderer_assets": {
+    "schema": 1,
+    "capability": "card-design-preview-v1",
+    "files": {
+      "card-preview.js": {
+        "bytes": 230645,
+        "gzip_bytes": 71367,
+        "sha256": "3fb547eab30e2e7e9924cb861dafe463821fc1c77efe106a937d6f8790512564"
+      },
+      "card-preview.css": {
+        "bytes": 24869,
+        "gzip_bytes": 5620,
+        "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073"
+      }
+    },
+    "modules": [
+      "src/app/EmbeddedCardDesignPreview.vue?vue&type=script&setup=true&lang.ts",
+      "src/app/card-design-options.ts",
+      "src/card-preview-entry.ts",
+      "src/shared/art/art-install-store.ts",
+      "src/shared/art/browser-etched-art.ts",
+      "src/shared/art/browser-etched-pixels.ts",
+      "src/shared/art/browser-etched-worker.ts?worker&inline",
+      "src/shared/art/cached-card-asset.ts",
+      "src/shared/art/derived-etching-cache.ts",
+      "src/shared/art/scryfall-images.ts",
+      "src/shared/art/useBrowserEtchedArt.ts",
+      "src/shared/cards/CardDesignPreview.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/CardDesignPreview.vue?vue&type=style&index=0&lang.css",
+      "src/shared/cards/CardTilt.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/CardTilt.vue?vue&type=style&index=0&lang.css",
+      "src/shared/cards/EtchedSetMark.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/ExtraCardRules.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/FoilLayer.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/ManaSymbol.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/PremiumCard.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/RenderedCardFace.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/RetroCardFace.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/SpecialCardRules.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/SymbolText.vue?vue&type=script&setup=true&lang.ts",
+      "src/shared/cards/card-design-capture.ts",
+      "src/shared/cards/card-design.ts",
+      "src/shared/cards/card-renderer.css",
+      "src/shared/cards/finish-profiles.ts",
+      "src/shared/cards/foil-preview-shader.ts",
+      "src/shared/cards/foil-preview.ts",
+      "src/shared/cards/foil-reflection-shader.ts",
+      "src/shared/cards/inspection-tilt.ts",
+      "src/shared/cards/local-foil-coating.ts",
+      "src/shared/cards/mana.css",
+      "src/shared/cards/premium-face-input.ts",
+      "src/shared/cards/premium-face-pass.ts",
+      "src/shared/cards/premium-face-textures.ts",
+      "src/shared/cards/premium.css",
+      "src/shared/cards/presentation/art-apertures.ts",
+      "src/shared/cards/presentation/assets.ts",
+      "src/shared/cards/presentation/canvas-ability-emblem.ts",
+      "src/shared/cards/presentation/canvas-assets.ts",
+      "src/shared/cards/presentation/canvas-etching.ts",
+      "src/shared/cards/presentation/canvas-face.ts",
+      "src/shared/cards/presentation/canvas-status.ts",
+      "src/shared/cards/presentation/canvas-text.ts",
+      "src/shared/cards/presentation/extra-rule-paint.ts",
+      "src/shared/cards/presentation/extra-rules.ts",
+      "src/shared/cards/presentation/face-layout.ts",
+      "src/shared/cards/presentation/illustration-layout.ts",
+      "src/shared/cards/presentation/power-toughness-layout.ts",
+      "src/shared/cards/presentation/profile.ts",
+      "src/shared/cards/presentation/retro-font.ts",
+      "src/shared/cards/presentation/retro-frame.ts",
+      "src/shared/cards/presentation/retro-paint.ts",
+      "src/shared/cards/presentation/set-symbol-ink.ts",
+      "src/shared/cards/presentation/set-symbols.ts",
+      "src/shared/cards/presentation/special-frames.ts",
+      "src/shared/cards/presentation/special-rule-paint.ts",
+      "src/shared/cards/presentation/split-layout.ts"
+    ]
+  },
+  "parser_manifest": {
+    "upstream": "https://github.com/i5jb/mtgish",
+    "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+    "go": "go version go1.27.1 linux/amd64",
+    "workflow": "upstream-standard-v2",
+    "bridge_sha256": "becd1d079ccc62657ded3c79a3d04acce9d0fa1df53bc5c71dfba33cd8fd3b74",
+    "native_adapter_sha256": "3d1f83fe8833dfef16a059ffc88dfe2f913862fea17da7a4c511b937309592ae",
+    "patches": [
+      "Rename CLI entrypoint",
+      "Read grammar from embed.FS",
+      "Expose existing farthest-token cursor for diagnostics",
+      "Browser callback around native checkOracle"
+    ],
+    "grammar_sha256": {
+      "english_grammar-INPUT.json5": "9bf36603040f3eb3018a65f8520554300a6307cda98bb1df3034f454adafdbe6",
+      "english_grammar-ability_word.json5": "bd1eb337e7a29f7f27e2124944c6ac3ebfa545bac51d65faba595de71063d3fb",
+      "english_grammar-counters.json5": "a49a6dec59e2cca4162f286f6eb8ac523133ef0f584c4000b78b04d809ea5aa2",
+      "english_grammar-flavor_word.json5": "524548be31e483bdf513033bcaa64211e1ffc4746655e9792cbd7579aee206a1",
+      "english_grammar-named_cards.json5": "1df3fada73ab7554181441d51c65af2de54ac2346c806244b758617a9805ed42",
+      "english_grammar-null_text.json5": "9dd2507cddbe23a725d2a652961b311928ae3f54520cc11ba722e79f5f5b6c30",
+      "english_grammar-reminder_text.json5": "a57f4e77d4b46d28a18d6f4b5a7978cfef54ef49b3466a0a5db50f3b01a33082",
+      "english_grammar-type_line.json5": "57242bc89563b416aeebcb40192ea490a103bb28ce882d51142f4e6b6bc081d0",
+      "english_grammar.json5": "e82ca3e575eb75109fb88827e5890f60a17448a5fc84446ca2d2a25f330500ac",
+      "find_replace.json5": "0982b35d9f3ee12d0c61963cb7520f42a24ab7f383af8f345f70fc1d78d9d458",
+      "ignore.json5": "77e86963b89f9c3a6799db9fc35f53ecd347f0a9552a1d8fb785084387708a09",
+      "mtgish_grammar-counters.json5": "bf310d27bc187d3239384d1cc5b8b4e8365f1c075ab87b607b4d75b8fb71c461",
+      "mtgish_grammar-create_tokens.json5": "13100305c8edb8ec9c4002e59250c3011c01598a332ffe6c7258090b70230554",
+      "mtgish_grammar-exile.json5": "31f6ac351b04ef00c1fbcac5706c4ee1f2e6802272a62c686959b8084fe981b3",
+      "mtgish_grammar-fight.json5": "d7ff5d99d50e960a10f560da82c8dbe7a219b6b6827f0697310a8b0a0b90db6c",
+      "mtgish_grammar-mana.json5": "1212a7f06a53ba3032673c18d129267f1256384e0c6c3fa604aff846de1960bb",
+      "mtgish_grammar-named_cards.json5": "a44e7d644245c567452cef8d723e8b6dd2bcd11c7f5880c43320d1ff934f3be0",
+      "mtgish_grammar-put_counters.json5": "77425da052f6e30ba54e23b90f41e440a3e484a72f2cb28bd39d22ce24fe6c23",
+      "mtgish_grammar-triggers.json5": "96b070faa84d9a5cad36071d156a01e6139a8590a57f3b51a9b94fca9c1dff24",
+      "mtgish_grammar-type_line.json5": "1c7bbca24f18075a49f4b06c60d89b7e08c28757ef61a72b55677d469e73c8b4",
+      "mtgish_grammar-vote_option.json5": "93e2f2472543b1a6865d80c7d45032788759dfc365c41d5dfb0a424cd65587e3",
+      "mtgish_grammar.json5": "e29a5d84e898d996eb2b55677b3ce62727a05db88f57463d75af8ccf8c54f34c",
+      "short_names.json5": "dd44ee8da0d0546722fa3b83de3d042c5f147cbe7553ad8e200c3b572b2c76a3"
+    },
+    "files": {
+      "parser.wasm": {
+        "bytes": 14616543,
+        "sha256": "2201fb1e8c229f240f8318a6506a7e9a9143f93a4d303d4db672eed4b3bf8225"
+      },
+      "LICENSE-mtgish.txt": {
+        "bytes": 5079,
+        "sha256": "529d8c04b1a74b127edcc37e14e6ee99a3a9068ace45f5623a3422ff22bb4c2d"
+      },
+      "LICENSE-Go.txt": {
+        "bytes": 1453,
+        "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+      },
+      "wasm_exec.js": {
+        "bytes": 16992,
+        "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14"
+      }
+    }
+  },
+  "browser_checks": {
+    "parser_chromium": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "Vesper, Eclipse Sovereign",
+        "Neris, Keeper of Lost Tides",
+        "Crownroot, Spring Eternal",
+        "Observatory Beyond the Veil",
+        "Rhaz, Emberbound Artisan",
+        "add-keyword-before",
+        "add-keyword-after",
+        "stats-before",
+        "stats-after",
+        "trigger-amount-before",
+        "trigger-amount-after",
+        "change-name-before",
+        "change-name-after",
+        "repair-draw-before",
+        "repair-draw-after",
+        "repair-loot-before",
+        "repair-loot-after",
+        "repair-walker-before",
+        "repair-walker-after",
+        "repair-ambiguous-before",
+        "repair-ambiguous-after",
+        "Training Draft",
+        "Jace, Test Walker",
+        "Named Token",
+        "Quoted Bird",
+        "Wrath"
+      ],
+      "errors": [],
+      "total_ms": 27265
+    },
+    "parser_webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "Vesper, Eclipse Sovereign",
+        "Neris, Keeper of Lost Tides",
+        "Crownroot, Spring Eternal",
+        "Observatory Beyond the Veil",
+        "Rhaz, Emberbound Artisan",
+        "add-keyword-before",
+        "add-keyword-after",
+        "stats-before",
+        "stats-after",
+        "trigger-amount-before",
+        "trigger-amount-after",
+        "change-name-before",
+        "change-name-after",
+        "repair-draw-before",
+        "repair-draw-after",
+        "repair-loot-before",
+        "repair-loot-after",
+        "repair-walker-before",
+        "repair-walker-after",
+        "repair-ambiguous-before",
+        "repair-ambiguous-after",
+        "Training Draft",
+        "Jace, Test Walker",
+        "Named Token",
+        "Quoted Bird",
+        "Wrath"
+      ],
+      "errors": [],
+      "total_ms": 26390
+    },
+    "revision_ui": {
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "validator runs before model loading",
+        "repair is hidden without a loaded model",
+        "failure exposes parser context and explains limitations",
+        "successful repair creates a second card",
+        "original stays intact",
+        "repair can only change Oracle wording",
+        "repair retains artwork and attribution",
+        "model receives the old card and parser feedback",
+        "change prompt creates a revised copy",
+        "revisions do not trigger artwork generation",
+        "unsuccessful repair keeps the existing card",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "share_chromium": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "save group has three labeled icon buttons",
+        "image preview is full resolution",
+        "share receives the prepared PNG file",
+        "download uses the same PNG",
+        "video decodes at 720 by 1080",
+        "video is approximately six seconds",
+        "share receives the same video format",
+        "text export substitutes the displayed card name",
+        "editable JSON export keeps artwork and card data",
+        "cancelled preparation restores card controls",
+        "ordinary exports and releases its surface",
+        "ordinary foil responds correctly to tilt",
+        "vizier_prismatic_v1 exports and releases its surface",
+        "vizier_prismatic_v1 foil responds correctly to tilt",
+        "vizier_etched_v1 exports and releases its surface",
+        "vizier_etched_v1 foil responds correctly to tilt",
+        "vizier_opal_v1 exports and releases its surface",
+        "vizier_opal_v1 foil responds correctly to tilt",
+        "vizier_cold_v1 exports and releases its surface",
+        "vizier_cold_v1 foil responds correctly to tilt",
+        "last 2.2 seconds stay exactly centered",
+        "save controls fit 1440px",
+        "save controls fit 1024px",
+        "save controls fit 390px",
+        "save controls fit 320px",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "share_webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "save group has three labeled icon buttons",
+        "image preview is full resolution",
+        "share receives the prepared PNG file",
+        "download uses the same PNG",
+        "missing video encoder offers image fallback",
+        "text export substitutes the displayed card name",
+        "editable JSON export keeps artwork and card data",
+        "cancelled preparation restores card controls",
+        "ordinary exports and releases its surface",
+        "ordinary foil responds correctly to tilt",
+        "vizier_prismatic_v1 exports and releases its surface",
+        "vizier_prismatic_v1 foil responds correctly to tilt",
+        "vizier_etched_v1 exports and releases its surface",
+        "vizier_etched_v1 foil responds correctly to tilt",
+        "vizier_opal_v1 exports and releases its surface",
+        "vizier_opal_v1 foil responds correctly to tilt",
+        "vizier_cold_v1 exports and releases its surface",
+        "vizier_cold_v1 foil responds correctly to tilt",
+        "last 2.2 seconds stay exactly centered",
+        "save controls fit 1440px",
+        "save controls fit 1024px",
+        "save controls fit 390px",
+        "save controls fit 320px",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "editing_chromium": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "border choices offer Match set, Black, White and Silver",
+        "silver applies immediately and closes the panel",
+        "modern Regular paints silver stock with dark footer ink",
+        "modern vizier_prismatic_v1 paints silver border pixels",
+        "modern vizier_etched_v1 paints silver border pixels",
+        "modern vizier_cold_v1 paints silver border pixels",
+        "modern vizier_opal_v1 paints silver border pixels",
+        "old frame recolors its border mask silver",
+        "retro vizier_prismatic_v1 paints silver border pixels",
+        "retro vizier_etched_v1 paints silver border pixels",
+        "retro vizier_cold_v1 paints silver border pixels",
+        "retro vizier_opal_v1 paints silver border pixels",
+        "silver survives reload with the old frame",
+        "white is still selectable",
+        "black is still selectable",
+        "four border options fit a narrow phone viewport",
+        "card export retains silver border",
+        "planeswalker stamp matches ordinary card width",
+        "three-ability walker stamp is centered in the rules panel",
+        "loyalty scroller has white ink on dark translucent neighbors",
+        "Loyalty ability cost scroller has white ink on dark translucent neighbors",
+        "rules insertion shows generic, all five colors, colorless, tap and untap",
+        "each mana choice inserts at the cursor without closing the editor",
+        "mana insertion replaces a selected symbol",
+        "tap and untap insert beside the same text cursor",
+        "mana insertion toolbar fits a narrow phone viewport",
+        "four-ability walker stamp moves up with the taller rules panel",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "editing_webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "border choices offer Match set, Black, White and Silver",
+        "silver applies immediately and closes the panel",
+        "modern Regular paints silver stock with dark footer ink",
+        "modern vizier_prismatic_v1 paints silver border pixels",
+        "modern vizier_etched_v1 paints silver border pixels",
+        "modern vizier_cold_v1 paints silver border pixels",
+        "modern vizier_opal_v1 paints silver border pixels",
+        "old frame recolors its border mask silver",
+        "retro vizier_prismatic_v1 paints silver border pixels",
+        "retro vizier_etched_v1 paints silver border pixels",
+        "retro vizier_cold_v1 paints silver border pixels",
+        "retro vizier_opal_v1 paints silver border pixels",
+        "silver survives reload with the old frame",
+        "white is still selectable",
+        "black is still selectable",
+        "four border options fit a narrow phone viewport",
+        "card export retains silver border",
+        "planeswalker stamp matches ordinary card width",
+        "three-ability walker stamp is centered in the rules panel",
+        "loyalty scroller has white ink on dark translucent neighbors",
+        "Loyalty ability cost scroller has white ink on dark translucent neighbors",
+        "rules insertion shows generic, all five colors, colorless, tap and untap",
+        "each mana choice inserts at the cursor without closing the editor",
+        "mana insertion replaces a selected symbol",
+        "tap and untap insert beside the same text cursor",
+        "mana insertion toolbar fits a narrow phone viewport",
+        "four-ability walker stamp moves up with the taller rules panel",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "ui_chromium": {
+      "checks": [
+        "demo artwork has a derived etching mask",
+        "Forge symbol appears on the type line",
+        "Forge symbol is used for the foil stamp",
+        "page is named MTG CardForge with only the legal policy link",
+        "fan content notice is visible",
+        "desktop can edit before loading models",
+        "Card details is removed and examples cannot be deleted",
+        "initial renderer imports no model runtime",
+        "music is not downloaded before interaction",
+        "card and controls fit 1440x900",
+        "card and controls fit 1366x768",
+        "card and controls fit 1024x640",
+        "carousel shows a planeswalker",
+        "standalone rules accessibility copy is visually clipped",
+        "loyalty costs fit inside their badges",
+        "carousel navigation",
+        "opening theme plays after interaction",
+        "sound toggle mutes music",
+        "manual name edit appears in carousel",
+        "name edits inside the card without a popup",
+        "editing freezes card tilt",
+        "Escape restores the previous name",
+        "rules editing supports real multiline text",
+        "rules save on the card",
+        "switching fields saves and opens the next inline edit",
+        "clicking Save card commits inline text and exports",
+        "artist credit is directly editable",
+        "searchable set picker updates card symbol",
+        "chosen set is saved with the card",
+        "scrollable mana symbols build and order the saved cost",
+        "art-frame click switches to the new renderer’s old frame",
+        "outer-border click selects white stock",
+        "Cold foil is available and saved",
+        "frame can switch back to modern",
+        "artwork URL and file available before loading",
+        "URL artwork is stored as a validated image blob",
+        "edits persist without models",
+        "mute preference survives reload",
+        "invalid artwork keeps the editor open",
+        "manual card export works",
+        "deleting the last saved card returns to intact examples",
+        "deletion offers keyboard-focused Undo",
+        "Undo restores every saved field and the artwork bytes",
+        "restored card survives reload",
+        "failed deletion keeps the card in storage and on screen",
+        "confirmed deletion persists across reloads",
+        "mobile shows carousel and edit button",
+        "mobile fan content notice is visible",
+        "mobile hides model loading",
+        "mobile has no horizontal overflow",
+        "mobile focuses its inline name field without a popup",
+        "mobile art editor uses URL or file",
+        "mobile never requests model code or weights",
+        "mobile deletion returns to examples without a modal",
+        "mobile Undo restores the selected card",
+        "fixture generation replaces demo with designed card and artwork",
+        "loaded models expose editable art prompt",
+        "art regeneration preserves rules and records new prompt",
+        "another generation appends to carousel",
+        "cancel retains finished text",
+        "deleting one creation preserves all neighboring cards",
+        "Undo reinserts the creation and selects it",
+        "all tested flows have no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "jewels_chromium": {
+      "checks": [
+        "cube is the first-visit default",
+        "unused dual animation is not downloaded",
+        "header retains the small gold cube",
+        "large jewel sits above Imagine it",
+        "animation is centered above the load button",
+        "logo imports no 3D engine or model runtime",
+        "logo creates no canvas or WebGL context",
+        "the native WebP visibly rotates",
+        "jewel has no CSS glow or shadow",
+        "large source preserves background alpha and translucent stones",
+        "click changes to the dual and keeps the card visible",
+        "new visits default to the requested cube",
+        "comparison URL still selects the dual",
+        "Space and Enter switch the jewel accessibly",
+        "reduced motion switches to a still image",
+        "motion preference changes resume the spin",
+        "desktop page still fits 1440x900",
+        "desktop page still fits 1366x768",
+        "desktop page still fits 1024x640",
+        "mobile downloads no large animation",
+        "mobile keeps the gold mark and card carousel",
+        "mobile header fits 390px without overlap",
+        "mobile header fits 320px without overlap",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "live_parser": {
+      "engine": "chromium",
+      "base": "https://tetrarchs.com/forge/",
+      "checks": [
+        "Vesper, Eclipse Sovereign",
+        "Neris, Keeper of Lost Tides",
+        "Crownroot, Spring Eternal",
+        "Observatory Beyond the Veil",
+        "Rhaz, Emberbound Artisan",
+        "add-keyword-before",
+        "add-keyword-after",
+        "stats-before",
+        "stats-after",
+        "trigger-amount-before",
+        "trigger-amount-after",
+        "change-name-before",
+        "change-name-after",
+        "repair-draw-before",
+        "repair-draw-after",
+        "repair-loot-before",
+        "repair-loot-after",
+        "repair-walker-before",
+        "repair-walker-after",
+        "repair-ambiguous-before",
+        "repair-ambiguous-after",
+        "Training Draft",
+        "Jace, Test Walker",
+        "Named Token",
+        "Quoted Bird",
+        "Wrath"
+      ],
+      "errors": [],
+      "total_ms": 25980.829999923706
+    },
+    "live_sharing": {
+      "engine": "chromium",
+      "base": "https://tetrarcum.com/",
+      "checks": [
+        "save group has three labeled icon buttons",
+        "image preview is full resolution",
+        "share receives the prepared PNG file",
+        "download uses the same PNG",
+        "video decodes at 720 by 1080",
+        "video is approximately six seconds",
+        "share receives the same video format",
+        "text export substitutes the displayed card name",
+        "editable JSON export keeps artwork and card data",
+        "cancelled preparation restores card controls",
+        "ordinary exports and releases its surface",
+        "ordinary foil responds correctly to tilt",
+        "vizier_prismatic_v1 exports and releases its surface",
+        "vizier_prismatic_v1 foil responds correctly to tilt",
+        "vizier_etched_v1 exports and releases its surface",
+        "vizier_etched_v1 foil responds correctly to tilt",
+        "vizier_opal_v1 exports and releases its surface",
+        "vizier_opal_v1 foil responds correctly to tilt",
+        "vizier_cold_v1 exports and releases its surface",
+        "vizier_cold_v1 foil responds correctly to tilt",
+        "last 2.2 seconds stay exactly centered",
+        "save controls fit 1440px",
+        "save controls fit 1024px",
+        "save controls fit 390px",
+        "save controls fit 320px",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "parser_gc25_chromium": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "Vesper, Eclipse Sovereign",
+        "Neris, Keeper of Lost Tides",
+        "Crownroot, Spring Eternal",
+        "Observatory Beyond the Veil",
+        "Rhaz, Emberbound Artisan",
+        "add-keyword-before",
+        "add-keyword-after",
+        "stats-before",
+        "stats-after",
+        "trigger-amount-before",
+        "trigger-amount-after",
+        "change-name-before",
+        "change-name-after",
+        "repair-draw-before",
+        "repair-draw-after",
+        "repair-loot-before",
+        "repair-loot-after",
+        "repair-walker-before",
+        "repair-walker-after",
+        "repair-ambiguous-before",
+        "repair-ambiguous-after",
+        "Training Draft",
+        "Jace, Test Walker",
+        "Named Token",
+        "Quoted Bird",
+        "Wrath"
+      ],
+      "errors": [],
+      "total_ms": 38511.700000047684,
+      "metrics": {
+        "load_ms": 8020.899999976158,
+        "memory_bytes": 325058560,
+        "peak_memory_bytes": 476053504
+      }
+    },
+    "parser_gc25_webkit": {
+      "engine": "webkit",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "Vesper, Eclipse Sovereign",
+        "Neris, Keeper of Lost Tides",
+        "Crownroot, Spring Eternal",
+        "Observatory Beyond the Veil",
+        "Rhaz, Emberbound Artisan",
+        "add-keyword-before",
+        "add-keyword-after",
+        "stats-before",
+        "stats-after",
+        "trigger-amount-before",
+        "trigger-amount-after",
+        "change-name-before",
+        "change-name-after",
+        "repair-draw-before",
+        "repair-draw-after",
+        "repair-loot-before",
+        "repair-loot-after",
+        "repair-walker-before",
+        "repair-walker-after",
+        "repair-ambiguous-before",
+        "repair-ambiguous-after",
+        "Training Draft",
+        "Jace, Test Walker",
+        "Named Token",
+        "Quoted Bird",
+        "Wrath"
+      ],
+      "errors": [],
+      "total_ms": 40882,
+      "metrics": {
+        "load_ms": 8064,
+        "memory_bytes": 321388544,
+        "peak_memory_bytes": 465043456
+      }
+    }
+  },
+  "model_experiment": {
+    "model": "Qwen3 4B SFT + DPO round 2 Q4_0, same weights as browser deployment",
+    "runtime": "Native llama.cpp at 127.0.0.1:4205; not browser timing",
+    "seed": 42,
+    "temperature": 0.2,
+    "requested_edits_correct": 4,
+    "requested_edits_total": 4,
+    "repairs_accepted": 2,
+    "repairs_total": 4,
+    "limit": "Eight hand-selected smoke cases, not a general accuracy estimate. Passing the parser does not guarantee intent preservation.",
+    "cases": [
+      {
+        "id": "add-keyword",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Flying\nWhen CARDNAME enters, draw a card."
+        },
+        "change": "Give this creature vigilance as well as its existing abilities.",
+        "repair": false,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Cloudwing Sentinel",
+          "oracle_text": "Flying, vigilance\nWhen this creature enters, draw a card.",
+          "power": "2",
+          "rarity": "uncommon",
+          "toughness": "2",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 10.03,
+        "before_status": "parsed",
+        "after_status": "parsed",
+        "after_error": ""
+      },
+      {
+        "id": "stats",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Flying\nWhen CARDNAME enters, draw a card."
+        },
+        "change": "Make it a 3/4. Keep everything else exactly the same.",
+        "repair": false,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Cloudwing Sentinel",
+          "oracle_text": "Flying\nWhen this creature enters, draw a card.",
+          "power": "3",
+          "rarity": "uncommon",
+          "toughness": "4",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 6.75,
+        "before_status": "parsed",
+        "after_status": "parsed",
+        "after_error": ""
+      },
+      {
+        "id": "trigger-amount",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Flying\nWhen CARDNAME enters, draw a card."
+        },
+        "change": "Change its enters ability to draw two cards instead of one.",
+        "repair": false,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Cloudwing Sentinel",
+          "oracle_text": "Flying\nWhen this creature enters, draw two cards.",
+          "power": "2",
+          "rarity": "uncommon",
+          "toughness": "2",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 5.96,
+        "before_status": "parsed",
+        "after_status": "parsed",
+        "after_error": ""
+      },
+      {
+        "id": "change-name",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Flying\nWhen CARDNAME enters, draw a card."
+        },
+        "change": "Rename it Mistwing Scholar. Change nothing else.",
+        "repair": false,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Mistwing Scholar",
+          "oracle_text": "Flying\nWhen this creature enters, draw a card.",
+          "power": "2",
+          "rarity": "uncommon",
+          "toughness": "2",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 5.92,
+        "before_status": "parsed",
+        "after_status": "parsed",
+        "after_error": ""
+      },
+      {
+        "id": "repair-draw",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Flying\nWhen CARDNAME enters, draws two card."
+        },
+        "change": "Fix the Oracle wording while preserving its meaning.",
+        "repair": true,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Cloudwing Sentinel",
+          "oracle_text": "Flying\nWhen this creature enters, draw two cards.",
+          "power": "2",
+          "rarity": "uncommon",
+          "toughness": "2",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 11.81,
+        "before_status": "rejected",
+        "after_status": "parsed",
+        "after_error": ""
+      },
+      {
+        "id": "repair-loot",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Flying\n{T}: Draw one card then discard one card."
+        },
+        "change": "Fix the Oracle wording while preserving its meaning.",
+        "repair": true,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Cloudwing Sentinel",
+          "oracle_text": "Flying\n{T}: Draw a card, then discard a card.",
+          "power": "2",
+          "rarity": "uncommon",
+          "toughness": "2",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 9.59,
+        "before_status": "rejected",
+        "after_status": "parsed",
+        "after_error": ""
+      },
+      {
+        "id": "repair-walker",
+        "input": {
+          "name": "Neris, Tide Seeker",
+          "rarity": "mythic",
+          "mana_cost": "{2}{U}{U}",
+          "type_line": "Legendary Planeswalker — Neris",
+          "colors": [
+            "U"
+          ],
+          "loyalty": "4",
+          "oracle_text": "+1: Scry two.\n−2: Return target creature to its owners hand.\n−7: Draw seven cards."
+        },
+        "change": "Fix the Oracle wording while preserving its meaning.",
+        "repair": true,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "loyalty": "4",
+          "mana_cost": "{2}{U}{U}",
+          "name": "Neris, Tide Seeker",
+          "oracle_text": "+1: Scry two.\n−2: Return target creature to its owner's hand.\n−7: Draw seven cards.",
+          "rarity": "mythic",
+          "type_line": "Legendary Planeswalker — Neris"
+        },
+        "seconds": 14.36,
+        "before_status": "rejected",
+        "after_status": "rejected",
+        "after_error": "No match"
+      },
+      {
+        "id": "repair-ambiguous",
+        "input": {
+          "name": "Cloudwing Sentinel",
+          "rarity": "uncommon",
+          "mana_cost": "{2}{U}",
+          "type_line": "Creature — Bird",
+          "colors": [
+            "U"
+          ],
+          "power": "2",
+          "toughness": "2",
+          "oracle_text": "Whenever you cast a spell that is exactly two or more colors, draw a card."
+        },
+        "change": "Fix the Oracle wording while preserving its meaning.",
+        "repair": true,
+        "draft": {
+          "colors": [
+            "U"
+          ],
+          "mana_cost": "{2}{U}",
+          "name": "Cloudwing Sentinel",
+          "oracle_text": "Whenever you cast a spell that is exactly two or more colors, draw a card.",
+          "power": "2",
+          "rarity": "uncommon",
+          "toughness": "2",
+          "type_line": "Creature — Bird"
+        },
+        "seconds": 12.44,
+        "before_status": "rejected",
+        "after_status": "rejected",
+        "after_error": "No match"
+      }
+    ]
+  },
+  "default_prompt": {
+    "prompt": "A legendary blue-red 4/4 Dragon creature that costs {3}{U}{R}, has flying, and whenever it attacks, you draw a card, then discard a card.",
+    "draft": {
+      "colors": [
+        "U",
+        "R"
+      ],
+      "mana_cost": "{3}{U}{R}",
+      "name": "Kiora, the Crashing Current",
+      "oracle_text": "Flying\nWhenever CARDNAME attacks, draw a card, then discard a card.",
+      "power": "4",
+      "rarity": "uncommon",
+      "toughness": "4",
+      "type_line": "Legendary Creature — Dragon"
+    },
+    "validation": {
+      "applied_rewrites": [],
+      "card_specific_rewrites": true,
+      "error": "",
+      "intent_fidelity": "not_checked",
+      "mtgish": "Card(Name: \"Kiora, the Crashing Current\", Typeline: (Supertypes: [Legendary], Cardtypes: [Creature], Subtypes: [Dragon]), ManaCost: [ManaCostGeneric(3), ManaCostU, ManaCostR], Rules: [Flying, TriggerA(WhenACreatureAttacks(SinglePermanent(ThisPermanent)), ActionList([DrawACard, DiscardACard]))], CardPT: (Power: 4, Toughness: 4))",
+      "normalized_input": "Kiora, the Crashing Current\nLegendary Creature - Dragon\n{3}{U}{R}\nFlying\nWhenever Kiora, the Crashing Current attacks, draw a card, then discard a card.\n4/4",
+      "oracle_correctness": "not_proven",
+      "parse_complete": true,
+      "parse_diagnostic": null,
+      "representation_warning": "",
+      "scope": "whole_card",
+      "status": "parsed",
+      "workflow": "upstream-standard-v2"
+    },
+    "seconds": 9.518606605008245
+  },
+  "live_assets": [
+    {
+      "url": "https://tetrarchs.com/forge/?v=dbcf237b32b4",
+      "bytes": 8187,
+      "transfer_bytes": 2875,
+      "encoding": "gzip",
+      "sha256": "e050183d3a1b247b488a7c9ab26f1ffc9f8676f9b7527891a8adfcec5204b4cb",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/main.js?v=dbcf237b32b4",
+      "bytes": 25642,
+      "transfer_bytes": 8242,
+      "encoding": "gzip",
+      "sha256": "5c91a20d4226b4dd9007c57b23fe771b6383b37e42c6319b24b3b5eba53264f1"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/style.css?v=dbcf237b32b4",
+      "bytes": 30917,
+      "transfer_bytes": 8736,
+      "encoding": "gzip",
+      "sha256": "1434b97cdbbbe7b70cb2f78a6f48325107c4cf9f356bf7d63b57d0c8ee5dd0ba"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/card-scrollers.js?v=dbcf237b32b4",
+      "bytes": 14668,
+      "transfer_bytes": 5287,
+      "encoding": "gzip",
+      "sha256": "2e2d830d1fed4c709a4f7384d363cb1e12aa73d686855cddb0b5a5fcd5f763c0"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/rules-scrollers.js?v=dbcf237b32b4",
+      "bytes": 1650,
+      "transfer_bytes": 770,
+      "encoding": "gzip",
+      "sha256": "b03eda1769b45aedab416f66ad91d55b9c14eaff129a435e6042a8cae7910a28"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/oracle-validator.js?v=dbcf237b32b4",
+      "bytes": 2507,
+      "transfer_bytes": 1006,
+      "encoding": "gzip",
+      "sha256": "9b5098ed652f0edce1199814ce51abb433970c3952d6b6fa7c15395c40faec54"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/oracle-worker.js?v=dbcf237b32b4",
+      "bytes": 1263,
+      "transfer_bytes": 614,
+      "encoding": "gzip",
+      "sha256": "fda3874f040fdd4eb395864091029ef11fb0a23ea18867ff14252e7b8ea546c9"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/oracle-status.js?v=dbcf237b32b4",
+      "bytes": 2761,
+      "transfer_bytes": 1152,
+      "encoding": "gzip",
+      "sha256": "59abd2b43683973c9bf459700928a302afb99607088d9c91848fbae672412821"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/oracle-input.js?v=dbcf237b32b4",
+      "bytes": 1312,
+      "transfer_bytes": 706,
+      "encoding": "gzip",
+      "sha256": "f97990bc34c3978c62ec81a9b81ee513edc292290b2f0d365a8d5a701d1e5ef0"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/share-card.js?v=dbcf237b32b4",
+      "bytes": 9367,
+      "transfer_bytes": 3912,
+      "encoding": "gzip",
+      "sha256": "5b576dd11c270dab69e43279c503042a48f354df77a57bc1e1aa0da319c56996"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/revision-prompt.js?v=dbcf237b32b4",
+      "bytes": 1299,
+      "transfer_bytes": 713,
+      "encoding": "gzip",
+      "sha256": "1f1c7e763c0ad4d6d7d5b471b973c73fb13c6f777b9c2ba3c2a0b92cb1b3bae6"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/renderer/card-preview.js?v=dbcf237b32b4",
+      "bytes": 230645,
+      "transfer_bytes": 75010,
+      "encoding": "gzip",
+      "sha256": "3fb547eab30e2e7e9924cb861dafe463821fc1c77efe106a937d6f8790512564"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/renderer/card-preview.css?v=dbcf237b32b4",
+      "bytes": 24869,
+      "transfer_bytes": 5927,
+      "encoding": "gzip",
+      "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/mtgish/parser.wasm?v=dbcf237b32b4",
+      "bytes": 14616543,
+      "transfer_bytes": 14616543,
+      "encoding": null,
+      "sha256": "2201fb1e8c229f240f8318a6506a7e9a9143f93a4d303d4db672eed4b3bf8225"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/mtgish/wasm_exec.js?v=dbcf237b32b4",
+      "bytes": 16992,
+      "transfer_bytes": 4496,
+      "encoding": "gzip",
+      "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/assets/jewel-cube.webp?v=dbcf237b32b4",
+      "bytes": 6932112,
+      "transfer_bytes": 6932112,
+      "encoding": null,
+      "sha256": "53789832ecb6a1b3645a51c748f0180ca0dfd9f6080627b90fe27a0849dde04e"
+    },
+    {
+      "url": "https://tetrarchs.com/forge/assets/jewel-dual.webp?v=dbcf237b32b4",
+      "bytes": 4946564,
+      "transfer_bytes": 4946564,
+      "encoding": null,
+      "sha256": "9318af6635c1abc3deabb22f458f117f4e64bc6608f34176a4e6121a4d4b198d"
+    },
+    {
+      "url": "https://tetrarcum.com/?v=dbcf237b32b4",
+      "bytes": 8187,
+      "transfer_bytes": 2875,
+      "encoding": "gzip",
+      "sha256": "e050183d3a1b247b488a7c9ab26f1ffc9f8676f9b7527891a8adfcec5204b4cb",
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    {
+      "url": "https://tetrarcum.com/main.js?v=dbcf237b32b4",
+      "bytes": 25642,
+      "transfer_bytes": 8242,
+      "encoding": "gzip",
+      "sha256": "5c91a20d4226b4dd9007c57b23fe771b6383b37e42c6319b24b3b5eba53264f1"
+    },
+    {
+      "url": "https://tetrarcum.com/style.css?v=dbcf237b32b4",
+      "bytes": 30917,
+      "transfer_bytes": 8736,
+      "encoding": "gzip",
+      "sha256": "1434b97cdbbbe7b70cb2f78a6f48325107c4cf9f356bf7d63b57d0c8ee5dd0ba"
+    },
+    {
+      "url": "https://tetrarcum.com/card-scrollers.js?v=dbcf237b32b4",
+      "bytes": 14668,
+      "transfer_bytes": 5287,
+      "encoding": "gzip",
+      "sha256": "2e2d830d1fed4c709a4f7384d363cb1e12aa73d686855cddb0b5a5fcd5f763c0"
+    },
+    {
+      "url": "https://tetrarcum.com/rules-scrollers.js?v=dbcf237b32b4",
+      "bytes": 1650,
+      "transfer_bytes": 770,
+      "encoding": "gzip",
+      "sha256": "b03eda1769b45aedab416f66ad91d55b9c14eaff129a435e6042a8cae7910a28"
+    },
+    {
+      "url": "https://tetrarcum.com/oracle-validator.js?v=dbcf237b32b4",
+      "bytes": 2507,
+      "transfer_bytes": 1006,
+      "encoding": "gzip",
+      "sha256": "9b5098ed652f0edce1199814ce51abb433970c3952d6b6fa7c15395c40faec54"
+    },
+    {
+      "url": "https://tetrarcum.com/oracle-worker.js?v=dbcf237b32b4",
+      "bytes": 1263,
+      "transfer_bytes": 614,
+      "encoding": "gzip",
+      "sha256": "fda3874f040fdd4eb395864091029ef11fb0a23ea18867ff14252e7b8ea546c9"
+    },
+    {
+      "url": "https://tetrarcum.com/oracle-status.js?v=dbcf237b32b4",
+      "bytes": 2761,
+      "transfer_bytes": 1152,
+      "encoding": "gzip",
+      "sha256": "59abd2b43683973c9bf459700928a302afb99607088d9c91848fbae672412821"
+    },
+    {
+      "url": "https://tetrarcum.com/oracle-input.js?v=dbcf237b32b4",
+      "bytes": 1312,
+      "transfer_bytes": 706,
+      "encoding": "gzip",
+      "sha256": "f97990bc34c3978c62ec81a9b81ee513edc292290b2f0d365a8d5a701d1e5ef0"
+    },
+    {
+      "url": "https://tetrarcum.com/share-card.js?v=dbcf237b32b4",
+      "bytes": 9367,
+      "transfer_bytes": 3912,
+      "encoding": "gzip",
+      "sha256": "5b576dd11c270dab69e43279c503042a48f354df77a57bc1e1aa0da319c56996"
+    },
+    {
+      "url": "https://tetrarcum.com/revision-prompt.js?v=dbcf237b32b4",
+      "bytes": 1299,
+      "transfer_bytes": 713,
+      "encoding": "gzip",
+      "sha256": "1f1c7e763c0ad4d6d7d5b471b973c73fb13c6f777b9c2ba3c2a0b92cb1b3bae6"
+    },
+    {
+      "url": "https://tetrarcum.com/renderer/card-preview.js?v=dbcf237b32b4",
+      "bytes": 230645,
+      "transfer_bytes": 75010,
+      "encoding": "gzip",
+      "sha256": "3fb547eab30e2e7e9924cb861dafe463821fc1c77efe106a937d6f8790512564"
+    },
+    {
+      "url": "https://tetrarcum.com/renderer/card-preview.css?v=dbcf237b32b4",
+      "bytes": 24869,
+      "transfer_bytes": 5927,
+      "encoding": "gzip",
+      "sha256": "9f7200ccfbc0fdb30063eea1a68b8cc210af4b7f8b63283d78446045a28a2073"
+    },
+    {
+      "url": "https://tetrarcum.com/mtgish/parser.wasm?v=dbcf237b32b4",
+      "bytes": 14616543,
+      "transfer_bytes": 14616543,
+      "encoding": null,
+      "sha256": "2201fb1e8c229f240f8318a6506a7e9a9143f93a4d303d4db672eed4b3bf8225"
+    },
+    {
+      "url": "https://tetrarcum.com/mtgish/wasm_exec.js?v=dbcf237b32b4",
+      "bytes": 16992,
+      "transfer_bytes": 4496,
+      "encoding": "gzip",
+      "sha256": "0c949f4996f9a89698e4b5c586de32249c3b69b7baadb64d220073cc04acba14"
+    },
+    {
+      "url": "https://tetrarcum.com/assets/jewel-cube.webp?v=dbcf237b32b4",
+      "bytes": 6932112,
+      "transfer_bytes": 6932112,
+      "encoding": null,
+      "sha256": "53789832ecb6a1b3645a51c748f0180ca0dfd9f6080627b90fe27a0849dde04e"
+    },
+    {
+      "url": "https://tetrarcum.com/assets/jewel-dual.webp?v=dbcf237b32b4",
+      "bytes": 4946564,
+      "transfer_bytes": 4946564,
+      "encoding": null,
+      "sha256": "9318af6635c1abc3deabb22f458f117f4e64bc6608f34176a4e6121a4d4b198d"
+    }
+  ],
+  "renderer_validation": {
+    "focused_special_frames": "11 passed",
+    "all_unit_tests_bounded_workers": "1219 passed in 162 files; npm run test -- --maxWorkers=4",
+    "aggregate_check": "Typecheck, policies, architecture and build passed; unrestricted npm run check hit an unrelated 5-second Tetranum art-direction dynamic-import timeout under CPU contention. Focused retry and bounded full unit run passed without changing tests or time limits.",
+    "earlier_game_ui_limits": "Previous aggregate game UI run had unrelated land-hover timeout and ability-row overlap failures; the standalone Forge browser checks above pass."
+  },
+  "limits": [
+    "Browser tests use software GPU rendering and emulated viewport sizes, not physical iPhone verification.",
+    "Chromium recorded and decoded real H.264 MP4 at 720x1080, approximately six seconds.",
+    "Linux Playwright WebKit lacks MediaRecorder; image export and unsupported-video fallback were tested, actual Safari/iPhone video recording was not.",
+    "Native share-sheet calls were stubbed. Files were actually rendered, encoded, previewed and downloaded, but no social-media posting was performed.",
+    "Parser .wasm is 14.6 MB and currently served uncompressed; it compresses to about 2.7 MB with gzip. Compiled parser, model weights and training datasets are not committed."
+  ],
+  "parser_memory": {
+    "before_initial_wasm_bytes": 458752000,
+    "after_chromium": {
+      "load_ms": 8020.899999976158,
+      "memory_bytes": 325058560,
+      "peak_memory_bytes": 476053504
+    },
+    "after_webkit": {
+      "load_ms": 8064,
+      "memory_bytes": 321388544,
+      "peak_memory_bytes": 465043456
+    },
+    "limit": "WASM linear memory only, not total browser footprint; shared Linux host, not physical phone."
+  }
+}

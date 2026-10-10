@@ -18,7 +18,7 @@ No screenshots or remote assets are needed to reproduce the images.
   spindle stones. The midpoint color requirement applies only to the dual.
 
 The browser gets a transparent, 384 × 384 animated WebP: 360 frames over a
-24-second rotation. Spindle stones are half their original linear size, centered
+24-second rotation. Spindle stones are 75% of their original linear size (50% larger than the preceding version); pearls and their gold cups are half size, centered
 on each gold edge with longer visible gold connectors. The original optical calculations are preserved; `scene.js`
 adjusts the output alpha from 0.76 to 0.96 with Fresnel strength so the page
 shows through gemstone facets. Pearls and gold stay opaque. There is no added
@@ -30,7 +30,7 @@ The large jewel above the desktop headline defaults to the cube. Its display is
 reserved-height area so it extends upward without shifting the headline or button. Only the chosen
 animation is downloaded; reduced motion or a hidden jewel/page uses a still.
 Mobile keeps the small gold wireframe header mark and fetches no animation.
-The dual loop is 4.40 MB and the cube is 6.13 MB; stills are 16 / 23 KB. Encoding
+The dual loop is 4.95 MB and the cube is 6.93 MB; stills are 18 / 25 KB. Encoding
 uses WebP quality 88, method 4, with full alpha quality (stills use quality 94).
 This is not a device benchmark against live WebGL. The complete scene remains
 available for an interactive version; the baked image cannot be freely rotated.

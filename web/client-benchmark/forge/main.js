@@ -3,15 +3,20 @@ import {mountRenderer} from './renderer.js';
 import {editOnCard} from './inline-editor.js';
 import {savedCards,saveCards} from './storage.js';
 import {Sound} from './sound.js';
+import {oracleStatus} from './oracle-status.js';
+import {designFields} from './revision-prompt.js';
 import {editWithScrollers} from './card-scrollers.js';
 import {isMobileDevice} from '/model-bench/device-support.js';
 const $=id=>document.getElementById(id), sound=new Sound();
 let models={ready:false,cancel(){},dispose(){}};
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let generated=[],cards=demos.map(c=>({...c})),index=0,preview,busy=false,loading=false,editor=null,paused=reduced.matches,lastChange=Date.now(),timer,hovering=false;
-let pendingArt=null;
+let shareBusy=false;
+let pendingArt=null,generationMode='create';
+const modePrompts={create:$('description').value,revise:'Give it vigilance. Keep its other abilities.'};
 let deletedCard=null,historyBusy=false;
 const active=()=>cards[index];
+const oracle=oracleStatus({card:active,canRepair:()=>models.textReady&&!busy&&!loading,onRepair:result=>void reviseCard('Fix the Oracle wording while preserving its meaning.',result)});
 let previewError=false,pendingEditor=null;
 $('card-preview').addEventListener('preview-error',()=>{previewError=true;message('The card could not finish loading. Reload the page to retry.',true);});
 $('card-preview').addEventListener('preview-pending',()=>controls());
@@ -24,11 +29,13 @@ function controls(){
   $('load-button').disabled=busy||loading;
   $('load-label').textContent=loading?'Opening the forge…':'Open the forge';
   $('generate-button').disabled=busy||loading;
+  $('mode-create').disabled=$('mode-revise').disabled=busy||loading;
+  oracle.update();
   $('description').disabled=busy||loading;
-  $('stop-button').hidden=!busy||loading||historyBusy;
+  $('stop-button').hidden=!busy||loading||historyBusy||shareBusy;
   $('previous').disabled=busy||cards.length<2;$('next').disabled=busy||cards.length<2;
   $('browse-examples').hidden=!generated.length;$('browse-examples').disabled=busy||loading;$('browse-examples').textContent=active().demo?'Back to your cards':'Browse examples';
-  $('finish').disabled=busy;$('export-card').disabled=busy||previewPending;
+  $('finish').disabled=busy;for(const kind of ['image','video','text'])$('save-'+kind).disabled=busy||loading||previewPending;
   $('delete-card').hidden=$('delete-divider').hidden=Boolean(active().demo);
   $('delete-card').disabled=busy||loading;$('undo-delete').disabled=busy||loading;$('dismiss-delete').disabled=historyBusy;
   $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent='Edit this card';
@@ -108,6 +115,7 @@ async function paint(card,prompt){
 async function generate(){
   if(busy||loading||!models.ready)return;
   const description=$('description').value.trim();if(!description)return;
+  if(generationMode==='revise'){await reviseCard(description);return;}
   start('Imagining your card…');let card;
   try {
     const result=await models.card(description,stage),draft=parseDraft(result.text);
@@ -117,6 +125,35 @@ async function generate(){
   }catch(error){message(error.name==='AbortError'?'Stopped. Any completed card text has been kept.':`${error.message}${card?' Your card text has been kept. Click its artwork to retry.':''}`,error.name!=='AbortError');}
   finally{finish();}
 }
+async function reviseCard(change,diagnostic=null){
+  if(busy||loading||!models.textReady)return;
+  closeEditor(false);const original={...active()};
+  start(diagnostic?'Repairing Oracle wording…':'Revising your card…');
+  try{
+    const result=await models.revise(original,change,stage,diagnostic),draft=parseDraft(result.text);
+    // Repair is restricted to wording; model suggestions cannot silently alter
+    // costs, stats, name, type, rarity, artwork or treatment.
+    const candidate=diagnostic?{...original,oracle_text:draft.oracle_text}:draft;
+    if(diagnostic&&draft.name!==original.name)throw Error('The repair changed the card name. Your original card was kept.');
+    stage('Checking the revised Oracle text…');const validation=await oracle.check(candidate);
+    if(diagnostic&&!validation.parse_complete){message('The suggested repair still did not parse. Your original card was kept. This may be unsupported syntax.',true);return;}
+    if(diagnostic&&candidate.oracle_text===original.oracle_text){message('The model did not find a wording change. Your card was kept.');return;}
+    const copy={...original};if(!diagnostic)for(const key of designFields)delete copy[key];
+    Object.assign(copy,candidate,{id:crypto.randomUUID(),demo:false,created_at:new Date().toISOString(),revision_of:original.id,revision_request:change,text_seed:result.seed});
+    if(original.demo)copy.demo_image=original.image;
+    if(copy.art_blob)copy.illustration=URL.createObjectURL(copy.art_blob);
+    appendCard(copy);await persist();sound.play('complete');
+    message(validation.parse_complete?'Revised copy ready. Your original card and artwork were kept.':'Revised copy ready, but its Oracle text did not parse. Your original was kept.',!validation.parse_complete);
+  }catch(error){message(error.name==='AbortError'?'Revision stopped. Your original card was kept.':error.message,error.name!=='AbortError');}
+  finally{finish();}
+}
+for(const mode of ['create','revise'])$('mode-'+mode).onclick=()=>{
+  modePrompts[generationMode]=$('description').value;generationMode=mode;$('description').value=modePrompts[mode];
+  $('description-label').textContent=mode==='revise'?'What would you like to change?':'Describe your card';
+  $('generate-label').textContent=mode==='revise'?'Revise this card':'Create card';
+  for(const option of ['create','revise'])$('mode-'+option).setAttribute('aria-pressed',String(mode===option));
+  $('description').focus();
+};
 async function regenerateArt(card,prompt){
   if(busy||loading)return;
   if(!models.ready){pendingArt={id:card.id,prompt};closeEditor();message('Load the models on the left, then the new artwork will be generated.');$('load-button').focus();return;}
@@ -247,11 +284,17 @@ $('edit-form').onsubmit=async e=>{
   c.updated_at=new Date().toISOString();closeEditor();draw();await persist();sound.play('click');
 };
 function download(blob,name){const href=URL.createObjectURL(blob),a=document.createElement('a');a.href=href;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(href),1000);}
-$('export-card').onclick=async()=>{
+async function exportJSON(){
   try {const c=active(),{illustration,art_blob,...record}=c;const blob=art_blob||await fetch(illustration).then(r=>{if(!r.ok)throw Error('Artwork could not be downloaded.');return r.blob();});
     const art=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
     download(new Blob([JSON.stringify({format:'tetrarchs-forge-card-v1',...record,art_data_url:art},null,2)],{type:'application/json'}),`${c.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}.json`);
   }catch(error){message(error.message||'The card could not be exported.',true);}
+};
+for(const kind of ['image','video','text'])$('save-'+kind).onclick=async()=>{
+  if(busy||loading)return;closeEditor(false);busy=shareBusy=true;controls();
+  try{const {showShare}=await import('./share-card.js');await showShare({...active()},kind,{exportJSON});}
+  catch(error){message(error.message,true);}
+  finally{busy=shareBusy=false;lastChange=Date.now();controls();$('save-'+kind).focus();}
 };
 function soundControl(){$('sound-toggle').textContent=sound.enabled?'Sound on':'Sound off';$('sound-toggle').setAttribute('aria-pressed',String(sound.enabled));}
 $('sound-toggle').onclick=()=>{sound.set(!sound.enabled);soundControl();if(sound.enabled)sound.play('edit');};soundControl();
@@ -260,4 +303,4 @@ try {
   try {generated=await savedCards();for(const c of generated)c.illustration=c.art_blob?URL.createObjectURL(c.art_blob):c.demo_image?new URL(`./assets/${c.demo_image}`,import.meta.url).href:null;if(generated.length){cards=generated;index=cards.length-1;}}catch{message('Local history is unavailable. You can still create and export cards.');}
   preview=await mountRenderer($('card-preview'),active(),openEditor);$('finish').replaceChildren(...preview.finishes.map(({id,label})=>{const option=document.createElement('option');option.value=id;option.textContent=label;return option;}));$('finish').value='vizier_etched_v1';draw();
 }catch(error){message(`The card preview could not load: ${error.message}`,true);}
-window.addEventListener('pagehide',e=>{editor?.inline?.commit();if(!e.persisted)models.dispose();});
+window.addEventListener('pagehide',e=>{editor?.inline?.commit();if(!e.persisted){models.dispose();oracle.dispose();}});

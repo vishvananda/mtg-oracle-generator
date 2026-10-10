@@ -86,6 +86,7 @@ export function editWithScrollers(host,part,card,{symbols,sets,save,cancel,tick,
       const peers=fields.map((key,i)=>{if(i)row.append(document.createTextNode('/'));const b=button(`Edit ${key}`,()=>activate(i));b.textContent=draft[key]??'0';row.append(b);return b;});
       function activate(i){selected=i;peers.forEach(b=>b.style.visibility='visible');const key=fields[i],peer=peers[i],values=[...numbers(key==='loyalty'?0:-20,99),'*','1+*','X'];if(!values.includes(String(draft[key]??0)))values.push(String(draft[key]));const anchor=()=>rect(peer);peer.style.visibility='hidden';
         start({label:`${key} scroller`,rows:values,row:Math.max(0,values.indexOf(String(draft[key]??0))),render:(b,s)=>{b.textContent=s;},change:s=>{draft[key]=s;peer.textContent=s;}},anchor,row);
+        if(key==='loyalty')wheel.root.classList.add('loyalty-wheel');
       }activate(Math.min(selected,fields.length-1));
     }
   }
@@ -123,6 +124,7 @@ export function editWithScrollers(host,part,card,{symbols,sets,save,cancel,tick,
     const item=ruleItems(live,card.oracle_text||'')[selected];if(item){const {node,start:from,end:to,value,loyalty}=item;hide(node);
       const rows=loyalty?[...numbers(-20,20).map(n=>Number(n)>0?`+${n}`:n),'-X','+X']:manaValues.concat(['T','Q','E']);if(!rows.includes(value))rows.push(value);
       start({label:loyalty?'Loyalty ability cost scroller':'Rules mana symbol scroller',rows,row:rows.indexOf(value),render:(b,s)=>loyalty?b.textContent=s:glyph(b,s,symbols(s)),change:s=>{draft.oracle_text=card.oracle_text.slice(0,from)+(loyalty?s:`{${s}}`)+card.oracle_text.slice(to);}},()=>rect(node),node);
+      if(loyalty)wheel.root.classList.add('loyalty-wheel');
     }
   }
   if(part==='mana'&&removeCurrent){removeButton=button('Remove symbol',()=>{removeCurrent();removeButton.disabled=!wheel;},'direct-action');removeButton.textContent='−';removeButton.disabled=!wheel;tools.prepend(removeButton);}
