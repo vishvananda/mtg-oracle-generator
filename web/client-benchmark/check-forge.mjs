@@ -23,12 +23,35 @@ try{
   await page.screenshot({path:`${out}/desktop.png`});
   for(const [width,height]of [[1440,900],[1366,768],[1024,640]]){await page.setViewportSize({width,height});check(`card and controls fit ${width}x${height}`,await page.evaluate(()=>document.querySelector('.card-tools').getBoundingClientRect().bottom<=innerHeight&&document.documentElement.scrollHeight<=innerHeight+1));}
   await page.setViewportSize({width:1440,height:1000});
-  await page.locator('#next').click();check('carousel shows a planeswalker',await page.locator('#card-caption').innerText()==='Neris, Keeper of Lost Tides');await page.locator('#next').click();check('carousel navigation',await page.locator('#card-caption').innerText()==='Crownroot, the Returning Spring');
+  await page.locator('#next').click();check('carousel shows a planeswalker',await page.locator('#card-caption').innerText()==='Neris, Keeper of Lost Tides');
+  check('standalone rules accessibility copy is visually clipped',await page.locator('.rendered-special-sr').first().evaluate(e=>e.getBoundingClientRect().width===1&&getComputedStyle(e).overflow==='hidden'));
+  check('loyalty costs fit inside their badges',await page.locator('.rendered-special-badge').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize)/e.getBoundingClientRect().height<.56));
+  await page.screenshot({path:`${out}/planeswalker.png`});await page.locator('#next').click();check('carousel navigation',await page.locator('#card-caption').innerText()==='Crownroot, the Returning Spring');
   await page.waitForFunction(()=>document.querySelector('audio')?.readyState>=2);
   check('opening theme plays after interaction',await page.evaluate(()=>!document.querySelector('audio').paused));
   await page.locator('#sound-toggle').click();check('sound toggle mutes music',await page.evaluate(()=>document.querySelector('audio').paused));
-  await page.locator('#edit-own-card').click();await page.locator('#edit-name').fill('My First Creation');await page.locator('#edit-save').click();
+  await page.locator('#edit-own-card').click();await page.locator('#edit-name').fill('My First Creation');await page.keyboard.press('Enter');
   check('manual name edit appears in carousel',await page.locator('#card-caption').innerText()==='My First Creation');
+  await page.locator('[data-card-design-part="name"]').click();
+  check('name edits inside the card without a popup',await page.locator('.card-tilt #edit-name').isVisible()&&!(await page.locator('#edit-panel').isVisible()));
+  check('editing freezes card tilt',await page.locator('.card-tilt').evaluate(e=>getComputedStyle(e).transform)==='none');
+  await page.locator('#edit-name').fill('Discard this edit');await page.keyboard.press('Escape');
+  check('Escape restores the previous name',await page.locator('#card-caption').innerText()==='My First Creation');
+  await page.locator('[data-card-design-part="rules"]').click();
+  await page.locator('#edit-oracle_text').fill('Flying\nWhenever CARDNAME attacks, draw a card.');
+  await page.keyboard.press('Enter');await page.keyboard.insertText('Vigilance');
+  await page.screenshot({path:`${out}/inline-rules.png`});
+  check('rules editing supports real multiline text',await page.locator('#edit-oracle_text').inputValue()==='Flying\nWhenever CARDNAME attacks, draw a card.\nVigilance');
+  await page.keyboard.press('Control+Enter');
+  check('rules save on the card',(await stored(page))[0].oracle_text.endsWith('\nVigilance'));
+  await page.locator('[data-card-design-part="name"]').click();await page.locator('#edit-name').fill('A Temporary Name');
+  await page.locator('[data-card-design-part="rules"]').click();
+  check('switching fields saves and opens the next inline edit',await page.locator('#card-caption').innerText()==='A Temporary Name'&&await page.locator('#edit-oracle_text').isVisible());
+  await page.keyboard.press('Escape');await page.locator('[data-card-design-part="name"]').click();await page.locator('#edit-name').fill('My First Creation');
+  await page.locator('#card-details').click();
+  check('clicking outside saves and opens the requested control',await page.locator('#card-caption').innerText()==='My First Creation'&&await page.locator('#edit-panel').isVisible());
+  await page.keyboard.press('Escape');
+
   await page.locator('.artist-edit-target').click();await page.locator('#edit-artist').fill('Forge Tester');await page.locator('#edit-save').click();
   check('artist credit is directly editable',await page.locator('.rendered-card-footer-artist').innerText()==='Forge Tester');
   await page.locator('.set-edit-target').click();await page.getByPlaceholder('Search by set name or code').fill('Kaldheim');await page.getByRole('button',{name:'Kaldheim KHM',exact:true}).click();await page.locator('#edit-save').click();
@@ -47,9 +70,15 @@ try{
   await page.locator('.frame-edit-target').first().click();await page.locator('#edit-frame_style').selectOption('modern');await page.locator('#edit-save').click();
   check('frame can switch back to modern',await page.locator('.rendered-layout-retro').count()===0);
   await page.locator('.art-edit-target').click();check('artwork URL and file available before loading',await page.locator('#edit-art_url').isVisible()&&await page.locator('#edit-art_file').isVisible());
-  await page.locator('#edit-art_url').fill(new URL('./assets/dusk-wing.webp',base).href);await page.locator('#edit-artist').fill('');await page.locator('#edit-save').click();await page.locator('#edit-panel').waitFor({state:'hidden'});
+  let artworkURL=new URL('./assets/dusk-wing.webp',base).href;
+  // A localhost probe still exercises the HTTPS-only import rule with real image bytes.
+  if(base.startsWith('http://127.0.0.1')){
+    const source=await context.request.get(artworkURL);artworkURL='https://forge-test.invalid/dusk-wing.webp';
+    await page.route(artworkURL,async route=>route.fulfill({contentType:'image/webp',headers:{'access-control-allow-origin':'*'},body:await source.body()}));
+  }
+  await page.locator('#edit-art_url').fill(artworkURL);await page.locator('#edit-artist').fill('');await page.locator('#edit-save').click();await page.locator('#edit-panel').waitFor({state:'hidden'});
   let saved=await stored(page);check('URL artwork is stored as a validated image blob',saved[0].art_blob.size>0&&saved[0].artist==='');
-  await page.reload();await page.locator('.card-design-preview').waitFor();check('edits persist without models',await page.locator('#card-caption').innerText()==='My First Creation');
+  await page.reload();await page.locator('.card-design-preview').waitFor();check('edits persist without models',await page.locator('#card-caption').innerText()==='My First Creation'&&(await stored(page))[0].oracle_text.endsWith('\nVigilance'));
   check('mute preference survives reload',await page.locator('#sound-toggle').innerText()==='Sound off');
   await page.locator('.art-edit-target').click();await page.locator('#edit-art_file').setInputFiles({name:'bad.png',mimeType:'image/png',buffer:Buffer.from('not an image')});await page.locator('#edit-save').click();await page.waitForFunction(()=>document.querySelector('#edit-error').textContent.includes('not a supported image'));check('invalid artwork keeps the editor open',await page.locator('#edit-panel').isVisible());await page.keyboard.press('Escape');
   const download=page.waitForEvent('download');await page.locator('#export-card').click();const file=await download;check('manual card export works',file.suggestedFilename()==='my-first-creation.json');
@@ -60,7 +89,10 @@ try{
   check('mobile hides model loading',!(await mobile.page.locator('#load-button').isVisible()));
   check('mobile has no horizontal overflow',await mobile.page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await mobile.page.screenshot({path:`${out}/mobile.png`,fullPage:true});
-  await mobile.page.locator('#edit-own-card').click();await mobile.page.locator('#edit-name').fill('Mobile Creation');await mobile.page.locator('#edit-save').click();await mobile.page.locator('.art-edit-target').click();
+  await mobile.page.locator('#edit-own-card').click();
+  check('mobile focuses its inline name field without a popup',await mobile.page.locator('#edit-name').evaluate(e=>document.activeElement===e&&parseFloat(getComputedStyle(e).fontSize)>=16)&&!(await mobile.page.locator('#edit-panel').isVisible()));
+  await mobile.page.screenshot({path:`${out}/mobile-inline-name.png`,fullPage:true});
+  await mobile.page.locator('#edit-name').fill('Mobile Creation');await mobile.page.getByRole('button',{name:'Save card text',exact:true}).click();await mobile.page.locator('.art-edit-target').click();
   check('mobile art editor uses URL or file',await mobile.page.locator('#edit-art_url').isVisible()&&!(await mobile.page.locator('#edit-art_prompt').count()));
   await mobile.page.screenshot({path:`${out}/mobile-art-editor.png`,fullPage:true});
   check('mobile never requests model code or weights',await mobile.page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\.wasm|\.gguf|bonsai-worker/.test(e.name))));

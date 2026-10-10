@@ -1,5 +1,6 @@
 import {demos,parseDraft,artPrompt} from './cards.js';
 import {mountRenderer} from './renderer.js';
+import {editOnCard} from './inline-editor.js';
 import {savedCards,saveCards} from './storage.js';
 import {Sound} from './sound.js';
 import {mountSetPicker} from './set-picker.js';
@@ -135,14 +136,31 @@ async function importArtwork(data){
 }
 function openEditor(part){
   if(busy||loading)return;
+  if(editor?.inline){if(editor.part===part)return;editor.inline.commit();}
+  else if(editor)closeEditor(false);
+  if(part==='name'||part==='rules'){
+    const card=active(),key=part==='name'?'name':'oracle_text';
+    const original=part==='rules'?(card[key]||'').replaceAll('CARDNAME',card.name):card.name;
+    const session={part,id:card.id};editor=session;lastChange=Date.now();sound.play('edit');
+    function end(value,restore){
+      editor=null;
+      const next=part==='name'?(value.trim()||original):value.trim();
+      if(next!==original){
+        adoptDemo();const card=active();card[key]=next;
+        if(part==='name'&&card.oracle_text)card.oracle_text=card.oracle_text.replaceAll(original,'CARDNAME');
+        card.updated_at=new Date().toISOString();void persist();message('Saved on this device.');
+      }
+      draw();lastChange=Date.now();if(restore)preview.focus(part);
+    }
+    session.inline=editOnCard($('card-preview'),part,original,{save:end,cancel:restore=>end(original,restore)});
+    return;
+  }
   const c=active();editor={part,id:c.id};sound.play('edit');lastChange=Date.now();
   $('edit-fields').replaceChildren();$('edit-error').textContent='';$('edit-panel').hidden=false;$('gallery').classList.add('editing');
   $('edit-heading').textContent=({name:'Give it a name',mana:'Mana cost',type:'Type & rarity',rules:'Shape its abilities',stats:'Strength & resilience',art:'Imagine the artwork',details:'The finishing touches',set:'Choose a set',artist:'Artist credit',border:'Choose the border',frame:'Choose the frame'})[part];
   $('edit-save').textContent='Save changes';
-  if(part==='name')field('name','Name',c.name).required=true;
   if(part==='mana'){const input=field('mana_cost','Mana cost · e.g. {3}{R}',c.mana_cost);mountManaPicker($('edit-fields'),input,preview.manaSymbol);}
   if(part==='type'){field('type_line','Type line',c.type_line).required=true;field('rarity','Rarity',c.rarity,{options:['common','uncommon','rare','mythic','special','bonus']});field('colors','Colors · W U B R G',c.colors.join(' '));}
-  if(part==='rules')field('oracle_text','Rules text',c.oracle_text,{textarea:true});
   if(part==='stats'){if(/Planeswalker/i.test(c.type_line))field('loyalty','Starting loyalty',c.loyalty);else{field('power','Power',c.power);field('toughness','Toughness',c.toughness);}}
   if(part==='border'){const select=field('border_color','Border',c.border_color||'auto',{options:['auto','black','white']});select.options[0].textContent='Match set and finish';}
   if(part==='frame'){const select=field('frame_style','Frame',c.frame_style||'auto',{options:['auto','modern','retro']});select.options[0].textContent='Match set';select.options[2].textContent='Old frame';}
@@ -153,11 +171,11 @@ function openEditor(part){
     artFields(c,models.ready&&!isMobileDevice?'generate':'url');
   }
   const anchor={name:'5%',mana:'5%',type:'46%',rules:'54%',stats:'58%',details:'58%',art:'17%',set:'30%',artist:'58%',border:'30%',frame:'30%'}[part];$('edit-panel').style.top=matchMedia('(max-width:760px)').matches?'auto':anchor;
-  draw();requestAnimationFrame(()=>{$('edit-fields').querySelector('input,textarea,select')?.focus();});
+  draw();$('edit-fields').querySelector('input,textarea,select')?.focus();
 }
-function closeEditor(restore=true){const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),$('finish').value,null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
+function closeEditor(restore=true){if(editor?.inline){editor.inline.commit();return;}const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),$('finish').value,null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
 $('edit-close').onclick=()=>closeEditor();$('edit-cancel').onclick=()=>closeEditor();$('card-details').onclick=()=>openEditor('details');
-$('edit-own-card').onclick=()=>{adoptDemo();void persist();openEditor('name');};
+$('edit-own-card').onclick=()=>openEditor('name');
 $('edit-panel').addEventListener('keydown',e=>{
   if(e.key==='Escape'){e.preventDefault();closeEditor();}
   if(e.key==='Tab'){const items=[...$('edit-panel').querySelectorAll('button,input,textarea,select')].filter(e=>!e.disabled&&e.type!=='hidden');const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
@@ -191,4 +209,4 @@ try {
   try {generated=await savedCards();for(const c of generated)c.illustration=c.art_blob?URL.createObjectURL(c.art_blob):c.demo_image?new URL(`./assets/${c.demo_image}`,import.meta.url).href:null;if(generated.length){cards=generated;index=cards.length-1;}}catch{message('Local history is unavailable. You can still create and export cards.');}
   preview=await mountRenderer($('card-preview'),active(),openEditor);$('finish').replaceChildren(...preview.finishes.map(({id,label})=>{const option=document.createElement('option');option.value=id;option.textContent=label;return option;}));$('finish').value='vizier_etched_v1';draw();
 }catch(error){message(`The card preview could not load: ${error.message}`,true);}
-window.addEventListener('pagehide',e=>{if(!e.persisted)models.dispose();});
+window.addEventListener('pagehide',e=>{editor?.inline?.commit();if(!e.persisted)models.dispose();});

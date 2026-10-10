@@ -10,6 +10,10 @@ artist credit is MTG CardForge and remains editable.
 
 **Edit your own card** is available immediately, without downloading models.
 Click names, cost, type, rules, stats, artist credit, set symbol, border, frame or artwork to edit.
+Names and rules use native inputs directly on the card. Click away or tap **Done**
+to save; Enter saves the name, Ctrl/Command+Enter saves rules, and Escape cancels.
+The card stays still during selection and typing. Rules preserve newlines;
+self-references display the card's name. No model download is needed.
 The set picker has 323 named sets with supported symbols, including Forge.
 Click the outer border for black/white stock, or the frame around the artwork
 for modern/old frames. Both can follow the selected set automatically. Mana
@@ -58,7 +62,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`07d89cdc7ceaeafc93a4a90e1beaf0a0ba7c3ff8`, rebased onto the editor’s
+`e1609d318b4ea71249e35549dae8c6cf317b5892`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -119,6 +123,68 @@ are not recorded as passing gates. They concern the full game UI, which is
 absent from this standalone page. Actual GPU inference was previously exercised
 in the model lab on the user's M1; the combined Forge flow still needs device
 inference testing beyond the explicit UI fixture.
+
+The [2026-10-10 receipt](../forge-verification-20261010.json) records 50 passing
+live browser checks, including inline editing checks and a standalone planeswalker
+comparison. The shared frontend passed all 1,215 unit tests with four workers,
+type checking and production builds within the existing budgets. The combined
+`npm run check` hit a five-second Tetranum test timeout under parallel build/test
+load; that same test passed in the focused and reduced-concurrency runs. Its
+full-game browser gates were therefore skipped, not recorded as passing.
+
+## Planned symbol and number editing
+
+The next pass replaces the remaining modal-style fields with one anchored,
+snapping picker. This is a design plan, not functionality in the current release.
+
+- **Set symbol:** vertical carousel of sets, horizontal carousel of rarities;
+  every item uses the actual rendered symbol. Keep the centered set name visible
+  and provide search for the 323-set list.
+- **Mana:** click an individual symbol; scroll symbol families/colors, or numbers
+  for generic mana. A nearby **+** inserts a symbol. In rules, it inserts at the
+  caret or edits that exact symbol without replacing the surrounding text.
+- **Type line:** individually scrollable card-type tokens with **+** for multiple
+  types (for example Artifact Creature), toggle chips for supertypes, and a
+  searchable subtype picker after the dash. Suggest subtypes for the active card
+  types, allow custom text, and preserve multiple subtypes. Return to a normal
+  printed type line when finished; do not silently erase incompatible fields.
+- **Stats:** independent power/toughness and starting-loyalty scrollers. Loyalty
+  ability costs include positive values, zero, negative values, X and −X.
+  Keep direct typing for unusual values such as `*` or `1+*`.
+- **Gestures:** wheel and trackpad, arrow keys, and pointer displacement from a
+  center dead zone. Only an explicitly opened picker scrolls on pointer movement.
+  Ramp speed gradually and stop at the dead zone. Touch uses a larger tray offset
+  above the finger; lock to the intended axis to avoid accidental rarity changes.
+- **Commit:** preview immediately, snap on settling, then commit on release/Done,
+  Enter or click-away; Escape cancels. One completed gesture should be one undo
+  step. Sort a completed mana cost only after editing settles, maintaining stable
+  symbol identities for animation. Do not reorder separate ability costs, tap
+  symbols, mana-production alternatives, or ordinary rules text.
+
+Implement and test the picker with set/rarity first, then reuse its gesture and
+accessibility behavior for mana and stats. Rules need addressable inline symbol
+tokens before the same picker can safely edit individual ability costs.
+
+## Planeswalker comparison
+
+The 2026-10-10 pass compares the blue **Jace, Unraveler of Secrets** with
+[its SOI printing](https://scryfall.com/card/soi/69/jace-unraveler-of-secrets).
+It fixes an unstyled accessibility copy leaking into the standalone text box,
+expands the inset paper to fit its frame, distributes ability spacing, reduces
+loyalty cost text, and restores the starting shield's proportions. DOM and canvas
+share the layout and badge offsets. The comparison uses current Oracle text,
+which includes the later Legendary supertype, so it is not a pixel-identical
+reproduction of the historical printing.
+
+```bash
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ \
+  FORGE_EVIDENCE=/tmp/forge-planeswalker node compare-planeswalker.mjs
+# Optional: run Vite in the matching frontend checkout, and also set
+# CANVAS_URL=http://127.0.0.1:5173 to include its Canvas2D face beside the DOM.
+```
+
+Reference scans and artwork are fetched into the evidence directory only;
+they are not bundled with the application or committed as showcase assets.
 
 ## Assets and audio
 
