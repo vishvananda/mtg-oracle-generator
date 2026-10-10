@@ -29,6 +29,9 @@ async function assetsReady(root,face,signal){
     }
   }
   await cancellable(Promise.all([...urls].map(imageReady)),signal);
+  // The foil canvas can finish before the hidden DOM artwork has decoded. It
+  // must also be ready before an inline edit reveals that native face.
+  await cancellable(Promise.all([...root.querySelectorAll('img')].filter(image=>image.src).map(image=>image.decode())),signal);
   await cancellable(document.fonts.ready,signal);
   await cancellable(frame(),signal);
 }

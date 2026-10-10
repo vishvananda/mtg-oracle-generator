@@ -14,7 +14,7 @@ const active=()=>cards[index];
 let previewError=false,pendingEditor=null;
 $('card-preview').addEventListener('preview-error',()=>{previewError=true;message('The card could not finish loading. Reload the page to retry.',true);});
 $('card-preview').addEventListener('preview-pending',()=>controls());
-$('card-preview').addEventListener('preview-ready',()=>{controls();if(previewError){previewError=false;message('');}if(pendingEditor){const next=pendingEditor;pendingEditor=null;if(next.id===active().id)openEditor(next.part);}});
+$('card-preview').addEventListener('preview-ready',()=>{controls();if(previewError){previewError=false;message('');}if(pendingEditor){const next=pendingEditor;pendingEditor=null;if(next.id===active().id)openEditor(next.part,next.detail);}});
 function message(text,error=false){for(const id of ['message','mobile-message']){$(id).textContent=text;$(id).classList.toggle('error',error);}}
 function controls(){
   const previewPending=$('card-preview').getAttribute('aria-busy')==='true'&&!$('card-preview').dataset.previewAvailable;
@@ -139,9 +139,9 @@ async function importArtwork(data){
   }catch(error){if(editor===target)$('edit-error').textContent=error.message;}
   finally{button.disabled=false;button.textContent='Use artwork';}
 }
-function openEditor(part){
+function openEditor(part,detail={}){
   if(busy||loading)return;
-  if($('card-preview').getAttribute('aria-busy')==='true'){pendingEditor={part,id:active().id};return;}
+  if($('card-preview').getAttribute('aria-busy')==='true'){pendingEditor={part,detail,id:active().id};return;}
   if(editor?.inline){if(editor.part===part)return;editor.inline.commit();}
   else if(editor)closeEditor(false);
   if(part==='name'||part==='rules'){
@@ -161,11 +161,10 @@ function openEditor(part){
     session.inline=editOnCard($('card-preview'),part,original,{save:end,cancel:restore=>end(original,restore),symbol:preview.manaSymbol});
     return;
   }
-  if(['set','mana','stats','type'].includes(part)){
+  if(['set','mana','stats','type','rule-symbol'].includes(part)){
     const session={part,id:active().id};editor=session;lastChange=Date.now();sound.play('edit');
     session.inline=editWithScrollers($('card-preview'),part,active(),{
-      symbols:preview.manaSymbol,sets:preview.setSymbol,
-      preview:card=>preview.update(card,$('finish').value,null),
+      symbols:preview.manaSymbol,sets:preview.setSymbol,detail,tick:()=>sound.play('tick'),
       save:(draft,restore)=>{editor=null;const changed=JSON.stringify(draft)!==JSON.stringify(active());if(changed){adoptDemo();Object.assign(active(),draft,{id:active().id,demo:false,updated_at:new Date().toISOString()});void persist();}draw();lastChange=Date.now();if(restore)preview.focus(part);},
       cancel:restore=>{editor=null;draw();lastChange=Date.now();if(restore)preview.focus(part);},
     });return;
@@ -174,15 +173,18 @@ function openEditor(part){
   $('edit-fields').replaceChildren();$('edit-error').textContent='';$('edit-panel').hidden=false;$('gallery').classList.add('editing');
   $('edit-heading').textContent=({name:'Give it a name',mana:'Mana cost',type:'Type & rarity',rules:'Shape its abilities',stats:'Strength & resilience',art:'Imagine the artwork',details:'The finishing touches',set:'Choose a set',artist:'Artist credit',border:'Choose the border',frame:'Choose the frame'})[part];
   $('edit-save').textContent='Save changes';
-  if(part==='border'){const select=field('border_color','Border',c.border_color||'auto',{options:['auto','black','white']});select.options[0].textContent='Match set and finish';}
-  if(part==='frame'){const select=field('frame_style','Frame',c.frame_style||'auto',{options:['auto','modern','retro']});select.options[0].textContent='Match set';select.options[2].textContent='Old frame';}
+  $('edit-panel').classList.toggle('quick-options',['frame','border'].includes(part));
+  if(part==='frame'||part==='border'){
+    const key=part==='frame'?'frame_style':'border_color',options=part==='frame'?[['auto','Match set'],['modern','Modern'],['retro','Old frame']]:[['auto','Match set'],['black','Black'],['white','White']];
+    for(const [value,label] of options){const button=document.createElement('button');button.type='button';button.className='direct-option';button.textContent=label;button.setAttribute('aria-pressed',String((c[key]||'auto')===value));button.onclick=()=>{adoptDemo();active()[key]=value;active().updated_at=new Date().toISOString();closeEditor(false);draw();void persist();sound.play('click');};$('edit-fields').append(button);}
+  }
   if(part==='artist')field('artist','Artist credit',c.artist);
   if(part==='details'){field('artist','Artist',c.artist);field('rarity','Rarity',c.rarity,{options:['common','uncommon','rare','mythic','special','bonus']});}
   if(part==='art'){
     artFields(c,models.ready&&!isMobileDevice?'generate':'url');
   }
   const anchor={name:'5%',mana:'5%',type:'46%',rules:'54%',stats:'58%',details:'58%',art:'17%',set:'30%',artist:'58%',border:'30%',frame:'30%'}[part];$('edit-panel').style.top=matchMedia('(max-width:760px)').matches?'auto':anchor;
-  draw();$('edit-fields').querySelector('input,textarea,select')?.focus();
+  draw();$('edit-fields').querySelector('input:not([type="hidden"]),textarea,select,button')?.focus();
 }
 function closeEditor(restore=true){if(editor?.inline){editor.inline.commit();return;}const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),$('finish').value,null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
 $('edit-close').onclick=()=>closeEditor();$('edit-cancel').onclick=()=>closeEditor();$('card-details').onclick=()=>openEditor('details');

@@ -1,0 +1,490 @@
+{
+  "date": "2026-10-10",
+  "deployment": {
+    "release": "/srv/mtg-oracle-client/releases/20261010T034356Z",
+    "previous": "/srv/mtg-oracle-client/releases/20261010T030146Z",
+    "urls": [
+      "https://tetrarcum.com/",
+      "https://tetrarchs.com/forge/"
+    ],
+    "build": {
+      "version": "82b7658cfa6c",
+      "built_at": "2026-10-10T03:43:34.688Z"
+    }
+  },
+  "renderer": {
+    "repository": "vishvananda/vizier-frontend",
+    "branch": "codex/standalone-card-preview-20261009",
+    "commit": "e1e6f6680b751885aac0b87bca6702d4ef57ac00",
+    "files": {
+      "card-preview.js": {
+        "bytes": 226509,
+        "gzip_bytes": 69741,
+        "sha256": "69ff1b6208fab464bd5a590de598fd15f9bbe2e7bf712f12abe251c63b4221d8"
+      },
+      "card-preview.css": {
+        "bytes": 24843,
+        "gzip_bytes": 5620,
+        "sha256": "53db4101f99edc32b4e11335f4d4e3e912627636bfdab3c168e87c90e617207c"
+      }
+    }
+  },
+  "checks": {
+    "full_ui": {
+      "url": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "demo artwork has a derived etching mask",
+        "Forge symbol appears on the type line",
+        "Forge symbol is used for the foil stamp",
+        "page is named MTG CardForge and has no outgoing navigation",
+        "desktop can edit before loading models",
+        "initial renderer imports no model runtime",
+        "music is not downloaded before interaction",
+        "card and controls fit 1440x900",
+        "card and controls fit 1366x768",
+        "card and controls fit 1024x640",
+        "carousel shows a planeswalker",
+        "standalone rules accessibility copy is visually clipped",
+        "loyalty costs fit inside their badges",
+        "carousel navigation",
+        "opening theme plays after interaction",
+        "sound toggle mutes music",
+        "manual name edit appears in carousel",
+        "name edits inside the card without a popup",
+        "editing freezes card tilt",
+        "Escape restores the previous name",
+        "rules editing supports real multiline text",
+        "rules save on the card",
+        "switching fields saves and opens the next inline edit",
+        "clicking outside saves and opens the requested control",
+        "artist credit is directly editable",
+        "searchable set picker updates card symbol",
+        "chosen set is saved with the card",
+        "scrollable mana symbols build and order the saved cost",
+        "art-frame click switches to the new renderer\u2019s old frame",
+        "outer-border click selects white stock",
+        "Cold foil is available and saved",
+        "frame can switch back to modern",
+        "artwork URL and file available before loading",
+        "URL artwork is stored as a validated image blob",
+        "edits persist without models",
+        "mute preference survives reload",
+        "invalid artwork keeps the editor open",
+        "manual card export works",
+        "mobile shows carousel and edit button",
+        "mobile hides model loading",
+        "mobile has no horizontal overflow",
+        "mobile focuses its inline name field without a popup",
+        "mobile art editor uses URL or file",
+        "mobile never requests model code or weights",
+        "fixture generation replaces demo with designed card and artwork",
+        "loaded models expose editable art prompt",
+        "art regeneration preserves rules and records new prompt",
+        "another generation appends to carousel",
+        "cancel retains finished text",
+        "all tested flows have no uncaught JavaScript errors"
+      ],
+      "inference": "UI fixture only; real GPU inference is not claimed",
+      "errors": []
+    },
+    "direct_chromium": {
+      "base": "http://127.0.0.1:8793/forge/",
+      "engine": "chromium",
+      "checks": [
+        "stats wheel opens directly on card without popup",
+        "selected stat replaces the printed number",
+        "wheel changes number without scrolling the page",
+        "farther pointer displacement scrolls faster (2 vs 8)",
+        "returning to center stops repeat",
+        "leaving wheel stops repeat",
+        "Escape restores original stats",
+        "mana wheel is centered on actual printed symbol",
+        "mana merges and sorts only on commit",
+        "edited card can return to example carousel",
+        "five examples remain available",
+        "set wheel stays centered on the printed set mark",
+        "horizontal keys change rarity",
+        "typing jumps directly to a set",
+        "set selection applies",
+        "direct type edits retain supertypes and multiword subtypes",
+        "frame menu contains three direct choices",
+        "one click applies old frame and closes menu",
+        "colored frame has broad hit area",
+        "ability cost opens on-card without editing all rules",
+        "signed ability cost persists",
+        "edited ability survives reload",
+        "touch neighbors have larger spacing",
+        "editing creates no horizontal overflow",
+        "held touch scrolls in the requested direction",
+        "lifting finger stops repeat",
+        "mobile set and rarity fan fits the viewport",
+        "no uncaught errors"
+      ],
+      "errors": [],
+      "limits": "Browser automation including emulated touch; not physical Safari/iPhone."
+    },
+    "direct_webkit": {
+      "base": "http://127.0.0.1:8793/forge/",
+      "engine": "webkit",
+      "checks": [
+        "stats wheel opens directly on card without popup",
+        "selected stat replaces the printed number",
+        "wheel changes number without scrolling the page",
+        "farther pointer displacement scrolls faster (2 vs 8)",
+        "returning to center stops repeat",
+        "leaving wheel stops repeat",
+        "Escape restores original stats",
+        "mana wheel is centered on actual printed symbol",
+        "mana merges and sorts only on commit",
+        "edited card can return to example carousel",
+        "five examples remain available",
+        "set wheel stays centered on the printed set mark",
+        "horizontal keys change rarity",
+        "typing jumps directly to a set",
+        "set selection applies",
+        "direct type edits retain supertypes and multiword subtypes",
+        "frame menu contains three direct choices",
+        "one click applies old frame and closes menu",
+        "colored frame has broad hit area",
+        "ability cost opens on-card without editing all rules",
+        "signed ability cost persists",
+        "edited ability survives reload",
+        "touch neighbors have larger spacing",
+        "editing creates no horizontal overflow",
+        "mobile set and rarity fan fits the viewport",
+        "no uncaught errors"
+      ],
+      "errors": [],
+      "limits": "Browser automation including emulated touch; not physical Safari/iPhone."
+    },
+    "inline_webkit": {
+      "engine": "webkit",
+      "url": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "mobile title matches printed font, size, line height and tracking",
+        "scaled input creates no viewport overflow",
+        "pinch zoom remains enabled",
+        "keyboard-sized viewport preserves card width and height",
+        "title still matches after keyboard resize",
+        "card stays full size while the keyboard is closing",
+        "normal responsive sizing resumes after the keyboard closes",
+        "rules input matches the printed font and size",
+        "old-frame title keeps its Goudy font and metrics",
+        "first card is blank while its artwork loads",
+        "no fallback copy is exposed on first load",
+        "previous card remains visible while the next loads",
+        "retained preview includes its rendered foil pixels",
+        "new fallback card remains hidden",
+        "rapid navigation shows the latest requested card",
+        "late assets do not replace the newer card",
+        "editable areas use a soft highlight instead of dashed outlines",
+        "keyboard controls keep a visible focus indicator",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": [],
+      "limits": "Browser mobile emulation and simulated viewport resize; physical iOS keyboard not exercised."
+    },
+    "live_direct": {
+      "base": "https://tetrarcum.com/",
+      "engine": "chromium",
+      "checks": [
+        "stats wheel opens directly on card without popup",
+        "selected stat replaces the printed number",
+        "wheel changes number without scrolling the page",
+        "farther pointer displacement scrolls faster (2 vs 8)",
+        "returning to center stops repeat",
+        "leaving wheel stops repeat",
+        "Escape restores original stats",
+        "mana wheel is centered on actual printed symbol",
+        "mana merges and sorts only on commit",
+        "edited card can return to example carousel",
+        "five examples remain available",
+        "set wheel stays centered on the printed set mark",
+        "horizontal keys change rarity",
+        "typing jumps directly to a set",
+        "set selection applies",
+        "direct type edits retain supertypes and multiword subtypes",
+        "frame menu contains three direct choices",
+        "one click applies old frame and closes menu",
+        "colored frame has broad hit area",
+        "ability cost opens on-card without editing all rules",
+        "signed ability cost persists",
+        "edited ability survives reload",
+        "touch neighbors have larger spacing",
+        "editing creates no horizontal overflow",
+        "held touch scrolls in the requested direction",
+        "lifting finger stops repeat",
+        "mobile set and rarity fan fits the viewport",
+        "no uncaught errors"
+      ],
+      "errors": [],
+      "limits": "Browser automation including emulated touch; not physical Safari/iPhone."
+    },
+    "font_chromium": [
+      {
+        "label": "before",
+        "url": "https://tetrarcum.com/",
+        "engine": "chromium",
+        "metrics": {
+          "ordinary": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 152.671875,
+              "width": 173.015625,
+              "height": 18,
+              "top": 152.671875,
+              "right": 237.890625,
+              "bottom": 170.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "normal",
+                "status": "loaded"
+              }
+            ]
+          },
+          "vizier_prismatic_v1": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 152.671875,
+              "width": 173.015625,
+              "height": 18,
+              "top": 152.671875,
+              "right": 237.890625,
+              "bottom": 170.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "normal",
+                "status": "loaded"
+              }
+            ]
+          }
+        },
+        "samples": [
+          {
+            "weight": 400,
+            "width": 463.75,
+            "ink": 1241916
+          },
+          {
+            "weight": 700,
+            "width": 463.75,
+            "ink": 1241916
+          }
+        ]
+      },
+      {
+        "label": "after",
+        "url": "http://127.0.0.1:8793/forge/",
+        "engine": "chromium",
+        "metrics": {
+          "ordinary": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 152.671875,
+              "width": 173.015625,
+              "height": 18,
+              "top": 152.671875,
+              "right": 237.890625,
+              "bottom": 170.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "400 700",
+                "status": "loaded"
+              }
+            ]
+          },
+          "vizier_prismatic_v1": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 152.671875,
+              "width": 173.015625,
+              "height": 18,
+              "top": 152.671875,
+              "right": 237.890625,
+              "bottom": 170.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "400 700",
+                "status": "loaded"
+              }
+            ]
+          }
+        },
+        "samples": [
+          {
+            "weight": 400,
+            "width": 463.75,
+            "ink": 1241916
+          },
+          {
+            "weight": 700,
+            "width": 463.75,
+            "ink": 1241916
+          }
+        ]
+      }
+    ],
+    "font_webkit": [
+      {
+        "label": "before",
+        "url": "https://tetrarcum.com/",
+        "engine": "webkit",
+        "metrics": {
+          "ordinary": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 146.671875,
+              "width": 173.203125,
+              "height": 18,
+              "top": 146.671875,
+              "right": 238.078125,
+              "bottom": 164.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "normal",
+                "status": "loaded"
+              }
+            ]
+          },
+          "vizier_prismatic_v1": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 146.671875,
+              "width": 173.203125,
+              "height": 18,
+              "top": 146.671875,
+              "right": 238.078125,
+              "bottom": 164.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "normal",
+                "status": "loaded"
+              }
+            ]
+          }
+        },
+        "samples": [
+          {
+            "weight": 400,
+            "width": 461.7578125,
+            "ink": 1215572
+          },
+          {
+            "weight": 700,
+            "width": 461.7578125,
+            "ink": 1609520
+          }
+        ]
+      },
+      {
+        "label": "after",
+        "url": "http://127.0.0.1:8793/forge/",
+        "engine": "webkit",
+        "metrics": {
+          "ordinary": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 146.671875,
+              "width": 173.203125,
+              "height": 18,
+              "top": 146.671875,
+              "right": 238.078125,
+              "bottom": 164.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "400 700",
+                "status": "loaded"
+              }
+            ]
+          },
+          "vizier_prismatic_v1": {
+            "font": "700 14.6444px \"Vizier Beleren\", Georgia, \"Times New Roman\", serif",
+            "weight": "700",
+            "synthesis": "none",
+            "rect": {
+              "x": 64.875,
+              "y": 146.671875,
+              "width": 173.203125,
+              "height": 18,
+              "top": 146.671875,
+              "right": 238.078125,
+              "bottom": 164.671875,
+              "left": 64.875
+            },
+            "faces": [
+              {
+                "weight": "400 700",
+                "status": "loaded"
+              }
+            ]
+          }
+        },
+        "samples": [
+          {
+            "weight": 400,
+            "width": 461.7578125,
+            "ink": 1215572
+          },
+          {
+            "weight": 700,
+            "width": 461.7578125,
+            "ink": 1215572
+          }
+        ]
+      }
+    ]
+  },
+  "shared_renderer_validation": {
+    "focused_tests": 23,
+    "unit_tests": 1216,
+    "typecheck": "passed",
+    "builds": "passed",
+    "policy": "passed",
+    "architecture": "passed",
+    "complete_gate": "not passing",
+    "native_game_browser": "Battlefield land-hover timeout, repeated in the isolated outlines check; also documented before this change. Other native scenarios before it pass.",
+    "webgl_game_browser": "Previously recorded special-the ability-row overlap. Rendering, gameplay, layout and motion checks before it pass."
+  },
+  "limitations": [
+    "Automated WebKit is Linux WebKit, not physical Safari/iOS. The font synthetic-bold difference was reproduced and fixed, but the reported vertical frame offset did not reproduce.",
+    "The full UI generation flow uses an explicit fixture; real model generation, quality and performance were not retested.",
+    "Keyboard size changes and touch gestures are emulated.",
+    "Sound playback and mute are covered by the full UI check; click timbre still needs listening on a real device."
+  ],
+  "evidence_directory": "/home/vishvananda/vizier-editor-artifacts/forge-20261010-direct"
+}

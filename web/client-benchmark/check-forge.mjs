@@ -55,23 +55,23 @@ try{
 
   await page.locator('.artist-edit-target').click();await page.locator('#edit-artist').fill('Forge Tester');await page.locator('#edit-save').click();await settled(page);
   check('artist credit is directly editable',await page.locator('.rendered-card-footer-artist').innerText()==='Forge Tester');
-  await page.locator('.set-edit-target').click();await page.getByRole('group',{name:'Set and rarity scroller'}).waitFor();await page.getByRole('searchbox',{name:'Find a set'}).fill('Kaldheim');await page.getByRole('button',{name:'Kaldheim mythic',exact:true}).click();await page.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await settled(page);
+  await page.locator('.set-edit-target').click();await page.getByRole('group',{name:'Set and rarity scroller'}).waitFor();await page.getByRole('group',{name:'Set and rarity scroller'}).pressSequentially('kaldheim');await page.getByRole('button',{name:'Save edit',exact:true}).click();await settled(page);
   check('searchable set picker updates card symbol',(await page.locator('.rendered-card-set-mark').getAttribute('src')).endsWith('/khm.svg'));
   check('chosen set is saved with the card',(await stored(page))[0].set_code==='KHM');
   await page.locator('[data-card-design-part="mana"]').click();
-  while(await page.getByRole('button',{name:'Remove symbol',exact:true}).count())await page.getByRole('button',{name:'Remove symbol',exact:true}).click();
+  while(await page.locator('.direct-peer[aria-label^="Edit mana symbol"]').count())await page.getByRole('button',{name:'Remove symbol',exact:true}).click();
   for(const symbol of ['U','B','1']){await page.getByRole('button',{name:'Add mana symbol',exact:true}).click();const wheel=page.getByRole('group',{name:'Mana symbol scroller'});if(symbol!=='1')for(let i=0;i<(symbol==='U'?31:32);i++)await wheel.press('ArrowDown');}
-  await page.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await settled(page);
+  await page.getByRole('button',{name:'Save edit',exact:true}).click();await settled(page);
   check('scrollable mana symbols build and order the saved cost',(await stored(page))[0].mana_cost==='{1}{U}{B}');
-  await page.locator('.frame-edit-target').first().click();await page.locator('#edit-frame_style').selectOption('retro');await page.locator('#edit-save').click();await settled(page);await page.locator('.rendered-layout-retro .retro-frame').waitFor();
+  await page.locator('.frame-edit-target').focus();await page.keyboard.press('Enter');await page.getByRole('button',{name:'Old frame',exact:true}).click();await settled(page);await page.locator('.rendered-layout-retro .retro-frame').waitFor();
   check('art-frame click switches to the new renderer’s old frame',await page.locator('.rendered-layout-retro').count()===1);
-  await page.locator('.border-edit-target').first().click();await page.locator('#edit-border_color').selectOption('white');await page.locator('#edit-save').click();await settled(page);await page.locator('.retro-border').waitFor();
+  await page.locator('.border-edit-target').first().click();await page.getByRole('button',{name:'White',exact:true}).click();await settled(page);await page.locator('.retro-border').waitFor();
   check('outer-border click selects white stock',(await stored(page))[0].border_color==='white');
   await page.screenshot({path:`${out}/retro-white.png`});
   await page.locator('#finish').selectOption('vizier_cold_v1');await settled(page);
   check('Cold foil is available and saved',(await stored(page))[0].finish_id==='vizier_cold_v1');
   await page.locator('#finish').selectOption('vizier_etched_v1');await settled(page);
-  await page.locator('.frame-edit-target').first().click();await page.locator('#edit-frame_style').selectOption('modern');await page.locator('#edit-save').click();await settled(page);
+  await page.locator('.frame-edit-target').focus();await page.keyboard.press('Enter');await page.getByRole('button',{name:'Modern',exact:true}).click();await settled(page);
   check('frame can switch back to modern',await page.locator('.rendered-layout-retro').count()===0);
   await page.locator('.art-edit-target').click();check('artwork URL and file available before loading',await page.locator('#edit-art_url').isVisible()&&await page.locator('#edit-art_file').isVisible());
   let artworkURL=new URL('./assets/dusk-wing.webp',base).href;
@@ -103,7 +103,7 @@ try{
   await mobile.context.close();
 
   const fixture=await browser.newContext({viewport:{width:1440,height:1000}});
-  await fixture.route('**/local-models.js',route=>route.fulfill({contentType:'text/javascript',body:`export class LocalModels {
+  await fixture.route('**/local-models.js*',route=>route.fulfill({contentType:'text/javascript',body:`export class LocalModels {
     ready=false; async load(report){report('Fixture models ready',1);this.ready=true;}
     async card(){await new Promise(r=>setTimeout(r,200));return {seed:42,text:JSON.stringify({name:'Fixture Phoenix',mana_cost:'{3}{R}',type_line:'Creature — Phoenix',oracle_text:'Flying',colors:['R'],rarity:'rare',power:'3',toughness:'3'})};}
     async art(prompt,report){report('Fixture artwork');await new Promise((resolve,reject)=>{this.reject=reject;setTimeout(resolve,600);});return {seed:43,blob:await fetch(new URL('./assets/ember-giant.webp',location.href)).then(r=>r.blob()),width:768,height:512,steps:4,total_ms:600};}

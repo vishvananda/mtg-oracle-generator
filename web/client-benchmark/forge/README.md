@@ -75,7 +75,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`df26b5f9e69fa72b431e27f5c7c048895c8c7a9d`, rebased onto the editor’s
+`e1e6f6680b751885aac0b87bca6702d4ef57ac00`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -91,8 +91,8 @@ npm run build:card-preview
 # In this repository:
 cd web/client-benchmark
 npm ci
-npm run build
 node prepare-forge.mjs /path/to/vizier-frontend/dist/card-preview
+npm run build
 ```
 
 `prepare-forge.mjs` verifies the renderer manifest's file hashes before staging
@@ -109,7 +109,10 @@ X-Content-Type-Options: nosniff
 ```
 
 App files use `Cache-Control: no-cache` so a reload revalidates changed code and
-styles. Versioned model URLs and model caches are unchanged.
+styles. `npm run build` also versions the small app’s JS/CSS/JSON dependency
+URLs from their content and the staged renderer manifest. This forces a new
+renderer/style match even if an older Safari cached unversioned files. Stage the
+renderer before the final build. Model URLs and model caches stay unchanged.
 
 The production host stages ordinary static files into timestamped releases,
 links the existing weight directories, then atomically swaps
@@ -173,30 +176,54 @@ the previously seen `special-the` ability-row overlap; it is not a passing gate.
 
 ## Symbol and number editing
 
-Set, mana, type and stats now open an anchored snapping control. Wheel/trackpad,
-arrow keys, dragging and hovering near an edge change values. Moving back to the
-center or leaving the control stops repeat scrolling. Touch gets larger rows.
+Symbols and numbers use wheels **on their printed positions**, with neighboring
+choices above/below. There is no scroller dialog. A small pointer displacement
+starts slow scrolling; holding it farther from the center accelerates it, up to
+13 notches/second. Moving upward pulls previous choices downward into the slot.
+Returning to center, leaving, releasing touch, blurring or hiding the page stops
+repeat scrolling. A short synthesized click plays at each snap when sound is on.
+Touch uses 54px spacing to expose choices around the finger. Reduced motion
+removes the snap animation. Mouse wheel/trackpad and arrow keys also work.
 
-- Set scrolls vertically; rarity scrolls horizontally (Shift+wheel also works).
-  Search narrows the 323-set list. The selected set name and rarity stay visible.
-- Mana has selectable symbol chips and **+**. Done orders the cost and combines
-  numeric additions; it preserves repeated colored symbols.
-- Type has scrollable card types, **+** for additional types, supertype toggles,
-  and a free-text subtype field that preserves multiple words.
-- Power, toughness and starting loyalty have separate number controls, including
-  symbolic values. While editing rules, chips expose each mana symbol and signed
-  loyalty ability cost. **+ Mana** inserts at the text caret. Other wording and
-  separate ability costs are preserved.
-- Drafts preview immediately. Done/Enter or clicking outside saves; Cancel/Escape
-  restores the original card. The carousel pauses while editing.
-
-Subtype suggestions, a global undo history and continuous wheel animation remain
-future refinements. This release snaps between discrete choices.
+- Click a printed mana symbol to change it; **+** adds another and **−** removes
+  the selected symbol. Committing orders mana and combines generic amounts.
+- Sets scroll vertically, rarity horizontally (or Shift+wheel). The center is
+  the printed set symbol. Type a set name/code to jump through all 323 choices.
+- Click power, toughness or starting loyalty for its number wheel. Click a
+  printed loyalty ability cost or rules mana symbol to edit that item directly.
+  Signed ability costs include negative values and X; other wording is kept.
+- Type words and supertypes have their own wheels and **+** controls. Subtypes
+  use a transparent input on the type line and preserve multiple words.
+- Click the selected center, **✓**, press Enter or click outside to save. **↶**
+  or Escape cancels. The on-card draft changes immediately; the complete card
+  frame/color updates after committing, so the wheel cannot move under the hand.
+- Clicking the colored frame opens three direct choices: **Match set**,
+  **Modern**, **Old frame**. One click applies the selection and closes it.
+  The outer border similarly offers Match set, Black and White.
+- While typing rules, **+ Mana** inserts at the caret. Close the text input to
+  manipulate its printed symbols individually. The carousel pauses while editing.
 
 ```bash
-CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-scrollers.mjs
-CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-gestures.mjs
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-direct.mjs
+# FORGE_BROWSER=webkit uses an installed Playwright WebKit.
+# Older check-forge-scrollers/gestures entry points forward to this suite.
 ```
+
+The [direct-editing receipt](../forge-direct-verification-20261010.json) includes
+center alignment, pointer speed, stopping, emulated touch, persistence, frame
+selection and WebKit font evidence. It does not claim physical Safari alignment
+or real GPU model inference.
+
+Beleren’s source file is already bold, but it had only been registered at normal
+weight. WebKit Canvas2D synthesized additional bold at 700 while the DOM inherited
+`font-synthesis: none`. The new face declaration covers 400–700 and the texture
+loader explicitly waits for 700. The browser font probe now measures identical
+ink for both requests in WebKit; Chromium’s output was already identical.
+`check-forge-fonts.mjs` captures regular/prismatic before-and-after images and
+pixel sums. Use `FORGE_BEFORE` for a prior release and `FORGE_URL` for the new one.
+The reported vertical frame offset remains unconfirmed on physical Safari;
+Linux WebKit geometry and proportional image-slice checks pass. Versioned app
+URLs ensure the current frame fixes are fetched on reload.
 
 The typography comparison uses [Toski's KHM printing](https://scryfall.com/card/khm/197/toski-bearer-of-secrets)
 at equal card size. Title sizing stays unchanged; the modern type line is about

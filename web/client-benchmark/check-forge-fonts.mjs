@@ -1,0 +1,13 @@
+import {chromium,webkit} from 'playwright';
+import {mkdir,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const web=process.env.FORGE_BROWSER==='webkit',out=process.env.FORGE_EVIDENCE||'/tmp/forge-fonts';await mkdir(out,{recursive:true});
+const browser=await (web?webkit:chromium).launch(web?{}:{executablePath:process.env.CHROME_BIN,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+const results=[];
+try{for(const [label,url] of [['before',process.env.FORGE_BEFORE||'https://tetrarcum.com/'],['after',process.env.FORGE_URL||'http://127.0.0.1:8793/forge/']]){
+ const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});await context.addInitScript(()=>localStorage.setItem('forge-sound','off'));const p=await context.newPage();await p.goto(url);const ready=()=>p.waitForFunction(()=>document.querySelector('#card-preview')?.getAttribute('aria-busy')==='false',{}, {timeout:60000});await ready();await p.locator('#pause-carousel').click();await p.locator('#next').click();await ready();await p.locator('#next').click();await ready();
+ const metrics={};for(const finish of ['ordinary','vizier_prismatic_v1']){await p.locator('#finish').selectOption(finish);await ready();await p.mouse.move(1,1);await p.waitForTimeout(400);await p.locator('#card-preview').screenshot({path:`${out}/${label}-${finish}.png`});metrics[finish]=await p.locator('.rendered-card-title strong').evaluate(el=>{const s=getComputedStyle(el);return {font:s.font,weight:s.fontWeight,synthesis:s.fontSynthesis,rect:el.getBoundingClientRect().toJSON(),faces:[...document.fonts].filter(f=>f.family.includes('Beleren')).map(f=>({weight:f.weight,status:f.status}))};});}
+ const samples=await p.evaluate(async()=>{await document.fonts.load('700 40px "Vizier Beleren"');const canvas=document.createElement('canvas');canvas.width=1000;canvas.height=80;const ctx=canvas.getContext('2d',{willReadFrequently:true});let samples=[];for(const weight of [400,700]){ctx.clearRect(0,0,1000,80);ctx.font=`${weight} 40px "Vizier Beleren"`;ctx.fillText('Crownroot, Spring Eternal',5,50);const data=ctx.getImageData(0,0,1000,80).data;let ink=0;for(let i=3;i<data.length;i+=4)ink+=data[i];samples.push({weight,width:ctx.measureText('Crownroot, Spring Eternal').width,ink});}return samples;});
+ const result={label,url,engine:web?'webkit':'chromium',metrics,samples};results.push(result);console.log(JSON.stringify(result));
+ if(label==='after')assert.deepEqual(samples.map(({weight,...s})=>s)[0],samples.map(({weight,...s})=>s)[1],'bold outline must not be synthetically emboldened in Canvas2D');await context.close();
+}}finally{await browser.close();await writeFile(`${out}/receipt.json`,JSON.stringify(results,null,2));}

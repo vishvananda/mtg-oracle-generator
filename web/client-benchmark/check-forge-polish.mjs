@@ -38,7 +38,7 @@ try{
  await page.locator('[data-card-design-part="rules"]').click();
  check('rules input matches the printed font and size',await sameType(page,'#edit-oracle_text','.rendered-card-rule-line'));
  await page.screenshot({path:`${out}/mobile-rules.png`});await page.keyboard.press('Escape');
- await page.locator('.frame-edit-target').first().click();await page.locator('#edit-frame_style').selectOption('retro');await page.locator('#edit-save').click();await settled(page);
+ await page.locator('.frame-edit-target').focus();await page.keyboard.press('Enter');await page.getByRole('button',{name:'Old frame',exact:true}).click();await settled(page);
  await page.locator('[data-card-design-part="name"]').click();
  check('old-frame title keeps its Goudy font and metrics',await sameType(page,'#edit-name','.retro-title strong'));
  await page.keyboard.press('Escape');await context.close();

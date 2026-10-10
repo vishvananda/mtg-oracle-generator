@@ -1,62 +1,78 @@
-/** One discrete, snapping control shared by symbols and numbers. No document wheel capture. */
-export function scrollPicker(host,{label,rows,columns=[''],row=0,column=0,render,change}) {
-  const root=document.createElement('div');root.className='scroll-picker';root.tabIndex=0;root.setAttribute('role','group');root.setAttribute('aria-label',label);
+/** A wheel centered on the printed item. Distance from its center controls speed. */
+export function scrollPicker(host,{label,rows,columns=[''],row=0,column=0,render,change,tick=()=>{},commit=()=>{}}) {
+  const root=document.createElement('div');root.className='scroll-picker direct-wheel';root.tabIndex=0;root.setAttribute('role','group');root.setAttribute('aria-label',label);
   const grid=document.createElement('div');grid.className='scroll-grid';
-  const status=document.createElement('div');status.className='scroll-status';status.setAttribute('aria-live','polite');
+  const status=document.createElement('span');status.className='scroll-status';status.setAttribute('aria-live','polite');
   root.append(grid,status);host.append(root);
-  let y=Math.max(0,row),x=Math.max(0,column),timer,hoverTimer,drag=null,ignoreClick=false,wheel=0,wheelAxis='y',wheelEnd;
+  const touch=matchMedia('(pointer:coarse)').matches,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let y=row,x=column,raf=0,last=0,balance=0,velocity=0,axis='y',press=null,ignoreClick=false,wheel=0,wheelAxis='y',wheelEnd,anchor,stepX=40,stepY=34,animation;
   const clamp=(n,max)=>Math.max(0,Math.min(max-1,n));
-  function draw(){
-    y=clamp(y,rows.length);x=clamp(x,columns.length);grid.replaceChildren();
-    root.classList.toggle('one-axis',columns.length===1);
-    for(let dy=-2;dy<=2;dy++)for(let dx=columns.length===1?0:-1;dx<=(columns.length===1?0:1);dx++){
-      const b=document.createElement('button');b.type='button';b.tabIndex=-1;b.className='scroll-cell';b.style.setProperty('--distance',Math.abs(dy)+Math.abs(dx));
-      const yy=y+dy,xx=x+dx;b.dataset.dy=dy;b.dataset.dx=dx;
+  function draw(dy=0,dx=0){
+    y=clamp(y,rows.length);x=clamp(x,columns.length);grid.replaceChildren();root.classList.toggle('one-axis',columns.length===1);
+    for(let iy=-2;iy<=2;iy++)for(let ix=columns.length===1?0:-1;ix<=(columns.length===1?0:1);ix++){
+      // Four arms leave the surrounding printed card visible.
+      if(iy&&ix)continue;
+      const b=document.createElement('button');b.type='button';b.tabIndex=-1;b.className='scroll-cell';b.style.setProperty('--distance',Math.abs(iy)+Math.abs(ix));
+      b.style.left=`${ix*stepX}px`;b.style.top=`${iy*stepY}px`;b.dataset.dy=iy;b.dataset.dx=ix;
+      const yy=y+iy,xx=x+ix;
       if(yy<0||yy>=rows.length||xx<0||xx>=columns.length){b.disabled=true;b.setAttribute('aria-hidden','true');}
-      else{const r=rows[yy],c=columns[xx];render(b,r,c);b.setAttribute('aria-label',`${r.label??r} ${c.label??c}`.trim());b.setAttribute('aria-pressed',String(!dy&&!dx));b.onclick=()=>{if(!ignoreClick)step(dy,dx,true);};}
+      else{const r=rows[yy],c=columns[xx];render(b,r,c);b.setAttribute('aria-label',`${r.label??r} ${c.label??c}`.trim());b.setAttribute('aria-pressed',String(!iy&&!ix));b.onclick=()=>{if(ignoreClick)return;stop();if(!iy&&!ix)commit();else step(iy,ix,true);};}
       grid.append(b);
     }
     status.textContent=`${rows[y]?.label??rows[y]??''}${columns.length>1?' · '+(columns[x]?.label??columns[x]):''}`;
+    root.dataset.row=y;root.dataset.column=x;
+    animation?.cancel();if(!reduce&&(dy||dx))animation=grid.animate([{transform:`translate(${dx*stepX}px,${dy*stepY}px)`},{transform:'translate(0,0)'}],{duration:110,easing:'cubic-bezier(.16,1,.3,1)'});
   }
-  function step(dy,dx=0,force=false){const a=clamp(y+dy,rows.length),b=clamp(x+dx,columns.length);if(a===y&&b===x&&!force)return;y=a;x=b;draw();change(rows[y],columns[x]);}
-  function stop(){clearInterval(timer);clearTimeout(hoverTimer);timer=hoverTimer=null;}
+  function step(dy,dx=0,force=false){const a=clamp(y+dy,rows.length),b=clamp(x+dx,columns.length);if(a===y&&b===x&&!force)return false;const deltaY=a-y,deltaX=b-x;y=a;x=b;draw(deltaY,deltaX);change(rows[y],columns[x]);if(deltaY||deltaX){tick();root.dispatchEvent(new CustomEvent('wheel-snap',{bubbles:true}));}return true;}
+  function stop(){cancelAnimationFrame(raf);raf=last=balance=velocity=0;root.dataset.speed='0';}
+  function frame(now){
+    raf=0;if(!velocity||document.hidden){stop();return;}
+    balance+=Math.min(80,last?now-last:0)*Math.abs(velocity)/1000;last=now;
+    if(balance>=1){balance-=1;if(!step(axis==='y'?Math.sign(velocity):0,axis==='x'?Math.sign(velocity):0)){stop();return;}}
+    raf=requestAnimationFrame(frame);
+  }
+  function aim(event){
+    if(!anchor||event.pointerType!=='mouse'&&!press)return;
+    const rect=root.getBoundingClientRect(),dx=event.clientX-(rect.left+rect.width/2),dy=event.clientY-(rect.top+rect.height/2);
+    const horizontal=columns.length>1&&Math.abs(dx)>Math.abs(dy)*1.15,nextAxis=horizontal?'x':'y';
+    const offset=horizontal?dx:dy,dead=touch?13:6;
+    if(Math.abs(offset)<=dead){stop();return;}
+    const speed=Math.sign(offset)*Math.min(13,1.6+Math.pow((Math.abs(offset)-dead)/(touch?22:17),1.5));
+    if(axis!==nextAxis||Math.sign(speed)!==Math.sign(velocity)){balance=0;last=0;}axis=nextAxis;velocity=speed;root.dataset.speed=String(Math.abs(speed));
+    if(!raf)raf=requestAnimationFrame(frame);
+  }
   root.addEventListener('wheel',e=>{
-    if(!rows.length)return;e.preventDefault();stop();
-    const horizontal=columns.length>1&&(e.shiftKey||Math.abs(e.deltaX)>Math.abs(e.deltaY));const axis=horizontal?'x':'y';
-    if(axis!==wheelAxis)wheel=0;wheelAxis=axis;wheel+=horizontal?(e.shiftKey?e.deltaY:e.deltaX):e.deltaY;
+    if(!rows.length)return;e.preventDefault();stop();const horizontal=columns.length>1&&(e.shiftKey||Math.abs(e.deltaX)>Math.abs(e.deltaY));const next=horizontal?'x':'y';
+    if(next!==wheelAxis)wheel=0;wheelAxis=next;wheel+=horizontal?(e.shiftKey?e.deltaY:e.deltaX):e.deltaY;
     const threshold=e.deltaMode===1?3:e.deltaMode===2?1:45;
     if(Math.abs(wheel)>=threshold){step(horizontal?0:Math.sign(wheel),horizontal?Math.sign(wheel):0);wheel=0;}
     clearTimeout(wheelEnd);wheelEnd=setTimeout(()=>{wheel=0;},160);
   },{passive:false});
   root.addEventListener('keydown',e=>{
     const move={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[e.key];
-    if(move){e.preventDefault();e.stopPropagation();stop();step(...move);}
+    if(move){e.preventDefault();e.stopPropagation();stop();step(...move);}else if(e.key==='Enter'){e.preventDefault();commit();}
   });
-  root.addEventListener('pointerdown',e=>{
-    if(e.button!==0)return;e.stopPropagation();stop();root.focus({preventScroll:true});drag={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false,target:e.target.closest(".scroll-cell")};root.setPointerCapture(e.pointerId);
+  root.addEventListener('pointerdown',e=>{if(e.button!==0)return;e.stopPropagation();stop();root.focus({preventScroll:true});press={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false,target:e.target.closest('.scroll-cell')};root.setPointerCapture(e.pointerId);});
+  root.addEventListener('pointermove',e=>{e.stopPropagation();if(press&&Math.hypot(e.clientX-press.x,e.clientY-press.y)>5)press.moved=true;aim(e);});
+  root.addEventListener('pointerup',e=>{
+    if(!press||e.pointerId!==press.id)return;const p=press;press=null;stop();ignoreClick=true;
+    if(root.hasPointerCapture(e.pointerId))root.releasePointerCapture(e.pointerId);
+    if(!p.moved&&p.target&&!p.target.disabled){const dy=Number(p.target.dataset.dy),dx=Number(p.target.dataset.dx);if(dy||dx)step(dy,dx,true);else commit();}
+    setTimeout(()=>{ignoreClick=false;},0);
   });
-  root.addEventListener('pointermove',e=>{
-    e.stopPropagation();
-    if(drag){
-      const size=e.pointerType==='touch'?48:30,dx=e.clientX-drag.x,dy=e.clientY-drag.y;
-      if(Math.max(Math.abs(dx),Math.abs(dy))<size)return;drag.moved=true;
-      drag.axis??=columns.length>1&&Math.abs(dx)>Math.abs(dy)?'x':'y';
-      if(drag.axis==='x'){step(0,-Math.sign(dx));drag.x=e.clientX;}
-      else{step(-Math.sign(dy));drag.y=e.clientY;}return;
-    }
-    if(e.pointerType!=='mouse')return;
-    const rect=grid.getBoundingClientRect(),dx=(e.clientX-rect.left)/rect.width-.5,dy=(e.clientY-rect.top)/rect.height-.5;
-    const horizontal=columns.length>1&&Math.abs(dx)>Math.abs(dy),offset=horizontal?dx:dy;
-    const dir=Math.abs(offset)>.28?Math.sign(offset):0,key=`${horizontal}:${dir}`;
-    if(root.dataset.direction===key)return;stop();root.dataset.direction=key;
-    if(dir)hoverTimer=setTimeout(()=>{timer=setInterval(()=>{if(!root.matches(':hover')||document.hidden){stop();return;}step(horizontal?0:dir,horizontal?dir:0);},260);},420);
-  });
-  function up(e){if(!drag||drag.id!==e.pointerId)return;ignoreClick=true;if(!drag.moved&&drag.target&&!drag.target.disabled)step(Number(drag.target.dataset.dy),Number(drag.target.dataset.dx),true);drag=null;if(root.hasPointerCapture(e.pointerId))root.releasePointerCapture(e.pointerId);setTimeout(()=>{ignoreClick=false;},0);}
-  root.addEventListener('pointerup',up);root.addEventListener('pointercancel',()=>{drag=null;stop();});
-  root.addEventListener('pointerleave',()=>{stop();delete root.dataset.direction;});root.addEventListener('blur',stop);
-  const outside=e=>{if(!root.contains(e.target)){stop();delete root.dataset.direction;}};
-  document.addEventListener('pointermove',outside,true);window.addEventListener('blur',stop);
-  draw();return {root,reset(next,nextRow=0){rows=next;y=nextRow;draw();},dispose(){stop();clearTimeout(wheelEnd);document.removeEventListener('pointermove',outside,true);window.removeEventListener('blur',stop);root.remove();}};
+  root.addEventListener('pointercancel',()=>{press=null;stop();});root.addEventListener('lostpointercapture',()=>{press=null;stop();});
+  root.addEventListener('pointerleave',()=>{if(!press)stop();});root.addEventListener('blur',stop);
+  const outside=e=>{if(!press&&!root.contains(e.target))stop();};
+  document.addEventListener('pointermove',outside,true);document.addEventListener('visibilitychange',stop);window.addEventListener('blur',stop);
+  function place(rect,font){
+    anchor=rect;stepY=touch?54:Math.max(30,rect.height*1.6);stepX=touch?55:Math.max(38,rect.width*1.7);
+    const centerX=host.getBoundingClientRect().left+rect.x+rect.width/2;stepX=Math.max(rect.width+5,Math.min(stepX,innerWidth-centerX-rect.width/2-8,centerX-rect.width/2-8));
+    const w=columns.length>1?2*(stepX+rect.width/2+5):Math.max(touch?48:32,rect.width+12),h=stepY*5;
+    Object.assign(root.style,{left:`${rect.x+rect.width/2}px`,top:`${rect.y+rect.height/2}px`,width:`${w}px`,height:`${h}px`});
+    root.style.setProperty('--glyph-w',`${rect.width}px`);root.style.setProperty('--glyph-h',`${rect.height}px`);root.style.setProperty('--step-y',`${stepY}px`);
+    if(font)Object.assign(root.style,{fontFamily:font.fontFamily,fontWeight:font.fontWeight,fontStyle:font.fontStyle,fontSize:font.fontSize,color:font.color,letterSpacing:font.letterSpacing});draw();
+  }
+  draw();return {root,place,reset(next,nextRow=0){stop();rows=next;y=nextRow;draw();},dispose(){stop();animation?.cancel();clearTimeout(wheelEnd);document.removeEventListener('pointermove',outside,true);document.removeEventListener('visibilitychange',stop);window.removeEventListener('blur',stop);root.remove();}};
 }
 export function glyph(button,value,url){if(url){const img=document.createElement('img');img.src=url;img.alt='';img.draggable=false;button.append(img);}else button.textContent=value;}
 export const numbers=(min,max)=>Array.from({length:max-min+1},(_,i)=>String(i+min));

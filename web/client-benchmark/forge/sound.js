@@ -24,6 +24,12 @@ export class Sound {
   async play(kind){
     if(!this.enabled||document.hidden)return;
     try {
+      if(kind==='tick'){
+        // A dry detent click: one short cached noise buffer, no music restart.
+        this.context??=new (window.AudioContext||window.webkitAudioContext)();const ctx=this.context;await ctx.resume();
+        if(!this.clickBuffer){this.clickBuffer=ctx.createBuffer(1,Math.ceil(ctx.sampleRate*.028),ctx.sampleRate);const samples=this.clickBuffer.getChannelData(0);for(let i=0;i<samples.length;i++)samples[i]=(Math.random()*2-1)*Math.exp(-i/(ctx.sampleRate*.004));}
+        const source=ctx.createBufferSource(),filter=ctx.createBiquadFilter(),gain=ctx.createGain();source.buffer=this.clickBuffer;filter.type='bandpass';filter.frequency.value=1700;filter.Q.value=.8;gain.gain.value=.2;source.connect(filter);filter.connect(gain);gain.connect(ctx.destination);source.onended=()=>{source.disconnect();filter.disconnect();gain.disconnect();};source.start();return;
+      }
       void this.startMusic();
       this.context??=new (window.AudioContext||window.webkitAudioContext)();await this.context.resume();
       const ctx=this.context,now=ctx.currentTime;
