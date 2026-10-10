@@ -1,0 +1,7 @@
+{
+  "client_version": "2.1.1",
+  "uv_version": "0.12.23",
+  "image": "ghcr.io/astral-sh/uv@sha256:28d570c06d150303b39adfa731ada20956c63fc86b1277d7ff2ad63185974092",
+  "image_tag": "0.12.23-python3.12-trixie-slim",
+  "flavor": "a100-large"
+}

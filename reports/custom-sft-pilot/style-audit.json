@@ -1,0 +1,23 @@
+{
+  "status": "audit_required_not_rescored",
+  "custom_holdout_cases_per_arm": 192,
+  "counts": {
+    "sft": {
+      "CARDNAME": 13,
+      "faithful_style_1": 6,
+      "faithful_style_1_with_CARDNAME": 3
+    },
+    "dpo": {
+      "CARDNAME": 14,
+      "faithful_style_1": 9,
+      "faithful_style_1_with_CARDNAME": 5
+    },
+    "custom": {
+      "CARDNAME": 102,
+      "faithful_style_1": 39,
+      "faithful_style_1_with_CARDNAME": 37
+    }
+  },
+  "finding": "The production system requires CARDNAME, but reward-judge-v3 does not explain that placeholder and receives raw serialized output. Association and spot checks suggest a serialization/style confound; original scores are retained, not adjusted.",
+  "next_check": "Blindly rejudge all arms on the same display-normalized text or a calibrated placeholder-aware rubric."
+}

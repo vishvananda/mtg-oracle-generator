@@ -1,0 +1,5 @@
+# CPU dataset tools and tests. GPU dependencies are locked in src/train_qlora.py.lock.
+jsonschema==4.25.1
+ijson==3.3.0
+matplotlib==3.10.6
+huggingface-hub==0.34.4

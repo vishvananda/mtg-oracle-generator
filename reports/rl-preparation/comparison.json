@@ -1,0 +1,126 @@
+{
+  "purpose": "Small hand-authored diagnostic; not independent gold labels, final-test accuracy, or an RL result",
+  "conditions": {
+    "v1-plain": {
+      "cases": 27,
+      "label_agreement_including_low_confidence": 26,
+      "high_confidence_confusion": {
+        "true_accept": 13,
+        "true_reject": 13,
+        "false_reject": 1
+      },
+      "usage_including_base_initialization": {
+        "input_tokens": 39947,
+        "cached_input_tokens": 26880,
+        "output_tokens": 940,
+        "reasoning_output_tokens": 0,
+        "uncached_input_tokens": 13067
+      },
+      "judge_batch_seconds_excluding_initialization_and_parsing": 20.05617270397488,
+      "fixture_versions": [
+        "semantic-mutations-v1"
+      ],
+      "source_scored_sha256": "b97924d44110fdf9f56543378ab48444780027ba524c7e61af0cbfb0c35c20ad"
+    },
+    "v1-reversed": {
+      "cases": 27,
+      "label_agreement_including_low_confidence": 25,
+      "high_confidence_confusion": {
+        "true_accept": 12,
+        "true_reject": 12,
+        "false_accept": 1,
+        "false_reject": 1,
+        "abstained": 1
+      },
+      "usage_including_base_initialization": {
+        "input_tokens": 39963,
+        "cached_input_tokens": 17920,
+        "output_tokens": 1269,
+        "reasoning_output_tokens": 352,
+        "uncached_input_tokens": 22043
+      },
+      "judge_batch_seconds_excluding_initialization_and_parsing": 20.952020459924825,
+      "fixture_versions": [
+        "semantic-mutations-v1"
+      ],
+      "source_scored_sha256": "ed0063d9138fde32e35ac08db4c6036dc1400ac6c53099ed8ad4afa4558bf80c"
+    },
+    "v1-retrieval": {
+      "cases": 27,
+      "label_agreement_including_low_confidence": 27,
+      "high_confidence_confusion": {
+        "true_accept": 13,
+        "true_reject": 13,
+        "abstained": 1
+      },
+      "usage_including_base_initialization": {
+        "input_tokens": 46292,
+        "cached_input_tokens": 26880,
+        "output_tokens": 901,
+        "reasoning_output_tokens": 0,
+        "uncached_input_tokens": 19412
+      },
+      "judge_batch_seconds_excluding_initialization_and_parsing": 16.952077627996914,
+      "fixture_versions": [
+        "semantic-mutations-v1"
+      ],
+      "source_scored_sha256": "be7ee7b6345d530a8193e75c7fc6b250554a9e6766d54f8dbb5aff0b353892f4"
+    },
+    "v2-plain": {
+      "cases": 27,
+      "label_agreement_including_low_confidence": 27,
+      "high_confidence_confusion": {
+        "true_accept": 14,
+        "true_reject": 13
+      },
+      "usage_including_base_initialization": {
+        "input_tokens": 39955,
+        "cached_input_tokens": 26880,
+        "output_tokens": 909,
+        "reasoning_output_tokens": 0,
+        "uncached_input_tokens": 13075
+      },
+      "judge_batch_seconds_excluding_initialization_and_parsing": 17.898769182851538,
+      "fixture_versions": [
+        "semantic-mutations-v2"
+      ],
+      "source_scored_sha256": "917c1a115e6eb4f4fd17fa91ad20e227b02b751d9bf90df1d6f11936e9fd7310"
+    },
+    "v2-retrieval": {
+      "cases": 27,
+      "label_agreement_including_low_confidence": 26,
+      "high_confidence_confusion": {
+        "true_accept": 13,
+        "true_reject": 13,
+        "abstained": 1
+      },
+      "usage_including_base_initialization": {
+        "input_tokens": 46342,
+        "cached_input_tokens": 15872,
+        "output_tokens": 1014,
+        "reasoning_output_tokens": 104,
+        "uncached_input_tokens": 30470
+      },
+      "judge_batch_seconds_excluding_initialization_and_parsing": 16.447625386994332,
+      "fixture_versions": [
+        "semantic-mutations-v2"
+      ],
+      "source_scored_sha256": "73761f2ea077f56bf2e438c968c9e9d7b5d36e37455d9b54701629f78d568b02"
+    }
+  },
+  "wrong_candidates": 13,
+  "wrong_candidates_parsed": 11,
+  "wrong_candidates_above_0_9_reference_cosine": 13,
+  "cosine_range_wrong_candidates": [
+    0.9136297106742859,
+    0.9978736042976379
+  ],
+  "fixture_revision_note": "v2 makes exile wording explicit, uses a recognized planeswalker subtype, and fixes a green creature mana/color mismatch; v1 retained unchanged.",
+  "final_test_used": false,
+  "rl_training_started": false,
+  "embedding_reward_weight": 0,
+  "cpu_tests": {
+    "passed": 128,
+    "log_sha256": "4e00a0b49f953ead4bd76c95a0c316261225159c957f18e5698b307888f544e7"
+  }
+}

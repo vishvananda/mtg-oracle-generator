@@ -1,0 +1,95 @@
+{
+  "version": "oracle-preference-pilot-v1",
+  "status": "design_and_offline_preparation_only",
+  "automatic_launch": false,
+  "training_authorized": false,
+  "dataset": {
+    "repo_id": "vishvananda/mtg-oracle-design-descriptions-v2",
+    "revision": "7c1bbca04b4259c15c397c5c6a00af5e143ef21e",
+    "split": "train",
+    "prompts": 512,
+    "seed": "oracle-rl-pilot-v1",
+    "max_prompts_per_rules_family": 1
+  },
+  "starting_adapter": null,
+  "required_starting_adapter": "verified final checkpoint of the current one-epoch v2 SFT run",
+  "sampling": {
+    "candidates_per_prompt": 4,
+    "do_sample": true,
+    "temperature": 0.8,
+    "top_p": 0.95,
+    "max_new_tokens": 2048,
+    "enable_thinking": false,
+    "max_completions": 2048,
+    "retain_exact_raw_output": true
+  },
+  "judge": {
+    "model": "gpt-6-luna",
+    "reasoning_effort": "medium",
+    "rubric": "prompts/reward-judge-v1.txt",
+    "batch_size": 9,
+    "transport": "host-side cached instruction-only Codex forks",
+    "uncertainty_policy": "exclude entire candidate group",
+    "independent_pair_review_required": true
+  },
+  "retrieval": {
+    "model": "BAAI/bge-small-en-v1.5",
+    "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "scope": "train-reward",
+    "reward_weight": 0,
+    "enabled_by_default": false,
+    "purpose": "experimental wording evidence for judge; enable only after calibrated improvement"
+  },
+  "reward": {
+    "version": "intent-gated-oracle-v1",
+    "schema_failure": -1,
+    "explicit_metadata_failure": -0.8,
+    "intent_failure": -0.6,
+    "unusable_style": -0.5,
+    "faithful_components": {"intent": 0.75, "style": 0.15, "parser": 0.1},
+    "unsupported_reference_parser_component": 0.05,
+    "all_bad_or_tied_group": "no preference update"
+  },
+  "first_training_option": {
+    "method": "offline DPO",
+    "alternative": "repair SFT if too few prompts have a faithful sampled candidate",
+    "max_steps": 100,
+    "learning_rate": 0.000005,
+    "beta": 0.1,
+    "loss_type": "sigmoid",
+    "reference_policy": "frozen final SFT policy, not the adapter-disabled base",
+    "parameters_status": "unbenchmarked starting proposal"
+  },
+  "later_online_option": {
+    "method": "GRPO",
+    "trl_version": "0.23.0",
+    "num_generations": 4,
+    "max_completion_length": 2048,
+    "learning_rate": 0.000005,
+    "beta": 0.02,
+    "loss_type": "dr_grpo",
+    "scale_rewards": false,
+    "per_device_train_batch_size": 4,
+    "gradient_accumulation_steps": 4,
+    "num_iterations": 1,
+    "max_steps": 100,
+    "reference_policy": "frozen final SFT policy",
+    "parameters_status": "design only; trainer integration and memory benchmark pending"
+  },
+  "spending": {
+    "authorized_rl_gpu_usd": 0,
+    "suggested_first_gpu_window_minutes": 30,
+    "suggested_first_gpu_ceiling_usd": 1.25,
+    "price_assumption_usd_per_hour": 2.50002,
+    "note": "Illustrative compute window, not an end-to-end estimate; re-query price and obtain RL budget before launch"
+  },
+  "required_before_training": [
+    "Final SFT adapter hash and paired baseline recorded",
+    "Expanded judge calibration passes critical semantic mutation checks",
+    "Independent human or stronger-model review of preference pairs",
+    "Independent RL development cases frozen without final-test feedback",
+    "Candidate-generation and training throughput measured separately",
+    "Explicit RL compute authorization",
+    "Dedicated DPO or GRPO training entrypoint implemented and smoke-tested"
+  ]
+}

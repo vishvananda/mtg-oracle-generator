@@ -1,0 +1,29 @@
+{
+  "observed_at": "2026-10-07T18:14:25.195156+00:00",
+  "queues": {
+    "detailed": {
+      "states": {
+        "completed": 1847,
+        "pending": 1168
+      },
+      "accepted": 109200,
+      "quarantined": 1620,
+      "generated_descriptions": 110820,
+      "workers": 3,
+      "updated_at": 1791396850.9931023,
+      "planned_descriptions": 180815
+    },
+    "broad": {
+      "states": {
+        "completed": 2922,
+        "pending": 93
+      },
+      "accepted": 69003,
+      "quarantined": 1091,
+      "generated_descriptions": 70094,
+      "workers": 3,
+      "updated_at": 1791396838.6050317,
+      "planned_descriptions": 72326
+    }
+  }
+}

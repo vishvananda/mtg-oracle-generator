@@ -1,0 +1,60 @@
+{
+  "kind": "diagnostic_only_wording_controls",
+  "parent_controls_sha256": "dfe17a1915ab8d74228780f4cb5722da70eabd4fb183329fe9d4bd1911ecdda2",
+  "cases": {
+    "rows": 7,
+    "bytes": 9343,
+    "sha256": "cc69c8a3ccd52726cdc7057a6f445468c8966b4b3661c2c8bd74a7b6a1767d79"
+  },
+  "probes": [
+    {
+      "name": "Tamiyo, Lunar Arcanist",
+      "label": "scry_clause_alone",
+      "changes_meaning": true,
+      "status": "parsed",
+      "parse_complete": true
+    },
+    {
+      "name": "Tamiyo, Lunar Arcanist",
+      "label": "untap_clause_alone",
+      "changes_meaning": true,
+      "status": "parsed",
+      "parse_complete": true
+    },
+    {
+      "name": "Tamiyo, Lunar Arcanist",
+      "label": "join_with_then",
+      "changes_meaning": false,
+      "status": "rejected",
+      "parse_complete": false
+    },
+    {
+      "name": "Koth, One True Hero",
+      "label": "raw_ascii_loyalty_minus",
+      "changes_meaning": false,
+      "status": "rejected",
+      "parse_complete": false
+    },
+    {
+      "name": "Koth, One True Hero",
+      "label": "reordered_token_keywords",
+      "changes_meaning": false,
+      "status": "rejected",
+      "parse_complete": false
+    },
+    {
+      "name": "Koth, One True Hero",
+      "label": "remove_token_keywords",
+      "changes_meaning": true,
+      "status": "parsed",
+      "parse_complete": true
+    },
+    {
+      "name": "Elspeth, Protector of the Meek",
+      "label": "shorter_duration_control",
+      "changes_meaning": true,
+      "status": "parsed",
+      "parse_complete": true
+    }
+  ]
+}

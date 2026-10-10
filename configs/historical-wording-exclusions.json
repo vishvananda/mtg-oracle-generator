@@ -1,0 +1,95 @@
+{
+  "version": "historical-wording-policy-v2",
+  "default": "include_identity_linked_historical_wording",
+  "rules": [
+    {
+      "id": "mana_burn_removed",
+      "category": "obsolete_rule",
+      "printed_regex": "\\bmana burn\\b",
+      "current_absent_regex": "\\bmana burn\\b",
+      "reason": "Printed text explicitly refers to eliminated mana-burn rules.",
+      "source": "https://magic.wizards.com/en/news/feature/rules-changes-2009-06-10"
+    },
+    {
+      "id": "original_companion_rule",
+      "category": "obsolete_rule",
+      "printed_regex": "companion[\\s\\S]*you may cast it (?:once )?from outside the game",
+      "reason": "Printed companion reminder bypasses the later three-mana hand action.",
+      "source": "https://magic.wizards.com/en/news/announcements/june-1-2020-banned-and-restricted-announcement"
+    },
+    {
+      "id": "hostage_taker_self_target",
+      "category": "functional_erratum",
+      "names": [
+        "Hostage Taker"
+      ],
+      "printed_regex": "exile target (?:creature or artifact|artifact or creature)",
+      "current_regex": "exile another target",
+      "reason": "Erratum prohibits targeting itself.",
+      "source": "https://magic.wizards.com/en/news/feature/ixalan-release-notes"
+    },
+    {
+      "id": "pridemate_optional_trigger",
+      "category": "functional_erratum",
+      "names": [
+        "Ajani's Pridemate"
+      ],
+      "printed_regex": "you may put a \\+1/\\+1 counter",
+      "current_absent_regex": "you may put",
+      "reason": "Optional counter placement became mandatory.",
+      "source": "https://magic.wizards.com/en/news/making-magic/war-games-2019-04-22"
+    },
+    {
+      "id": "ranar_exile_trigger",
+      "category": "functional_erratum",
+      "names": [
+        "Ranar the Ever-Watchful"
+      ],
+      "printed_regex": "Whenever (?:you exile|a spell or ability you control exiles)",
+      "current_regex": "cards are put into exile from your hand",
+      "reason": "Trigger scope was functionally changed from its original printing.",
+      "source": "https://magic.wizards.com/en/news/announcements/oracle-changes-2021-06-18"
+    },
+    {
+      "id": "played_from_hand_power_errata",
+      "category": "functional_erratum",
+      "names": [
+        "Great Whale",
+        "Palinchron",
+        "Iridescent Drake",
+        "Karmic Guide",
+        "Priest of Gix"
+      ],
+      "printed_regex": "if you (?:played|cast) it from your hand",
+      "current_absent_regex": "if you (?:played|cast) it from your hand",
+      "reason": "Hand-casting restriction was removed by a functional Oracle update.",
+      "source": "https://magic.wizards.com/en/news/feature/power-level-errata-b-gone-2006-07-14"
+    },
+    {
+      "id": "loxodon_trigger_to_lifelink",
+      "category": "functional_erratum",
+      "names": [
+        "Loxodon Warhammer"
+      ],
+      "printed_regex": "Whenever this creature deals damage, you gain that much life",
+      "current_regex": "lifelink",
+      "reason": "A triggered life-gain ability differs functionally from current static lifelink.",
+      "source": "https://magic.wizards.com/en/news/feature/rules-changes-2009-06-10"
+    },
+    {
+      "id": "triggered_lifelink_reminder",
+      "category": "obsolete_rule",
+      "printed_regex": "lifelink\\s*\\((?:when|whenever)\\b",
+      "reason": "Printed reminder defines lifelink as a triggered ability; its current rules use static life gain.",
+      "source": "https://magic.wizards.com/en/news/feature/rules-changes-2009-06-10"
+    },
+    {
+      "id": "triggered_deathtouch_reminder",
+      "category": "obsolete_rule",
+      "printed_regex": "deathtouch\\s*\\((?:when|whenever)\\b",
+      "reason": "Printed reminder defines deathtouch as a triggered ability; its current rules use state-based destruction.",
+      "source": "https://magic.wizards.com/en/news/feature/rules-changes-2009-06-10"
+    }
+  ],
+  "coverage": "Source-backed exceptions plus direct functional-difference checks; not an exhaustive catalog of historical errata."
+}

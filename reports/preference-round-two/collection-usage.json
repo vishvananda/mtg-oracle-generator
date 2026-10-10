@@ -1,0 +1,320 @@
+{
+  "scope": "Sum of final stage usage receipts for the four broad collection batches. Excludes initial audit/refinements, prefix setup not charged to these receipts, evaluations, image generation and other session work. Not an invoice.",
+  "totals": {
+    "input_tokens": 60185018,
+    "cached_input_tokens": 43703936,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 3918690,
+    "reasoning_output_tokens": 1020271
+  },
+  "stages": [
+    {
+      "batch": 1,
+      "stage": "checklists",
+      "usage": {
+        "input_tokens": 2425177,
+        "cached_input_tokens": 1907840,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 452850,
+        "reasoning_output_tokens": 21507
+      }
+    },
+    {
+      "batch": 1,
+      "stage": "final-blind-review",
+      "usage": {
+        "input_tokens": 831021,
+        "cached_input_tokens": 619008,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 103340,
+        "reasoning_output_tokens": 80604
+      }
+    },
+    {
+      "batch": 1,
+      "stage": "luna-critic",
+      "usage": {
+        "input_tokens": 782021,
+        "cached_input_tokens": 544512,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 37120,
+        "reasoning_output_tokens": 13816
+      }
+    },
+    {
+      "batch": 1,
+      "stage": "original-review",
+      "usage": {
+        "input_tokens": 10702059,
+        "cached_input_tokens": 7633024,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 377168,
+        "reasoning_output_tokens": 150561
+      }
+    },
+    {
+      "batch": 1,
+      "stage": "repair-review",
+      "usage": {
+        "input_tokens": 155169,
+        "cached_input_tokens": 113664,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8231,
+        "reasoning_output_tokens": 5262
+      }
+    },
+    {
+      "batch": 1,
+      "stage": "repairs",
+      "usage": {
+        "input_tokens": 230639,
+        "cached_input_tokens": 119936,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23193,
+        "reasoning_output_tokens": 5142
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "checklist-corrections-1",
+      "usage": {
+        "input_tokens": 10356,
+        "cached_input_tokens": 9856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 256,
+        "reasoning_output_tokens": 34
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "checklists",
+      "usage": {
+        "input_tokens": 2429360,
+        "cached_input_tokens": 1949312,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 462702,
+        "reasoning_output_tokens": 22108
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "final-blind-review",
+      "usage": {
+        "input_tokens": 859355,
+        "cached_input_tokens": 641920,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 96016,
+        "reasoning_output_tokens": 72104
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "luna-critic",
+      "usage": {
+        "input_tokens": 808955,
+        "cached_input_tokens": 601344,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 31334,
+        "reasoning_output_tokens": 4217
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "original-review",
+      "usage": {
+        "input_tokens": 10715069,
+        "cached_input_tokens": 7587456,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 372907,
+        "reasoning_output_tokens": 143209
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "repair-review",
+      "usage": {
+        "input_tokens": 203737,
+        "cached_input_tokens": 139008,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 8780,
+        "reasoning_output_tokens": 5023
+      }
+    },
+    {
+      "batch": 2,
+      "stage": "repairs",
+      "usage": {
+        "input_tokens": 302481,
+        "cached_input_tokens": 177408,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 32164,
+        "reasoning_output_tokens": 7919
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "checklist-corrections-1",
+      "usage": {
+        "input_tokens": 13101,
+        "cached_input_tokens": 9856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 2135,
+        "reasoning_output_tokens": 168
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "checklists",
+      "usage": {
+        "input_tokens": 2421864,
+        "cached_input_tokens": 1862528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 450982,
+        "reasoning_output_tokens": 21820
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "final-blind-review",
+      "usage": {
+        "input_tokens": 707224,
+        "cached_input_tokens": 486400,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 85265,
+        "reasoning_output_tokens": 65760
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "luna-critic",
+      "usage": {
+        "input_tokens": 665224,
+        "cached_input_tokens": 435712,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 27673,
+        "reasoning_output_tokens": 6911
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "original-review",
+      "usage": {
+        "input_tokens": 10656095,
+        "cached_input_tokens": 7708288,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 354720,
+        "reasoning_output_tokens": 132268
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "repair-review",
+      "usage": {
+        "input_tokens": 142778,
+        "cached_input_tokens": 98560,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 5917,
+        "reasoning_output_tokens": 3201
+      }
+    },
+    {
+      "batch": 3,
+      "stage": "repairs",
+      "usage": {
+        "input_tokens": 201900,
+        "cached_input_tokens": 118272,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 19395,
+        "reasoning_output_tokens": 4676
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "checklist-corrections-1",
+      "usage": {
+        "input_tokens": 10623,
+        "cached_input_tokens": 9856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 379,
+        "reasoning_output_tokens": 0
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "checklist-corrections-2",
+      "usage": {
+        "input_tokens": 10593,
+        "cached_input_tokens": 9856,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 490,
+        "reasoning_output_tokens": 53
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "checklists",
+      "usage": {
+        "input_tokens": 2422571,
+        "cached_input_tokens": 1968768,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 445894,
+        "reasoning_output_tokens": 22955
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "final-blind-review",
+      "usage": {
+        "input_tokens": 731815,
+        "cached_input_tokens": 519296,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 91624,
+        "reasoning_output_tokens": 71219
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "luna-critic",
+      "usage": {
+        "input_tokens": 688415,
+        "cached_input_tokens": 540416,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 24911,
+        "reasoning_output_tokens": 2769
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "original-review",
+      "usage": {
+        "input_tokens": 10660289,
+        "cached_input_tokens": 7702528,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 370840,
+        "reasoning_output_tokens": 145329
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "repair-review",
+      "usage": {
+        "input_tokens": 165937,
+        "cached_input_tokens": 111232,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 9020,
+        "reasoning_output_tokens": 5817
+      }
+    },
+    {
+      "batch": 4,
+      "stage": "repairs",
+      "usage": {
+        "input_tokens": 231190,
+        "cached_input_tokens": 78080,
+        "cache_write_input_tokens": 0,
+        "output_tokens": 23384,
+        "reasoning_output_tokens": 5819
+      }
+    }
+  ]
+}

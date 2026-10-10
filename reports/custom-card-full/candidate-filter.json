@@ -1,0 +1,512 @@
+{
+  "kind": "post_normalization_official_overlap_filter",
+  "final_test": false,
+  "parent_cases_sha256": "ac2a0652467e3de9ca16cb028bb6b8c4d97e72faa3eaa14f784663229b1aa869",
+  "script_sha256": "688707f38b2006eb491fcfe4644212628352ff1f5a90e9ef0478a676f779d338",
+  "official_sha256": "457b0dbd78432750e468b0a505c6ec1c08ee34283aab841443bc9e029f8e0fd0",
+  "official_parsed_sha256": "a82ffd8b1970d891715579dfe8556ab006dd22c469350194782b070041e0b33c",
+  "official_parsed_structures": 31917,
+  "accepted_before_filter": 3997,
+  "exact_parsed_overlaps": [
+    {
+      "id": "02eee4faed580b3295cfdbd2f15a7c0d520625e5e7fa5de92a69a1a4e81d3b1c",
+      "name": "Chiseled Cliffside",
+      "official_matches": [
+        "Spectator Seating"
+      ]
+    },
+    {
+      "id": "03bf23b3fad1044352a279046fd9398b8c727e42ae61bfbae31f3d43298bb692",
+      "name": "Nightblade Umbra",
+      "official_matches": [
+        "Pain 101"
+      ]
+    },
+    {
+      "id": "041e9d533b1b3c084ef045d116a987c85617ff9b9d2fdd96248bcc3c056c2276",
+      "name": "Sheltered Haven",
+      "official_matches": [
+        "Botanical Plaza"
+      ]
+    },
+    {
+      "id": "081dd8d56861e749271d0900aae8e81772d51d72e828e90bb846641ed5b94486",
+      "name": "Wildrune Thicket",
+      "official_matches": [
+        "Spire Garden"
+      ]
+    },
+    {
+      "id": "0c9dbcf8a909950d9b39814c52f675c99f1c32f56e0d16473805e3fb5f87fb67",
+      "name": "Forgotten Cryovault",
+      "official_matches": [
+        "Morphic Pool"
+      ]
+    },
+    {
+      "id": "0e87a9f88710c3f452089a5c9b1e8dfa75b11d1fc61b5fd7c0fca2013a8e25fa",
+      "name": "Healing Center",
+      "official_matches": [
+        "Radiant Fountain"
+      ]
+    },
+    {
+      "id": "0ec6eb55334846f795f18cf9c84522d9ca621f74e2b71f662cd07f70fd02ac3c",
+      "name": "Fiery Chasm",
+      "official_matches": [
+        "Geothermal Bog"
+      ]
+    },
+    {
+      "id": "12a217e13b2959f72cba64879af7bd25a117118abba808b176e3b529d8641870",
+      "name": "Eternal Scout",
+      "official_matches": [
+        "Copperhorn Scout"
+      ]
+    },
+    {
+      "id": "1b11d8de48e97de231e0cf1fc46956b5ae3d6cdd83fdf46ca95057724414a3f5",
+      "name": "Roaring Cascade",
+      "official_matches": [
+        "Molten Tributary"
+      ]
+    },
+    {
+      "id": "1f8b5152ed921296efe52885214e44fd6db459ddda06a0f78196e06578232e09",
+      "name": "Sodden Cavern",
+      "official_matches": [
+        "Contaminated Aquifer"
+      ]
+    },
+    {
+      "id": "1ff4fd3370db875b3cf852d989ac8552109eb80efdf6586ea217dbfa2bfef44e",
+      "name": "Monsoon Lagoon",
+      "official_matches": [
+        "Rain-Slicked Copse"
+      ]
+    },
+    {
+      "id": "242ea48dc14d1479168beff08a5d034af339a7f56263105f9ce4e4e66ff469ce",
+      "name": "Rugged Fields",
+      "official_matches": [
+        "Glittering Massif"
+      ]
+    },
+    {
+      "id": "24573d4c4a51028e8ff3dccf7c76f93220736220737102cedf1fcb385b4550e4",
+      "name": "Assurance of Finality",
+      "official_matches": [
+        "Bitter Reunion"
+      ]
+    },
+    {
+      "id": "25a9ed00080458b2347f4b5123d999823859f7b9d8d6763e331ddfc546a17a21",
+      "name": "Desolate Barrens",
+      "official_matches": [
+        "Sunlit Marsh"
+      ]
+    },
+    {
+      "id": "269f0b6b758c310ad1c7ad181f3af7223df61d018ee54f395305586537746d08",
+      "name": "Apostle of the Elders",
+      "official_matches": [
+        "Sigiled Contender"
+      ]
+    },
+    {
+      "id": "28db8b6ed02f4fd1f9a0a30c4b12bb10f1d109a7f9c17fdda49b70bf9f69a199",
+      "name": "Jagged Cairn",
+      "official_matches": [
+        "Racers' Ring"
+      ]
+    },
+    {
+      "id": "2a7f21f29eebb2e6cf3d4872a27bcd24e7dd59fce5545b97d99cfa084d1481d3",
+      "name": "Tranquil Stream",
+      "official_matches": [
+        "Idyllic Beachfront"
+      ]
+    },
+    {
+      "id": "2c4e7780351994eeb6d3c2607b6244c6c2dbf87055341b94a3197ec99b23267d",
+      "name": "Mossy Shrine",
+      "official_matches": [
+        "Vernal Fen"
+      ]
+    },
+    {
+      "id": "2dae708429ce33f7ba1595889098f49a56475dd71a46fcae751071b94c4f2f0e",
+      "name": "Somber Marsh",
+      "official_matches": [
+        "Haunted Mire"
+      ]
+    },
+    {
+      "id": "2ea1384a5da5a858c370f5483fdf0e84e0008170de08ccef000cf2bcacba1ffd",
+      "name": "Hear Destiny's Whims",
+      "official_matches": [
+        "Curate"
+      ]
+    },
+    {
+      "id": "3427889fc5f203a84ef11b943ea4813c2a030267e597c969b2172715e1fba674",
+      "name": "Oaken Longbow",
+      "official_matches": [
+        "Viridian Longbow"
+      ]
+    },
+    {
+      "id": "38d0e06bd93aba1788485c514087ed76bc51e42317e77f5eb9e6b342b10ac5e5",
+      "name": "Jagged Crag",
+      "official_matches": [
+        "Sacred Peaks"
+      ]
+    },
+    {
+      "id": "43f11e11e62a7d0dc650b02f251ec7d0e50d948bb727028b293c1fd5c7fe2b2f",
+      "name": "Glittering Grove",
+      "official_matches": [
+        "Sheltered Thicket"
+      ]
+    },
+    {
+      "id": "4603b4fb5faed394a6771e2b359f41583aea7078700b7188eb0cd90e86290ab3",
+      "name": "Sky-High Spires",
+      "official_matches": [
+        "Sea of Clouds"
+      ]
+    },
+    {
+      "id": "4e8e4d77f37de847707f6387262cb103b187f2c9a360f37f18916e849c2334c6",
+      "name": "Torrid Geysers",
+      "official_matches": [
+        "Scorched Geyser"
+      ]
+    },
+    {
+      "id": "4f3de2e67cd2a63ab2c3b7da9a2f64be18bcb0b3131e0e0657ebb71fd167429a",
+      "name": "Adaptive Terrains",
+      "official_matches": [
+        "Evolving Wilds",
+        "Terramorphic Expanse",
+        "Vibrant Cityscape"
+      ]
+    },
+    {
+      "id": "53ba495fe68dab64be3760ba7a7a01e4a25a0125780f9fce0b37ba68cc950faa",
+      "name": "Dreary Township",
+      "official_matches": [
+        "Umbral Expanse"
+      ]
+    },
+    {
+      "id": "54b808b31a1088930761153ffd94860195e77a6116a881c7b5fda3023ce91cb3",
+      "name": "Haughty Chateau",
+      "official_matches": [
+        "Vault of Champions"
+      ]
+    },
+    {
+      "id": "5a5c7954d029981b184c1fef8655b84f0d65d1308405640bc1496929d5194426",
+      "name": "Peacemaker Dove",
+      "official_matches": [
+        "Healer's Hawk"
+      ]
+    },
+    {
+      "id": "5de6cb4bd1c86af88ed60286b23ba5cd7ceda1e3f09194ed966ff2f119ed948a",
+      "name": "Ornamented Evergreen",
+      "official_matches": [
+        "Bountiful Promenade"
+      ]
+    },
+    {
+      "id": "5fe3bbd1a4d4b9c1d62b78f21d5c5546a398d5654b817cd0a60e56d38cc61f29",
+      "name": "Exotic Xenoreef",
+      "official_matches": [
+        "Rejuvenating Springs"
+      ]
+    },
+    {
+      "id": "61f3b2c9a7fb9924bb0e787db6234e7b5bc67225fcf13f82145c80342b3d732d",
+      "name": "Highland Vale",
+      "official_matches": [
+        "Wooded Ridgeline"
+      ]
+    },
+    {
+      "id": "6260616d70fcbbc335eac90b2b7124948d8188ec280c667f1039d467ab9e0bad",
+      "name": "Ruined Shrine",
+      "official_matches": [
+        "Smoldering Marsh"
+      ]
+    },
+    {
+      "id": "6404de7582924eedb82dac5a57ef72a12835d17f652ec9cd9fe7dd62a8a4ffdc",
+      "name": "Ankulith Shard",
+      "official_matches": [
+        "Prophetic Prism"
+      ]
+    },
+    {
+      "id": "6b903ca35e143f6b4cbc42b368cdc89bc50b93d093395a3f14e66f0b047617de",
+      "name": "Abyssal Crypt",
+      "official_matches": [
+        "Waterfront District"
+      ]
+    },
+    {
+      "id": "7533cf6dfee0f3eb5381ac3cf674f96b3ea839f7951e8a2fe4a8d2732525f0ce",
+      "name": "Hazy Moorland",
+      "official_matches": [
+        "Fetid Pools"
+      ]
+    },
+    {
+      "id": "79442a7882abae841e40b8827c27bc49aa8f211cb6982ddbb4e8cc6310b8e4b0",
+      "name": "Wandering Hamlet",
+      "official_matches": [
+        "Canopy Vista"
+      ]
+    },
+    {
+      "id": "88f264f2a05aedd56ba0494bc8caac3d50802cc0cbd12ab5096f6bb2e8bd720b",
+      "name": "Twinklewings",
+      "official_matches": [
+        "Angelic Gift"
+      ]
+    },
+    {
+      "id": "8cecdadd85bda3e9ac775d94dc00fe80eeb5decfbedbb00ab136b8ecfbcea06d",
+      "name": "Practice Range",
+      "official_matches": [
+        "Cinder Glade"
+      ]
+    },
+    {
+      "id": "90489cea63a4810842c729e237b7be184bd9f93a4c5180510257b99e518af1ba",
+      "name": "Rainforest Spring",
+      "official_matches": [
+        "Tangled Islet"
+      ]
+    },
+    {
+      "id": "9b16ec35513b27d1a43d4fe82b5fd5479412df876fe951a37c8366436524b19f",
+      "name": "Charbroiled Core",
+      "official_matches": [
+        "Luxury Suite"
+      ]
+    },
+    {
+      "id": "9be377d6bfdff5f1416079ff3f64e3cdab24e75824c1bee0788b442564075275",
+      "name": "Guiding Torch",
+      "official_matches": [
+        "Renegade Map"
+      ]
+    },
+    {
+      "id": "a4a053cf4a950cf32f8e68fc9de9b063dde0e034accc51d881870ec7c7e50df9",
+      "name": "Surprise Strike",
+      "official_matches": [
+        "Mortal's Ardor"
+      ]
+    },
+    {
+      "id": "aa2c08e7c24334aed7eb60866ce25090c488cc3cd9cd2f9f45e6732d99d8f819",
+      "name": "Deserted Steppe",
+      "official_matches": [
+        "Eclipsed Steppe"
+      ]
+    },
+    {
+      "id": "b064d365cec7e5cc1ff5df9cad7abd46b13db5e017f0a92ccf73c62c00c56d20",
+      "name": "Sungrace Meadows",
+      "official_matches": [
+        "Scattered Groves"
+      ]
+    },
+    {
+      "id": "b0a6e19012d3b5853877573f04b08d2de5237cf6e0d5ebc5013103f849a538e9",
+      "name": "Bustling Harbor",
+      "official_matches": [
+        "Irrigated Farmland"
+      ]
+    },
+    {
+      "id": "b128a08adaee8cdfd2ffce25c1a27ed6e733351b704161ea6c8c6a0f3a24b3c8",
+      "name": "Pristine Delta",
+      "official_matches": [
+        "Skybridge Towers"
+      ]
+    },
+    {
+      "id": "b3d9cda064054d82d6943ee48488b8d83368555739a5ed58d1e1014b37f1a7cc",
+      "name": "Shifting Frontiers",
+      "official_matches": [
+        "Terminal Moraine",
+        "Warped Landscape"
+      ]
+    },
+    {
+      "id": "b7ccaa0cb0f0598fa78db4e1f88ec401e7e220421b9ec0731773652437b8b7dd",
+      "name": "Secluded Cascade",
+      "official_matches": [
+        "Sodden Verdure"
+      ]
+    },
+    {
+      "id": "ba1ff3399a9179784a2245e31568599fb75e94d863aeb978df3c657b5f7aa054",
+      "name": "Impassioned Craze",
+      "official_matches": [
+        "Dragon Mantle"
+      ]
+    },
+    {
+      "id": "bfee18eef1ed3fe9e8a48f83abe981230a47942a350417ac2e6629cb2b6cb870",
+      "name": "Gnarled Henge",
+      "official_matches": [
+        "Radiant Summit"
+      ]
+    },
+    {
+      "id": "c30c50a8f589b52fa228e16df5eed3e72205ff14290ce95a81afaf3f8ab4d87c",
+      "name": "Walls of Yroncaster",
+      "official_matches": [
+        "Consulate Skygate"
+      ]
+    },
+    {
+      "id": "c42b21e9e91f00feaeeccac18eb1fc84b159a899a8420cf799fc639037a2b0eb",
+      "name": "Treacherous Den",
+      "official_matches": [
+        "Tramway Station"
+      ]
+    },
+    {
+      "id": "d10f6d9b8400bbce444c83037e584ee97bd67380c41d902e9e8d61f864576fe5",
+      "name": "Halls of Worship",
+      "official_matches": [
+        "Debtor's Pulpit"
+      ]
+    },
+    {
+      "id": "d7973c7e006e135e37533ae3d3ba9ada8d563e2a0a278718afcb2c450482e2f2",
+      "name": "Boiling Ridge",
+      "official_matches": [
+        "Coastal Peak"
+      ]
+    },
+    {
+      "id": "d9763453d8f8a92f1013a00672700eb142f25681f23bc4a86ec10316a3ce5c81",
+      "name": "Perilous Passage",
+      "official_matches": [
+        "Tectonic Edge"
+      ]
+    },
+    {
+      "id": "dd193c9e6cf9d0b8c18a3d4358f914f49b0999819745bb99e9df01740a25b5e5",
+      "name": "Muggy Mire",
+      "official_matches": [
+        "Sunken Hollow"
+      ]
+    },
+    {
+      "id": "de5210903b8dec64f9e25d8cbce6e71af0a850864389aee7fc1e1b209044ec3b",
+      "name": "Still Waters",
+      "official_matches": [
+        "Prairie Stream"
+      ]
+    },
+    {
+      "id": "dfc8c0cc5c34097a3eca2eb567ac8464886704107e68e196723c988b41e061b3",
+      "name": "Tunnel Map",
+      "official_matches": [
+        "Wayfarer's Bauble"
+      ]
+    },
+    {
+      "id": "e34ae1cbaf15ba8a1df064b516f87d8d7857a63330331826bc678091b390cec2",
+      "name": "Stormcharged Pyre",
+      "official_matches": [
+        "Training Center"
+      ]
+    },
+    {
+      "id": "e571e5653c7c2ae99777bdc9168abdd7638e88da37d7960d07e00dce5408a97c",
+      "name": "Urban Wastelands",
+      "official_matches": [
+        "Canyon Slough"
+      ]
+    },
+    {
+      "id": "e69454c7949b180fe8617f76baf47f38cefc2873362dc0fbe83e572f218329af",
+      "name": "Haunted Woodlock",
+      "official_matches": [
+        "Undergrowth Stadium"
+      ]
+    },
+    {
+      "id": "f1e128aaa0a8f10af8e370d83023e5ba1370eec74f8bf59fc203aca58d114222",
+      "name": "Duskwood Thicket",
+      "official_matches": [
+        "Festering Thicket"
+      ]
+    }
+  ],
+  "retained": 3925,
+  "retained_with_rules": 3852,
+  "deduplicate_custom": true,
+  "exact_parsed_custom_duplicates": [
+    {
+      "id": "18796f9fa1a5c409511106f14b272326558f79e9bb8bb032ca9c9fd0d8e2fcf6",
+      "name": "Thunder Crow",
+      "representative_id": "07008a19c13a9fb1bdc6d4dca07899c379a8eff5328bef224d3897abf64fdabd"
+    },
+    {
+      "id": "5422a70bd21eae272b18be2fcbddee4dc0497ad1f83781a0ebefac17befc74c7",
+      "name": "Olten Tarrasque",
+      "representative_id": "03bd7069a2120694a677c9dec637678ae36c656529cf74fa59b166e35ebd6145"
+    },
+    {
+      "id": "7546cf13030a17f9186b9f259e428482176a824a93f1d9d1d40d1158afac5ccf",
+      "name": "Verdant Expanse",
+      "representative_id": "6a5021dddaf4c6f6ec7a66fcb4ca2bfbc9ed5021553fd616ec182d41a7dd9baf"
+    },
+    {
+      "id": "889e9341e3018592b6384db1816b2dd12935f58e1f4b72fd853b15975998cf94",
+      "name": "Glintfeather Mystic",
+      "representative_id": "4602247f820e43b3d7e58de6f6e98042d22cf27ad9a3bb6de999e29e0f4a8e70"
+    },
+    {
+      "id": "92cde8b1531c488321b82491a3ed214c705dd09a26de843d969223e66845c47b",
+      "name": "Autumn Fae",
+      "representative_id": "64e156c0d787641c6e60fc99ac21b0aeb38ae619b70b192919dacba2df1e186f"
+    },
+    {
+      "id": "ca16e6c6fd7ffddeca8299f853ee209bcad4c3f3833fdc2a0e5de32b490808d0",
+      "name": "Spore Vessel",
+      "representative_id": "74cba2f7fa12ea7743e25394a45cc97a3d1965fba55baecc7e8259f5833e4fcf"
+    },
+    {
+      "id": "caaddcf7e94612560f1fdfa88e09d51223ba5a8a3f5422ac7a1fd6b9b52f23e9",
+      "name": "Zarad, the Final Adversary",
+      "representative_id": "bd002f44d9f7dce7589db1ff2d109a54a44fc7a80110a050ced01dcf9c1c4b5b"
+    },
+    {
+      "id": "f8c47aa884e409a84ecd977c70b39df513a477d30795e77708e123ae4a0a174b",
+      "name": "Winged Envoy",
+      "representative_id": "b6ada35e9787933a976ea3ee1095697db6bcdfd85f9955efc65acb3a79a602c5"
+    },
+    {
+      "id": "f9a6e02a31bd69042876d3c0e68ca34b008243f3210cefd1018c28d6cfe1e571",
+      "name": "Seeker of Mysteries",
+      "representative_id": "44dad12d40ab30483c54dbd4b881a4270910961abb411da50f1df8f436fe68d8"
+    }
+  ],
+  "candidates": {
+    "rows": 3852,
+    "bytes": 13715039,
+    "sha256": "f012ac9b3f766800658e1b697d0a22c3f9ba1879acef5535a93d1045d46d1f32"
+  },
+  "policy": "Exact mtgish single-card structure equality after replacing only the top-level card name. Remaining designs are review candidates; incomplete overlap detection and parser acceptance do not prove novelty, correctness, or training rights."
+}

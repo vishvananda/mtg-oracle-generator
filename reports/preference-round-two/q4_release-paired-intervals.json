@@ -1,0 +1,25 @@
+{
+  "families": 96,
+  "requests": 128,
+  "metrics": {
+    "intent": {
+      "difference": -0.0078125,
+      "family_bootstrap_95_percent_interval": [
+        -0.05303030303030303,
+        0.037037037037037035
+      ],
+      "resamples": 5000,
+      "seed": 1709
+    },
+    "mtgish": {
+      "difference": 0.0,
+      "family_bootstrap_95_percent_interval": [
+        -0.030534351145038167,
+        0.031496062992125984
+      ],
+      "resamples": 5000,
+      "seed": 1709
+    }
+  },
+  "limitation": "Intervals describe this designed panel and correlated LLM labels, not all possible user requests."
+}

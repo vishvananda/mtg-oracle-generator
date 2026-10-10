@@ -1,0 +1,525 @@
+{
+  "counts": {
+    "source_records": 21194,
+    "excluded_official_name_records": 1139,
+    "normalized_printing_names": 4572,
+    "excluded_official_mechanical_match_records": 281,
+    "excluded_layout_records": 836,
+    "collapsed_custom_mechanical_duplicates": 3969,
+    "eligible_unique_designs": 14969
+  },
+  "excluded_layouts": {
+    "transform": 754,
+    "split": 44,
+    "modal_dfc": 38
+  },
+  "kind": "custom_source_parser_feasibility",
+  "final_test": false,
+  "source_url": "https://mse-modern.com/msem2/notlackey/AllSets.json",
+  "source_sha256": "580ce9cf1cb5440913c9b44909db84707d7d47da157bb701f2a8e30072fccb84",
+  "official_sha256": "457b0dbd78432750e468b0a505c6ec1c08ee34283aab841443bc9e029f8e0fd0",
+  "script_sha256": "bab5afc464da5d5fb8231d2cc8790143fa71ff246a3195f282bf11a1c7119560",
+  "seed": null,
+  "workers": 12,
+  "sampling": "All eligible unique single-face designs, sorted by stable ID; no filtering on keywords or parser results.",
+  "scope": "normal/saga/leveler/class single-face layouts only; multiface records excluded before sampling",
+  "overlap_policy": "Remove _SET/(SL123) printing suffixes only when the base name is independently present in source/Oracle; retain original names and adjustments. Exclude official names and normalized type/cost/text/stats matches against official faces. Deduplicate custom mechanical matches ignoring full self-name and reminder text. This does not detect every functional reprint or wording variant. Rules text is never rewritten for the assay.",
+  "interpretation": "Parser acceptance only; does not establish rules correctness, balance, request fidelity, or training/redistribution permission.",
+  "measured_at": "2026-10-09T21:11:07.382761+00:00",
+  "sample": {
+    "rows": 14969,
+    "bytes": 12068180,
+    "sha256": "b45890207bcc3a3608a1d9ccdb26e164e4dd926082d7243e67c3021622b8dff1"
+  },
+  "parser": {
+    "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+    "workflow": "upstream-standard-v2",
+    "manifest_sha256": "2d3820bf78cb398736fd7e56381e1fbd1a4549c5a0ee9fbbb58c7d7c78aca3b5",
+    "binary_sha256": "9137350af5cf08fc473b2a47e46b0f038acea36226ce954bf09ca4c237c79da4",
+    "grammar_files": {
+      "english_grammar-INPUT.json5": "9bf36603040f3eb3018a65f8520554300a6307cda98bb1df3034f454adafdbe6",
+      "english_grammar-ability_word.json5": "bd1eb337e7a29f7f27e2124944c6ac3ebfa545bac51d65faba595de71063d3fb",
+      "english_grammar-counters.json5": "a49a6dec59e2cca4162f286f6eb8ac523133ef0f584c4000b78b04d809ea5aa2",
+      "english_grammar-flavor_word.json5": "524548be31e483bdf513033bcaa64211e1ffc4746655e9792cbd7579aee206a1",
+      "english_grammar-named_cards.json5": "1df3fada73ab7554181441d51c65af2de54ac2346c806244b758617a9805ed42",
+      "english_grammar-null_text.json5": "9dd2507cddbe23a725d2a652961b311928ae3f54520cc11ba722e79f5f5b6c30",
+      "english_grammar-reminder_text.json5": "a57f4e77d4b46d28a18d6f4b5a7978cfef54ef49b3466a0a5db50f3b01a33082",
+      "english_grammar-type_line.json5": "57242bc89563b416aeebcb40192ea490a103bb28ce882d51142f4e6b6bc081d0",
+      "english_grammar.json5": "e82ca3e575eb75109fb88827e5890f60a17448a5fc84446ca2d2a25f330500ac",
+      "find_replace.json5": "0982b35d9f3ee12d0c61963cb7520f42a24ab7f383af8f345f70fc1d78d9d458",
+      "ignore.json5": "77e86963b89f9c3a6799db9fc35f53ecd347f0a9552a1d8fb785084387708a09",
+      "mtgish_grammar-counters.json5": "bf310d27bc187d3239384d1cc5b8b4e8365f1c075ab87b607b4d75b8fb71c461",
+      "mtgish_grammar-create_tokens.json5": "13100305c8edb8ec9c4002e59250c3011c01598a332ffe6c7258090b70230554",
+      "mtgish_grammar-exile.json5": "31f6ac351b04ef00c1fbcac5706c4ee1f2e6802272a62c686959b8084fe981b3",
+      "mtgish_grammar-fight.json5": "d7ff5d99d50e960a10f560da82c8dbe7a219b6b6827f0697310a8b0a0b90db6c",
+      "mtgish_grammar-mana.json5": "1212a7f06a53ba3032673c18d129267f1256384e0c6c3fa604aff846de1960bb",
+      "mtgish_grammar-named_cards.json5": "a44e7d644245c567452cef8d723e8b6dd2bcd11c7f5880c43320d1ff934f3be0",
+      "mtgish_grammar-put_counters.json5": "77425da052f6e30ba54e23b90f41e440a3e484a72f2cb28bd39d22ce24fe6c23",
+      "mtgish_grammar-triggers.json5": "96b070faa84d9a5cad36071d156a01e6139a8590a57f3b51a9b94fca9c1dff24",
+      "mtgish_grammar-type_line.json5": "1c7bbca24f18075a49f4b06c60d89b7e08c28757ef61a72b55677d469e73c8b4",
+      "mtgish_grammar-vote_option.json5": "93e2f2472543b1a6865d80c7d45032788759dfc365c41d5dfb0a424cd65587e3",
+      "mtgish_grammar.json5": "e29a5d84e898d996eb2b55677b3ce62727a05db88f57463d75af8ccf8c54f34c",
+      "short_names.json5": "dd44ee8da0d0546722fa3b83de3d042c5f147cbe7553ad8e200c3b572b2c76a3"
+    }
+  },
+  "sampled": 14969,
+  "accepted": 3729,
+  "acceptance_rate": 0.249114837330483,
+  "statuses": {
+    "parsed": 3729,
+    "rejected": 11240
+  },
+  "accepted_with_rewrites": 0,
+  "accepted_with_rules_text": 3656,
+  "seconds": 412.18,
+  "by_type": {
+    "Artifact": {
+      "sampled": 886,
+      "accepted": 276,
+      "acceptance_rate": 0.3115124153498871,
+      "statuses": {
+        "rejected": 610,
+        "parsed": 276
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 276
+    },
+    "Artifact Creature": {
+      "sampled": 413,
+      "accepted": 137,
+      "acceptance_rate": 0.33171912832929784,
+      "statuses": {
+        "parsed": 137,
+        "rejected": 276
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 130
+    },
+    "Artifact Enchantment": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Artifact Enchantment Creature": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Artifact Land": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Artifact Planeswalker": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Battle": {
+      "sampled": 22,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 22
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Conspiracy": {
+      "sampled": 16,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 16
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Creature": {
+      "sampled": 7167,
+      "accepted": 2164,
+      "acceptance_rate": 0.30193944467699174,
+      "statuses": {
+        "parsed": 2164,
+        "rejected": 5003
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 2099
+    },
+    "Criatura": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Enchantment": {
+      "sampled": 1660,
+      "accepted": 312,
+      "acceptance_rate": 0.18795180722891566,
+      "statuses": {
+        "parsed": 312,
+        "rejected": 1348
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 312
+    },
+    "Enchantment Artifact": {
+      "sampled": 4,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 4
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Enchantment Artifact Creature": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Enchantment Creature": {
+      "sampled": 203,
+      "accepted": 44,
+      "acceptance_rate": 0.21674876847290642,
+      "statuses": {
+        "rejected": 159,
+        "parsed": 44
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 43
+    },
+    "Enchantment Land": {
+      "sampled": 4,
+      "accepted": 1,
+      "acceptance_rate": 0.25,
+      "statuses": {
+        "rejected": 3,
+        "parsed": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 1
+    },
+    "Enchantment Planeswalker": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Instant": {
+      "sampled": 1687,
+      "accepted": 385,
+      "acceptance_rate": 0.22821576763485477,
+      "statuses": {
+        "rejected": 1302,
+        "parsed": 385
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 385
+    },
+    "Kindred Land": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Kindred Sorcery": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Land": {
+      "sampled": 832,
+      "accepted": 126,
+      "acceptance_rate": 0.15144230769230768,
+      "statuses": {
+        "parsed": 126,
+        "rejected": 706
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 126
+    },
+    "Planeswalker": {
+      "sampled": 262,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 262
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Playtest": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Reminder": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Artifact": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Artifact Creature": {
+      "sampled": 2,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Enchantment": {
+      "sampled": 3,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 3
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Enchantment Creature": {
+      "sampled": 6,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 6
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Instant": {
+      "sampled": 3,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 3
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Riddle Sorcery": {
+      "sampled": 4,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 4
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "Sorcery": {
+      "sampled": 1778,
+      "accepted": 284,
+      "acceptance_rate": 0.1597300337457818,
+      "statuses": {
+        "rejected": 1494,
+        "parsed": 284
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 284
+    },
+    "Vanguard": {
+      "sampled": 1,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    }
+  },
+  "by_color": {
+    "B": {
+      "sampled": 2165,
+      "accepted": 528,
+      "acceptance_rate": 0.24387990762124712,
+      "statuses": {
+        "rejected": 1637,
+        "parsed": 528
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 516
+    },
+    "G": {
+      "sampled": 2127,
+      "accepted": 577,
+      "acceptance_rate": 0.27127409496944055,
+      "statuses": {
+        "rejected": 1550,
+        "parsed": 577
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 559
+    },
+    "R": {
+      "sampled": 2177,
+      "accepted": 578,
+      "acceptance_rate": 0.26550298576022047,
+      "statuses": {
+        "parsed": 578,
+        "rejected": 1599
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 567
+    },
+    "U": {
+      "sampled": 2136,
+      "accepted": 535,
+      "acceptance_rate": 0.25046816479400746,
+      "statuses": {
+        "parsed": 535,
+        "rejected": 1601
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 527
+    },
+    "W": {
+      "sampled": 2168,
+      "accepted": 666,
+      "acceptance_rate": 0.30719557195571956,
+      "statuses": {
+        "parsed": 666,
+        "rejected": 1502
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 649
+    },
+    "colorless": {
+      "sampled": 1836,
+      "accepted": 449,
+      "acceptance_rate": 0.2445533769063181,
+      "statuses": {
+        "rejected": 1387,
+        "parsed": 449
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 442
+    },
+    "multicolor": {
+      "sampled": 2360,
+      "accepted": 396,
+      "acceptance_rate": 0.16779661016949152,
+      "statuses": {
+        "parsed": 396,
+        "rejected": 1964
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 396
+    }
+  },
+  "by_layout": {
+    "class": {
+      "sampled": 18,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 18
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "leveler": {
+      "sampled": 34,
+      "accepted": 0,
+      "acceptance_rate": 0.0,
+      "statuses": {
+        "rejected": 34
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 0
+    },
+    "normal": {
+      "sampled": 14799,
+      "accepted": 3725,
+      "acceptance_rate": 0.2517061963646192,
+      "statuses": {
+        "parsed": 3725,
+        "rejected": 11074
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 3652
+    },
+    "saga": {
+      "sampled": 118,
+      "accepted": 4,
+      "acceptance_rate": 0.03389830508474576,
+      "statuses": {
+        "rejected": 114,
+        "parsed": 4
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_with_rules_text": 4
+    }
+  },
+  "accepted_candidates": {
+    "rows": 3729,
+    "bytes": 6148039,
+    "sha256": "873fcdd6e5886c44af3341c8d3aa4cc7b5657978219e17715d9d710e5750ea72"
+  },
+  "cases_sha256": "2cbe0bab2cd9ebcaefee85879b82f69dc3733dcb0277ff1d96321b832080ade7"
+}

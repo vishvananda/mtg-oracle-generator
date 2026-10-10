@@ -1,0 +1,28 @@
+{
+  "description": "A 3/3 red Giant creature for {3}{R} with no abilities. Make it common.",
+  "target": {
+    "name": "Emberhill Wanderer",
+    "type_line": "Creature \u2014 Giant",
+    "mana_cost": "{3}{R}",
+    "colors": [
+      "R"
+    ],
+    "power": "3",
+    "toughness": "3",
+    "oracle_text": "",
+    "rarity": "common"
+  },
+  "specified_fields": [
+    "type_line",
+    "colors",
+    "power",
+    "toughness",
+    "mana_cost",
+    "oracle_text",
+    "rarity"
+  ],
+  "proposed_fields": [
+    "name"
+  ],
+  "note": "Illustrative invented completion, not a scored held-out example."
+}

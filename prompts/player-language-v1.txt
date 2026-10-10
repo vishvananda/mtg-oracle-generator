@@ -1,0 +1,118 @@
+Shared player-language guide for description generation and fidelity review.
+These are phrasing options. Follow the example's description policy: exact
+paraphrases preserve every expressed constraint; broad descriptions may omit
+details and summarize a reference card as one plausible completion. In either
+case, claims the description DOES make must be compatible with the card.
+Never add facts merely from a famous card name or a glossary example. The
+detail-preservation cautions below apply to details the policy asks to express;
+they do not require broad descriptions to list every cost and restriction.
+
+Use varied voices: some requests should use plain beginner language, others
+familiar player shorthand. Prefer natural phrasing over mechanically substituting
+every available synonym. Keep complete descriptions readable; casual_complete
+and mechanics can use more shorthand. A glossary term need not appear in every
+description. Sparse requests must stay sparse.
+
+Planeswalkers:
+- "plus", "plus ability", "tick up", and "uptick" can describe a positive
+  loyalty ability; "minus", "tick down", and "downtick" a negative one.
+- "ult" or "ultimate" can describe a planeswalker's large payoff ability.
+  It is an informal label, not an Oracle keyword or a loyalty cost. Not every
+  planeswalker has an ultimate, and not every minus ability is an ultimate.
+- When exact expressed constraints include a numeric loyalty cost, retain it:
+  "plus one: make a ... token" or "its -7 ult ...". Do not replace -7 with
+  just "ultimate" in a complete-mechanics example. Preserve starting loyalty
+  separately. Never introduce the nonexistent {L} symbol.
+
+Zones, events, and objects:
+- "ETB", "when it comes into play", and "when it enters" can express an
+  enters-the-battlefield trigger; "in play" can mean on the battlefield.
+  An enters trigger is different from a cast trigger.
+- "deck" can mean library in phrases such as "top card of their deck";
+  do not confuse this zone with deck construction. "yard" or "grave" can
+  mean graveyard. Preserve whose zone it is.
+- "remove from the game" is historical wording for exile. Destroy, sacrifice,
+  discard, mill, and exile are different actions, not general removal synonyms.
+- "dies" describes a creature going from the battlefield to a graveyard;
+  it does not mean any departure. "sac" can mean sacrifice. Keep who sacrifices
+  what, and whether sacrifice is a cost or an effect.
+- "flyer" can mean a creature with flying. "body" can informally mean a
+  creature; retain required card type/subtype words and exact P/T where given.
+
+Common actions, with the details that must survive:
+- "bounce" for returning to hand: retain the object, target restrictions,
+  and whose hand. It is not returning to the top of a library.
+- "blink" or "flicker" for exile and return: explicitly preserve when it
+  returns, which zone it returns to, and under whose control.
+- "loot" for draw then discard; "rummage" for discard then draw. Preserve
+  both counts, order, optionality, and whether discard is a payment or effect.
+- "mill" for putting top library cards into the graveyard. Preserve the
+  player and count. Milling is neither drawing nor exiling those cards.
+- "tutor" for a search: still state the searched zone, card restrictions,
+  destination, reveal requirements, and shuffle instruction if supplied.
+- "reanimate" for a graveyard-to-battlefield return: preserve eligible cards,
+  the graveyard's owner, controller of the returned card, and any restrictions.
+- "pump" or "buff" for a stat boost: keep the exact change, recipients,
+  duration, and whether it uses counters or a continuous effect.
+- "drain" for life loss plus life gain: specify who loses/gains and how much.
+  Life loss and damage are different; lifelink is not a generic drain effect.
+- "counter" a spell/ability differs from putting counters on an object or
+  player. Preserve the counter kind and recipient.
+
+More player vocabulary:
+- "cantrip" adds card draw to another effect; preserve the draw's timing if
+  specified. It does not mean scry, investigate, or a cast trigger by default.
+- "wheel" describes replacing hands with new cards. Counts, affected players,
+  and discard versus shuffling hands away vary; do not assume everyone draws seven.
+- "impulse draw" or "impulsive draw" exiles cards with permission to use
+  them. Keep the duration and play/cast distinction when specified; this differs
+  from looking at several cards and selecting one for your hand.
+- "edict" means a forced-sacrifice effect. The affected player normally
+  chooses the sacrifice; targeting that player is not targeting their creature.
+- "wrath", "sweeper", or "board wipe" means broad removal. They do not
+  inherently specify destroy versus exile or which permanent types are affected.
+- "anthem" means a team boost; "lord" often means a creature buffing a
+  creature type. Preserve other-versus-all, controller scope, and the actual boost.
+- "ping" often means one damage; "burn" means direct damage. A "pinger"
+  does not alone specify its activation cost or whether players can be targeted.
+- "fight" involves creatures dealing power-based damage to each other;
+  "bite" is one-way power-based damage. Neither is combat damage.
+- "fog" refers to combat-damage prevention; preserve who is protected and
+  for how long when those details are requested.
+- "firebreathing" describes an activated power boost; costs and amounts vary.
+- "mana dork" describes a mana-producing creature; "mana rock" a
+  mana-producing artifact. Neither fixes the mana amount, color, or activation cost.
+- "ramp" increases mana availability; "fixing" helps access colors. Searching
+  for lands into hand, putting them onto the battlefield, and making Treasure
+  are different implementations, not exact synonyms.
+- "sac outlet" is a way to sacrifice something for a benefit. "Aristocrats"
+  describes sacrifice/death synergies, not a particular ability or creature type.
+- "threaten" commonly describes temporary control; "steal" can be broader.
+  Do not silently add untapping, haste, or a duration absent from the card.
+- "clone" can describe a copy effect. Copying a permanent, creating a token
+  copy, and copying a spell are different; preserve exceptions and duration.
+- "ETBT" means enters tapped, not an enters trigger. "freeze" or "tap down"
+  can describe tap/untap suppression; use the card's duration, not assumed counters.
+- "vanilla" explicitly means no abilities. "French vanilla" means only
+  keyword abilities. Do not use either just because a request omits its abilities.
+- A design "bear" often means a 2/2 for two mana, not the Bear subtype.
+  "Evasive" need not mean flying. "Voltron", "tokens", and "go wide"
+  describe strategies; they are not precise rules text.
+- "Esper" means white/blue/black; "Grixis" blue/black/red; "Jund"
+  black/red/green; "Naya" red/green/white; "Bant" green/white/blue.
+  Color shorthand does not specify exact costs or imply a creature subtype.
+
+Ambiguities and limits:
+- "play from the top of their deck" preserves a play permission, not drawing,
+  searching, copying, or putting a card into hand. Play can include lands;
+  cast cannot. Do not add free casting, looking, revealing, extra land plays,
+  or flexible mana spending unless supplied.
+- "kill", "removal", "board wipe", "ramp", "steal", and "double" alone
+  do not identify a complete mechanic. Keep the action, scope, timing, and
+  limitations explicit when a complete effect is requested.
+- "small", "midsize", "big", or "cheap" are qualitative, not exact stats
+  or mana costs. A "three-drop" alone does not specify {2}{R}. Keep exact
+  mana costs in braced notation and exact stats as P/T when supplied.
+- Preserve may versus must, target versus each, owner versus controller,
+  you versus opponents, duration, and all numeric amounts. Slang does not
+  excuse missing constraints. Plain language is preferable to ambiguous slang.

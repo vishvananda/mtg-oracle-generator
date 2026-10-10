@@ -1,0 +1,17 @@
+{
+  "files": {
+    "README.md": "e26ecd86b3962bc3ab3bdd5ca052cabf2db8b5578967c0baca721b7161ea2ddc",
+    "comparison.json": "255bdd4978cfe2c925482911f66424145bf2e7f9c52ade25ac59167c3cbc48d8",
+    "parser-acceptance.png": "2f41bca9e1472d0ae6214e0528e07ba139b73abf8cba5eb80e5399977a94a728",
+    "parser-acceptance.svg": "46e50554a2d45c83baa78b320319f2d42e5e015ceac9e2c6c299bec84f026fa7",
+    "qualitative-review.json": "33036d0bea29238d0e3d47f79107bce85fff72e66661244043181234f2641543",
+    "reference-parser-summary.json": "73cffd5d1a083c5484f58a4d3e8caec3b79ce9cc2bc94d722677ca9cb1623c9c",
+    "training-curve.csv": "36cd9b9d24ee84452f77f39d3a7fbf2d730e4984499240319e177657834649a1",
+    "training-curve.png": "a5b98905632a8ff5a95e33ec3e01b6a137afc3c3c8abb2149ff38207234929e5",
+    "training-curve.svg": "2f923a37b402cbec191c26f885a3619294a147f5d6ab1b260b304a52c1d9cb55",
+    "training-metrics.json": "a5a7801d602d126de6935a1c3984ca214f22a4e75dccf9705b59cc29e5c5d721"
+  },
+  "source_report_manifest_sha256": "73de944c06643c67258e73ba3f5c56ef553159b97cf35a8ded2aa600fdb715e0",
+  "scope": "development_panel",
+  "final_test_evaluated": false
+}

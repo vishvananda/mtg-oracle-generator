@@ -1,0 +1,15 @@
+{
+  "seed": 17,
+  "candidates_per_prompt": 4,
+  "generation_batch_size": 24,
+  "max_new_tokens": 2048,
+  "max_length": 4096,
+  "minimum_pairs": 1000,
+  "max_steps": 250,
+  "effective_batch_size": 8,
+  "learning_rate": 5e-06,
+  "beta": 0.1,
+  "training_seconds": 2400,
+  "save_total_limit": 12,
+  "evaluate_midpoint": true
+}

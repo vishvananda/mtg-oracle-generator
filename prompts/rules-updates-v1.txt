@@ -1,0 +1,11 @@
+Verified rules update, September 2025 (also confirmed by the 2026 Marvel Super
+Heroes release notes): modal double-faced cards CAN transform. A modal
+double-faced permanent transforms when instructed if the other face has a
+permanent type. It can enter transformed if its back face has a permanent type.
+Both faces being independently castable is compatible with an ability that
+transforms between them. Do not reject such a reference card or description
+merely because its layout is modal_dfc; do not change it to transform layout.
+A spell face (instant or sorcery) cannot be turned into a permanent by transforming.
+Sources:
+https://magic.wizards.com/en/news/feature/spider-man-release-notes
+https://magic.wizards.com/en/news/feature/marvel-super-heroes-release-notes

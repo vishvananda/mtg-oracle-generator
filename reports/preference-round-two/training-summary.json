@@ -1,0 +1,49 @@
+{
+  "stage": "train",
+  "pairs": 1000,
+  "steps": 125,
+  "planned_steps": 125,
+  "metrics": {
+    "train_runtime": 820.0583,
+    "train_samples_per_second": 1.219,
+    "train_steps_per_second": 0.152,
+    "total_flos": 0.0,
+    "train_loss": 0.5742485160827637,
+    "epoch": 1.0
+  },
+  "reference_unchanged": true,
+  "initial_reference_logits_equal": true,
+  "stopped_for_budget": false,
+  "reference_sha256": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+  "initial_policy_sha256": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+  "final_policy_sha256": "400c9cbe3fb7a5f4878043f6ccb4026c30bd81d2b6696ed810174ea632db6d26",
+  "train_seconds": 823.4231107550149,
+  "peak_gpu_gib": 17.372128009796143,
+  "midpoint_development": {
+    "complete": true,
+    "cases": 128,
+    "completions": 128,
+    "sha256": "1ed0221de103279e3c236b65f45fc419576664136cd16d62f3182c33d7ab9a5e",
+    "output_tokens": 11213,
+    "seconds": 139.92897623599856,
+    "reused_completions": 0,
+    "resume_sha256": null,
+    "oom_reductions": [],
+    "actual_batch_sizes": [
+      8,
+      24
+    ],
+    "decoding": {
+      "do_sample": false,
+      "temperature": null,
+      "top_p": null,
+      "top_k": null,
+      "seed": 17,
+      "batch_size": 24,
+      "rng_protocol": "sha256(seed, batch candidate IDs), reset per batch; resumed rows retain their original stream",
+      "max_new_tokens": 2048,
+      "enable_thinking": false
+    },
+    "backend": "transformers NF4 + SFT/DPO adapter"
+  }
+}

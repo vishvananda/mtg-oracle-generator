@@ -1,0 +1,39 @@
+{
+  "cpu_tests": 57,
+  "full_source_projection": {
+    "cards": 36163,
+    "identities_groups_splits_match_historical_snapshot": true,
+    "byte_identical_projections": false,
+    "difference": "135 cards have later coherent-default fixes; documented in docs/dataset.md"
+  },
+  "parser_setup": "Fresh isolated build from the pinned clean mtgish checkout succeeded.",
+  "parser_replay": "Fresh build matches all 36 saved development outcomes.",
+  "evaluation_cli": {
+    "fixture_only": true,
+    "cases": 3,
+    "accepted": 1,
+    "rejected": 1,
+    "missing": 1
+  },
+  "dataset_preflight": {
+    "pilot-16k-exact": {
+      "train": 16000,
+      "validation": 480
+    },
+    "names-rarity-pilot-v1": {
+      "train": 19065,
+      "validation": 572
+    }
+  },
+  "graph": {
+    "observations": 1000,
+    "validation_steps": [
+      0,
+      1000
+    ],
+    "regenerated_and_visually_checked": true
+  },
+  "new_gpu_training_started": false,
+  "final_test_evaluated": false,
+  "github_publication": "Blocked by unavailable network access to api.github.com in the preparation session."
+}

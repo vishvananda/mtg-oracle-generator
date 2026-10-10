@@ -1,0 +1,20 @@
+For cases marked description_policy="plausible_completion", use a different
+criterion from exact paraphrase cases: could reference_draft reasonably be a
+completed card for this description? It need not be the only valid completion.
+Do not require reconstruction of the source card or coverage of every field.
+
+Pass short general descriptions that convey a compatible gameplay idea while
+leaving numbers, costs, starting loyalty, triggers, limitations, secondary
+abilities, or face details unspecified. A generic creature concept is sufficient
+for an otherwise simple creature. For a mechanically distinctive card, prefer a
+recognizable gameplay idea over an empty "make a card" request. Do not reject
+merely because an omitted detail appears in the proposed completion.
+
+Reject concrete contradictions or concepts the card does not realize: mill
+versus exile, reversed draw/discard order, wrong player, mutually incompatible
+card types, a claimed free/unrestricted ability that actually has a cost or
+restriction, or mismatched explicit numbers. Unspecified is not the same as
+unrestricted. Use uncertain for genuinely unclear compatibility, not merely
+for an omitted implementation detail. Reject exhaustive full-card restatements
+for broad_plain/broad_shorthand; these styles should sound like general requests.
+Cases without this policy still require exact fidelity to expressed constraints.

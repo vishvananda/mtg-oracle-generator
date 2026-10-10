@@ -1,0 +1,39 @@
+{
+  "observed_at": "2026-10-07T20:05:16.712892+00:00",
+  "purpose": "Description recovery pilot; not generated-card evaluation or final-test accuracy",
+  "checks_version": "description-checks-v3",
+  "teacher_and_reviewer": "gpt-6.1-sol",
+  "reasoning_effort": "medium",
+  "max_repair_attempts": 2,
+  "independent_review_context": true,
+  "datasets": {
+    "detailed": {
+      "source_manifest_sha256": "d83a9820fd496319cec75913322487794ee839f370c3807e11ed407f03c6ada6",
+      "cards_source_audited": 36163,
+      "source_projections_corrected": 4,
+      "pilot_rows": 24,
+      "pilot_accepted": 24,
+      "pilot_rewritten": 12,
+      "recovered_total": 780,
+      "pending": 1027,
+      "active_workers": 1
+    },
+    "broad": {
+      "source_manifest_sha256": "e043f870a822c75fd05a06432bf31374c561eec17b54b1b8f4182a67c52ac980",
+      "cards_source_audited": 36163,
+      "source_projections_corrected": 4,
+      "pilot_rows": 24,
+      "pilot_accepted": 24,
+      "pilot_rewritten": 8,
+      "recovered_total": 882,
+      "pending": 345,
+      "active_workers": 1
+    }
+  },
+  "verification": {
+    "unit_and_integration_tests_passed": 74,
+    "export_roundtrip": true,
+    "snapshot_tampering_rejected": true,
+    "stale_originals_and_split_changes_rejected": true
+  }
+}

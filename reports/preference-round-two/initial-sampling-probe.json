@@ -1,0 +1,98 @@
+{
+  "description": "a planeswalker with a loyalty ability that creates a 3/3 creature and an ultimate that removes opponents library from the game",
+  "results": [
+    {
+      "draft": {
+        "colors": [
+          "W",
+          "B",
+          "R"
+        ],
+        "loyalty": "5",
+        "mana_cost": "{1}{R}{W}{B}",
+        "name": "Chandra, Dressed to Kill",
+        "oracle_text": "+1: Create a 3/3 black Assassin creature token with \"When this creature dies, draw a card.\"\n−3: Target player shuffles up to three target cards from their graveyard into their library.\n−9: Each opponent exiles all the cards from their library, then puts them into their graveyard.",
+        "rarity": "mythic",
+        "type_line": "Legendary Planeswalker — Chandra"
+      },
+      "raw": "{\"colors\":[\"W\",\"B\",\"R\"],\"loyalty\":\"5\",\"mana_cost\":\"{1}{R}{W}{B}\",\"name\":\"Chandra, Dressed to Kill\",\"oracle_text\":\"+1: Create a 3/3 black Assassin creature token with \\\"When this creature dies, draw a card.\\\"\\n−3: Target player shuffles up to three target cards from their graveyard into their library.\\n−9: Each opponent exiles all the cards from their library, then puts them into their graveyard.\",\"rarity\":\"mythic\",\"type_line\":\"Legendary Planeswalker — Chandra\"}",
+      "inference": {
+        "model": "Qwen3-4B · DPO pilot · Q4_0",
+        "elapsed_seconds": 56.26,
+        "usage": {
+          "completion_tokens": 125,
+          "prompt_tokens": 783,
+          "total_tokens": 908,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "usage_scope": "server response; batch usage may describe only the first completion",
+        "candidate_index": 0,
+        "candidate_count": 2,
+        "decoding": {
+          "temperature": 0.65,
+          "seed": 1532542577,
+          "max_tokens": 2048,
+          "n": 2,
+          "top_p": 0.9,
+          "top_k": 40,
+          "min_p": 0,
+          "cache_prompt": true
+        },
+        "terminology_guide": true,
+        "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+        "generation_mode": "unconstrained",
+        "output_schema_sha256": null,
+        "finish_reason": "stop"
+      }
+    },
+    {
+      "draft": {
+        "colors": [
+          "W",
+          "B"
+        ],
+        "loyalty": "3",
+        "mana_cost": "{2}{W}{B}",
+        "name": "Nissa, Ascended Ancient",
+        "oracle_text": "+1: Create a 3/3 green Centaur Warrior creature token with trample and haste. This ability can't be learned from a planeswalker.\n−1: Target player creates a token that's a copy of each creature they control.\n−8: Each opponent loses all their libraries, then each player shuffles their hand and graveyard into their library. Then each player who doesn't have their library lost creates a token that's a copy of each creature they control. Then each player creates a token that's a copy of each card in their graveyard.",
+        "rarity": "mythic",
+        "type_line": "Legendary Planeswalker — Nissa"
+      },
+      "raw": "{\"colors\":[\"W\",\"B\"],\"loyalty\":\"3\",\"mana_cost\":\"{2}{W}{B}\",\"name\":\"Nissa, Ascended Ancient\",\"oracle_text\":\"+1: Create a 3/3 green Centaur Warrior creature token with trample and haste. This ability can't be learned from a planeswalker.\\n−1: Target player creates a token that's a copy of each creature they control.\\n−8: Each opponent loses all their libraries, then each player shuffles their hand and graveyard into their library. Then each player who doesn't have their library lost creates a token that's a copy of each creature they control. Then each player creates a token that's a copy of each card in their graveyard.\",\"rarity\":\"mythic\",\"type_line\":\"Legendary Planeswalker — Nissa\"}",
+      "inference": {
+        "model": "Qwen3-4B · DPO pilot · Q4_0",
+        "elapsed_seconds": 56.26,
+        "usage": {
+          "completion_tokens": 125,
+          "prompt_tokens": 783,
+          "total_tokens": 908,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          }
+        },
+        "usage_scope": "server response; batch usage may describe only the first completion",
+        "candidate_index": 1,
+        "candidate_count": 2,
+        "decoding": {
+          "temperature": 0.65,
+          "seed": 1532542577,
+          "max_tokens": 2048,
+          "n": 2,
+          "top_p": 0.9,
+          "top_k": 40,
+          "min_p": 0,
+          "cache_prompt": true
+        },
+        "terminology_guide": true,
+        "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+        "generation_mode": "unconstrained",
+        "output_schema_sha256": null,
+        "finish_reason": "stop"
+      }
+    }
+  ],
+  "note": "Initial temperature 0.65 diagnostic. The caller used the old pilot display label; actual endpoint 4205 served the verified round-two artifact. Interactive temperature was reduced to 0.35; this is not part of the locked greedy evaluation.",
+  "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09"
+}

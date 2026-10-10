@@ -1,0 +1,280 @@
+{
+  "scope": "12 known development prompts per condition; not held-out validation or final test",
+  "final_test": false,
+  "measured_at": "2026-10-07T18:10:54.806788+00:00",
+  "predictions_sha256": "8a465c6ca3ed66d05dba27ff1429ed6fd75dd6d8364661efb6af63372ff3e34a",
+  "conditions": {
+    "qwen16k_no_guide": {
+      "cases": 12,
+      "json_objects": 12,
+      "schema_valid": 12,
+      "mtgish_accepted": 2,
+      "mtgish_acceptance_all_cases": 0.16666666666666666,
+      "mtgish_attempted": 12,
+      "mtgish_acceptance_attempted": 0.16666666666666666,
+      "prediction_status": {
+        "generated": 12
+      },
+      "mtgish_status": {
+        "rejected": 10,
+        "parsed": 2
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_without_rewrites": 2,
+      "hit_token_limit": 0,
+      "by_style": {
+        "unknown": {
+          "cases": 12,
+          "json_objects": 12,
+          "schema_valid": 12,
+          "mtgish_accepted": 2,
+          "mtgish_acceptance_all_cases": 0.16666666666666666,
+          "mtgish_attempted": 12,
+          "mtgish_acceptance_attempted": 0.16666666666666666,
+          "prediction_status": {
+            "generated": 12
+          },
+          "mtgish_status": {
+            "rejected": 10,
+            "parsed": 2
+          },
+          "accepted_with_rewrites": 0,
+          "accepted_without_rewrites": 2,
+          "hit_token_limit": 0
+        }
+      },
+      "by_reference_type": {
+        "unknown": {
+          "cases": 12,
+          "json_objects": 12,
+          "schema_valid": 12,
+          "mtgish_accepted": 2,
+          "mtgish_acceptance_all_cases": 0.16666666666666666,
+          "mtgish_attempted": 12,
+          "mtgish_acceptance_attempted": 0.16666666666666666,
+          "prediction_status": {
+            "generated": 12
+          },
+          "mtgish_status": {
+            "rejected": 10,
+            "parsed": 2
+          },
+          "accepted_with_rewrites": 0,
+          "accepted_without_rewrites": 2,
+          "hit_token_limit": 0
+        }
+      },
+      "with_generated_rules_text": {
+        "cases": 9,
+        "json_objects": 9,
+        "schema_valid": 9,
+        "mtgish_accepted": 0,
+        "mtgish_acceptance_all_cases": 0.0,
+        "mtgish_attempted": 9,
+        "mtgish_acceptance_attempted": 0.0,
+        "prediction_status": {
+          "generated": 9
+        },
+        "mtgish_status": {
+          "rejected": 9
+        },
+        "accepted_with_rewrites": 0,
+        "accepted_without_rewrites": 0,
+        "hit_token_limit": 0
+      },
+      "interpretation": "Whole-card parser recognition, not intent fidelity, balance, official legality, or exact Oracle correctness."
+    },
+    "qwen16k_guide": {
+      "cases": 12,
+      "json_objects": 12,
+      "schema_valid": 12,
+      "mtgish_accepted": 1,
+      "mtgish_acceptance_all_cases": 0.08333333333333333,
+      "mtgish_attempted": 12,
+      "mtgish_acceptance_attempted": 0.08333333333333333,
+      "prediction_status": {
+        "generated": 12
+      },
+      "mtgish_status": {
+        "rejected": 11,
+        "parsed": 1
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_without_rewrites": 1,
+      "hit_token_limit": 0,
+      "by_style": {
+        "unknown": {
+          "cases": 12,
+          "json_objects": 12,
+          "schema_valid": 12,
+          "mtgish_accepted": 1,
+          "mtgish_acceptance_all_cases": 0.08333333333333333,
+          "mtgish_attempted": 12,
+          "mtgish_acceptance_attempted": 0.08333333333333333,
+          "prediction_status": {
+            "generated": 12
+          },
+          "mtgish_status": {
+            "rejected": 11,
+            "parsed": 1
+          },
+          "accepted_with_rewrites": 0,
+          "accepted_without_rewrites": 1,
+          "hit_token_limit": 0
+        }
+      },
+      "by_reference_type": {
+        "unknown": {
+          "cases": 12,
+          "json_objects": 12,
+          "schema_valid": 12,
+          "mtgish_accepted": 1,
+          "mtgish_acceptance_all_cases": 0.08333333333333333,
+          "mtgish_attempted": 12,
+          "mtgish_acceptance_attempted": 0.08333333333333333,
+          "prediction_status": {
+            "generated": 12
+          },
+          "mtgish_status": {
+            "rejected": 11,
+            "parsed": 1
+          },
+          "accepted_with_rewrites": 0,
+          "accepted_without_rewrites": 1,
+          "hit_token_limit": 0
+        }
+      },
+      "with_generated_rules_text": {
+        "cases": 10,
+        "json_objects": 10,
+        "schema_valid": 10,
+        "mtgish_accepted": 0,
+        "mtgish_acceptance_all_cases": 0.0,
+        "mtgish_attempted": 10,
+        "mtgish_acceptance_attempted": 0.0,
+        "prediction_status": {
+          "generated": 10
+        },
+        "mtgish_status": {
+          "rejected": 10
+        },
+        "accepted_with_rewrites": 0,
+        "accepted_without_rewrites": 0,
+        "hit_token_limit": 0
+      },
+      "interpretation": "Whole-card parser recognition, not intent fidelity, balance, official legality, or exact Oracle correctness."
+    },
+    "luna_guide": {
+      "cases": 12,
+      "json_objects": 12,
+      "schema_valid": 12,
+      "mtgish_accepted": 6,
+      "mtgish_acceptance_all_cases": 0.5,
+      "mtgish_attempted": 12,
+      "mtgish_acceptance_attempted": 0.5,
+      "prediction_status": {
+        "generated": 12
+      },
+      "mtgish_status": {
+        "rejected": 6,
+        "parsed": 6
+      },
+      "accepted_with_rewrites": 0,
+      "accepted_without_rewrites": 6,
+      "hit_token_limit": 0,
+      "by_style": {
+        "unknown": {
+          "cases": 12,
+          "json_objects": 12,
+          "schema_valid": 12,
+          "mtgish_accepted": 6,
+          "mtgish_acceptance_all_cases": 0.5,
+          "mtgish_attempted": 12,
+          "mtgish_acceptance_attempted": 0.5,
+          "prediction_status": {
+            "generated": 12
+          },
+          "mtgish_status": {
+            "rejected": 6,
+            "parsed": 6
+          },
+          "accepted_with_rewrites": 0,
+          "accepted_without_rewrites": 6,
+          "hit_token_limit": 0
+        }
+      },
+      "by_reference_type": {
+        "unknown": {
+          "cases": 12,
+          "json_objects": 12,
+          "schema_valid": 12,
+          "mtgish_accepted": 6,
+          "mtgish_acceptance_all_cases": 0.5,
+          "mtgish_attempted": 12,
+          "mtgish_acceptance_attempted": 0.5,
+          "prediction_status": {
+            "generated": 12
+          },
+          "mtgish_status": {
+            "rejected": 6,
+            "parsed": 6
+          },
+          "accepted_with_rewrites": 0,
+          "accepted_without_rewrites": 6,
+          "hit_token_limit": 0
+        }
+      },
+      "with_generated_rules_text": {
+        "cases": 10,
+        "json_objects": 10,
+        "schema_valid": 10,
+        "mtgish_accepted": 4,
+        "mtgish_acceptance_all_cases": 0.4,
+        "mtgish_attempted": 10,
+        "mtgish_acceptance_attempted": 0.4,
+        "prediction_status": {
+          "generated": 10
+        },
+        "mtgish_status": {
+          "rejected": 6,
+          "parsed": 4
+        },
+        "accepted_with_rewrites": 0,
+        "accepted_without_rewrites": 4,
+        "hit_token_limit": 0
+      },
+      "interpretation": "Whole-card parser recognition, not intent fidelity, balance, official legality, or exact Oracle correctness."
+    }
+  },
+  "parser": {
+    "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+    "workflow": "upstream-standard-v2",
+    "manifest_sha256": "2d3820bf78cb398736fd7e56381e1fbd1a4549c5a0ee9fbbb58c7d7c78aca3b5",
+    "binary_sha256": "9137350af5cf08fc473b2a47e46b0f038acea36226ce954bf09ca4c237c79da4",
+    "grammar_files": {
+      "english_grammar-INPUT.json5": "9bf36603040f3eb3018a65f8520554300a6307cda98bb1df3034f454adafdbe6",
+      "english_grammar-ability_word.json5": "bd1eb337e7a29f7f27e2124944c6ac3ebfa545bac51d65faba595de71063d3fb",
+      "english_grammar-counters.json5": "a49a6dec59e2cca4162f286f6eb8ac523133ef0f584c4000b78b04d809ea5aa2",
+      "english_grammar-flavor_word.json5": "524548be31e483bdf513033bcaa64211e1ffc4746655e9792cbd7579aee206a1",
+      "english_grammar-named_cards.json5": "1df3fada73ab7554181441d51c65af2de54ac2346c806244b758617a9805ed42",
+      "english_grammar-null_text.json5": "9dd2507cddbe23a725d2a652961b311928ae3f54520cc11ba722e79f5f5b6c30",
+      "english_grammar-reminder_text.json5": "a57f4e77d4b46d28a18d6f4b5a7978cfef54ef49b3466a0a5db50f3b01a33082",
+      "english_grammar-type_line.json5": "57242bc89563b416aeebcb40192ea490a103bb28ce882d51142f4e6b6bc081d0",
+      "english_grammar.json5": "e82ca3e575eb75109fb88827e5890f60a17448a5fc84446ca2d2a25f330500ac",
+      "find_replace.json5": "0982b35d9f3ee12d0c61963cb7520f42a24ab7f383af8f345f70fc1d78d9d458",
+      "ignore.json5": "77e86963b89f9c3a6799db9fc35f53ecd347f0a9552a1d8fb785084387708a09",
+      "mtgish_grammar-counters.json5": "bf310d27bc187d3239384d1cc5b8b4e8365f1c075ab87b607b4d75b8fb71c461",
+      "mtgish_grammar-create_tokens.json5": "13100305c8edb8ec9c4002e59250c3011c01598a332ffe6c7258090b70230554",
+      "mtgish_grammar-exile.json5": "31f6ac351b04ef00c1fbcac5706c4ee1f2e6802272a62c686959b8084fe981b3",
+      "mtgish_grammar-fight.json5": "d7ff5d99d50e960a10f560da82c8dbe7a219b6b6827f0697310a8b0a0b90db6c",
+      "mtgish_grammar-mana.json5": "1212a7f06a53ba3032673c18d129267f1256384e0c6c3fa604aff846de1960bb",
+      "mtgish_grammar-named_cards.json5": "a44e7d644245c567452cef8d723e8b6dd2bcd11c7f5880c43320d1ff934f3be0",
+      "mtgish_grammar-put_counters.json5": "77425da052f6e30ba54e23b90f41e440a3e484a72f2cb28bd39d22ce24fe6c23",
+      "mtgish_grammar-triggers.json5": "96b070faa84d9a5cad36071d156a01e6139a8590a57f3b51a9b94fca9c1dff24",
+      "mtgish_grammar-type_line.json5": "1c7bbca24f18075a49f4b06c60d89b7e08c28757ef61a72b55677d469e73c8b4",
+      "mtgish_grammar-vote_option.json5": "93e2f2472543b1a6865d80c7d45032788759dfc365c41d5dfb0a424cd65587e3",
+      "mtgish_grammar.json5": "e29a5d84e898d996eb2b55677b3ce62727a05db88f57463d75af8ccf8c54f34c",
+      "short_names.json5": "dd44ee8da0d0546722fa3b83de3d042c5f147cbe7553ad8e200c3b572b2c76a3"
+    }
+  }
+}

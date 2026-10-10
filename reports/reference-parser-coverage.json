@@ -1,0 +1,41 @@
+{
+  "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+  "raw_records": 38708,
+  "preprocessed_entries": 35019,
+  "preprocessed_layouts": {
+    "single": 34102,
+    "transform": 394,
+    "preparer": 70,
+    "adventurer": 150,
+    "modal_dfc": 98,
+    "flip": 21,
+    "split": 107,
+    "meld_piece": 14,
+    "variants": 10,
+    "ominous": 16,
+    "room": 30,
+    "melded": 7
+  },
+  "arena_changed_entries": 375,
+  "policy": "Exact upstream preprocess_scryfall and merge_arena_changes; generated plural grammars, short_names, find_replace, ignore; complete card layouts. Original source retained. Ignored/excluded cards never counted as accepted.",
+  "snapshot_adapter": {
+    "seconds": 107.63,
+    "all_entries": {
+      "ignored": 1517,
+      "parsed": 33500,
+      "rejected": 2
+    },
+    "entries_with_rules": {
+      "ignored": 1511,
+      "parsed": 33155,
+      "rejected": 2
+    },
+    "parsed_with_rewrites": 145
+  },
+  "cli_adapter_parity": {
+    "adapter_accepted": 33500,
+    "identical_cli_mtgish": 33500
+  },
+  "source_sha256": "457b0dbd78432750e468b0a505c6ec1c08ee34283aab841443bc9e029f8e0fd0",
+  "source_updated_at": "2026-10-06T09:01:55.462+00:00"
+}

@@ -1,0 +1,47 @@
+{
+  "guide": "prompts/player-language-v1.txt",
+  "kind": "Curated player vocabulary with project-specific fidelity cautions; not an official rules dictionary or validator",
+  "sources": [
+    {
+      "url": "https://magic.wizards.com/en/news/feature/glossary-of-terms",
+      "topics": ["bounce", "burn", "mill", "sweepers", "evasion", "mana fixing"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/few-more-words-rd-2016-11-07",
+      "topics": ["ETB", "ETBT", "flicker", "firebreathing", "French vanilla", "bear", "three-color shards", "reanimation"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/drawing-attention-2013-10-14",
+      "topics": ["looting", "rummaging", "card filtering"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/mechanical-color-pie-2021",
+      "topics": ["impulsive draw", "fight", "bite", "wheeling", "damage prevention", "copying", "temporary control"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/cantrip-down-memory-lane-2006-07-31",
+      "topics": ["cantrips", "slowtrips", "draw timing"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/nuts-bolts-13-design-skeleton-revisited-2021-03-22",
+      "topics": ["edict", "freezing", "combat trick", "team pump"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/planeswalking-down-memory-lane-2018-07-23",
+      "topics": ["plus ability", "minus ability", "ultimate"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/card-preview/clever-wizard-never-pays-full-price-2018-04-05",
+      "topics": ["mana rocks", "ramp", "fixing"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/announcements/announcing-secret-lair-summer-superdrop-2020-05-25",
+      "topics": ["mana dork"]
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/making-magic/giving-the-players-an-edge-part-2",
+      "topics": ["anthem"]
+    }
+  ],
+  "policy": "Examples may use plain language or slang. Exact paraphrases preserve all expressed constraints. Broad descriptions are checked for plausible completion, allowing omission but rejecting contradiction. Historical articles establish usage, not current exhaustive rules."
+}

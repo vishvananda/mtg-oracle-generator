@@ -1,0 +1,85 @@
+{
+  "model": "served round-two DPO Q4_0",
+  "temperature": 0.2,
+  "seed": 42,
+  "max_tokens": 768,
+  "repair_cases": 5,
+  "repair_parsed": 3,
+  "edit_cases": 4,
+  "edit_parsed": 4,
+  "scope": "Hand-selected smoke probes; no broad accuracy claim. Manual inspection of changes, not blind human evaluation.",
+  "cases": [
+    {
+      "id": "add-keyword",
+      "repair": false,
+      "before_parsed": true,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 8.59
+    },
+    {
+      "id": "stats",
+      "repair": false,
+      "before_parsed": true,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": false,
+      "seconds": 5.62
+    },
+    {
+      "id": "trigger-amount",
+      "repair": false,
+      "before_parsed": true,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 5.76
+    },
+    {
+      "id": "change-name",
+      "repair": false,
+      "before_parsed": true,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": false,
+      "seconds": 5.37
+    },
+    {
+      "id": "repair-draw",
+      "repair": true,
+      "before_parsed": false,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 12.66
+    },
+    {
+      "id": "repair-loot",
+      "repair": true,
+      "before_parsed": false,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 10.07
+    },
+    {
+      "id": "repair-walker",
+      "repair": true,
+      "before_parsed": false,
+      "after_parsed": false,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 15.34
+    },
+    {
+      "id": "repair-ambiguous",
+      "repair": true,
+      "before_parsed": false,
+      "after_parsed": false,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 12.71
+    },
+    {
+      "id": "repair-custom-short-name",
+      "repair": true,
+      "before_parsed": false,
+      "after_parsed": true,
+      "non_oracle_metadata_unchanged": true,
+      "seconds": 15.31
+    }
+  ]
+}

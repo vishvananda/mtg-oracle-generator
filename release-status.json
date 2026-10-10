@@ -1,0 +1,605 @@
+{
+  "prepared_at": "2026-10-07T23:24:19.094178+00:00",
+  "github": {
+    "status": "published",
+    "name": "vishvananda/mtg-oracle-generator",
+    "url": "https://github.com/vishvananda/mtg-oracle-generator"
+  },
+  "datasets": {
+    "pilot-16k-exact": {
+      "status": "prepared_not_uploaded",
+      "directory": "dist/pilot-16k-exact",
+      "counts": {
+        "train": 16000,
+        "validation": 480
+      },
+      "url": null,
+      "revision": null,
+      "manifest_sha256": "cae07c50174699ae4dcc658aee22bb487ea3819dfafa6a40b7746aa858a413b2"
+    },
+    "names-rarity-pilot-v1": {
+      "status": "prepared_not_uploaded",
+      "directory": "dist/names-rarity-pilot-v1",
+      "counts": {
+        "validation": 572,
+        "train": 19065
+      },
+      "url": null,
+      "revision": null,
+      "manifest_sha256": "98d823c0237ba83f6cdc05481160344c2e61d6ca6a459e7c6bba2f730e910924"
+    },
+    "oracle-full-v1": {
+      "repo_id": "vishvananda/mtg-oracle-design-descriptions",
+      "revision": "4e32fd88762697f984f8091947d6ba65246074d5",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions",
+      "private": false,
+      "manifest_sha256": "addbde2a349e0f59f0da3a2f14e3a83e1192ffd826bcc970584f8d87eb628f11",
+      "counts": {
+        "test": 37618,
+        "validation": 31852,
+        "train": 250587
+      },
+      "files_verified": 14,
+      "status": "published"
+    },
+    "oracle-full-v2-small-holdout": {
+      "status": "published",
+      "repo_id": "vishvananda/mtg-oracle-design-descriptions-v2",
+      "revision": "7c1bbca04b4259c15c397c5c6a00af5e143ef21e",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-design-descriptions-v2",
+      "counts": {
+        "train": 316372,
+        "validation": 0,
+        "test": 400
+      },
+      "reserved_examples": 3285,
+      "manifest_sha256": "d7fd06e722c7b0ebde3784dce09861afa867a55d68d52994d66f3d10b49d7a7e"
+    }
+  },
+  "model": {
+    "status": "prepared_not_uploaded",
+    "directory": "dist/qwen3-4b-pilot-16k",
+    "url": null,
+    "release_manifest_sha256": "6717af612023014c56e6c7efd1edcec2bfccf08b3392606a5c9f56e4578ad05d"
+  },
+  "full_corpus": {
+    "status": "full_epoch_final_test_evaluated",
+    "final_test_evaluated": true,
+    "counts": {
+      "train": 316372,
+      "validation": 0,
+      "test": 400
+    },
+    "development_report": "reports/full-corpus-step-963/README.md",
+    "training_report": "reports/full-epoch-v2/README.md"
+  },
+  "checkpoint_model": {
+    "status": "full_epoch_final_test_evaluated",
+    "repo_id": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
+    "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
+    "weights_published": true,
+    "final_test_evaluated": true,
+    "smoke_revision": "ed32be67f5b8d76fc263c5725c8249dca11d4a0d",
+    "smoke_tag": "smoke-step-00000020",
+    "training_revision": "decd0eb5344719c298649ca4cf2be4950da4b18d",
+    "training_tag": "small-holdout-v2-train-step-00019774",
+    "optimizer_steps": 19774,
+    "training_epoch": 1.0,
+    "completed_release_revision": "0fe439c78472635d517dbea942736fa45592800c",
+    "completed_release_tag": "small-holdout-v2-full-epoch",
+    "training_report": "reports/full-epoch-v2/README.md",
+    "evaluated_release_revision": "bfa00523c8380c38456bc72f537713e5af5fb376",
+    "evaluated_release_tag": "small-holdout-v2-full-epoch-evaluated"
+  },
+  "staged_experiment": {
+    "status": "full_epoch_final_test_evaluated",
+    "initial_job_url": "https://huggingface.co/jobs/vishvananda/6ac6d4d5e7a0dae8a277fa0f",
+    "budget_limit_usd": 60,
+    "initial_cycle_maximum_usd": 6.25005,
+    "automatic_continuation_after_review": false,
+    "final_test_evaluated": true,
+    "original_smoke_status": "completed",
+    "prepared_training": true,
+    "microbatch": 16,
+    "gradient_accumulation": 1,
+    "earlier_reservations_retained": true,
+    "maximum_cycle_usd_including_original_smoke": 7.50006,
+    "latest_completed_job_url": "https://huggingface.co/jobs/vishvananda/6ac840d0095c5780893009ca",
+    "development_cases": 256,
+    "base_mtgish_accepted": 0,
+    "adapter_mtgish_accepted": 126,
+    "automatic_promotion": false,
+    "canceled_job_url": "https://huggingface.co/jobs/vishvananda/6ac72226df2184ac91ac75b3",
+    "cancellation_reason": "User requested smaller holdout with rare-ability, type and color coverage",
+    "maximum_prior_cost_bound_usd": 7.250058,
+    "active_job_url": null,
+    "fresh_base": true,
+    "split_policy": "coverage-protected-two-way-v2",
+    "target_optimizer_steps": 19774,
+    "training_job_maximum_usd": 48.958725,
+    "final_test_cases": 400,
+    "heldout_validation_cases": 0,
+    "training_diagnostic_cases": 256,
+    "automatic_time_limit_resume": true,
+    "budget_policy": "User authorized completion of this existing epoch and final evaluation; prior $60 ceiling may be raised as necessary with an audit record.",
+    "additional_epochs": false,
+    "automatic_rl": false,
+    "final_test_base_schema_valid": 36,
+    "final_test_adapter_schema_valid": 400,
+    "final_test_base_mtgish_accepted": 2,
+    "final_test_adapter_mtgish_accepted": 260
+  },
+  "updated_at": "2026-10-10T17:59:25.651302+00:00",
+  "workshop_preview": {
+    "status": "experimental_round_two_deployed",
+    "url": "https://tetrarchs.com/cards/new",
+    "checkpoint": 19774,
+    "quantization": "Q4_0",
+    "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+    "training_scope": "completed_dpo_round_two",
+    "training_epoch": 1.0,
+    "models": [
+      "Qwen3-4B full epoch + DPO round two",
+      "gpt-6-luna"
+    ],
+    "generation_mode": "Two unconstrained sampled local drafts (temperature 0.35), shared prompt processing; greedy single-output evaluation reported separately",
+    "backend_commit": "a3de4d36c26dba4c6402a686140267ee819e7ce7",
+    "browser_checked": true,
+    "public_health_checked": true,
+    "deployed_at": "2026-10-09T19:51:31.136778+00:00",
+    "dpo_steps": 125,
+    "preference_pairs": 1000,
+    "public_comparison_checked": true,
+    "model_revision": "87a472d72057760ee757052e846eccf8535a6349",
+    "local_candidates": 2,
+    "explicit_preferences_saved": true,
+    "chosen_card_art": true,
+    "serving_smoke_report": "reports/preference-round-two/serving-probes.json",
+    "known_smoke_failures": [
+      "opponent-library play permission",
+      "planeswalker token and library-exile request"
+    ]
+  },
+  "preference_pilot": {
+    "status": "completed_and_deployed_at_user_request",
+    "method": "DPO",
+    "gpu_ceiling_usd": 10,
+    "candidates_planned": 2048,
+    "development_cases": 64,
+    "calibration_cases": 219,
+    "luna_calibration_agreement": 219,
+    "sol_calibration_agreement": 219,
+    "independent_pair_review": true,
+    "automatic_promotion": false,
+    "job_url": "https://huggingface.co/jobs/vishvananda/6ac84909fee2c9007017240a",
+    "sft_checkpoint": 19774,
+    "inputs_dataset": {
+      "repo_id": "vishvananda/mtg-oracle-preference-pilot-v1",
+      "revision": "af62f738f77829e137d48a518a406a5d2deff635",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1",
+      "preferences_published": true
+    },
+    "candidate_pairs": 77,
+    "candidates_judged": 2048,
+    "inconsistent_judgment_candidates": 1,
+    "contradictory_identical_card_groups": 5,
+    "initial_approved_pairs": 20,
+    "recovery_families": 94,
+    "additional_sol_reviews": 356,
+    "reference_positives_allowed": true,
+    "dpo_started": true,
+    "dpo_completed": true,
+    "approved_pairs": 47,
+    "chosen_origins": {
+      "sampled_sft": 35,
+      "training_reference": 12
+    },
+    "optimizer_steps": 6,
+    "training_epoch": 1.0,
+    "train_job_url": "https://huggingface.co/jobs/vishvananda/6ac86915095c578089301bdf",
+    "report": "reports/dpo-pilot-v1/README.md",
+    "next_plan": "docs/next-preference-round.md",
+    "model": {
+      "repo_id": "vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009",
+      "revision": "cbd08b3f392461aac1ea54edd1673db58e7373ab",
+      "files_verified": 17,
+      "manifest_sha256": "31c30c2f3c6de9c7278c0965dd56d34a44eed2996fefcc309703b55e5910e84c",
+      "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009"
+    },
+    "results_dataset": {
+      "repo_id": "vishvananda/mtg-oracle-preference-pilot-v1",
+      "revision": "436c9ecc9035fa6692396a66e85b098750f73d37",
+      "files_verified": 21,
+      "manifest_sha256": "5228b9fd975ab1ab92dc2e6e15a730a0e3fea026579e5d60ebe95cc8f8f74e51",
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1"
+    },
+    "measured_development_improvement": false,
+    "oracle_text_changed_cases": 0,
+    "gpu_cost_bound_usd": 1.583346,
+    "gpu_cost_excludes_judges": true,
+    "development_results": {
+      "sft": {
+        "cases": 64,
+        "schema_valid": 64,
+        "mtgish_accepted": 48,
+        "intent_faithful": 63,
+        "faithful_and_parsed": 48,
+        "abstentions": 0
+      },
+      "dpo": {
+        "cases": 64,
+        "schema_valid": 64,
+        "mtgish_accepted": 48,
+        "intent_faithful": 63,
+        "faithful_and_parsed": 48,
+        "abstentions": 0
+      }
+    }
+  },
+  "preference_round_two": {
+    "status": "completed_evaluated_published_experimental_preview",
+    "method": "DPO",
+    "approved_pairs": 1007,
+    "training_pairs": 1000,
+    "steps": 125,
+    "epoch": 1,
+    "sft_steps": 19774,
+    "starts_from": "completed SFT, not prior DPO",
+    "training_seconds": 823.4231107550149,
+    "peak_gpu_gib": 17.372128009796143,
+    "train_job_url": "https://huggingface.co/jobs/vishvananda/6ac9396cfee2c9007017bfd6",
+    "report": "reports/preference-round-two/README.md",
+    "gpu_cost_bound_usd": 21.416838,
+    "invoice_verified": false,
+    "automatic_promotion": false,
+    "deployment_requested_by_user": true,
+    "dataset": {
+      "repo_id": "vishvananda/mtg-oracle-preferences-v2",
+      "revision": "7cfc474886c97b29cc4177ffe0f166cfd4918eb0",
+      "files_verified": 50,
+      "url": "https://huggingface.co/datasets/vishvananda/mtg-oracle-preferences-v2",
+      "status": "published"
+    },
+    "model": {
+      "repo_id": "vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+      "revision": "87a472d72057760ee757052e846eccf8535a6349",
+      "files_verified": 74,
+      "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+      "status": "published",
+      "verification": {
+        "method": "Previously verified immutable parent plus hash-verified changed files; commit operations limited to these files",
+        "parent_revision": "5b2c7368658675837a95bd53ed20206151159152",
+        "reverified_files": [
+          "README.md",
+          "validation-comparison.png",
+          "training-curves.png",
+          "release-manifest.json"
+        ]
+      }
+    },
+    "results": {
+      "development": {
+        "sft": {
+          "cases": 128,
+          "schema_valid": 126,
+          "intent_faithful": 74,
+          "mtgish_accepted": 47,
+          "faithful_and_parsed": 44,
+          "faithful_clean_oracle": 67,
+          "parser_infrastructure_error": 1,
+          "exact_metadata_failure": 6,
+          "abstentions": 4
+        },
+        "dpo": {
+          "cases": 128,
+          "schema_valid": 124,
+          "intent_faithful": 71,
+          "mtgish_accepted": 48,
+          "faithful_and_parsed": 46,
+          "faithful_clean_oracle": 66,
+          "parser_infrastructure_error": 1,
+          "exact_metadata_failure": 6,
+          "abstentions": 9
+        }
+      },
+      "release": {
+        "sft": {
+          "cases": 128,
+          "schema_valid": 127,
+          "intent_faithful": 68,
+          "mtgish_accepted": 47,
+          "faithful_and_parsed": 46,
+          "faithful_clean_oracle": 67,
+          "parser_infrastructure_error": 0,
+          "exact_metadata_failure": 2,
+          "abstentions": 10
+        },
+        "dpo": {
+          "cases": 128,
+          "schema_valid": 125,
+          "intent_faithful": 67,
+          "mtgish_accepted": 47,
+          "faithful_and_parsed": 45,
+          "faithful_clean_oracle": 63,
+          "parser_infrastructure_error": 0,
+          "exact_metadata_failure": 2,
+          "abstentions": 8
+        }
+      }
+    },
+    "paired_intervals": {
+      "development": {
+        "families": 96,
+        "requests": 128,
+        "metrics": {
+          "intent": {
+            "difference": -0.0234375,
+            "family_bootstrap_95_percent_interval": [
+              -0.07936507936507936,
+              0.031746031746031744
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          },
+          "mtgish": {
+            "difference": 0.0078125,
+            "family_bootstrap_95_percent_interval": [
+              -0.016,
+              0.03787878787878788
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          }
+        },
+        "limitation": "Intervals describe this designed panel and correlated LLM labels, not all possible user requests."
+      },
+      "release": {
+        "families": 96,
+        "requests": 128,
+        "metrics": {
+          "intent": {
+            "difference": -0.0078125,
+            "family_bootstrap_95_percent_interval": [
+              -0.05303030303030303,
+              0.037037037037037035
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          },
+          "mtgish": {
+            "difference": 0.0,
+            "family_bootstrap_95_percent_interval": [
+              -0.030534351145038167,
+              0.031496062992125984
+            ],
+            "resamples": 5000,
+            "seed": 1709
+          }
+        },
+        "limitation": "Intervals describe this designed panel and correlated LLM labels, not all possible user requests."
+      }
+    },
+    "measured_improvement": false
+  },
+  "custom_sft_pilot": {
+    "status": "completed_evaluated_pending_quant_and_style_audit",
+    "job_url": "https://huggingface.co/jobs/vishvananda/6aca52ccfee2c90070188f39",
+    "optimizer_steps": 255,
+    "training_examples": 4076,
+    "training_seconds": 930.1885871830164,
+    "gpu_cost_bound_usd": 1.583346,
+    "invoice_verified": false,
+    "report": "reports/custom-sft-pilot/README.md",
+    "results": {
+      "existing_development": {
+        "cases": 128,
+        "families": 96,
+        "counts": {
+          "sft": {
+            "schema_valid": 128,
+            "mtgish_accepted": 51,
+            "intent_faithful": 71,
+            "faithful_clean_oracle": 65,
+            "faithful_and_parsed": 45
+          },
+          "dpo": {
+            "schema_valid": 127,
+            "mtgish_accepted": 53,
+            "intent_faithful": 67,
+            "faithful_clean_oracle": 63,
+            "faithful_and_parsed": 46
+          },
+          "custom": {
+            "schema_valid": 128,
+            "mtgish_accepted": 52,
+            "intent_faithful": 75,
+            "faithful_clean_oracle": 68,
+            "faithful_and_parsed": 47
+          }
+        },
+        "custom_minus_baseline": {
+          "sft": {
+            "schema_valid": {
+              "difference_percentage_points": 0.0,
+              "family_bootstrap_95_percent_interval_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "mtgish_accepted": {
+              "difference_percentage_points": 0.78125,
+              "family_bootstrap_95_percent_interval_pp": [
+                -2.3622047244094486,
+                4.166666666666666
+              ]
+            },
+            "intent_faithful": {
+              "difference_percentage_points": 3.125,
+              "family_bootstrap_95_percent_interval_pp": [
+                -3.0303030303030303,
+                9.230769230769232
+              ]
+            },
+            "faithful_clean_oracle": {
+              "difference_percentage_points": 2.34375,
+              "family_bootstrap_95_percent_interval_pp": [
+                -4.958677685950414,
+                9.6
+              ]
+            },
+            "faithful_and_parsed": {
+              "difference_percentage_points": 1.5625,
+              "family_bootstrap_95_percent_interval_pp": [
+                -1.4492753623188406,
+                4.8
+              ]
+            }
+          },
+          "dpo": {
+            "schema_valid": {
+              "difference_percentage_points": 0.78125,
+              "family_bootstrap_95_percent_interval_pp": [
+                0.0,
+                2.4
+              ]
+            },
+            "mtgish_accepted": {
+              "difference_percentage_points": -0.78125,
+              "family_bootstrap_95_percent_interval_pp": [
+                -3.278688524590164,
+                1.639344262295082
+              ]
+            },
+            "intent_faithful": {
+              "difference_percentage_points": 6.25,
+              "family_bootstrap_95_percent_interval_pp": [
+                0.0,
+                12.213740458015266
+              ]
+            },
+            "faithful_clean_oracle": {
+              "difference_percentage_points": 3.90625,
+              "family_bootstrap_95_percent_interval_pp": [
+                -3.361344537815126,
+                10.948905109489052
+              ]
+            },
+            "faithful_and_parsed": {
+              "difference_percentage_points": 0.78125,
+              "family_bootstrap_95_percent_interval_pp": [
+                0.0,
+                2.459016393442623
+              ]
+            }
+          }
+        }
+      },
+      "custom_holdout": {
+        "cases": 192,
+        "families": 64,
+        "counts": {
+          "sft": {
+            "schema_valid": 192,
+            "mtgish_accepted": 177,
+            "intent_faithful": 163,
+            "faithful_clean_oracle": 157,
+            "faithful_and_parsed": 151
+          },
+          "dpo": {
+            "schema_valid": 192,
+            "mtgish_accepted": 177,
+            "intent_faithful": 168,
+            "faithful_clean_oracle": 159,
+            "faithful_and_parsed": 155
+          },
+          "custom": {
+            "schema_valid": 192,
+            "mtgish_accepted": 177,
+            "intent_faithful": 183,
+            "faithful_clean_oracle": 144,
+            "faithful_and_parsed": 171
+          }
+        },
+        "custom_minus_baseline": {
+          "sft": {
+            "schema_valid": {
+              "difference_percentage_points": 0.0,
+              "family_bootstrap_95_percent_interval_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "mtgish_accepted": {
+              "difference_percentage_points": 0.0,
+              "family_bootstrap_95_percent_interval_pp": [
+                -2.604166666666667,
+                3.125
+              ]
+            },
+            "intent_faithful": {
+              "difference_percentage_points": 10.416666666666666,
+              "family_bootstrap_95_percent_interval_pp": [
+                6.770833333333333,
+                14.583333333333334
+              ]
+            },
+            "faithful_clean_oracle": {
+              "difference_percentage_points": -6.770833333333333,
+              "family_bootstrap_95_percent_interval_pp": [
+                -15.104166666666666,
+                1.0416666666666665
+              ]
+            },
+            "faithful_and_parsed": {
+              "difference_percentage_points": 10.416666666666666,
+              "family_bootstrap_95_percent_interval_pp": [
+                5.729166666666666,
+                15.625
+              ]
+            }
+          },
+          "dpo": {
+            "schema_valid": {
+              "difference_percentage_points": 0.0,
+              "family_bootstrap_95_percent_interval_pp": [
+                0.0,
+                0.0
+              ]
+            },
+            "mtgish_accepted": {
+              "difference_percentage_points": 0.0,
+              "family_bootstrap_95_percent_interval_pp": [
+                -2.604166666666667,
+                3.125
+              ]
+            },
+            "intent_faithful": {
+              "difference_percentage_points": 7.8125,
+              "family_bootstrap_95_percent_interval_pp": [
+                3.6458333333333335,
+                11.979166666666668
+              ]
+            },
+            "faithful_clean_oracle": {
+              "difference_percentage_points": -7.8125,
+              "family_bootstrap_95_percent_interval_pp": [
+                -15.625,
+                0.0
+              ]
+            },
+            "faithful_and_parsed": {
+              "difference_percentage_points": 8.333333333333334,
+              "family_bootstrap_95_percent_interval_pp": [
+                3.6458333333333335,
+                13.541666666666666
+              ]
+            }
+          }
+        }
+      }
+    },
+    "automatic_promotion": false,
+    "deployed": false,
+    "weights_published": false
+  }
+}

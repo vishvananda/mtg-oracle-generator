@@ -1,0 +1,22 @@
+{
+  "stage": "train",
+  "pairs": 47,
+  "steps": 6,
+  "planned_steps": 6,
+  "metrics": {
+    "train_runtime": 26.3963,
+    "train_samples_per_second": 1.818,
+    "train_steps_per_second": 0.227,
+    "total_flos": 0.0,
+    "train_loss": 0.6919066806634268,
+    "epoch": 1.0
+  },
+  "reference_unchanged": true,
+  "initial_reference_logits_equal": true,
+  "stopped_for_budget": false,
+  "reference_sha256": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+  "initial_policy_sha256": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+  "final_policy_sha256": "a2e72b490bece6efdf536f655189017143ce737471c4d3488c6f3b28de1d76d3",
+  "train_seconds": 30.104675452021183,
+  "peak_gpu_gib": 11.515201091766357
+}
