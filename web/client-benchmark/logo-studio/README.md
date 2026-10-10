@@ -11,10 +11,12 @@ No screenshots or remote assets are needed to reproduce the images.
   black pearls at the tips; red, forest green and sapphire blue pearls around the
   equator. The mana palette uses ivory `#f3ead7`, black `#10121b`, red `#bf392f`,
   green `#145b37` and blue `#174789` before lighting.
+  The shape is tilted 15° before rotation around the vertical axis, so the top
+  and bottom pearls trace small circles instead of sitting on the spin axis.
   Each of the nine spindle stones uses the arithmetic midpoint of its endpoint
   pearl colors **in linear-light RGB**. This sets tint and wavelength-dependent
   absorption; studio highlights and refraction still change the displayed color.
-- **Cube:** eight alternating ivory / pale-gold pearls and twelve champagne
+- **Cube:** eight matching ivory (`#f6efe5`) pearls and twelve champagne
   spindle stones. The midpoint color requirement applies only to the dual.
 
 The browser gets a transparent, 384 × 384 animated WebP: 360 frames over a
@@ -31,7 +33,7 @@ The large jewel above the desktop headline defaults to the cube. Its display is
 reserved-height area so it extends upward without shifting the headline or button. Only the chosen
 animation is downloaded; reduced motion or a hidden jewel/page uses a still.
 Mobile keeps the small gold wireframe header mark and fetches no animation.
-The dual loop is 5.09 MB and the cube is 7.20 MB; stills are 19 / 26 KB. Encoding
+The dual loop is 5.28 MB and the cube is 7.17 MB; stills are 19 / 26 KB. Encoding
 uses WebP quality 88, method 4, with full alpha quality (stills use quality 94).
 This is not a device benchmark against live WebGL. The complete scene remains
 available for an interactive version; the baked image cannot be freely rotated.

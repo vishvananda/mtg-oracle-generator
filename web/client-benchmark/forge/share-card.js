@@ -1,14 +1,15 @@
 import {faceFor} from './cards.js';
+import {idlePointer} from './idle-motion.js';
 const blobOf=(canvas,type='image/png')=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('The image could not be exported.')),type));
 export function cardText(card){return [card.name,card.mana_cost,card.type_line,card.oracle_text.replaceAll('CARDNAME',card.name),card.power!=null?`${card.power}/${card.toughness}`:card.loyalty!=null?`Loyalty: ${card.loyalty}`:'',card.rarity?`Rarity: ${card.rarity}`:'',card.artist?`Art: ${card.artist}`:''].filter(Boolean).join('\n\n');}
 export function animationPose(seconds){
- // Change the tilt axis, roll and distance: no diagonal stays pinned in place.
- // A quick two-way flash leads into a slow orbit and a readable final hold.
- const keys=[[0,0,0,0,.95,0,8],[.18,.115,-.18,-.07,.94,-8,-8],[.43,-.13,.18,.07,.95,8,5],[.8,-.05,-.10,-.04,.96,-4,-6],[1.6,.13,.055,.055,.97,8,-8],[2.65,-.075,-.15,-.035,.985,-6,4],[3.8,0,0,0,1,0,0]];
+ // The same orbit as idle, 20% stronger. Its clock gradually slows down;
+ // smooth ramps take it out from center and return it for the readable hold.
  if(seconds>=3.8)return {x:0,y:0,roll:0,scale:1,dx:0,dy:0};
- const i=Math.max(1,keys.findIndex(k=>k[0]>=Math.max(0,seconds))),a=keys[i-1],b=keys[i];
- const t=Math.max(0,Math.min(1,(seconds-a[0])/(b[0]-a[0]))),e=t*t*(3-2*t);
- return Object.fromEntries(['x','y','roll','scale','dx','dy'].map((key,j)=>[key,a[j+1]+(b[j+1]-a[j+1])*e]));
+ const t=Math.max(0,seconds),smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
+ const amount=1.2*smooth(t/.75)*(1-smooth((t-1.8)/2));
+ const pointer=idlePointer(1.8*t-.15*t*t),x=(pointer.x-.5)*amount,y=(pointer.y-.5)*amount;
+ return {x:y*.30,y:x*.38,roll:0,scale:1,dx:x*10,dy:y*10};
 }
 
 function projected(x,y,pose){

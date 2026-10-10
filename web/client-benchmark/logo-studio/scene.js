@@ -84,7 +84,7 @@ function design(kind){
     ['#bf392f','#145b37','#174789'].forEach((color,i)=>{const angle=i*2*Math.PI/3+.12;vertices.push({color,position:V(Math.cos(angle)*1.12,0,Math.sin(angle)*1.12)});});
     for(let i=2;i<5;i++){edges.push([0,i],[1,i],[i,2+(i-1)%3]);}
   }else{
-    for(let i=0;i<8;i++)vertices.push({color:[0,3,5,6].includes(i)?'#f6efe5':'#e6ca93',position:V(i&1?.97:-.97,i&2?.97:-.97,i&4?.97:-.97)});
+    for(let i=0;i<8;i++)vertices.push({color:'#f6efe5',position:V(i&1?.97:-.97,i&2?.97:-.97,i&4?.97:-.97)});
     for(let i=0;i<8;i++)for(let j=i+1;j<8;j++)if([1,2,4].includes(i^j))edges.push([i,j]);
   }
   for(const vertex of vertices)pearl(group,vertex);
@@ -98,7 +98,12 @@ window.logoStudio={
   render(kind,turn=0,size=256){
     if(renderer.domElement.width!==size)renderer.setSize(size,size);
     for(const [name,d]of Object.entries(designs))d.group.visible=name===kind;
-    const group=designs[kind].group;group.rotation.set(kind==='cube'?.30:0,turn*Math.PI*2+.58,kind==='cube'?-.12:0);group.updateMatrixWorld(true);
+    const group=designs[kind].group;
+    // Tilt the dual before rotating around world Y: its tips orbit in small
+    // circles, instead of remaining fixed on the spin axis.
+    if(kind==='dual')group.rotation.set(0,turn*Math.PI*2+.58,Math.PI/12,'YXZ');
+    else group.rotation.set(.30,turn*Math.PI*2+.58,-.12,'XYZ');
+    group.updateMatrixWorld(true);
     renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png').split(',')[1];
   }
 };

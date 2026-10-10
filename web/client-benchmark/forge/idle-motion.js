@@ -1,3 +1,5 @@
+/** Shared gentle orbit for the preview and exported video. */
+export const idlePointer=seconds=>({x:.5+Math.sin(seconds*.63)*.29,y:.5+Math.sin(seconds*.83+.7)*.23});
 /** Consumer-owned motion; no face rebuilds or synthetic input events. */
 export function idleMotion({element,enabled,paint}) {
   let visible=false,frame=0,started=0,last=0,moving=false,disposed=false;
@@ -7,7 +9,7 @@ export function idleMotion({element,enabled,paint}) {
     if(!started)started=time;
     if(time-last>=40){
       const t=(time-started)/1000,ramp=Math.min(1,t/1.2);last=time;moving=true;
-      paint({x:.5+Math.sin(t*.63)*.29*ramp,y:.5+Math.sin(t*.83+.7)*.23*ramp});
+      const pointer=idlePointer(t);paint({x:.5+(pointer.x-.5)*ramp,y:.5+(pointer.y-.5)*ramp});
     }
     frame=requestAnimationFrame(tick);
   }

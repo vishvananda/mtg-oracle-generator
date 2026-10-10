@@ -10,8 +10,11 @@ legend, an ability-copying land and a legendary artificer. The default visible
 artist credit is MTG CardForge and remains editable. Neris uses Prismatic foil,
 Crownroot uses Opal, and the Observatory uses Cold foil. Existing saved copies
 keep their chosen finish. Unattended cards drift and tilt gently, driving the
-real foil lighting without recreating textures. Hover, focus, editing, loading,
-generation, carousel pause, reduced motion and a hidden/offscreen view stop it.
+real foil lighting without recreating textures. Hover or keyboard focus on the card,
+editing, loading, generation, carousel pause, reduced motion and a hidden/offscreen
+view stop it. Hovering controls below the card keeps the idle motion running.
+Closing Save restores focus to its button and resumes motion automatically;
+keyboard focus in the gallery still pauses automatic card replacement.
 
 **Edit this card** is available immediately, without downloading models.
 Click names, cost, type, rules, stats, artist credit, set symbol, border, frame or artwork to edit.
@@ -83,7 +86,9 @@ cube sits above “Imagine it” on desktop, centered on the load button. It ext
 upward without moving the headline or controls, reusing Aurum's pearl materials,
 spindle-cut gemstones and refraction shader. The surrounding image is transparent;
 gemstone facets are slightly translucent while gold and pearls stay opaque.
-Each small gemstone sits at the midpoint of its gold edge. The dual uses an ivory,
+Each small gemstone sits at the midpoint of its gold edge. The cube uses eight
+matching ivory pearls with champagne gemstones. The dual spins with a 15° tilt
+so its top and bottom trace small circles. The dual uses an ivory,
 obsidian, red, forest green and sapphire blue mana palette; its gemstones use
 the linear-light midpoint of the two endpoint colors. Click the jewel to compare the dual tetrahedron; new visits default to the cube.
 `?logo=dual` and `?logo=cube` select either directly. Reduced motion uses a still.
@@ -396,9 +401,10 @@ lacks MediaRecorder, so it verifies the image path and video-unavailable fallbac
 Safari/iPhone recording still needs a physical-device check.
 
 - Images: 732 × 1020 PNG with the selected foil and rounded transparent corners.
-- Video: 720 × 1080, about six seconds, no audio. A quick two-way tilt flashes
-  the foil, followed by a slower orbit with roll and depth changes, then a centered
-  2.2-second hold. All four corners move without clipping. Uses MP4
+- Video: 720 × 1080, about six seconds, no audio. It follows the gentle idle
+  orbit, with 20% more amplitude and an initially faster pace that gradually
+  slows into a centered 2.2-second hold. No roll or zoom; all four corners move
+  without clipping. Uses MP4
   with H.264 when available, otherwise WebM. It records the same artifact for
   Share and Download. Keep the page visible while recording.
 - Text: readable card text in `.txt`, plus a separate editable JSON download
@@ -453,4 +459,12 @@ Parser acceptance demonstrates supported syntax, not comprehensive rules legalit
 
 ```bash
 CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-demos.mjs
+```
+
+The [gentle motion receipt](../forge-gentle-motion-verification-20261010.json)
+records Save focus/resume regressions, card-only hover pauses, desktop/mobile
+icon centering, real video exports and the updated jewel animations.
+
+```bash
+CHROME_BIN=/path/to/chrome node check-forge-gentle-motion.mjs
 ```

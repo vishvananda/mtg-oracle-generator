@@ -1,0 +1,215 @@
+{
+  "date": "2026-10-10",
+  "changes": [
+    "Save export follows the idle orbit with a 1.2 amplitude multiplier, smoothly slowing into a 2.2-second centered hold; no roll or zoom.",
+    "Idle pauses for card-stage hover and visible keyboard focus on card controls. Save focus below the card no longer freezes it.",
+    "Automatic card replacement still pauses for keyboard focus anywhere within the gallery.",
+    "Finish icon has an unpadded grid-centered 24px SVG at desktop and mobile sizes.",
+    "Cube pearl base colors are all ivory #f6efe5. Dual has a 15-degree local tilt before world-Y rotation."
+  ],
+  "checks": {
+    "interaction": {
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "idle card moves when unattended",
+        "desktop sparkle is centered in its circle",
+        "hover below card keeps idle motion running",
+        "hover on card stops idle motion",
+        "leaving card for Save resumes idle motion",
+        "text dialog pauses idle animation",
+        "text close restores focus to Save",
+        "text close resumes idle without clicking jewel",
+        "image dialog pauses idle animation",
+        "image close restores focus to Save",
+        "image close resumes idle without clicking jewel",
+        "video dialog pauses idle animation",
+        "video close restores focus to Save",
+        "video close resumes idle without clicking jewel",
+        "Escape keeps keyboard focus on Save",
+        "keyboard Save focus permits idle animation after Escape",
+        "keyboard focus on card controls pauses idle",
+        "carousel advances with mouse focus left on Save",
+        "explicit pause still stops idle",
+        "closing Save preserves explicit pause",
+        "reduced motion still stops idle",
+        "mobile sparkle is centered in its circle",
+        "no model code or weights loaded",
+        "no JavaScript errors"
+      ],
+      "errors": []
+    },
+    "export": {
+      "engine": "chromium",
+      "base": "http://127.0.0.1:8793/forge/",
+      "checks": [
+        "save group has three labeled icon buttons",
+        "image preview is full resolution",
+        "share receives the prepared PNG file",
+        "download uses the same PNG",
+        "video decodes at 720 by 1080",
+        "video is approximately six seconds",
+        "share receives the same video format",
+        "text export substitutes the displayed card name",
+        "editable JSON export keeps artwork and card data",
+        "cancelled preparation restores card controls",
+        "warped card has no dark seams between mesh triangles",
+        "ordinary exports and releases its surface",
+        "ordinary foil responds correctly to tilt",
+        "vizier_prismatic_v1 exports and releases its surface",
+        "vizier_prismatic_v1 foil responds correctly to tilt",
+        "vizier_etched_v1 exports and releases its surface",
+        "vizier_etched_v1 foil responds correctly to tilt",
+        "vizier_opal_v1 exports and releases its surface",
+        "vizier_opal_v1 foil responds correctly to tilt",
+        "vizier_cold_v1 exports and releases its surface",
+        "vizier_cold_v1 foil responds correctly to tilt",
+        "file vizier_etched_v1 exports etched illustration contours",
+        "blob vizier_etched_v1 exports etched illustration contours",
+        "blob vizier_opal_v1 exports etched illustration contours",
+        "export releases every locally derived mask",
+        "last 2.2 seconds stay exactly centered",
+        "whole card stays inside the video frame",
+        "all four corners move gently in both directions",
+        "save controls fit 1440px",
+        "save controls fit 1024px",
+        "save controls fit 390px",
+        "save controls fit 320px",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "logo": {
+      "url": "http://127.0.0.1:8793/forge/",
+      "browser": "chromium",
+      "checks": [
+        "cube is the first-visit default",
+        "unused dual animation is not downloaded",
+        "header retains the small gold cube",
+        "large jewel sits above Imagine it",
+        "animation is centered above the load button",
+        "logo imports no 3D engine or model runtime",
+        "logo creates no canvas or WebGL context",
+        "the native WebP visibly rotates",
+        "jewel has no CSS glow or shadow",
+        "large source preserves background alpha and translucent stones",
+        "click changes to the dual and keeps the card visible",
+        "new visits default to the requested cube",
+        "comparison URL still selects the dual",
+        "Space and Enter switch the jewel accessibly",
+        "reduced motion switches to a still image",
+        "motion preference changes resume the spin",
+        "desktop page still fits 1440x900",
+        "desktop page still fits 1366x768",
+        "desktop page still fits 1024x640",
+        "mobile downloads no large animation",
+        "mobile keeps the gold mark and card carousel",
+        "mobile header fits 390px without overlap",
+        "mobile header fits 320px without overlap",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": []
+    },
+    "live_browser": {
+      "url": "https://tetrarcum.com/",
+      "checks": [
+        "live cube loads with the new asset version",
+        "live tilted dual loads when selected",
+        "live Save closes with restored focus and moving card",
+        "live finish icon is centered",
+        "no live JavaScript errors"
+      ],
+      "errors": []
+    }
+  },
+  "motion": {
+    "peak_x_degrees": 4.678501754099165,
+    "peak_y_degrees": 7.57678314363362,
+    "roll_or_zoom": false,
+    "corner_travel_pixels": [
+      {
+        "x": 16.676889808647786,
+        "y": 13.408670267768969
+      },
+      {
+        "x": 13.416400656661835,
+        "y": 19.311215081885905
+      },
+      {
+        "x": 10.93045645145969,
+        "y": 15.042051271634023
+      },
+      {
+        "x": 23.512905449456184,
+        "y": 19.36094621525126
+      }
+    ]
+  },
+  "evidence": "/home/vishvananda/vizier-editor-artifacts/forge-gentle-motion-20261010",
+  "limitations": [
+    "Chromium with software graphics; phone viewport emulation, not a physical Safari/iPhone check.",
+    "Export suite records and decodes a real MP4; the native OS share-sheet call is stubbed.",
+    "Model inference is unchanged and no model weights are loaded by these checks."
+  ],
+  "jewels": {
+    "duration_ms": 24000,
+    "designs": {
+      "dual": {
+        "frames": 360,
+        "width": 384,
+        "height": 384,
+        "bytes": 5284026,
+        "still_bytes": 19096,
+        "all_frames_unclipped": true
+      },
+      "cube": {
+        "frames": 360,
+        "width": 384,
+        "height": 384,
+        "bytes": 7166970,
+        "still_bytes": 25892,
+        "all_frames_unclipped": true
+      }
+    }
+  },
+  "deployment": {
+    "release": "/srv/mtg-oracle-client/releases/20261010T073156Z",
+    "previous_release": "/srv/mtg-oracle-client/releases/20261010T070954Z",
+    "build": {
+      "version": "223928e5ae44",
+      "built_at": "2026-10-10T07:31:11.760Z"
+    }
+  },
+  "live_assets": [
+    {
+      "url": "https://tetrarcum.com/",
+      "valid_tls": true,
+      "isolation_headers": true,
+      "version": "223928e5ae44",
+      "hashes": {
+        "main.js": "d07d2d05850642d642dbd416a1f374529e35c64aac89910f52527196c69ce383",
+        "style.css": "6a6d62ca51fc847fb879412ff4bbe547897d4f6b19c23253890d48cdaf656dbd",
+        "share-card.js": "aeeac9a8adef03e8ddfec4e00becd2b5cc0c18c0a133818c55dc6c4612080b1c",
+        "idle-motion.js": "93759a36d207eb55f8397e2e843742e226a6bb223afa0db24d16c7d54a989ce5",
+        "jewel-logo.js": "b1b9fe52f338f68527ead5bc34b20dd1eaa13e610287652fab6c63f449256606",
+        "assets/jewel-cube.webp": "04252f72f7e2d87f515dc1bab3e6caa10a78d1a572f6c762d9f48bae6c66fc3c",
+        "assets/jewel-dual.webp": "5066c91b8b23778751bbc62954f68346215a92bac948e933e239c34e26c886c3"
+      }
+    },
+    {
+      "url": "https://tetrarchs.com/forge/",
+      "valid_tls": true,
+      "isolation_headers": true,
+      "version": "223928e5ae44",
+      "hashes": {
+        "main.js": "d07d2d05850642d642dbd416a1f374529e35c64aac89910f52527196c69ce383",
+        "style.css": "6a6d62ca51fc847fb879412ff4bbe547897d4f6b19c23253890d48cdaf656dbd",
+        "share-card.js": "aeeac9a8adef03e8ddfec4e00becd2b5cc0c18c0a133818c55dc6c4612080b1c",
+        "idle-motion.js": "93759a36d207eb55f8397e2e843742e226a6bb223afa0db24d16c7d54a989ce5",
+        "jewel-logo.js": "b1b9fe52f338f68527ead5bc34b20dd1eaa13e610287652fab6c63f449256606",
+        "assets/jewel-cube.webp": "04252f72f7e2d87f515dc1bab3e6caa10a78d1a572f6c762d9f48bae6c66fc3c",
+        "assets/jewel-dual.webp": "5066c91b8b23778751bbc62954f68346215a92bac948e933e239c34e26c886c3"
+      }
+    }
+  ],
+  "total_browser_checks": 86
+}

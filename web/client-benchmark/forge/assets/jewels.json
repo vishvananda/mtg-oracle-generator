@@ -5,16 +5,16 @@
       "frames": 360,
       "width": 384,
       "height": 384,
-      "bytes": 5085246,
-      "still_bytes": 18908,
+      "bytes": 5284026,
+      "still_bytes": 19096,
       "all_frames_unclipped": true
     },
     "cube": {
       "frames": 360,
       "width": 384,
       "height": 384,
-      "bytes": 7199500,
-      "still_bytes": 26130,
+      "bytes": 7166970,
+      "still_bytes": 25892,
       "all_frames_unclipped": true
     }
   }
