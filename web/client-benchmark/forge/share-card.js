@@ -2,33 +2,40 @@ import {faceFor} from './cards.js';
 const blobOf=(canvas,type='image/png')=>new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('The image could not be exported.')),type));
 export function cardText(card){return [card.name,card.mana_cost,card.type_line,card.oracle_text.replaceAll('CARDNAME',card.name),card.power!=null?`${card.power}/${card.toughness}`:card.loyalty!=null?`Loyalty: ${card.loyalty}`:'',card.rarity?`Rarity: ${card.rarity}`:'',card.artist?`Art: ${card.artist}`:''].filter(Boolean).join('\n\n');}
 export function animationPose(seconds){
- // A quick two-way flash, then a slower inspection and a readable final hold.
- const keys=[[0,0,0],[.16,.10,-.185],[.40,-.12,.185],[.70,.06,-.12],[1.6,-.045,.11],[2.65,.035,-.075],[3.8,0,0]];
- if(seconds>=3.8)return {x:0,y:0};
+ // Change the tilt axis, roll and distance: no diagonal stays pinned in place.
+ // A quick two-way flash leads into a slow orbit and a readable final hold.
+ const keys=[[0,0,0,0,.95,0,8],[.18,.115,-.18,-.07,.94,-8,-8],[.43,-.13,.18,.07,.95,8,5],[.8,-.05,-.10,-.04,.96,-4,-6],[1.6,.13,.055,.055,.97,8,-8],[2.65,-.075,-.15,-.035,.985,-6,4],[3.8,0,0,0,1,0,0]];
+ if(seconds>=3.8)return {x:0,y:0,roll:0,scale:1,dx:0,dy:0};
  const i=Math.max(1,keys.findIndex(k=>k[0]>=Math.max(0,seconds))),a=keys[i-1],b=keys[i];
  const t=Math.max(0,Math.min(1,(seconds-a[0])/(b[0]-a[0]))),e=t*t*(3-2*t);
- return {x:a[1]+(b[1]-a[1])*e,y:a[2]+(b[2]-a[2])*e};
+ return Object.fromEntries(['x','y','roll','scale','dx','dy'].map((key,j)=>[key,a[j+1]+(b[j+1]-a[j+1])*e]));
 }
 
-function projected(x,y,rx,ry){
+function projected(x,y,pose){
+ const {x:rx,y:ry,roll=0,scale=1,dx=0,dy=0}=pose;
  const xx=x*Math.cos(ry)+y*Math.sin(rx)*Math.sin(ry),yy=y*Math.cos(rx),z=-x*Math.sin(ry)+y*Math.sin(rx)*Math.cos(ry),f=1400/(1400+z);
- return [360+xx*f,536+yy*f];
+ return [360+dx+(xx*Math.cos(roll)-yy*Math.sin(roll))*f*scale,536+dy+(xx*Math.sin(roll)+yy*Math.cos(roll))*f*scale];
 }
+export function animationCorners(seconds){const pose=animationPose(seconds),w=632,h=w*680/488;return [[-1,-1],[1,-1],[1,1],[-1,1]].map(([x,y])=>projected(x*w/2,y*h/2,pose));}
 function triangle(ctx,source,src,dest){
  const [[u0,v0],[u1,v1],[u2,v2]]=src,[[x0,y0],[x1,y1],[x2,y2]]=dest;
  const det=(u1-u0)*(v2-v0)-(u2-u0)*(v1-v0);if(!det)return;
  const a=((x1-x0)*(v2-v0)-(x2-x0)*(v1-v0))/det,c=((u1-u0)*(x2-x0)-(u2-u0)*(x1-x0))/det;
  const b=((y1-y0)*(v2-v0)-(y2-y0)*(v1-v0))/det,d=((u1-u0)*(y2-y0)-(u2-u0)*(y1-y0))/det;
- ctx.save();ctx.beginPath();for(let i=0;i<3;i++){const p=dest[i];if(i)ctx.lineTo(...p);else ctx.moveTo(...p);}ctx.closePath();ctx.clip();ctx.setTransform(a,b,c,d,x0-a*u0-c*v0,y0-b*u0-d*v0);ctx.drawImage(source,0,0);ctx.restore();
+ // Slightly overlap triangle clips so antialiasing cannot expose the
+ // background between adjacent pieces of the warped card.
+ const center=[dest.reduce((sum,p)=>sum+p[0],0)/3,dest.reduce((sum,p)=>sum+p[1],0)/3];
+ const clip=dest.map(p=>p.map((v,i)=>center[i]+(v-center[i])*1.035));
+ ctx.save();ctx.beginPath();for(let i=0;i<3;i++){const p=clip[i];if(i)ctx.lineTo(...p);else ctx.moveTo(...p);}ctx.closePath();ctx.clip();ctx.setTransform(a,b,c,d,x0-a*u0-c*v0,y0-b*u0-d*v0);ctx.drawImage(source,0,0);ctx.restore();
 }
-function drawFrame(ctx,source,pose){
+export function drawFrame(ctx,source,pose){
  ctx.setTransform(1,0,0,1,0,0);const gradient=ctx.createRadialGradient(360,450,50,360,520,800);gradient.addColorStop(0,'#30444b');gradient.addColorStop(1,'#0b151d');ctx.fillStyle=gradient;ctx.fillRect(0,0,720,1080);
  const w=632,h=w*680/488;
- if(pose.x===0&&pose.y===0){ctx.save();ctx.beginPath();ctx.roundRect(360-w/2,536-h/2,w,h,34);ctx.clip();ctx.drawImage(source,360-w/2,536-h/2,w,h);ctx.restore();}
+ if(pose.x===0&&pose.y===0&&pose.scale===1){ctx.save();ctx.beginPath();ctx.roundRect(360-w/2,536-h/2,w,h,34);ctx.clip();ctx.drawImage(source,360-w/2,536-h/2,w,h);ctx.restore();}
  else{
   for(let y=0;y<8;y++)for(let x=0;x<6;x++){
    const points=[[x/6,y/8],[(x+1)/6,y/8],[(x+1)/6,(y+1)/8],[x/6,(y+1)/8]];
-   const dest=points.map(([u,v])=>projected((u-.5)*w,(v-.5)*h,pose.x,pose.y)),src=points.map(([u,v])=>[u*source.width,v*source.height]);
+   const dest=points.map(([u,v])=>projected((u-.5)*w,(v-.5)*h,pose)),src=points.map(([u,v])=>[u*source.width,v*source.height]);
    triangle(ctx,source,[src[0],src[1],src[2]],[dest[0],dest[1],dest[2]]);triangle(ctx,source,[src[0],src[2],src[3]],[dest[0],dest[2],dest[3]]);
   }
  }
@@ -52,7 +59,7 @@ export async function createShareFile(card,kind,{signal,progress=()=>{}}={}){
   const mime=['video/mp4;codecs=avc1.42E01E','video/mp4;codecs=avc1','video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));
   if(!mime)throw Error('No supported video encoder. You can save an image instead.');
   const canvas=document.createElement('canvas');canvas.width=720;canvas.height=1080;const ctx=canvas.getContext('2d',{alpha:false});
-  drawFrame(ctx,capture.canvas,{x:0,y:0});stream=canvas.captureStream(30);recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6000000});
+  drawFrame(ctx,capture.canvas,animationPose(0));stream=canvas.captureStream(30);recorder=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:6000000});
   const chunks=[];
   const recorded=new Promise((resolve,reject)=>{recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};recorder.onerror=e=>reject(e.error||Error('Video recording failed.'));recorder.onstop=()=>resolve(new Blob(chunks,{type:recorder.mimeType}));});
   // Attach the rejection handler before recording, including cancellation paths.

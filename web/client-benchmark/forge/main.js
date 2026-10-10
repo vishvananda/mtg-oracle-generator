@@ -1,4 +1,7 @@
 import {demos,parseDraft,artPrompt} from './cards.js';
+import {idleMotion} from './idle-motion.js';
+import {finishPicker} from './finish-picker.js';
+import {rememberArtwork,restoreArtwork} from './art-history.js';
 import {mountRenderer} from './renderer.js';
 import {editOnCard} from './inline-editor.js';
 import {savedCards,saveCards} from './storage.js';
@@ -11,7 +14,10 @@ const $=id=>document.getElementById(id), sound=new Sound();
 let models={ready:false,cancel(){},dispose(){}};
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let generated=[],cards=demos.map(c=>({...c})),index=0,preview,busy=false,loading=false,editor=null,paused=reduced.matches,lastChange=Date.now(),timer,hovering=false;
-let shareBusy=false;
+let shareBusy=false,finishes;
+const finishId=()=>active().finish_id||'vizier_etched_v1';
+const unattended=()=>Boolean(preview)&&!paused&&!reduced.matches&&!busy&&!loading&&!editor&&!hovering&&!document.hidden&&!finishes?.isOpen&&!$('gallery').contains(document.activeElement)&&$('card-preview').getAttribute('aria-busy')==='false';
+const idle=idleMotion({element:$('card-preview'),enabled:unattended,paint:pointer=>preview?.idle(pointer)});
 let pendingArt=null,generationMode='create';
 const modePrompts={create:$('description').value,revise:'Give it vigilance. Keep its other abilities.'};
 let deletedCard=null,historyBusy=false;
@@ -35,7 +41,10 @@ function controls(){
   $('stop-button').hidden=!busy||loading||historyBusy||shareBusy;
   $('previous').disabled=busy||cards.length<2;$('next').disabled=busy||cards.length<2;
   $('browse-examples').hidden=!generated.length;$('browse-examples').disabled=busy||loading;$('browse-examples').textContent=active().demo?'Back to your cards':'Browse examples';
-  $('finish').disabled=busy;for(const kind of ['image','video','text'])$('save-'+kind).disabled=busy||loading||previewPending;
+  document.body.dataset.generationBusy=String(busy||loading);
+  if(!unattended())idle.stop();
+  finishes?.disable(busy||loading||previewPending);
+  $('restore-art').hidden=!active().previous_art;$('restore-art').disabled=busy||loading;for(const kind of ['image','video','text'])$('save-'+kind).disabled=busy||loading||previewPending;
   $('delete-card').hidden=$('delete-divider').hidden=Boolean(active().demo);
   $('delete-card').disabled=busy||loading;$('undo-delete').disabled=busy||loading;$('dismiss-delete').disabled=historyBusy;
   $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent='Edit this card';
@@ -48,8 +57,8 @@ function preloadNeighbors(){
   if(preview&&!busy&&cards.length>1)preview.preload([cards[(index+1)%cards.length],cards[(index+cards.length-1)%cards.length]]);
 }
 function draw(reveal=false){
-  $('finish').value=active().finish_id||'vizier_etched_v1';
-  preview?.update(active(),busy?'ordinary':$('finish').value,editor?.part,reveal);
+  finishes?.update(finishId());
+  preview?.update(active(),busy?'ordinary':finishId(),editor?.part,reveal);
   $('card-caption').textContent=active().name;
   $('card-counter').textContent=`${String(index+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
   $('gallery-kind').textContent=active().demo?'Examples':'Your cards';
@@ -57,7 +66,7 @@ function draw(reveal=false){
   cards.forEach((card,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Show ${card.name}`);b.setAttribute('aria-current',String(i===index));b.onclick=()=>show(i);$('dots').append(b);});
   controls();
 }
-function show(i){if(busy||editor)return;index=(i+cards.length)%cards.length;lastChange=Date.now();draw(true);}
+function show(i){if(busy||editor)return;finishes?.close();idle.stop();index=(i+cards.length)%cards.length;lastChange=Date.now();draw(true);}
 async function persist(){try{await saveCards(generated);}catch{message('This browser could not save the card. Use Save card to keep a copy.',true);}}
 function dismissDeletion(){
   if(deletedCard?.illustration?.startsWith('blob:'))URL.revokeObjectURL(deletedCard.illustration);
@@ -106,8 +115,10 @@ function appendCard(card){
 function start(phase){busy=true;message('');closeEditor(false);$('generation-progress').hidden=false;$('card-busy').hidden=false;$('generation-stage').textContent=phase;const began=performance.now();timer=setInterval(()=>{$('generation-time').textContent=`${((performance.now()-began)/1000).toFixed(1)}s`;},100);sound.play('start');draw();}
 function finish(){busy=false;clearInterval(timer);$('generation-progress').hidden=true;$('card-busy').hidden=true;lastChange=Date.now();draw();}
 function stage(text){$('generation-stage').textContent=text;}
-async function paint(card,prompt){
-  card.art_prompt=prompt;const result=await models.art(prompt,stage);
+async function paint(card,prompt,{remember=false}={}){
+  const result=await models.art(prompt,stage);
+  if(remember)rememberArtwork(card);
+  card.art_prompt=prompt;
   if(card.illustration?.startsWith('blob:'))URL.revokeObjectURL(card.illustration);
   card.art_blob=result.blob;card.illustration=URL.createObjectURL(result.blob);card.artist??='MTG CardForge';delete card.demo_image;
   card.art_settings={seed:result.seed,width:result.width,height:result.height,steps:result.steps,generation_ms:result.total_ms};
@@ -158,7 +169,7 @@ async function regenerateArt(card,prompt){
   if(busy||loading)return;
   if(!models.ready){pendingArt={id:card.id,prompt};closeEditor();message('Load the models on the left, then the new artwork will be generated.');$('load-button').focus();return;}
   adoptDemo();card=active();start('Imagining the scene…');
-  try{await paint(card,prompt);await persist();sound.play('complete');message('Artwork updated.');}
+  try{await paint(card,prompt,{remember:true});await persist();sound.play('complete');message('Artwork updated.');}
   catch(error){message(error.name==='AbortError'?'Artwork generation stopped.':error.message,error.name!=='AbortError');}
   finally{finish();}
 }
@@ -177,11 +188,12 @@ $('create-form').onsubmit=e=>{e.preventDefault();void generate();};
 $('stop-button').onclick=()=>{models.cancel();stage('Stopping…');};
 $('previous').onclick=()=>show(index-1);$('next').onclick=()=>show(index+1);
 $('pause-carousel').onclick=()=>{paused=!paused;lastChange=Date.now();controls();};
-$('gallery').onpointerenter=()=>{hovering=true;};$('gallery').onpointerleave=()=>{hovering=false;lastChange=Date.now();};
-$('gallery').addEventListener('keydown',e=>{if(editor||busy||e.target.matches('input,textarea,select'))return;if(e.key==='ArrowRight'){e.preventDefault();show(index+1);}if(e.key==='ArrowLeft'){e.preventDefault();show(index-1);}});
-setInterval(()=>{if(!paused&&!reduced.matches&&!busy&&!loading&&!editor&&!hovering&&!document.hidden&&!$('gallery').contains(document.activeElement)&&Date.now()-lastChange>=10000)show(index+1);},500);
+$('gallery').onpointerenter=()=>{hovering=true;idle.stop();};
+$('gallery').addEventListener('focusin',()=>idle.stop());$('gallery').onpointerleave=()=>{hovering=false;lastChange=Date.now();};
+$('gallery').addEventListener('keydown',e=>{if(editor||busy||finishes?.isOpen||e.target.matches('input,textarea,select'))return;if(e.key==='ArrowRight'){e.preventDefault();show(index+1);}if(e.key==='ArrowLeft'){e.preventDefault();show(index-1);}});
+setInterval(()=>{if(unattended()&&Date.now()-lastChange>=10000)show(index+1);},500);
 document.addEventListener('visibilitychange',()=>{lastChange=Date.now();});
-$('finish').onchange=()=>{const finish=$('finish').value;closeEditor(false);adoptDemo();active().finish_id=finish;draw();void persist();};
+$('restore-art').onclick=()=>{if(busy||loading)return;closeEditor(false);if(restoreArtwork(active())){active().updated_at=new Date().toISOString();draw();void persist();sound.play('click');message('Previous artwork restored.');}};
 function field(name,label,value,{textarea=false,type='text',options}={}){
   const container=document.createElement('label');container.textContent=label;
   const input=document.createElement(options?'select':textarea?'textarea':'input');input.name=name;input.id=`edit-${name}`;
@@ -216,6 +228,7 @@ async function importArtwork(data){
 }
 function openEditor(part,detail={}){
   if(busy||loading)return;
+  idle.stop();finishes?.close();
   if($('card-preview').getAttribute('aria-busy')==='true'){pendingEditor={part,detail,id:active().id};return;}
   if(editor?.inline){if(editor.part===part)return;editor.inline.commit();}
   else if(editor)closeEditor(false);
@@ -260,7 +273,7 @@ function openEditor(part,detail={}){
   const anchor={name:'5%',mana:'5%',type:'46%',rules:'54%',stats:'58%',art:'17%',set:'30%',artist:'58%',border:'30%',frame:'30%'}[part];$('edit-panel').style.top=matchMedia('(max-width:760px)').matches?'auto':anchor;
   draw();$('edit-fields').querySelector('input:not([type="hidden"]),textarea,select,button')?.focus();
 }
-function closeEditor(restore=true){if(editor?.inline){editor.inline.commit();return;}const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),$('finish').value,null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
+function closeEditor(restore=true){if(editor?.inline){editor.inline.commit();return;}const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),finishId(),null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
 $('edit-close').onclick=()=>closeEditor();$('edit-cancel').onclick=()=>closeEditor();
 $('edit-own-card').onclick=()=>openEditor('name');
 $('browse-examples').onclick=()=>{if(busy||loading)return;closeEditor(false);cards=active().demo?generated:demos.map(c=>({...c}));index=0;pendingEditor=null;lastChange=Date.now();draw(true);};
@@ -285,7 +298,7 @@ $('edit-form').onsubmit=async e=>{
 };
 function download(blob,name){const href=URL.createObjectURL(blob),a=document.createElement('a');a.href=href;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(href),1000);}
 async function exportJSON(){
-  try {const c=active(),{illustration,art_blob,...record}=c;const blob=art_blob||await fetch(illustration).then(r=>{if(!r.ok)throw Error('Artwork could not be downloaded.');return r.blob();});
+  try {const c=active(),{illustration,art_blob,previous_art,...record}=c;const blob=art_blob||await fetch(illustration).then(r=>{if(!r.ok)throw Error('Artwork could not be downloaded.');return r.blob();});
     const art=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
     download(new Blob([JSON.stringify({format:'tetrarchs-forge-card-v1',...record,art_data_url:art},null,2)],{type:'application/json'}),`${c.name.replace(/[^a-z0-9]+/gi,'-').toLowerCase()}.json`);
   }catch(error){message(error.message||'The card could not be exported.',true);}
@@ -301,6 +314,9 @@ $('sound-toggle').onclick=()=>{sound.set(!sound.enabled);soundControl();if(sound
 if(isMobileDevice){document.body.classList.add('mobile-mode');$('mobile-message').hidden=false;}
 try {
   try {generated=await savedCards();for(const c of generated)c.illustration=c.art_blob?URL.createObjectURL(c.art_blob):c.demo_image?new URL(`./assets/${c.demo_image}`,import.meta.url).href:null;if(generated.length){cards=generated;index=cards.length-1;}}catch{message('Local history is unavailable. You can still create and export cards.');}
-  preview=await mountRenderer($('card-preview'),active(),openEditor);$('finish').replaceChildren(...preview.finishes.map(({id,label})=>{const option=document.createElement('option');option.value=id;option.textContent=label;return option;}));$('finish').value='vizier_etched_v1';draw();
+  preview=await mountRenderer($('card-preview'),active(),openEditor);
+  finishes=finishPicker({button:$('finish-toggle'),panel:$('finish-panel'),finishes:preview.finishes,
+    onOpen:()=>{idle.stop();closeEditor(false);sound.play('edit');},
+    onChange:finish=>{adoptDemo();active().finish_id=finish;active().updated_at=new Date().toISOString();draw();void persist();sound.play('click');}});draw();
 }catch(error){message(`The card preview could not load: ${error.message}`,true);}
-window.addEventListener('pagehide',e=>{editor?.inline?.commit();if(!e.persisted){models.dispose();oracle.dispose();}});
+window.addEventListener('pagehide',e=>{editor?.inline?.commit();if(!e.persisted){models.dispose();oracle.dispose();idle.dispose();finishes?.dispose();}});

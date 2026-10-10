@@ -14,7 +14,7 @@ export async function mountRenderer(host,card,onPart) {
   styles.textContent=`#card-preview{color:#141210;--card-corner:5.8% / 4.15%;--seat:#d6b877;--f-data:ui-monospace,monospace;--m-w:#efe7cb;--m-u:#3d7ac3;--m-b:#33313c;--m-r:#c2432e;--m-g:#3b8a4e;--m-c:#9aa4ae}.card-design-preview{max-width:none!important;width:100%!important}.art-edit-target{position:absolute;background:none;border:0;border-radius:0;cursor:pointer;z-index:2;padding:0}.art-edit-target:hover,.art-edit-target:focus-visible{outline:none;outline-offset:2px}.art-edit-target span{position:absolute;right:9px;bottom:9px;background:#0b1920db;color:#edd8a9;border:1px solid #dfb86666;font:10px system-ui;padding:7px 9px;border-radius:4px;opacity:0;transition:opacity .2s}.art-edit-target:hover span,.art-edit-target:focus-visible span{opacity:1}`;
   host.append(styles,root);
   const {mountCardDesignPreview,setSymbolAsset}=await import('./renderer/card-preview.js');
-  const mounted=await mountCardDesignPreview(root,{face:faceFor(card),finishId:'vizier_etched_v1',onPart:requestPart});
+  const mounted=await mountCardDesignPreview(root,{face:faceFor(card),finishId:card.finish_id||'vizier_etched_v1',onPart:requestPart});
   const art=document.createElement('button');art.type='button';art.className='art-edit-target';art.setAttribute('aria-label','Edit artwork prompt');
   const label=document.createElement('span');label.textContent='✧ Edit artwork';art.append(label);art.onclick=()=>requestPart('art');
   const set=document.createElement('button'),artist=document.createElement('button');
@@ -54,6 +54,6 @@ export async function mountRenderer(host,card,onPart) {
   observer.observe(root,{childList:true,subtree:true});placeArtButton();
   const presentation=presentWhenReady(host,root,mounted,placeArtButton);
   const preload=neighborPreloader(mountCardDesignPreview,new URL('./renderer/card-preview.css',import.meta.url).href);
-  void presentation.update({face:faceFor(card),finishId:'vizier_etched_v1'});
-  return {finishes:mounted.presentation.finishes,manaSymbol:mounted.presentation.manaSymbolAsset,setSymbol:setSymbolAsset,preload(cards){preload.schedule(cards.map(faceFor));},update(card,finish,selectedPart,transition=false){preload.cancel();currentCard=card;void presentation.update({face:faceFor(card),finishId:finish,selectedPart},{transition});},setBusy(busy){root.inert=busy;},focus(part){(part==='art'?art:part==='set'?set:part==='artist'?artist:rails[part]?.[0]||root.querySelector(`[data-card-design-part="${part}"]`))?.focus();},unmount(){preload.cancel();presentation.dispose();observer.disconnect();cancelAnimationFrame(scheduled);mounted.unmount();}};
+  void presentation.update({face:faceFor(card),finishId:card.finish_id||'vizier_etched_v1'});
+  return {idle(pointer){mounted.update({idlePointer:pointer});},finishes:mounted.presentation.finishes,manaSymbol:mounted.presentation.manaSymbolAsset,setSymbol:setSymbolAsset,preload(cards){preload.schedule(cards.map(faceFor));},update(card,finish,selectedPart,transition=false){preload.cancel();currentCard=card;void presentation.update({face:faceFor(card),finishId:finish,selectedPart},{transition});},setBusy(busy){root.inert=busy;},focus(part){(part==='art'?art:part==='set'?set:part==='artist'?artist:rails[part]?.[0]||root.querySelector(`[data-card-design-part="${part}"]`))?.focus();},unmount(){preload.cancel();presentation.dispose();observer.disconnect();cancelAnimationFrame(scheduled);mounted.unmount();}};
 }

@@ -69,9 +69,9 @@ try{
   await page.locator('.border-edit-target').first().click();await page.getByRole('button',{name:'White',exact:true}).click();await settled(page);await page.locator('.retro-border').waitFor();
   check('outer-border click selects white stock',(await stored(page))[0].border_color==='white');
   await page.screenshot({path:`${out}/retro-white.png`});
-  await page.locator('#finish').selectOption('vizier_cold_v1');await settled(page);
+  await page.locator('#finish-toggle').click();await page.locator('[data-finish="'+'vizier_cold_v1'+'"]').click();await settled(page);
   check('Cold foil is available and saved',(await stored(page))[0].finish_id==='vizier_cold_v1');
-  await page.locator('#finish').selectOption('vizier_etched_v1');await settled(page);
+  await page.locator('#finish-toggle').click();await page.locator('[data-finish="'+'vizier_etched_v1'+'"]').click();await settled(page);
   await page.locator('.frame-edit-target').focus();await page.keyboard.press('Enter');await page.getByRole('button',{name:'Modern',exact:true}).click();await settled(page);
   check('frame can switch back to modern',await page.locator('.rendered-layout-retro').count()===0);
   await page.locator('.art-edit-target').click();check('artwork URL and file available before loading',await page.locator('#edit-art_url').isVisible()&&await page.locator('#edit-art_file').isVisible());

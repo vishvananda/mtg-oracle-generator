@@ -7,7 +7,11 @@ describe a card, and generate both locally. The five rotating showcase cards
 are handcrafted examples with generated artwork, not model evaluation results.
 They open with Vesper, Eclipse Sovereign, followed by a planeswalker, a forest
 legend, an ability-copying land and a legendary artificer. The default visible
-artist credit is MTG CardForge and remains editable.
+artist credit is MTG CardForge and remains editable. Neris uses Prismatic foil,
+Crownroot uses Opal, and the Observatory uses Cold foil. Existing saved copies
+keep their chosen finish. Unattended cards drift and tilt gently, driving the
+real foil lighting without recreating textures. Hover, focus, editing, loading,
+generation, carousel pause, reduced motion and a hidden/offscreen view stop it.
 
 **Edit this card** is available immediately, without downloading models.
 Click names, cost, type, rules, stats, artist credit, set symbol, border, frame or artwork to edit.
@@ -32,14 +36,20 @@ The set picker has 323 named sets with supported symbols, including Forge.
 Click the outer border for black, white or silver stock, or the frame around the artwork
 for modern/old frames. Both can follow the selected set automatically. Mana
 costs offer clickable colored, generic, hybrid, snow and Phyrexian symbols.
-The finish menu comes directly from the renderer and includes Cold foil.
+The sparkle button just outside the card’s upper-right corner opens direct
+finish choices, including Cold foil, from the renderer. One click applies a
+finish; Escape dismisses the palette and returns focus to the button.
 Land frame and legendary crown accents follow explicit mana production and basic land subtypes;
 colored activation costs alone do not color the frame. This presentation inference
 does not change the saved card’s actual colors. Set, frame, border and finish choices
 are retained with each saved card. Before loading the
 models, artwork can be imported from an HTTPS URL or a file. After loading,
 the art editor also offers an editable prompt and **Regenerate art**, which
-preserves the card text. Image imports are validated in the browser, limited
+preserves the card text. **Restore previous art** restores the last successful
+image plus its prompt, artist and generation settings. This one-image backup
+is stored with the card and survives reloads; it is replaced only by another
+successful regeneration. Failed/cancelled generations keep the current image
+and prompt. Exported JSON contains only the current artwork. Image imports are validated in the browser, limited
 to 12 MB and 16 megapixels, and cropped to fill the renderer's art window.
 Remote image servers must permit CORS; a file import is the fallback.
 
@@ -60,7 +70,8 @@ directly on the card, so there is no separate Card details button.
 The latest 20 creations and their artwork are stored in IndexedDB on this
 origin. **Save card** exports JSON with embedded artwork. Browser storage may
 be evicted; exported files preserve a copy. There is no account, upload,
-server inference fallback, or Oracle validator in this standalone prototype.
+server inference fallback, or automatic social posting in this standalone prototype.
+Oracle validation runs locally in a browser worker as described below.
 It currently supports single-face designs. The footer carries the standard notice from
 [Wizards’ Fan Content Policy](https://company.wizards.com/en/legal/fancontentpolicy).
 Repeated slogans, captions and editing hints are omitted; device requirements stay
@@ -76,6 +87,9 @@ Each small gemstone sits at the midpoint of its gold edge. The dual uses an ivor
 obsidian, red, forest green and sapphire blue mana palette; its gemstones use
 the linear-light midpoint of the two endpoint colors. Click the jewel to compare the dual tetrahedron; new visits default to the cube.
 `?logo=dual` and `?logo=cube` select either directly. Reduced motion uses a still.
+Loading models, generating/revising cards, generating art and preparing exports
+also switch the jewel to its still image. The animation resumes after completion,
+failure or cancellation, subject to visibility and reduced-motion preferences.
 Mobile keeps the carousel and does not download the large jewel animation.
 No extra WebGL context or 3D library is loaded by the page. The background's
 dark overlay is lighter on both desktop and mobile.
@@ -127,7 +141,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`0b5bcca`, rebased onto the editor’s
+`0212b5f`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -357,8 +371,8 @@ user's new track without changing the UI or model code.
 
 ## Oracle checks, model revisions and local sharing
 
-The card footer now checks Oracle text in a Web Worker. Expand the information
-icon for mtgish's error context or correction details. A checked result means the
+The card footer now checks Oracle text in a Web Worker. The status shows the parser error directly; open **Details** for mtgish's
+error context or correction details. A checked result means the
 complete card parsed; it does not certify balance, legality or intent. Validation
 works before loading either generation model, including on mobile. See
 [build, parity and model experiment instructions](../../mtgish/README.md).
@@ -383,7 +397,8 @@ Safari/iPhone recording still needs a physical-device check.
 
 - Images: 732 × 1020 PNG with the selected foil and rounded transparent corners.
 - Video: 720 × 1080, about six seconds, no audio. A quick two-way tilt flashes
-  the foil, followed by a slower rock, then a centered 2.2-second hold. Uses MP4
+  the foil, followed by a slower orbit with roll and depth changes, then a centered
+  2.2-second hold. All four corners move without clipping. Uses MP4
   with H.264 when available, otherwise WebM. It records the same artifact for
   Share and Download. Keep the page visible while recording.
 - Text: readable card text in `.txt`, plus a separate editable JSON download
@@ -391,7 +406,9 @@ Safari/iPhone recording still needs a physical-device check.
 
 The standalone renderer's `createCardDesignCapture` API uses the production
 face painter, etching and foil shader on a temporary export canvas, at full
-resolution independent of the displayed card size. Export frees its WebGL
+resolution independent of the displayed card size. Generated and imported
+artwork gets a locally derived contour mask, just as in the live preview; the
+export does not try to look up a catalog printing for these images. Export frees its WebGL
 context, textures and recording tracks afterward. It needs no model download,
 third-party screenshot library, backend storage or social API credentials.
 
@@ -403,3 +420,14 @@ Starting loyalty and signed loyalty-cost wheels use dark translucent neighbors
 with white ink. While editing rules text, the + symbol row inserts generic,
 W/U/B/R/G, colorless, tap and untap symbols at the current selection. It wraps
 on narrow screens; existing printed mana symbols retain their on-card wheels.
+
+The [artwork, motion and error receipt](../forge-motion-art-verification-20261010.json)
+records the custom-name parser regression, actual model repair experiment,
+etched export pixel checks, all-corner video motion, idle interaction guards,
+finish selection and artwork restoration. Reproduce its consumer checks with:
+
+```bash
+CHROME_BIN=/path/to/chrome node check-forge-motion-art.mjs
+CHROME_BIN=/path/to/chrome node check-forge-revision.mjs
+CHROME_BIN=/path/to/chrome node check-forge-share.mjs
+```

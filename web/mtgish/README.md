@@ -94,3 +94,13 @@ from about 438 MiB to 307–310 MiB; it peaked at 444–454 MiB over all 26 case
 Initialization took about eight seconds on the shared host. These figures
 exclude browser/renderer overhead and are not physical-phone measurements.
 All 26 native-parity checks still pass in Chromium and WebKit.
+
+A follow-up smoke case used `Smaug the Unkillable` with `Whenever Smaug
+attacks, draw a card, then discard a card.` Upstream recognizes custom
+comma-separated short names, but this non-comma abbreviation is absent from its
+known-name aliases. The original repair prompt repeated the rejected text; a
+conditional self-reference hint made the same quant at seed 42 use `CARDNAME`,
+which parsed with all other fields unchanged. This is one paired experiment,
+not a broader success-rate estimate. The hint appears in Details and in the
+repair prompt; validation itself remains unchanged. No automatic alias rewrite
+or card renaming is performed.

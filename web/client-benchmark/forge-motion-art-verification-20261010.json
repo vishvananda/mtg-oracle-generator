@@ -1,0 +1,406 @@
+{
+  "date": "2026-10-10",
+  "deployment": {
+    "previous": "/srv/mtg-oracle-client/releases/20261010T063858Z",
+    "release": "/srv/mtg-oracle-client/releases/20261010T070244Z",
+    "build": {
+      "version": "76b4d27c9ed0",
+      "built_at": "2026-10-10T07:01:57.186Z"
+    },
+    "urls": [
+      "https://tetrarchs.com/forge/",
+      "https://tetrarcum.com/"
+    ]
+  },
+  "https": [
+    {
+      "url": "https://tetrarchs.com/forge/",
+      "build": "76b4d27c9ed0",
+      "tls": "verified",
+      "isolation_headers": "verified",
+      "renderer_and_app_hashes": "match"
+    },
+    {
+      "url": "https://tetrarcum.com/",
+      "build": "76b4d27c9ed0",
+      "tls": "verified",
+      "isolation_headers": "verified",
+      "renderer_and_app_hashes": "match"
+    }
+  ],
+  "renderer": {
+    "repository": "https://github.com/vishvananda/vizier-frontend",
+    "branch": "codex/standalone-card-preview-20261009",
+    "commit": "0212b5f65a9e18cfebbd266483c6994152395c11",
+    "files": {
+      "card-preview.js": {
+        "bytes": 231431,
+        "gzip_bytes": 71547,
+        "sha256": "24beda5945acee0168f0f2e091bd76837cfa9a13477755b5787a39fa3c8ecef4"
+      },
+      "card-preview.css": {
+        "bytes": 24965,
+        "gzip_bytes": 5630,
+        "sha256": "788f262b1543605a1ba77a8002584c24604be59f309889b1bf08783c02d55a87"
+      }
+    }
+  },
+  "changes": [
+    "Pearls restored to 75% of original radius: 50% larger than the previous bake. Gemstones unchanged. Animated assets version with the app.",
+    "Visible mtgish rejection message, Details context, and conditional custom short-name repair hint. Upstream parser unchanged.",
+    "Local illustration contour derivation for exported Etched/Opal foil; owned mask URLs released. Previously a fabricated printing ID suppressed these contours.",
+    "Six-second video: quick flash, rolling/depth orbit, 2.2-second centered hold. All four corners travel; overlapping mesh clips remove dark antialias seams.",
+    "Neris Prismatic, Crownroot Opal, Observatory Cold foil; existing saved copies keep their treatments.",
+    "Consumer-owned idle preview pose updates foil lighting without face replacement. Motion stops during interaction, reduced motion, busy/hidden/offscreen states or carousel pause.",
+    "Direct finish choices behind a sparkle button beside the card; keyboard, touch and persistent selection.",
+    "One previous successful artwork plus prompt, artist and generation settings in IndexedDB. Restore survives reload. Failed/cancelled regeneration retains current art and prompt.",
+    "Jewel switches to its still image during generation/loading/export, then resumes according to visibility and reduced motion."
+  ],
+  "browser_checks": {
+    "logo": {
+      "count": 24,
+      "checks": [
+        "cube is the first-visit default",
+        "unused dual animation is not downloaded",
+        "header retains the small gold cube",
+        "large jewel sits above Imagine it",
+        "animation is centered above the load button",
+        "logo imports no 3D engine or model runtime",
+        "logo creates no canvas or WebGL context",
+        "the native WebP visibly rotates",
+        "jewel has no CSS glow or shadow",
+        "large source preserves background alpha and translucent stones",
+        "click changes to the dual and keeps the card visible",
+        "new visits default to the requested cube",
+        "comparison URL still selects the dual",
+        "Space and Enter switch the jewel accessibly",
+        "reduced motion switches to a still image",
+        "motion preference changes resume the spin",
+        "desktop page still fits 1440x900",
+        "desktop page still fits 1366x768",
+        "desktop page still fits 1024x640",
+        "mobile downloads no large animation",
+        "mobile keeps the gold mark and card carousel",
+        "mobile header fits 390px without overlap",
+        "mobile header fits 320px without overlap",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": [],
+      "url": "http://127.0.0.1:8793/forge/"
+    },
+    "revision": {
+      "count": 15,
+      "checks": [
+        "validator runs before model loading",
+        "repair is hidden without a loaded model",
+        "parser error is visible without opening details",
+        "failure exposes parser context and explains limitations",
+        "successful repair creates a second card",
+        "original stays intact",
+        "repair can only change Oracle wording",
+        "repair retains artwork and attribution",
+        "model receives the old card and parser feedback",
+        "change prompt creates a revised copy",
+        "revisions do not trigger artwork generation",
+        "unsuccessful repair keeps the existing card",
+        "custom short-name failure has an actionable hint",
+        "comma-separated short name parses with the same ability text",
+        "no JavaScript errors"
+      ],
+      "errors": [],
+      "url": "http://127.0.0.1:8793/forge/"
+    },
+    "motion-art": {
+      "count": 24,
+      "checks": [
+        "unattended card drifts, tilts and updates foil lighting",
+        "hovering the card controls stops idle motion",
+        "sparkle opens direct finish choices beside card",
+        "Escape closes finishes and returns focus",
+        "keyboard focus keeps the card still",
+        "idle motion resumes after interaction ends",
+        "pause carousel also pauses drift",
+        "demo-scholar opens with vizier_prismatic_v1",
+        "demo-stag opens with vizier_opal_v1",
+        "demo-observatory opens with vizier_cold_v1",
+        "one click applies a finish and closes the palette",
+        "finish choice persists on the edited copy",
+        "reduced motion disables idle drift",
+        "phone finish choices stay within the viewport",
+        "jewel uses a still while artwork generation runs",
+        "jewel resumes after successful generation",
+        "regeneration keeps previous artwork and changes current image",
+        "previous artwork survives reload",
+        "Restore brings back original art, prompt and credit",
+        "fail preserves original art and prompt without false undo",
+        "fail resumes jewel animation",
+        "cancel preserves original art and prompt without false undo",
+        "cancel resumes jewel animation",
+        "no JavaScript errors"
+      ],
+      "errors": [],
+      "url": "http://127.0.0.1:8793/forge/"
+    },
+    "ui-final": {
+      "count": 63,
+      "checks": [
+        "demo artwork has a derived etching mask",
+        "Forge symbol appears on the type line",
+        "Forge symbol is used for the foil stamp",
+        "page is named MTG CardForge with only the legal policy link",
+        "fan content notice is visible",
+        "desktop can edit before loading models",
+        "Card details is removed and examples cannot be deleted",
+        "initial renderer imports no model runtime",
+        "music is not downloaded before interaction",
+        "card and controls fit 1440x900",
+        "card and controls fit 1366x768",
+        "card and controls fit 1024x640",
+        "carousel shows a planeswalker",
+        "standalone rules accessibility copy is visually clipped",
+        "loyalty costs fit inside their badges",
+        "carousel navigation",
+        "opening theme plays after interaction",
+        "sound toggle mutes music",
+        "manual name edit appears in carousel",
+        "name edits inside the card without a popup",
+        "editing freezes card tilt",
+        "Escape restores the previous name",
+        "rules editing supports real multiline text",
+        "rules save on the card",
+        "switching fields saves and opens the next inline edit",
+        "clicking Save card commits inline text and exports",
+        "artist credit is directly editable",
+        "searchable set picker updates card symbol",
+        "chosen set is saved with the card",
+        "scrollable mana symbols build and order the saved cost",
+        "art-frame click switches to the new renderer’s old frame",
+        "outer-border click selects white stock",
+        "Cold foil is available and saved",
+        "frame can switch back to modern",
+        "artwork URL and file available before loading",
+        "URL artwork is stored as a validated image blob",
+        "edits persist without models",
+        "mute preference survives reload",
+        "invalid artwork keeps the editor open",
+        "manual card export works",
+        "deleting the last saved card returns to intact examples",
+        "deletion offers keyboard-focused Undo",
+        "Undo restores every saved field and the artwork bytes",
+        "restored card survives reload",
+        "failed deletion keeps the card in storage and on screen",
+        "confirmed deletion persists across reloads",
+        "mobile shows carousel and edit button",
+        "mobile fan content notice is visible",
+        "mobile hides model loading",
+        "mobile has no horizontal overflow",
+        "mobile focuses its inline name field without a popup",
+        "mobile art editor uses URL or file",
+        "mobile never requests model code or weights",
+        "mobile deletion returns to examples without a modal",
+        "mobile Undo restores the selected card",
+        "fixture generation replaces demo with designed card and artwork",
+        "loaded models expose editable art prompt",
+        "art regeneration preserves rules and records new prompt",
+        "another generation appends to carousel",
+        "cancel retains finished text",
+        "deleting one creation preserves all neighboring cards",
+        "Undo reinserts the creation and selects it",
+        "all tested flows have no uncaught JavaScript errors"
+      ],
+      "errors": [],
+      "url": "http://127.0.0.1:8793/forge/"
+    },
+    "share-final": {
+      "count": 33,
+      "checks": [
+        "save group has three labeled icon buttons",
+        "image preview is full resolution",
+        "share receives the prepared PNG file",
+        "download uses the same PNG",
+        "video decodes at 720 by 1080",
+        "video is approximately six seconds",
+        "share receives the same video format",
+        "text export substitutes the displayed card name",
+        "editable JSON export keeps artwork and card data",
+        "cancelled preparation restores card controls",
+        "warped card has no dark seams between mesh triangles",
+        "ordinary exports and releases its surface",
+        "ordinary foil responds correctly to tilt",
+        "vizier_prismatic_v1 exports and releases its surface",
+        "vizier_prismatic_v1 foil responds correctly to tilt",
+        "vizier_etched_v1 exports and releases its surface",
+        "vizier_etched_v1 foil responds correctly to tilt",
+        "vizier_opal_v1 exports and releases its surface",
+        "vizier_opal_v1 foil responds correctly to tilt",
+        "vizier_cold_v1 exports and releases its surface",
+        "vizier_cold_v1 foil responds correctly to tilt",
+        "file vizier_etched_v1 exports etched illustration contours",
+        "blob vizier_etched_v1 exports etched illustration contours",
+        "blob vizier_opal_v1 exports etched illustration contours",
+        "export releases every locally derived mask",
+        "last 2.2 seconds stay exactly centered",
+        "whole card stays inside the video frame",
+        "all four corners move in both directions",
+        "save controls fit 1440px",
+        "save controls fit 1024px",
+        "save controls fit 390px",
+        "save controls fit 320px",
+        "no uncaught JavaScript errors"
+      ],
+      "errors": [],
+      "url": "http://127.0.0.1:8793/forge/"
+    },
+    "carousel-final": {
+      "count": 23,
+      "checks": [
+        "initial card stays blank while artwork loads",
+        "both neighboring artworks start before navigation",
+        "unrelated cards are not eagerly downloaded",
+        "preloading never adds visible or editable card copies",
+        "snapshot preserves outgoing foil pixels",
+        "outgoing card stays faded while waiting (300ms sample)",
+        "incomplete incoming card stays hidden (300ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "outgoing card stays faded while waiting (500ms sample)",
+        "incomplete incoming card stays hidden (500ms sample)",
+        "rapid navigation reveals only the latest requested card",
+        "late neighboring assets cannot restore a stale card",
+        "legendary land gets the blue/red frame",
+        "legendary land gets the matching blue/red crown",
+        "land retains its land panels",
+        "foil is ready before the land appears",
+        "regular land uses the same blue/red frame",
+        "editing the land preserves its actual colorless data",
+        "frame accents follow produced mana and land subtypes, not activation costs",
+        "reduced motion has no card transition animations",
+        "no model runtime is fetched",
+        "no JavaScript errors"
+      ],
+      "errors": [],
+      "url": "http://127.0.0.1:8793/forge/"
+    },
+    "live-motion-art": {
+      "count": 24,
+      "checks": [
+        "unattended card drifts, tilts and updates foil lighting",
+        "hovering the card controls stops idle motion",
+        "sparkle opens direct finish choices beside card",
+        "Escape closes finishes and returns focus",
+        "keyboard focus keeps the card still",
+        "idle motion resumes after interaction ends",
+        "pause carousel also pauses drift",
+        "demo-scholar opens with vizier_prismatic_v1",
+        "demo-stag opens with vizier_opal_v1",
+        "demo-observatory opens with vizier_cold_v1",
+        "one click applies a finish and closes the palette",
+        "finish choice persists on the edited copy",
+        "reduced motion disables idle drift",
+        "phone finish choices stay within the viewport",
+        "jewel uses a still while artwork generation runs",
+        "jewel resumes after successful generation",
+        "regeneration keeps previous artwork and changes current image",
+        "previous artwork survives reload",
+        "Restore brings back original art, prompt and credit",
+        "fail preserves original art and prompt without false undo",
+        "fail resumes jewel animation",
+        "cancel preserves original art and prompt without false undo",
+        "cancel resumes jewel animation",
+        "no JavaScript errors"
+      ],
+      "errors": [],
+      "url": "https://tetrarcum.com/"
+    },
+    "live-revision": {
+      "count": 15,
+      "checks": [
+        "validator runs before model loading",
+        "repair is hidden without a loaded model",
+        "parser error is visible without opening details",
+        "failure exposes parser context and explains limitations",
+        "successful repair creates a second card",
+        "original stays intact",
+        "repair can only change Oracle wording",
+        "repair retains artwork and attribution",
+        "model receives the old card and parser feedback",
+        "change prompt creates a revised copy",
+        "revisions do not trigger artwork generation",
+        "unsuccessful repair keeps the existing card",
+        "custom short-name failure has an actionable hint",
+        "comma-separated short name parses with the same ability text",
+        "no JavaScript errors"
+      ],
+      "errors": [],
+      "url": "https://tetrarchs.com/forge/"
+    }
+  },
+  "frontend_checks": {
+    "focused_tests": 13,
+    "full_unit_tests": 1220,
+    "unit_suites": 162,
+    "policy": "passed",
+    "architecture": "passed",
+    "typecheck": "passed",
+    "production_builds": "passed",
+    "full_gate": "failed",
+    "known_full_game_browser_failures": [
+      "native: timed out waiting for battlefield land hover preview",
+      "webgl: special-the ability overlaps its neighboring row"
+    ],
+    "note": "These two broader game failures were already recorded before this standalone change; no check or budget was weakened. Forge browser checks use the packaged standalone renderer."
+  },
+  "repair_experiment": {
+    "model": "Qwen3 4B · SFT + DPO round two · Q4_0",
+    "source_repo": "vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+    "runtime": "native llama.cpp, same deployed quant; not browser timing",
+    "settings": {
+      "seed": 42,
+      "temperature": 0.2,
+      "top_p": 0.8,
+      "top_k": 20,
+      "max_tokens": 768,
+      "thinking": false
+    },
+    "input": "Smaug the Unkillable; Legendary Creature — Dragon; Flying\nWhenever Smaug attacks, draw a card, then discard a card.",
+    "fixture_note": "Name and rules reproduce the user case; cost {3}{U}{R}, rarity rare and 4/4 are test defaults, not asserted user choices.",
+    "results": [
+      {
+        "kind": "before_hint",
+        "oracle_text": "Flying\nWhenever Smaug attacks, draw a card, then discard a card.",
+        "parse_complete": false,
+        "name_unchanged": true,
+        "seconds": 18.22
+      },
+      {
+        "kind": "with_hint",
+        "oracle_text": "Flying\nWhenever CARDNAME attacks, draw a card, then discard a card.",
+        "parse_complete": true,
+        "name_unchanged": true,
+        "seconds": 14.19
+      }
+    ],
+    "limitations": "One fixed-seed regression, not an aggregate quality estimate. Parser acceptance does not prove intent, balance or legality."
+  },
+  "export": {
+    "size": [
+      720,
+      1080
+    ],
+    "seconds": 6.012567,
+    "format": "MP4/H.264",
+    "contour_cases": [
+      "same-origin file Etched",
+      "imported blob Etched",
+      "imported blob Opal"
+    ],
+    "old_packaged_renderer_artwork_pixel_difference_vs_empty_mask": 0,
+    "new_renderer_artwork_pixel_difference_threshold_per_case": 1000,
+    "synthetic_white_card_mesh_dark_seam_pixels": 0
+  },
+  "limitations": [
+    "Browser generation/artwork tests use explicit fixtures; real local model inference was used only for the paired Smaug repair experiment.",
+    "Chromium/SwiftShader and emulated phone layout do not establish physical Safari/iPhone GPU speed or recording support.",
+    "Final native share-sheet posting is stubbed; tests record and decode actual MP4 but never post to a social account."
+  ]
+}

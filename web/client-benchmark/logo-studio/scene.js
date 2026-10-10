@@ -49,15 +49,15 @@ for(let y=0;y<192;y++)for(let x=0;x<192;x++){
 }
 nc.putImageData(nacre,0,0);
 const nacreMap=new THREE.CanvasTexture(nacreCanvas);nacreMap.wrapS=nacreMap.wrapT=THREE.RepeatWrapping;
-const pearlGeometry=new THREE.SphereGeometry(.1425,48,32),rodGeometry=new THREE.CylinderGeometry(1,1,1,12);
+const pearlGeometry=new THREE.SphereGeometry(.21375,48,32),rodGeometry=new THREE.CylinderGeometry(1,1,1,12);
 const cupGeometry=new THREE.LatheGeometry([new THREE.Vector2(.029,-.25),new THREE.Vector2(.093,-.233),new THREE.Vector2(.163,-.198),new THREE.Vector2(.233,-.14),new THREE.Vector2(.285,-.076),new THREE.Vector2(.305,-.017)],32);
 const ringGeometry=new THREE.TorusGeometry(.267,.0175,8,32);
 function rod(parent,a,b,r=.035){const d=b.clone().sub(a),mesh=new THREE.Mesh(rodGeometry,gold);mesh.position.copy(a).add(b).multiplyScalar(.5);mesh.quaternion.setFromUnitVectors(V(0,1,0),d.clone().normalize());mesh.scale.set(r,d.length(),r);parent.add(mesh);}
 function pearl(parent,vertex){
   const mat=new THREE.MeshPhysicalMaterial({color:vertex.color,metalness:.04,roughness:.235,clearcoat:1,clearcoatRoughness:.12,iridescence:.34,iridescenceIOR:1.33,iridescenceThicknessRange:[260,410],iridescenceThicknessMap:nacreMap,bumpMap:nacreMap,bumpScale:.0045,envMapIntensity:1.15,specularIntensity:.85});
   const mesh=new THREE.Mesh(pearlGeometry,mat);mesh.position.copy(vertex.position);parent.add(mesh);
-  const outward=vertex.position.clone().normalize(),cup=new THREE.Group();cup.position.copy(vertex.position).addScaledVector(outward,-.022);cup.quaternion.setFromUnitVectors(V(0,1,0),outward);
-  cup.add(new THREE.Mesh(cupGeometry,polished));const ring=new THREE.Mesh(ringGeometry,polished);ring.rotation.x=Math.PI/2;ring.position.y=-.032;cup.add(ring);cup.scale.setScalar(.5);parent.add(cup);
+  const outward=vertex.position.clone().normalize(),cup=new THREE.Group();cup.position.copy(vertex.position).addScaledVector(outward,-.033);cup.quaternion.setFromUnitVectors(V(0,1,0),outward);
+  cup.add(new THREE.Mesh(cupGeometry,polished));const ring=new THREE.Mesh(ringGeometry,polished);ring.rotation.x=Math.PI/2;ring.position.y=-.032;cup.add(ring);cup.scale.setScalar(.75);parent.add(cup);
 }
 // Arithmetic midpoint in linear-light RGB, before the shader's lighting,
 // refraction and tone mapping. White makes a pastel; black deepens the hue.
@@ -65,8 +65,8 @@ function midpoint(a,b){return new THREE.Color(a).lerp(new THREE.Color(b),.5);}
 function gemstone(parent,a,b,tint){
   const d=b.clone().sub(a),length=d.length(),center=a.clone().add(b).multiplyScalar(.5),direction=d.clone().normalize();
   const scale=.75*Math.min(.90,(length-.72)/1.36),halfGem=.68*scale;
-  rod(parent,a.clone().addScaledVector(direction,.095),center.clone().addScaledVector(direction,-halfGem+.025));
-  rod(parent,center.clone().addScaledVector(direction,halfGem-.025),b.clone().addScaledVector(direction,-.095));
+  rod(parent,a.clone().addScaledVector(direction,.1425),center.clone().addScaledVector(direction,-halfGem+.025));
+  rod(parent,center.clone().addScaledVector(direction,halfGem-.025),b.clone().addScaledVector(direction,-.1425));
   const absorption=V(...tint.toArray().map(c=>-Math.log(Math.max(.008,c))*.85));
   const uniforms={uPlanes:{value:cuts.spindle.planes},uPlaneCount:{value:cuts.spindle.planeCount},uInvModel:{value:new THREE.Matrix4()},uWorld:{value:new THREE.Matrix4()},uIor:{value:1.77},uDispersion:{value:1.15},uBrilliance:{value:1.15},uTransmission:{value:.90},uTime:{value:0},uLightAngle:{value:0},uLightMode:{value:0},uBlack:{value:0},uTint:{value:tint},uAbsorption:{value:absorption}};
   // Preserve Aurum's optics while allowing the page behind the stone to show

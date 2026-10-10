@@ -25,7 +25,7 @@ try{
  await page.goto(base);await settled();await page.locator('#next').click();await page.locator('#next').click();await settled();
  assert.equal(await page.locator('#card-caption').innerText(),'Crownroot, Spring Eternal');
  const etched=await geometry();await page.screenshot({path:`${out}/green-etched.png`});
- await page.locator('#finish').selectOption('ordinary');await settled();
+ await page.locator('#finish-toggle').click();await page.locator('[data-finish="'+'ordinary'+'"]').click();await settled();
  assert.ok(near(await geometry(),etched));checks.push('Crownroot frame rectangles remain aligned when switching etched to regular');
  assert.equal(await page.locator('.rendered-card-face').evaluate(e=>getComputedStyle(e).opacity),'1');
  checks.push('Regular shows the native card face');

@@ -19,7 +19,7 @@ try{
  check('border choices offer Match set, Black, White and Silver',await p.getByRole('button',{name:'Silver',exact:true}).isVisible()&&await p.getByRole('button',{name:'Black',exact:true}).isVisible()&&await p.getByRole('button',{name:'White',exact:true}).isVisible());
  await p.getByRole('button',{name:'Silver',exact:true}).click();await ready(p);
  check('silver applies immediately and closes the panel',!(await p.locator('#edit-panel').isVisible()));
- await p.locator('#finish').selectOption('ordinary');await ready(p);
+ await p.locator('#finish-toggle').click();await p.locator('[data-finish="'+'ordinary'+'"]').click();await ready(p);
  check('modern Regular paints silver stock with dark footer ink',await p.locator('.rendered-card-face').evaluate(e=>getComputedStyle(e).getPropertyValue('--renderer-stock-color').trim()==='#b8bbc2'&&getComputedStyle(e).getPropertyValue('--renderer-stock-ink').trim()==='#17140f'));
  await p.screenshot({path:`${out}/modern-regular.png`});
  for(const [layout,label]of [['modern','Modern'],['retro','Old frame']]){
@@ -30,11 +30,11 @@ try{
    await p.screenshot({path:`${out}/retro-regular.png`});
   }
   for(const finish of ['vizier_prismatic_v1','vizier_etched_v1','vizier_cold_v1','vizier_opal_v1']){
-   await p.locator('#finish').selectOption(finish);await ready(p);await p.waitForTimeout(100);
+   await p.locator('#finish-toggle').click();await p.locator('[data-finish="'+finish+'"]').click();await ready(p);await p.waitForTimeout(100);
    const rgba=await pixel(p);pixels[`${layout}-${finish}`]=rgba;
    check(`${layout} ${finish} paints silver border pixels`,rgba[3]===255&&rgba.slice(0,3).every(n=>n>80));
   }
-  await p.screenshot({path:`${out}/${layout}-foil.png`});await p.locator('#finish').selectOption('ordinary');await ready(p);
+  await p.screenshot({path:`${out}/${layout}-foil.png`});await p.locator('#finish-toggle').click();await p.locator('[data-finish="'+'ordinary'+'"]').click();await ready(p);
  }
  await p.reload();await ready(p);
  check('silver survives reload with the old frame',await p.evaluate(async()=>{const {savedCards}=await import(new URL('./storage.js',location.href));const card=(await savedCards())[0];return card.border_color==='silver'&&card.frame_style==='retro';}));

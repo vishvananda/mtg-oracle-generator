@@ -22,7 +22,7 @@ try{
   await page.goto(base);await settled(page,'cube');
   await cardReady(page);
   check('cube is the first-visit default',await page.locator('#jewel-toggle').getAttribute('data-design')==='cube');
-  check('unused dual animation is not downloaded',!requests.some(u=>u.endsWith('/jewel-dual.webp')));
+  check('unused dual animation is not downloaded',!requests.some(u=>new URL(u).pathname.endsWith('/jewel-dual.webp')));
   check('header retains the small gold cube',await page.locator('.masthead .wordmark svg').count()===1&&await page.locator('.masthead img').count()===0);
   check('large jewel sits above Imagine it',await page.evaluate(()=>{const j=document.querySelector('#jewel-toggle').getBoundingClientRect(),h=document.querySelector('#hero-title').getBoundingClientRect();return j.width>=370&&j.bottom<=h.top;}));
   check('animation is centered above the load button',await page.evaluate(()=>{const a=document.querySelector('#jewel-toggle').getBoundingClientRect(),b=document.querySelector('#load-button').getBoundingClientRect();return Math.abs(a.x+a.width/2-b.x-b.width/2)<1;}));
@@ -60,7 +60,7 @@ try{
   const phone=await mobile.newPage();track(phone);const mobileRequests=[];phone.on('request',r=>mobileRequests.push(r.url()));
   await phone.goto(url('cube'));await settled(phone,'cube',true);
   await cardReady(phone);
-  check('mobile downloads no large animation',!mobileRequests.some(u=>/jewel-(cube|dual)\.webp$/.test(u)));
+  check('mobile downloads no large animation',!mobileRequests.some(u=>/jewel-(cube|dual)\.webp$/.test(new URL(u).pathname)));
   check('mobile keeps the gold mark and card carousel',await phone.locator('.wordmark svg').isVisible()&&await phone.locator('.card-design-preview').isVisible()&&!(await phone.locator('#jewel-toggle').isVisible()));
   for(const width of [390,320]){
     await phone.setViewportSize({width,height:844});

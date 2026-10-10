@@ -10,8 +10,10 @@ let kind=valid(query)?query:'cube';
 let visible=false,revision=0;
 function update(){
   const request=++revision;
-  const still=reduced.matches||document.hidden||!visible;
-  const url=new URL(`./assets/jewel-${kind}${still?'-still':''}.webp`,import.meta.url).href;
+  const still=reduced.matches||document.hidden||!visible||document.body.dataset.generationBusy==='true';
+  const asset=new URL(`./assets/jewel-${kind}${still?'-still':''}.webp`,import.meta.url);
+  asset.search=new URL(import.meta.url).search;
+  const url=asset.href;
   const current=kind==='dual'?'Dual tetrahedron':'Cube';
   const next=kind==='dual'?'cube':'dual tetrahedron';
   button.setAttribute('aria-label',`${current} jewel. Switch to ${next}`);
@@ -30,6 +32,7 @@ button.addEventListener('click',()=>{
 });
 reduced.addEventListener('change',update);
 document.addEventListener('visibilitychange',update);
+new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-generation-busy']});
 new IntersectionObserver(entries=>{
   const next=!isMobileDevice&&entries[0].isIntersecting;
   visible=next;update();

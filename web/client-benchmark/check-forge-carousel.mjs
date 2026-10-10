@@ -45,7 +45,7 @@ try{
   check('land retains its land panels',await page.locator('.rendered-card-background img').evaluate(e=>e.src.endsWith('/bg/Land.webp')));
   check('foil is ready before the land appears',await page.locator('.premium-card').evaluate(e=>e.hasAttribute('data-foil-webgl-face')||document.documentElement.classList.contains('foil-static-fallback')));
   await page.screenshot({path:`${out}/land-etched.png`});
-  await page.locator('#finish').selectOption('ordinary');await ready(page);
+  await page.locator('#finish-toggle').click();await page.locator('[data-finish="'+'ordinary'+'"]').click();await ready(page);
   check('regular land uses the same blue/red frame',await page.locator('.rendered-card-frame img').evaluate(e=>e.src.endsWith('/frames/UR.webp')));
   check('editing the land preserves its actual colorless data',await page.evaluate(async()=>{const {savedCards}=await import(new URL('./storage.js',location.href));const land=(await savedCards())[0];return land.type_line==='Legendary Land'&&land.colors.length===0;}));
   await page.screenshot({path:`${out}/land-regular.png`});
