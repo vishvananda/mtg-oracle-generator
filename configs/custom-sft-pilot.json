@@ -1,0 +1,23 @@
+{
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "method": "QLoRA",
+  "load_in_4bit": true,
+  "quant_type": "nf4",
+  "double_quant": true,
+  "epochs": 1,
+  "max_length": 4096,
+  "per_device_train_batch_size": 8,
+  "gradient_accumulation_steps": 2,
+  "per_device_eval_batch_size": 8,
+  "monitoring_split": "train",
+  "validation_max_examples": 64,
+  "learning_rate": 0.00002,
+  "warmup_ratio": 0.05,
+  "seed": 43,
+  "completion_only_loss": true,
+  "packing": false,
+  "generation_batch_size": 24,
+  "max_new_tokens": 2048,
+  "training_seconds": 3600
+}
