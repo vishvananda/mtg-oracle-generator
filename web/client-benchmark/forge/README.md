@@ -16,6 +16,8 @@ to save; Enter saves the name, Ctrl/Command+Enter saves rules, and Escape cancel
 The card stays still during selection and typing, including while a mobile
 keyboard changes the viewport height. Input font, visual size and spacing match
 the printed text; the native control stays at least 16px to avoid iOS focus zoom.
+Inputs are transparent; the old ink is hidden while editing. Foil temporarily
+uses the textured native face so its baked text does not show through.
 Rules preserve newlines;
 self-references display the card's name. No model download is needed.
 The previous complete card, including foil pixels, remains visible until the next
@@ -38,6 +40,9 @@ Mobile devices get the carousel and manual editor without importing model
 runtimes or downloading weights. Both models independently crashed during
 loading on the user's iPhone; a smaller combined batch would not solve that.
 The restriction is conservative device detection, not a measured RAM limit.
+
+Use **Browse examples** and **Back to your cards** to switch galleries without
+changing saved designs. Editing a sample creates a saved copy.
 
 The latest 20 creations and their artwork are stored in IndexedDB on this
 origin. **Save card** exports JSON with embedded artwork. Browser storage may
@@ -70,7 +75,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`e1609d318b4ea71249e35549dae8c6cf317b5892`, rebased onto the editor’s
+`df26b5f9e69fa72b431e27f5c7c048895c8c7a9d`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -102,6 +107,9 @@ Cross-Origin-Embedder-Policy: require-corp
 Cross-Origin-Resource-Policy: same-origin
 X-Content-Type-Options: nosniff
 ```
+
+App files use `Cache-Control: no-cache` so a reload revalidates changed code and
+styles. Versioned model URLs and model caches are unchanged.
 
 The production host stages ordinary static files into timestamped releases,
 links the existing weight directories, then atomically swaps
@@ -156,38 +164,49 @@ CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarchs.com/forge/ \
 # FORGE_BROWSER=webkit uses an installed Playwright WebKit for the latter.
 ```
 
-## Planned symbol and number editing
+The [editing receipt](../forge-editing-verification-20261010.json) records the
+50-flow UI check, 15 scroller checks, seven gesture checks, and 19 inline-editing
+plus 11 frame-image checks in each of Chromium and WebKit. The deployed site also
+passed the 15 scroller and seven gesture checks. Shared renderer unit tests
+(1,216), typechecking and builds pass. Its full-game WebGL gate still reports
+the previously seen `special-the` ability-row overlap; it is not a passing gate.
 
-The next pass replaces the remaining modal-style fields with one anchored,
-snapping picker. This is a design plan, not functionality in the current release.
+## Symbol and number editing
 
-- **Set symbol:** vertical carousel of sets, horizontal carousel of rarities;
-  every item uses the actual rendered symbol. Keep the centered set name visible
-  and provide search for the 323-set list.
-- **Mana:** click an individual symbol; scroll symbol families/colors, or numbers
-  for generic mana. A nearby **+** inserts a symbol. In rules, it inserts at the
-  caret or edits that exact symbol without replacing the surrounding text.
-- **Type line:** individually scrollable card-type tokens with **+** for multiple
-  types (for example Artifact Creature), toggle chips for supertypes, and a
-  searchable subtype picker after the dash. Suggest subtypes for the active card
-  types, allow custom text, and preserve multiple subtypes. Return to a normal
-  printed type line when finished; do not silently erase incompatible fields.
-- **Stats:** independent power/toughness and starting-loyalty scrollers. Loyalty
-  ability costs include positive values, zero, negative values, X and −X.
-  Keep direct typing for unusual values such as `*` or `1+*`.
-- **Gestures:** wheel and trackpad, arrow keys, and pointer displacement from a
-  center dead zone. Only an explicitly opened picker scrolls on pointer movement.
-  Ramp speed gradually and stop at the dead zone. Touch uses a larger tray offset
-  above the finger; lock to the intended axis to avoid accidental rarity changes.
-- **Commit:** preview immediately, snap on settling, then commit on release/Done,
-  Enter or click-away; Escape cancels. One completed gesture should be one undo
-  step. Sort a completed mana cost only after editing settles, maintaining stable
-  symbol identities for animation. Do not reorder separate ability costs, tap
-  symbols, mana-production alternatives, or ordinary rules text.
+Set, mana, type and stats now open an anchored snapping control. Wheel/trackpad,
+arrow keys, dragging and hovering near an edge change values. Moving back to the
+center or leaving the control stops repeat scrolling. Touch gets larger rows.
 
-Implement and test the picker with set/rarity first, then reuse its gesture and
-accessibility behavior for mana and stats. Rules need addressable inline symbol
-tokens before the same picker can safely edit individual ability costs.
+- Set scrolls vertically; rarity scrolls horizontally (Shift+wheel also works).
+  Search narrows the 323-set list. The selected set name and rarity stay visible.
+- Mana has selectable symbol chips and **+**. Done orders the cost and combines
+  numeric additions; it preserves repeated colored symbols.
+- Type has scrollable card types, **+** for additional types, supertype toggles,
+  and a free-text subtype field that preserves multiple words.
+- Power, toughness and starting loyalty have separate number controls, including
+  symbolic values. While editing rules, chips expose each mana symbol and signed
+  loyalty ability cost. **+ Mana** inserts at the text caret. Other wording and
+  separate ability costs are preserved.
+- Drafts preview immediately. Done/Enter or clicking outside saves; Cancel/Escape
+  restores the original card. The carousel pauses while editing.
+
+Subtype suggestions, a global undo history and continuous wheel animation remain
+future refinements. This release snaps between discrete choices.
+
+```bash
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-scrollers.mjs
+CHROME_BIN=/path/to/chrome FORGE_URL=https://tetrarcum.com/ node check-forge-gestures.mjs
+```
+
+The typography comparison uses [Toski's KHM printing](https://scryfall.com/card/khm/197/toski-bearer-of-secrets)
+at equal card size. Title sizing stays unchanged; the modern type line is about
+7% smaller. The demo stag is now **Crownroot, Spring Eternal**. Already-saved
+copies retain their user-editable names. `compare-typography.mjs` captures the
+reference scan and renderer side by side; reference assets are not distributed.
+Regular-frame layers now use explicitly positioned, clipped images instead of
+large CSS background sprites. Desktop/mobile Chromium and WebKit captures check
+image proportions and bottom alignment; physical iPhone confirmation is still
+needed for the reported rendering defect.
 
 ## Planeswalker comparison
 

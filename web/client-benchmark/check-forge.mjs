@@ -27,7 +27,7 @@ try{
   await page.locator('#next').click();await settled(page);check('carousel shows a planeswalker',await page.locator('#card-caption').innerText()==='Neris, Keeper of Lost Tides');
   check('standalone rules accessibility copy is visually clipped',await page.locator('.rendered-special-sr').first().evaluate(e=>e.getBoundingClientRect().width===1&&getComputedStyle(e).overflow==='hidden'));
   check('loyalty costs fit inside their badges',await page.locator('.rendered-special-badge').first().evaluate(e=>parseFloat(getComputedStyle(e).fontSize)/e.getBoundingClientRect().height<.56));
-  await page.screenshot({path:`${out}/planeswalker.png`});await page.locator('#next').click();await settled(page);check('carousel navigation',await page.locator('#card-caption').innerText()==='Crownroot, the Returning Spring');
+  await page.screenshot({path:`${out}/planeswalker.png`});await page.locator('#next').click();await settled(page);check('carousel navigation',await page.locator('#card-caption').innerText()==='Crownroot, Spring Eternal');
   await page.waitForFunction(()=>document.querySelector('audio')?.readyState>=2);
   check('opening theme plays after interaction',await page.evaluate(()=>!document.querySelector('audio').paused));
   await page.locator('#sound-toggle').click();check('sound toggle mutes music',await page.evaluate(()=>document.querySelector('audio').paused));
@@ -55,11 +55,14 @@ try{
 
   await page.locator('.artist-edit-target').click();await page.locator('#edit-artist').fill('Forge Tester');await page.locator('#edit-save').click();await settled(page);
   check('artist credit is directly editable',await page.locator('.rendered-card-footer-artist').innerText()==='Forge Tester');
-  await page.locator('.set-edit-target').click();await page.getByPlaceholder('Search by set name or code').fill('Kaldheim');await page.getByRole('button',{name:'Kaldheim KHM',exact:true}).click();await page.locator('#edit-save').click();await settled(page);
+  await page.locator('.set-edit-target').click();await page.getByRole('group',{name:'Set and rarity scroller'}).waitFor();await page.getByRole('searchbox',{name:'Find a set'}).fill('Kaldheim');await page.getByRole('button',{name:'Kaldheim mythic',exact:true}).click();await page.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await settled(page);
   check('searchable set picker updates card symbol',(await page.locator('.rendered-card-set-mark').getAttribute('src')).endsWith('/khm.svg'));
   check('chosen set is saved with the card',(await stored(page))[0].set_code==='KHM');
-  await page.locator('[data-card-design-part="mana"]').click();await page.getByRole('button',{name:'Clear cost',exact:true}).click();await page.getByRole('button',{name:'Add Blue mana',exact:true}).click();await page.getByRole('button',{name:'Add Black mana',exact:true}).click();await page.getByRole('button',{name:'Add generic',exact:true}).click();await page.locator('#edit-save').click();await settled(page);
-  check('clickable mana symbols build the saved cost',(await stored(page))[0].mana_cost==='{U}{B}{1}');
+  await page.locator('[data-card-design-part="mana"]').click();
+  while(await page.getByRole('button',{name:'Remove symbol',exact:true}).count())await page.getByRole('button',{name:'Remove symbol',exact:true}).click();
+  for(const symbol of ['U','B','1']){await page.getByRole('button',{name:'Add mana symbol',exact:true}).click();const wheel=page.getByRole('group',{name:'Mana symbol scroller'});if(symbol!=='1')for(let i=0;i<(symbol==='U'?31:32);i++)await wheel.press('ArrowDown');}
+  await page.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await settled(page);
+  check('scrollable mana symbols build and order the saved cost',(await stored(page))[0].mana_cost==='{1}{U}{B}');
   await page.locator('.frame-edit-target').first().click();await page.locator('#edit-frame_style').selectOption('retro');await page.locator('#edit-save').click();await settled(page);await page.locator('.rendered-layout-retro .retro-frame').waitFor();
   check('art-frame click switches to the new renderer’s old frame',await page.locator('.rendered-layout-retro').count()===1);
   await page.locator('.border-edit-target').first().click();await page.locator('#edit-border_color').selectOption('white');await page.locator('#edit-save').click();await settled(page);await page.locator('.retro-border').waitFor();

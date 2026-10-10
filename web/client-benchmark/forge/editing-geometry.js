@@ -25,9 +25,7 @@ export function holdCardSize(stage) {
 /** Keep a 16px native control for iOS focus, but paint at the card's exact size. */
 export function matchCardType(input,font) {
   const size=parseFloat(font.fontSize),scale=Math.min(1,size/16);
-  const rgb=font.color.match(/[\d.]+/g)?.slice(0,3).map(Number);
-  const light=rgb&&(.2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2])>160;
-  input.style.background=light?'#262c34':'#e8edf0';
+  input.style.background='transparent';input.style.caretColor=font.color;
   const length=value=>value==='normal'?'normal':`${parseFloat(value)/scale}px`;
   Object.assign(input.style,{
     fontFamily:font.fontFamily,fontWeight:font.fontWeight,fontStyle:font.fontStyle,

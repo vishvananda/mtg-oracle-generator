@@ -1,0 +1,30 @@
+import {chromium} from 'playwright';
+import {mkdir,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const base=process.env.FORGE_URL||'http://127.0.0.1:8793/forge/',out=process.env.FORGE_EVIDENCE||'/tmp/forge-scroll-check';await mkdir(out,{recursive:true});
+const browser=await chromium.launch({executablePath:process.env.CHROME_BIN,args:['--no-sandbox','--enable-unsafe-swiftshader']});const checks=[],errors=[];
+const check=(label,value)=>{console.log(label,value);checks.push({label,pass:Boolean(value)});assert.ok(value,label);};
+const ready=page=>page.waitForFunction(()=>document.querySelector('#card-preview')?.getAttribute('aria-busy')==='false',{},{timeout:60000});
+let p;
+try{
+ const context=await browser.newContext({viewport:{width:1280,height:900}});await context.addInitScript(()=>localStorage.setItem('forge-sound','off'));p=await context.newPage();p.on('pageerror',e=>errors.push(e.message));await p.goto(base);await ready(p);await p.locator('#pause-carousel').click();
+ await p.locator('#next').click();await ready(p);await p.locator('#next').click();await ready(p);
+ await p.locator('[data-card-design-part="name"]').click();
+ check('title input transparent and old printed ink hidden',await p.locator('#edit-name').evaluate(e=>getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)'&&getComputedStyle(document.querySelector('.rendered-card-title strong')).visibility==='hidden'));
+ check('foil bitmap hides its duplicate ink during editing',await p.locator('.premium-foil-coating').evaluate(e=>getComputedStyle(e).visibility==='hidden'));
+ await p.locator('#edit-name').fill('Crownroot, Spring Eternal');await p.keyboard.press('Enter');await ready(p);
+ await p.locator('[data-card-design-part="rules"]').click();
+ check('rules input transparent and printed rules hidden',await p.locator('#edit-oracle_text').evaluate(e=>getComputedStyle(e).backgroundColor==='rgba(0, 0, 0, 0)'&&getComputedStyle(document.querySelector('.rendered-card-rule-line')).visibility==='hidden'));
+ await p.screenshot({path:`${out}/transparent-rules.png`});await p.keyboard.press('Escape');
+ await p.locator('[data-card-design-part="stats"]').click();const stats=p.getByRole('group',{name:'power scroller'});await stats.press('ArrowDown');await p.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await ready(p);
+ check('stat wheel persists changed power',(await p.locator('.rendered-card-stats').innerText())==='5/6');
+ check('return to examples available after editing',await p.locator('#browse-examples').isVisible());await p.locator('#browse-examples').click();await ready(p);check('all five examples still available',await p.locator('#dots button').count()===5);await p.locator('#browse-examples').click();await ready(p);check('edited card survives gallery round trip',(await p.locator('.rendered-card-stats').innerText())==='5/6');
+ await p.locator('[data-card-design-part="mana"]').click();const cost=p.getByRole('group',{name:'Mana symbol scroller'});await cost.press('ArrowDown');await p.getByRole('button',{name:'Add mana symbol',exact:true}).click();await p.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await ready(p);check('mana sorts generic symbols before colors',(await p.locator('.rendered-card-mana .mana-symbol').allTextContents()).join('')==='5GG');
+ await p.locator('.set-edit-target').click();const set=p.getByRole('group',{name:'Set and rarity scroller'});await set.waitFor();await set.press('ArrowLeft');await set.press('ArrowDown');await p.screenshot({path:`${out}/set-scroller.png`});await p.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await ready(p);check('set wheel applies selected set',(await p.locator('.rendered-card-footer-set').innerText())!=='FORGE');
+ await p.locator('[data-card-design-part="type"]').click();await p.getByRole('button',{name:'Snow',exact:true}).click();await p.getByRole('textbox',{name:'Subtypes',exact:true}).fill('Elk Spirit Druid');await p.locator('.card-scroll-editor > footer').getByRole('button',{name:'Done',exact:true}).click();await ready(p);check('type controls preserve multiple words',(await p.locator('.rendered-card-type > span').innerText()).includes('Legendary Snow Creature — Elk Spirit Druid'));
+ await p.locator('[data-card-design-part="stats"]').click();await p.getByRole('group',{name:'power scroller'}).press('ArrowDown');await p.locator('.card-scroll-editor > footer').getByRole('button',{name:'Cancel',exact:true}).click();await ready(p);check('cancel restores prior numeric stat',(await p.locator('.rendered-card-stats').innerText())==='5/6');
+ await p.locator('#browse-examples').click();await ready(p);await p.locator('#next').click();await ready(p);await p.locator('[data-card-design-part="rules"]').click();await p.getByRole('button',{name:'Edit loyalty cost +1',exact:true}).click();await p.getByRole('group',{name:'Loyalty ability cost scroller'}).press('ArrowDown');await p.locator('.inline-symbol-picker').getByRole('button',{name:'Done',exact:true}).click();check('signed ability wheel changes only the ability cost',(await p.locator('#edit-oracle_text').inputValue()).startsWith('+2: Scry 2.'));await p.getByRole('button',{name:'Save card text',exact:true}).click();await ready(p);
+ await p.locator('[data-card-design-part="rules"]').hover();check('no orange dashed edit outlines',await p.locator('[data-card-design-part="rules"]').evaluate(e=>!['dashed','dotted'].includes(getComputedStyle(e).outlineStyle)));
+ await p.reload();await ready(p);check('saved changes survive reload',(await p.locator('.rendered-special-sr').first().innerText()).startsWith('+2:'));
+ check('no uncaught page errors',errors.length===0);await context.close();
+}finally{if(p&&!p.isClosed()){await p.screenshot({path:`${out}/last.png`});console.log(await p.locator('#card-preview').getAttribute('aria-busy'),await p.locator('#message').innerText());}await browser.close();await writeFile(`${out}/receipt.json`,JSON.stringify({base,checks,errors},null,2));console.log(JSON.stringify({checks:checks.length,errors,out}));}

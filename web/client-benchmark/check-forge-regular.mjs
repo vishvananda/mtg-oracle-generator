@@ -23,7 +23,7 @@ const geometry=()=>page.evaluate(()=>{
 const near=(actual,expected)=>Object.entries(actual).every(([part,rect])=>rect.every((v,i)=>Math.abs(v-expected[part][i])<.001));
 try{
  await page.goto(base);await settled();await page.locator('#next').click();await page.locator('#next').click();await settled();
- assert.equal(await page.locator('#card-caption').innerText(),'Crownroot, the Returning Spring');
+ assert.equal(await page.locator('#card-caption').innerText(),'Crownroot, Spring Eternal');
  const etched=await geometry();await page.screenshot({path:`${out}/green-etched.png`});
  await page.locator('#finish').selectOption('ordinary');await settled();
  assert.ok(near(await geometry(),etched));checks.push('Crownroot frame rectangles remain aligned when switching etched to regular');
@@ -32,6 +32,14 @@ try{
  for(const [width,height] of [[390,664],[430,932],[390,390],[390,664]]){
   await page.setViewportSize({width,height});await page.waitForTimeout(150);
   assert.ok(near(await geometry(),etched));checks.push(`Regular geometry survives viewport ${width}x${height}`);
+  assert.ok(await page.evaluate(()=>{
+    for(const parent of document.querySelectorAll('.rendered-image-slice,.rendered-image-plate')){
+      const image=parent.querySelector('img');if(!image?.naturalWidth)return false;
+      const a=parent.getBoundingClientRect(),b=image.getBoundingClientRect();
+      if(Math.abs(a.width-b.width)>.2 || Math.abs(b.height/b.width-image.naturalHeight/image.naturalWidth)>.005)return false;
+      if(parent.classList.contains('rendered-card-type')&&Math.abs(a.bottom-b.bottom)>.2)return false;
+    }return true;
+  }));checks.push(`Frame image slices preserve intrinsic proportions and bottom alignment at ${width}x${height}`);
   await page.screenshot({path:`${out}/green-regular-${width}-${height}.png`});
  }
  assert.deepEqual(errors,[]);checks.push('No uncaught JavaScript errors');

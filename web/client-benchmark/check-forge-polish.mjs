@@ -1,10 +1,11 @@
 // Real renderer regression checks. Keyboard resize is simulated, not a physical iOS keyboard.
-import {chromium,devices} from 'playwright';
+import {chromium,webkit,devices} from 'playwright';
 import assert from 'node:assert/strict';
 import {mkdir,writeFile} from 'node:fs/promises';
 const base=process.env.FORGE_URL||'https://tetrarcum.com/',out=process.env.FORGE_EVIDENCE||'/tmp/forge-polish';
 await mkdir(out,{recursive:true});
-const browser=await chromium.launch({executablePath:process.env.CHROME_BIN||undefined,args:['--no-sandbox','--enable-unsafe-swiftshader']});
+const engine=process.env.FORGE_BROWSER||'chromium';
+const browser=await (engine==='webkit'?webkit:chromium).launch(engine==='webkit'?{}:{executablePath:process.env.CHROME_BIN||undefined,args:['--no-sandbox','--enable-unsafe-swiftshader']});
 const checks=[],errors=[];
 const check=(name,value)=>{assert.ok(value,name);checks.push(name);console.log('PASS',name);};
 const settled=page=>page.waitForFunction(()=>document.querySelector('#card-preview')?.getAttribute('aria-busy')==='false');
@@ -19,7 +20,7 @@ async function sameType(page,field,source){
 }
 try{
  const context=await browser.newContext({...devices['iPhone 13']}),page=await context.newPage();page.on('pageerror',e=>errors.push(e.message));
- await page.goto(base);await settled(page);
+ await page.addInitScript(()=>localStorage.setItem('forge-sound','off'));await page.goto(base);await settled(page);
  const original=await page.locator('.card-stage').boundingBox();
  await page.locator('#edit-own-card').click();
  check('mobile title matches printed font, size, line height and tracking',await sameType(page,'#edit-name','.rendered-card-title strong'));
@@ -45,7 +46,7 @@ try{
  const slow=await browser.newContext({viewport:{width:1280,height:900}}),gallery=await slow.newPage();gallery.on('pageerror',e=>errors.push(e.message));
  const initial=gate(),next=gate();
  await gallery.route('**/assets/dusk-wing.webp',async route=>{await initial.promise;await route.continue();});
- await gallery.goto(base,{waitUntil:'domcontentloaded'});
+ await gallery.addInitScript(()=>localStorage.setItem('forge-sound','off'));await gallery.goto(base,{waitUntil:'domcontentloaded'});
  await gallery.locator('.preview-rendering .rendered-card-face').waitFor();
  check('first card is blank while its artwork loads',await gallery.locator('.preview-rendering').evaluate(e=>getComputedStyle(e).opacity==='0'));
  check('no fallback copy is exposed on first load',await gallery.locator('.preview-last-card').count()===0);
@@ -66,4 +67,4 @@ try{
  check('keyboard controls keep a visible focus indicator',await gallery.evaluate(()=>getComputedStyle(document.activeElement).outlineStyle==='solid'));
  await slow.close();
  check('no uncaught JavaScript errors',errors.length===0);
-}finally{await browser.close();await writeFile(`${out}/receipt.json`,JSON.stringify({url:base,checks,errors,limits:'Chromium mobile emulation and simulated viewport resize; physical iOS keyboard not exercised.'},null,2)+'\n');}
+}finally{await browser.close();await writeFile(`${out}/receipt.json`,JSON.stringify({engine,url:base,checks,errors,limits:'Browser mobile emulation and simulated viewport resize; physical iOS keyboard not exercised.'},null,2)+'\n');}

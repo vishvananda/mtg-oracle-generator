@@ -3,8 +3,7 @@ import {mountRenderer} from './renderer.js';
 import {editOnCard} from './inline-editor.js';
 import {savedCards,saveCards} from './storage.js';
 import {Sound} from './sound.js';
-import {mountSetPicker} from './set-picker.js';
-import {mountManaPicker} from './mana-picker.js';
+import {editWithScrollers} from './card-scrollers.js';
 import {isMobileDevice} from '/model-bench/device-support.js';
 const $=id=>document.getElementById(id), sound=new Sound();
 let models={ready:false,cancel(){},dispose(){}};
@@ -27,6 +26,7 @@ function controls(){
   $('description').disabled=busy||loading;
   $('stop-button').hidden=!busy||loading;
   $('previous').disabled=busy||cards.length<2;$('next').disabled=busy||cards.length<2;
+  $('browse-examples').hidden=!generated.length;$('browse-examples').disabled=busy||loading;$('browse-examples').textContent=active().demo?'Back to your cards':'Browse examples';
   $('finish').disabled=busy;$('card-details').disabled=busy||previewPending;$('export-card').disabled=busy||previewPending;
   $('edit-own-card').disabled=busy||loading||previewPending;$('edit-own-card').querySelector('span').textContent=active().demo?'Edit your own card':'Edit this card';
   $('pause-carousel').setAttribute('aria-pressed',String(paused));$('pause-carousel').setAttribute('aria-label',paused?'Play carousel':'Pause carousel');$('pause-carousel').textContent=paused?'▷':'Ⅱ';
@@ -106,7 +106,7 @@ $('gallery').onpointerenter=()=>{hovering=true;};$('gallery').onpointerleave=()=
 $('gallery').addEventListener('keydown',e=>{if(editor||busy||e.target.matches('input,textarea,select'))return;if(e.key==='ArrowRight'){e.preventDefault();show(index+1);}if(e.key==='ArrowLeft'){e.preventDefault();show(index-1);}});
 setInterval(()=>{if(!paused&&!reduced.matches&&!busy&&!loading&&!editor&&!hovering&&!document.hidden&&!$('gallery').contains(document.activeElement)&&Date.now()-lastChange>=10000)show(index+1);},500);
 document.addEventListener('visibilitychange',()=>{lastChange=Date.now();});
-$('finish').onchange=()=>{const finish=$('finish').value;adoptDemo();active().finish_id=finish;draw();void persist();};
+$('finish').onchange=()=>{const finish=$('finish').value;closeEditor(false);adoptDemo();active().finish_id=finish;draw();void persist();};
 function field(name,label,value,{textarea=false,type='text',options}={}){
   const container=document.createElement('label');container.textContent=label;
   const input=document.createElement(options?'select':textarea?'textarea':'input');input.name=name;input.id=`edit-${name}`;
@@ -158,20 +158,25 @@ function openEditor(part){
       }
       draw();lastChange=Date.now();if(restore)preview.focus(part);
     }
-    session.inline=editOnCard($('card-preview'),part,original,{save:end,cancel:restore=>end(original,restore)});
+    session.inline=editOnCard($('card-preview'),part,original,{save:end,cancel:restore=>end(original,restore),symbol:preview.manaSymbol});
     return;
+  }
+  if(['set','mana','stats','type'].includes(part)){
+    const session={part,id:active().id};editor=session;lastChange=Date.now();sound.play('edit');
+    session.inline=editWithScrollers($('card-preview'),part,active(),{
+      symbols:preview.manaSymbol,sets:preview.setSymbol,
+      preview:card=>preview.update(card,$('finish').value,null),
+      save:(draft,restore)=>{editor=null;const changed=JSON.stringify(draft)!==JSON.stringify(active());if(changed){adoptDemo();Object.assign(active(),draft,{id:active().id,demo:false,updated_at:new Date().toISOString()});void persist();}draw();lastChange=Date.now();if(restore)preview.focus(part);},
+      cancel:restore=>{editor=null;draw();lastChange=Date.now();if(restore)preview.focus(part);},
+    });return;
   }
   const c=active();editor={part,id:c.id};sound.play('edit');lastChange=Date.now();
   $('edit-fields').replaceChildren();$('edit-error').textContent='';$('edit-panel').hidden=false;$('gallery').classList.add('editing');
   $('edit-heading').textContent=({name:'Give it a name',mana:'Mana cost',type:'Type & rarity',rules:'Shape its abilities',stats:'Strength & resilience',art:'Imagine the artwork',details:'The finishing touches',set:'Choose a set',artist:'Artist credit',border:'Choose the border',frame:'Choose the frame'})[part];
   $('edit-save').textContent='Save changes';
-  if(part==='mana'){const input=field('mana_cost','Mana cost · e.g. {3}{R}',c.mana_cost);mountManaPicker($('edit-fields'),input,preview.manaSymbol);}
-  if(part==='type'){field('type_line','Type line',c.type_line).required=true;field('rarity','Rarity',c.rarity,{options:['common','uncommon','rare','mythic','special','bonus']});field('colors','Colors · W U B R G',c.colors.join(' '));}
-  if(part==='stats'){if(/Planeswalker/i.test(c.type_line))field('loyalty','Starting loyalty',c.loyalty);else{field('power','Power',c.power);field('toughness','Toughness',c.toughness);}}
   if(part==='border'){const select=field('border_color','Border',c.border_color||'auto',{options:['auto','black','white']});select.options[0].textContent='Match set and finish';}
   if(part==='frame'){const select=field('frame_style','Frame',c.frame_style||'auto',{options:['auto','modern','retro']});select.options[0].textContent='Match set';select.options[2].textContent='Old frame';}
   if(part==='artist')field('artist','Artist credit',c.artist);
-  if(part==='set'){const host=document.createElement('div');$('edit-fields').append(host);void mountSetPicker(host,c,preview.setSymbol).catch(error=>{host.textContent=error.message;});}
   if(part==='details'){field('artist','Artist',c.artist);field('rarity','Rarity',c.rarity,{options:['common','uncommon','rare','mythic','special','bonus']});}
   if(part==='art'){
     artFields(c,models.ready&&!isMobileDevice?'generate':'url');
@@ -182,6 +187,7 @@ function openEditor(part){
 function closeEditor(restore=true){if(editor?.inline){editor.inline.commit();return;}const part=editor?.part;editor=null;$('edit-panel').hidden=true;$('gallery').classList.remove('editing');preview?.update(active(),$('finish').value,null);lastChange=Date.now();if(restore&&part)preview?.focus(part);}
 $('edit-close').onclick=()=>closeEditor();$('edit-cancel').onclick=()=>closeEditor();$('card-details').onclick=()=>openEditor('details');
 $('edit-own-card').onclick=()=>openEditor('name');
+$('browse-examples').onclick=()=>{if(busy||loading)return;closeEditor(false);cards=active().demo?generated:demos.map(c=>({...c}));index=0;pendingEditor=null;lastChange=Date.now();draw(true);};
 $('edit-panel').addEventListener('keydown',e=>{
   if(e.key==='Escape'){e.preventDefault();closeEditor();}
   if(e.key==='Tab'){const items=[...$('edit-panel').querySelectorAll('button,input,textarea,select')].filter(e=>!e.disabled&&e.type!=='hidden');const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}

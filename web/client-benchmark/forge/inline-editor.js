@@ -1,6 +1,7 @@
+import {rulesScrollers} from './rules-scrollers.js';
 import {holdCardSize,matchCardType} from './editing-geometry.js';
 /** Native inputs on the printed card: keyboard/IME support, no contenteditable HTML. */
-export function editOnCard(host,part,value,{save,cancel}) {
+export function editOnCard(host,part,value,{save,cancel,symbol}) {
   const releaseSize=holdCardSize(host.closest('.card-stage'));
   const name=part==='name',wrap=document.createElement('div');
   wrap.className=`inline-card-editor inline-card-${part}`;
@@ -18,11 +19,12 @@ export function editOnCard(host,part,value,{save,cancel}) {
   tools.append(hint,undo,done);wrap.append(field,tools);
   host.classList.add('inline-editing',`inline-editing-${part}`);
   const tilt=host.querySelector('.card-tilt');tilt.append(wrap);
+  const symbols=!name&&symbol?rulesScrollers(wrap,input,symbol):null;
   let closed=false;
   function finish(commit,restore=false){
     if(closed)return;closed=true;const next=input.value;
     observer.disconnect();document.fonts.removeEventListener('loadingdone',position);document.removeEventListener('pointerdown',outside,true);
-    wrap.remove();host.classList.remove('inline-editing',`inline-editing-${part}`);releaseSize();
+    symbols?.dispose();wrap.remove();host.classList.remove('inline-editing',`inline-editing-${part}`);releaseSize();
     if(commit)save(next,restore);else cancel(restore);
   }
   function outside(event){if(!wrap.contains(event.target))finish(true);}
@@ -38,7 +40,11 @@ export function editOnCard(host,part,value,{save,cancel}) {
       const start=label?.getBoundingClientRect().left||rect.left+6;
       width=(mana?mana.getBoundingClientRect().left-5:rect.right-6)-start;left=start-box.left;
       font=getComputedStyle(label||source);
-    }else font=getComputedStyle(source.querySelector('.rendered-special-text,.rendered-card-rule-line')||source);
+    }else {
+      font=getComputedStyle(source.querySelector('.rendered-special-text,.rendered-card-rule-line')||source);
+      const x=parseFloat(style.paddingLeft)||0,y=parseFloat(style.paddingTop)||0;
+      left+=x;top+=y;width-=x+(parseFloat(style.paddingRight)||0);height-=y+(parseFloat(style.paddingBottom)||0);
+    }
     Object.assign(wrap.style,{left:`${left}px`,top:`${top}px`,width:`${width}px`,height:`${height}px`});
     matchCardType(input,font);
   }
@@ -49,7 +55,7 @@ export function editOnCard(host,part,value,{save,cancel}) {
     if(e.key==='Escape'){e.preventDefault();finish(false,true);}
     if(e.key==='Enter'&&(name||e.ctrlKey||e.metaKey)){e.preventDefault();finish(true,true);}
   });
-  wrap.addEventListener('focusout',e=>{if(!wrap.contains(e.relatedTarget))finish(true);});
+  wrap.addEventListener('focusout',event=>{if(wrap.contains(event.relatedTarget))return;setTimeout(()=>{if(!closed&&!wrap.contains(document.activeElement))finish(true);},0);});
   done.onclick=()=>finish(true,true);undo.onclick=()=>finish(false,true);
   const observer=new ResizeObserver(position);observer.observe(tilt);document.fonts.addEventListener('loadingdone',position);position();
   document.addEventListener('pointerdown',outside,true);
