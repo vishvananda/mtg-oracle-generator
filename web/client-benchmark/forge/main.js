@@ -39,7 +39,7 @@ function draw(reveal=false){
   preview?.update(active(),busy?'ordinary':$('finish').value,editor?.part);
   $('card-caption').textContent=active().name;
   $('card-counter').textContent=`${String(index+1).padStart(2,'0')} / ${String(cards.length).padStart(2,'0')}`;
-  $('gallery-kind').textContent=active().demo?'FROM THE FORGE':'YOUR CREATIONS';
+  $('gallery-kind').textContent=active().demo?'Examples':'Your cards';
   $('dots').replaceChildren();
   cards.forEach((card,i)=>{const b=document.createElement('button');b.type='button';b.setAttribute('aria-label',`Show ${card.name}`);b.setAttribute('aria-current',String(i===index));b.onclick=()=>show(i);$('dots').append(b);});
   if(reveal&&!reduced.matches){$('card-holder').classList.remove('reveal');void $('card-holder').offsetWidth;$('card-holder').classList.add('reveal');}
@@ -75,7 +75,7 @@ async function generate(){
     const result=await models.card(description,stage),draft=parseDraft(result.text);
     card={...draft,id:crypto.randomUUID(),demo:false,created_at:new Date().toISOString(),description,text_seed:result.seed,artist:'MTG CardForge',art_prompt:artPrompt(description,draft)};
     appendCard(card);await persist();stage('Imagining the scene…');
-    await paint(card,card.art_prompt);await persist();sound.play('complete');message('Your card is ready. Click its artwork or any detail to edit.');$('generate-label').textContent='Create another';
+    await paint(card,card.art_prompt);await persist();sound.play('complete');message('Card ready.');$('generate-label').textContent='Create another';
   }catch(error){message(error.name==='AbortError'?'Stopped. Any completed card text has been kept.':`${error.message}${card?' Your card text has been kept. Click its artwork to retry.':''}`,error.name!=='AbortError');}
   finally{finish();}
 }
@@ -83,7 +83,7 @@ async function regenerateArt(card,prompt){
   if(busy||loading)return;
   if(!models.ready){pendingArt={id:card.id,prompt};closeEditor();message('Load the models on the left, then the new artwork will be generated.');$('load-button').focus();return;}
   adoptDemo();card=active();start('Imagining the scene…');
-  try{await paint(card,prompt);await persist();sound.play('complete');message('New artwork, same card. Click the image to refine its prompt.');}
+  try{await paint(card,prompt);await persist();sound.play('complete');message('Artwork updated.');}
   catch(error){message(error.name==='AbortError'?'Artwork generation stopped.':error.message,error.name!=='AbortError');}
   finally{finish();}
 }
@@ -135,7 +135,7 @@ async function importArtwork(data){
     if(editor!==target)return;
     adoptDemo();const card=active();if(card.illustration?.startsWith('blob:'))URL.revokeObjectURL(card.illustration);
     card.art_blob=blob;card.illustration=URL.createObjectURL(blob);card.art_source_url=source;card.artist=String(data.artist||'');delete card.demo_image;delete card.art_settings;
-    closeEditor();draw(true);await persist();sound.play('complete');message('Your artwork is ready. Click any detail to keep editing.');
+    closeEditor();draw(true);await persist();sound.play('complete');message('Artwork updated.');
   }catch(error){if(editor===target)$('edit-error').textContent=error.message;}
   finally{button.disabled=false;button.textContent='Use artwork';}
 }

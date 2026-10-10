@@ -51,8 +51,13 @@ export function editWithScrollers(host,part,card,{symbols,sets,save,cancel,tick,
     const location=()=>source?rect(source):{x:host.clientWidth*.86,y:host.clientHeight*.57,width:24,height:24};
     fetch(new URL('./sets.json',import.meta.url)).then(r=>{if(!r.ok)throw Error('Could not load sets.');return r.json();}).then(data=>{
       if(closed)return;const rows=data.sets.map(s=>({...s,label:s.name}));if(!rows.some(s=>s.code===(draft.set_code||'FORGE')))rows.unshift({code:draft.set_code||'FORGE',label:draft.set_code||'Forge'});
-      const render=(b,s,r)=>{glyph(b,s.code,sets(s.code,r));b.dataset.rarity=r;if(!['FORGE','VIZIER'].includes(s.code.toUpperCase()))b.classList.add('monochrome-set');};
+      const render=(b,s,r)=>{
+        const mark=document.createElement('span');mark.className='scroll-set-glyph';glyph(mark,s.code,sets(s.code,r));b.append(mark);b.dataset.rarity=r;
+        if(!['FORGE','VIZIER'].includes(s.code.toUpperCase()))b.classList.add('monochrome-set');
+        if(Number(b.dataset.dy)&&!Number(b.dataset.dx)){const name=document.createElement('span');name.className='scroll-set-name';name.textContent=s.label;name.title=s.label;b.append(name);}
+      };
       start({label:'Set and rarity scroller',rows,columns:rarities,row:Math.max(0,rows.findIndex(s=>s.code===(draft.set_code||'FORGE'))),column:Math.max(0,rarities.indexOf(draft.rarity)),render,change:(s,r)=>{draft.set_code=s.code;draft.rarity=r;}},location,source||get('.rendered-card-type'));
+      wheel.root.classList.add('set-wheel');
       // Type to jump without opening another surface; every set remains on the wheel.
       let query='',last=0;wheel.root.addEventListener('keydown',e=>{if(e.key.length!==1||e.ctrlKey||e.metaKey)return;e.preventDefault();query=(Date.now()-last>900?'':query)+e.key.toLowerCase();last=Date.now();const i=rows.findIndex(s=>s.code.toLowerCase().startsWith(query)||s.label.toLowerCase().startsWith(query));if(i>=0){wheel.reset(rows,i);draft.set_code=rows[i].code;tick?.();}});
     }).catch(()=>{if(!closed){restore(source);end(false);}});
@@ -89,17 +94,30 @@ export function editWithScrollers(host,part,card,{symbols,sets,save,cancel,tick,
     const [head,tail='']=draft.type_line.split(/\s+[—–]\s+/);let words=head.split(/\s+/),subtypes=tail,peers=[];
     const row=document.createElement('div');row.className='direct-type-line';position(row,{...r,width:host.clientWidth*.77});font(row,source);layer.append(row);hide(source);
     const sync=()=>{draft.type_line=[...new Set(words)].join(' ')+(subtypes.trim()?` — ${subtypes.trim()}`:'');};
-    function activate(i){selected=i;peers.forEach(b=>b.style.visibility='visible');const peer=peers[i],current=words[i],values=[...(supers.includes(current)?supers:types)];if(!values.includes(current))values.push(current);const at=rect(peer);peer.style.visibility='hidden';
-      start({label:supers.includes(current)?'Supertype scroller':'Card type scroller',rows:values,row:values.indexOf(current),render:(b,s)=>{b.textContent=s;},change:s=>{words[selected]=s;peer.textContent=s;sync();}},()=>at,row);
+    const canRemove=()=>supers.includes(words[selected])||words.filter(word=>!supers.includes(word)).length>1;
+    const removeType=button('Remove type',()=>removeCurrent(),'direct-type-remove');
+    function updateRemove(at){
+      removeType.hidden=false;removeType.textContent=`× Remove ${words[selected]}`;removeType.setAttribute('aria-label',`Remove ${words[selected]}`);
+      removeType.disabled=!canRemove();removeType.title=canRemove()?'Remove this type':'Keep at least one card type';
+      const width=removeType.offsetWidth,edge=layer.clientWidth-6;
+      let x=at.x+at.width+20,y=at.y+at.height+10;
+      if(x+width>edge)x=at.x-width-20;
+      // Long type names on narrow cards leave no side room: use the space below
+      // the fan instead of covering either the choices or the neighboring ink.
+      if(x<6){x=Math.max(6,Math.min(edge-width,at.x));y=at.y+at.height+2*parseFloat(wheel.root.style.getPropertyValue('--step-y'))+12;}
+      Object.assign(removeType.style,{left:`${x}px`,top:`${y}px`});
     }
-    function editSubtypes(peer){clearWheel();peers.forEach(b=>b.style.visibility='visible');input=document.createElement('input');input.className='direct-subtypes';input.setAttribute('aria-label','Subtypes');input.value=subtypes;matchCardType(input,style);const at=rect(peer);position(input,{...at,width:Math.max(at.width,100)});layer.append(input);peer.style.visibility='hidden';input.oninput=()=>{subtypes=input.value;sync();};input.focus({preventScroll:true});input.select();}
+    function activate(i){selected=i;peers.forEach(b=>b.style.visibility='visible');const peer=peers[i],current=words[i],values=[...(supers.includes(current)?supers:types)];if(!values.includes(current))values.push(current);const at=rect(peer);peer.style.visibility='hidden';
+      start({label:supers.includes(current)?'Supertype scroller':'Card type scroller',rows:values,row:values.indexOf(current),render:(b,s)=>{b.textContent=s;},change:s=>{words[selected]=s;peer.textContent=s;sync();updateRemove(at);}},()=>at,row);updateRemove(at);
+    }
+    function editSubtypes(peer){clearWheel();removeType.hidden=true;peers.forEach(b=>b.style.visibility='visible');input=document.createElement('input');input.className='direct-subtypes';input.setAttribute('aria-label','Subtypes');input.value=subtypes;matchCardType(input,style);const at=rect(peer);position(input,{...at,width:Math.max(at.width,100)});layer.append(input);peer.style.visibility='hidden';input.oninput=()=>{subtypes=input.value;sync();};input.focus({preventScroll:true});input.select();}
     function draw(){clearWheel();row.replaceChildren();peers=words.map((word,i)=>{if(i)row.append(document.createTextNode(' '));const b=button(`Edit type ${word}`,()=>activate(i));b.textContent=word;row.append(b);return b;});
       row.append(document.createTextNode(' — '));const subtype=button('Edit subtypes',()=>editSubtypes(subtype));subtype.textContent=subtypes||'subtype';row.append(subtype);
       const add=button('Add card type',()=>{words.push(types.find(t=>!words.includes(t))||'Creature');selected=words.length-1;sync();draw();},'direct-add');add.textContent='+';row.append(add);
       const superAdd=button('Add supertype',()=>{words.unshift(supers.find(s=>!words.includes(s))||'Legendary');selected=0;sync();draw();},'direct-add');superAdd.textContent='+';row.prepend(superAdd);
       if(detail.subtypes){detail.subtypes=false;editSubtypes(subtype);}else activate(Math.min(selected,words.length-1));
     }
-    removeCurrent=()=>{if(words.length<2)return;words.splice(selected,1);selected=Math.max(0,selected-1);sync();draw();};draw();
+    removeCurrent=()=>{if(!canRemove())return;words.splice(selected,1);selected=Math.max(0,selected-1);sync();draw();};draw();
   }
   if(part==='rule-symbol'){
     const item=ruleItems(live,card.oracle_text||'')[selected];if(item){const {node,start:from,end:to,value,loyalty}=item;hide(node);
@@ -107,7 +125,7 @@ export function editWithScrollers(host,part,card,{symbols,sets,save,cancel,tick,
       start({label:loyalty?'Loyalty ability cost scroller':'Rules mana symbol scroller',rows,row:rows.indexOf(value),render:(b,s)=>loyalty?b.textContent=s:glyph(b,s,symbols(s)),change:s=>{draft.oracle_text=card.oracle_text.slice(0,from)+(loyalty?s:`{${s}}`)+card.oracle_text.slice(to);}},()=>rect(node),node);
     }
   }
-  if(removeCurrent){removeButton=button(part==='mana'?'Remove symbol':'Remove type',()=>{removeCurrent();removeButton.disabled=!wheel;},'direct-action');removeButton.textContent='−';removeButton.disabled=!wheel;tools.prepend(removeButton);}
+  if(part==='mana'&&removeCurrent){removeButton=button('Remove symbol',()=>{removeCurrent();removeButton.disabled=!wheel;},'direct-action');removeButton.textContent='−';removeButton.disabled=!wheel;tools.prepend(removeButton);}
   document.addEventListener('pointerdown',outside,true);window.addEventListener('resize',resize);window.addEventListener('scroll',resize,true);
   return {commit:()=>end(true),cancel:()=>end(false)};
 }

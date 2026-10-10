@@ -5,7 +5,7 @@ export function scrollPicker(host,{label,rows,columns=[''],row=0,column=0,render
   const status=document.createElement('span');status.className='scroll-status';status.setAttribute('aria-live','polite');
   root.append(grid,status);host.append(root);
   const touch=matchMedia('(pointer:coarse)').matches,reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-  let y=row,x=column,raf=0,last=0,balance=0,velocity=0,axis='y',press=null,ignoreClick=false,wheel=0,wheelAxis='y',wheelEnd,anchor,stepX=40,stepY=34,animation;
+  let y=row,x=column,raf=0,last=0,balance=0,velocity=0,armedAt=0,axis='y',press=null,ignoreClick=false,wheel=0,wheelAxis='y',wheelEnd,wheelLast=0,anchor,stepX=40,stepY=34,animation;
   const clamp=(n,max)=>Math.max(0,Math.min(max-1,n));
   function draw(dy=0,dx=0){
     y=clamp(y,rows.length);x=clamp(x,columns.length);grid.replaceChildren();root.classList.toggle('one-axis',columns.length===1);
@@ -24,28 +24,31 @@ export function scrollPicker(host,{label,rows,columns=[''],row=0,column=0,render
     animation?.cancel();if(!reduce&&(dy||dx))animation=grid.animate([{transform:`translate(${dx*stepX}px,${dy*stepY}px)`},{transform:'translate(0,0)'}],{duration:110,easing:'cubic-bezier(.16,1,.3,1)'});
   }
   function step(dy,dx=0,force=false){const a=clamp(y+dy,rows.length),b=clamp(x+dx,columns.length);if(a===y&&b===x&&!force)return false;const deltaY=a-y,deltaX=b-x;y=a;x=b;draw(deltaY,deltaX);change(rows[y],columns[x]);if(deltaY||deltaX){tick();root.dispatchEvent(new CustomEvent('wheel-snap',{bubbles:true}));}return true;}
-  function stop(){cancelAnimationFrame(raf);raf=last=balance=velocity=0;root.dataset.speed='0';}
+  function stop(){cancelAnimationFrame(raf);raf=last=balance=velocity=armedAt=0;root.dataset.speed='0';}
   function frame(now){
     raf=0;if(!velocity||document.hidden){stop();return;}
-    balance+=Math.min(80,last?now-last:0)*Math.abs(velocity)/1000;last=now;
+    // Moving across an option should not select it. Hold outside the neutral zone
+    // deliberately, then advance at a bounded, readable pace.
+    if(now>=armedAt)balance+=Math.min(80,last?now-Math.max(last,armedAt):0)*Math.abs(velocity)/1000;last=now;
     if(balance>=1){balance-=1;if(!step(axis==='y'?Math.sign(velocity):0,axis==='x'?Math.sign(velocity):0)){stop();return;}}
     raf=requestAnimationFrame(frame);
   }
   function aim(event){
     if(!anchor||event.pointerType!=='mouse'&&!press)return;
+    if(event.target.closest('.scroll-set-name')){stop();return;}
     const rect=root.getBoundingClientRect(),dx=event.clientX-(rect.left+rect.width/2),dy=event.clientY-(rect.top+rect.height/2);
-    const horizontal=columns.length>1&&Math.abs(dx)>Math.abs(dy)*1.15,nextAxis=horizontal?'x':'y';
-    const offset=horizontal?dx:dy,dead=touch?13:6;
+    const horizontal=columns.length>1&&Math.abs(dx)>Math.abs(dy)*(velocity?(axis==='x'?.75:1.35):1.15),nextAxis=horizontal?'x':'y';
+    const offset=horizontal?dx:dy,dead=touch?24:16;
     if(Math.abs(offset)<=dead){stop();return;}
-    const speed=Math.sign(offset)*Math.min(13,1.6+Math.pow((Math.abs(offset)-dead)/(touch?22:17),1.5));
-    if(axis!==nextAxis||Math.sign(speed)!==Math.sign(velocity)){balance=0;last=0;}axis=nextAxis;velocity=speed;root.dataset.speed=String(Math.abs(speed));
+    const speed=Math.sign(offset)*Math.min(4,.9+Math.pow((Math.abs(offset)-dead)/(touch?38:32),1.35));
+    if(axis!==nextAxis||Math.sign(speed)!==Math.sign(velocity)){balance=0;last=0;armedAt=performance.now()+300;}axis=nextAxis;velocity=speed;root.dataset.speed=String(Math.abs(speed));
     if(!raf)raf=requestAnimationFrame(frame);
   }
   root.addEventListener('wheel',e=>{
     if(!rows.length)return;e.preventDefault();stop();const horizontal=columns.length>1&&(e.shiftKey||Math.abs(e.deltaX)>Math.abs(e.deltaY));const next=horizontal?'x':'y';
     if(next!==wheelAxis)wheel=0;wheelAxis=next;wheel+=horizontal?(e.shiftKey?e.deltaY:e.deltaX):e.deltaY;
-    const threshold=e.deltaMode===1?3:e.deltaMode===2?1:45;
-    if(Math.abs(wheel)>=threshold){step(horizontal?0:Math.sign(wheel),horizontal?Math.sign(wheel):0);wheel=0;}
+    const threshold=e.deltaMode===1?3:e.deltaMode===2?1:90;
+    if(Math.abs(wheel)>=threshold){const now=performance.now();if(now-wheelLast>=180){step(horizontal?0:Math.sign(wheel),horizontal?Math.sign(wheel):0);wheelLast=now;}wheel=0;}
     clearTimeout(wheelEnd);wheelEnd=setTimeout(()=>{wheel=0;},160);
   },{passive:false});
   root.addEventListener('keydown',e=>{

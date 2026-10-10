@@ -109,3 +109,22 @@
 .direct-actions{right:-33px;bottom:6%;flex-direction:column;gap:7px}
 @media(pointer:coarse){.direct-actions{right:-35px;bottom:6%}}
 .direct-actions{z-index:6}
+.direct-type-remove{position:absolute;z-index:5;pointer-events:auto;border:1px solid #cbb78377;border-radius:5px;padding:6px 9px;min-height:30px;background:#10212bf2;color:#efdfbe;font:11px/1.3 system-ui;white-space:nowrap;box-shadow:0 2px 8px #0004}
+.direct-type-remove:disabled{cursor:default;opacity:.65}
+.direct-wheel .scroll-set-glyph{display:flex;width:var(--glyph-w);height:var(--glyph-h);filter:drop-shadow(1px 0 0 #fff9) drop-shadow(-1px 0 0 #fff9) drop-shadow(0 1px 0 #fff9) drop-shadow(0 -1px 0 #fff9) drop-shadow(0 2px 2px #000d)}
+.direct-wheel .scroll-set-name{position:absolute;right:calc(100% + 11px);top:50%;transform:translateY(-50%);width:max-content;max-width:145px;padding:3px 7px;border-radius:4px;background:#10212bf2;color:#f4e9d1;font:11px/1.15 system-ui;letter-spacing:0;white-space:normal;text-align:right;text-shadow:none;pointer-events:auto;box-shadow:0 1px 5px #0006;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.set-wheel .scroll-cell{opacity:calc(1 - var(--distance)*.15)}
+@media(pointer:coarse){.direct-type-remove{min-height:36px;font-size:12px}.direct-wheel .scroll-set-name{max-width:125px;font-size:10px}}
+
+/* Keep the card and primary action prominent, with a readable legal footer. */
+.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip-path:inset(50%);white-space:nowrap!important;border:0!important}
+body{min-height:100svh;display:flex;flex-direction:column}
+.masthead,.footer{width:100%;flex:none}
+.studio{width:100%;flex:1;min-height:0}
+.footer{display:block;text-align:center;padding:14px 6vw 18px;font-size:11px;line-height:1.5;color:#aeb8b8}
+.footer p{max-width:900px;margin:0 auto}
+.footer a{color:#d6c8a9;text-decoration:underline;text-underline-offset:2px;white-space:normal}
+@media(min-width:761px){.card-stage{width:min(100%,calc((100svh - 275px)*488/680))}}
+.mobile-mode .studio{padding-bottom:12px}
+.mobile-mode .card-stage{width:min(100%,calc((100svh - 340px)*.718))}
+.mobile-mode .footer{padding-top:10px;font-size:10px;line-height:1.4}

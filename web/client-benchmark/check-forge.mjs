@@ -17,7 +17,8 @@ try{
   check('demo artwork has a derived etching mask',await page.locator('.rendered-card-art-etching').count()===1);
   check('Forge symbol appears on the type line',(await page.locator('.rendered-card-set-mark').getAttribute('src')).startsWith('data:image/svg+xml,'));
   check('Forge symbol is used for the foil stamp',await page.locator('.etched-set-mark-mask').count()===1);
-  check('page is named MTG CardForge and has no outgoing navigation',await page.title()==='MTG CardForge'&&await page.locator('a').count()===1);
+  check('page is named MTG CardForge with only the legal policy link',await page.title()==='MTG CardForge'&&await page.locator('a').count()===2&&await page.locator('footer a').getAttribute('href')==='https://company.wizards.com/en/legal/fancontentpolicy');
+  check('fan content notice is visible',await page.locator('footer').isVisible()&&(await page.locator('footer').textContent()).includes('Not approved/endorsed by Wizards.'));
   check('desktop can edit before loading models',await page.locator('#edit-own-card').isVisible()&&await page.locator('#load-button').isVisible());
   check('initial renderer imports no model runtime',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>/local-models|wllama|\.wasm|\.gguf|bonsai-worker/.test(e.name))));
   check('music is not downloaded before interaction',await page.evaluate(()=>!performance.getEntriesByType('resource').some(e=>e.name.includes('opening.m4a'))));
@@ -90,6 +91,7 @@ try{
 
   const mobile=await pageFor({...devices['iPhone 13'],defaultBrowserType:undefined});
   check('mobile shows carousel and edit button',await mobile.page.locator('#edit-own-card').isVisible());
+  check('mobile fan content notice is visible',await mobile.page.locator('footer').isVisible());
   check('mobile hides model loading',!(await mobile.page.locator('#load-button').isVisible()));
   check('mobile has no horizontal overflow',await mobile.page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
   await mobile.page.screenshot({path:`${out}/mobile.png`,fullPage:true});

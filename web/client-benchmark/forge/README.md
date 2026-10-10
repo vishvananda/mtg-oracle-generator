@@ -48,7 +48,10 @@ The latest 20 creations and their artwork are stored in IndexedDB on this
 origin. **Save card** exports JSON with embedded artwork. Browser storage may
 be evicted; exported files preserve a copy. There is no account, upload,
 server inference fallback, or Oracle validator in this standalone prototype.
-It currently supports single-face designs. Music and sound cues are optional;
+It currently supports single-face designs. The footer carries the standard notice from
+[Wizards’ Fan Content Policy](https://company.wizards.com/en/legal/fancontentpolicy).
+Repeated slogans, captions and editing hints are omitted; device requirements stay
+collapsed behind the download note. Music and sound cues are optional;
 the page remains fully usable with sound disabled.
 
 ## Models and runtime
@@ -75,7 +78,7 @@ share a browser's cached weights or saved cards.
 
 The renderer is built from the matching Vizier frontend on branch
 `codex/standalone-card-preview-20261009`, revision
-`e1e6f6680b751885aac0b87bca6702d4ef57ac00`, rebased onto the editor’s
+`1797a4c9e46e0dfbb179a3e7273cadc260dba090`, rebased onto the editor’s
 `a52acb70fef227426599b6ebaa4fb80fe8f95619` renderer.
 It includes the production card face, mana, tilt and foil presentation, without
 host, account, deckbuilder or game engine modules. Its build checks this module
@@ -177,23 +180,31 @@ the previously seen `special-the` ability-row overlap; it is not a passing gate.
 ## Symbol and number editing
 
 Symbols and numbers use wheels **on their printed positions**, with neighboring
-choices above/below. There is no scroller dialog. A small pointer displacement
-starts slow scrolling; holding it farther from the center accelerates it, up to
-13 notches/second. Moving upward pulls previous choices downward into the slot.
+choices above/below. There is no scroller dialog. Hold outside the neutral zone
+(16px with a mouse, 24px on touch) to start scrolling after a 300ms dwell.
+Holding farther from the center accelerates it, capped at four notches/second.
+Moving upward pulls previous choices downward into the slot.
 Returning to center, leaving, releasing touch, blurring or hiding the page stops
 repeat scrolling. A short synthesized click plays at each snap when sound is on.
 Touch uses 54px spacing to expose choices around the finger. Reduced motion
 removes the snap animation. Mouse wheel/trackpad and arrow keys also work.
+Trackpad scrolling needs 90px per step and ignores repeated steps within 180ms
+to limit jumps from a burst of events; line-mode mouse wheels use three lines.
 
 - Click a printed mana symbol to change it; **+** adds another and **−** removes
   the selected symbol. Committing orders mana and combines generic amounts.
 - Sets scroll vertically, rarity horizontally (or Shift+wheel). The center is
   the printed set symbol. Type a set name/code to jump through all 323 choices.
+  Incoming symbols have names beside them and an outline/shadow that preserves
+  rarity colors. Clicking a name selects that set; hovering a name stays still.
 - Click power, toughness or starting loyalty for its number wheel. Click a
   printed loyalty ability cost or rules mana symbol to edit that item directly.
   Signed ability costs include negative values and X; other wording is kept.
 - Type words and supertypes have their own wheels and **+** controls. Subtypes
   use a transparent input on the type line and preserve multiple words.
+  **× Remove [type]** appears beside the active wheel. Delete/Backspace also
+  removes that word. At least one card type is retained, independent of how many
+  supertypes are present. Removal never discards the subtypes.
 - Click the selected center, **✓**, press Enter or click outside to save. **↶**
   or Escape cancels. The on-card draft changes immediately; the complete card
   frame/color updates after committing, so the wheel cannot move under the hand.
@@ -213,6 +224,9 @@ The [direct-editing receipt](../forge-direct-verification-20261010.json) include
 center alignment, pointer speed, stopping, emulated touch, persistence, frame
 selection and WebKit font evidence. It does not claim physical Safari alignment
 or real GPU model inference.
+The [controls and layout receipt](../forge-controls-verification-20261010.json)
+records the slower wheel, labeled type removal, named set symbols, Safari sizing
+patch, simplified page copy and fan-content footer, including live checks.
 
 Beleren’s source file is already bold, but it had only been registered at normal
 weight. WebKit Canvas2D synthesized additional bold at 700 while the DOM inherited
@@ -221,9 +235,14 @@ loader explicitly waits for 700. The browser font probe now measures identical
 ink for both requests in WebKit; Chromium’s output was already identical.
 `check-forge-fonts.mjs` captures regular/prismatic before-and-after images and
 pixel sums. Use `FORGE_BEFORE` for a prior release and `FORGE_URL` for the new one.
-The reported vertical frame offset remains unconfirmed on physical Safari;
-Linux WebKit geometry and proportional image-slice checks pass. Versioned app
-URLs ensure the current frame fixes are fetched on reload.
+The Safari Regular-frame offset was traced to percentage-height content
+participating in the tilt container's intrinsic aspect-ratio sizing. The preview
+now positions the premium face absolutely inside that container, keeping the
+face and its width-scaled frame images on the same card rectangle. Regular still
+uses the DOM face; this is not a canvas substitute. The Mac investigation supplied
+the layout fix; local Linux WebKit checks cover geometry and editing, but do not
+replace verification on an iPhone. Versioned app URLs fetch the new styles on
+reload without changing the model cache.
 
 The typography comparison uses [Toski's KHM printing](https://scryfall.com/card/khm/197/toski-bearer-of-secrets)
 at equal card size. Title sizing stays unchanged; the modern type line is about
