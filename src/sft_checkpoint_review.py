@@ -1,0 +1,70 @@
+"""Wait for one bounded SFT segment, then export and evaluate locally.
+
+This never submits another paid job, finishes the epoch, or promotes a model.
+"""
+import argparse
+import json
+from pathlib import Path
+import subprocess
+import time
+
+from paths import PROJECT
+from rl_gpu import save, sha
+from serving_quantization import run_arm
+from rl_serving_eval import evaluate
+from train_qlora import checkpoint_release, publish_checkpoint
+
+
+def run(training, review):
+    spec = json.loads((review/'review.json').read_text())
+    pin = sha(review/'review.json')
+    while True:
+        status = json.loads((training/'status.json').read_text()) if (training/'status.json').exists() else {}
+        if status.get('phase') == 'ready_for_evaluation':
+            break
+        if status.get('state') in ('ERROR', 'CANCELED'):
+            raise ValueError('Training failed; no paid retry or evaluation')
+        save(review/'status.json', {'phase': 'waiting_for_training', 'spec_sha256': pin})
+        time.sleep(30)
+    source = training/'gpu'
+    if sha(review/'review.json') != pin or sha(review/'cases.jsonl') != spec['cases_sha256'] or sha(review/'experiment.json') != spec['experiment_sha256']:
+        raise ValueError('Frozen review configuration changed while waiting')
+    receipt = json.loads((source/'phase-complete.json').read_text())
+    for name, value in receipt['adapter_files'].items():
+        if sha(source/'adapter'/name) != value:
+            raise ValueError('Downloaded adapter differs from training receipt')
+    save(review/'status.json', {'phase': 'exporting', 'spec_sha256': pin})
+    serving = training/'serving'
+    if not (serving/'candidate.json').exists():
+        subprocess.run([spec['cpu_python'], str(PROJECT/'src/export_gguf.py'),
+            '--adapter', str(source/'adapter'), '--continuation-run', str(source), '--output', str(serving),
+            '--converter', spec['converter'], '--quantizer', spec['quantizer']], check=True)
+    if spec.get('publication') and not (training/'public-adapter/publication.json').exists():
+        publication = spec['publication']; summary = receipt['training']
+        release = checkpoint_release(source/'adapter', training/'public-adapter', {
+            'phase': 'second-epoch review checkpoint', 'step': 19774+summary['optimizer_steps'],
+            'epoch': 1+summary['metrics']['epoch'], 'tag': publication['tag'], 'config': summary['config'],
+            'training_identity': json.loads((source/'identity.json').read_text()),
+            'dataset_reference': publication['dataset_reference'], 'final_test_evaluated': False},
+            (source/'adapter/system-prompt.txt').read_text())
+        try:
+            save(release/'publication.json', publish_checkpoint(release, publication['repo'], publication['tag']))
+        except Exception as error:
+            save(release/'publication-error.json', {'error_type': type(error).__name__, 'retry_required': True})
+    experiment = json.loads((review/'experiment.json').read_text())
+    for arm in experiment['arms']:
+        save(review/'status.json', {'phase': 'generating', 'arm': arm, 'spec_sha256': pin})
+        run_arm(review, arm, port=4243)
+    save(review/'status.json', {'phase': 'evaluating', 'spec_sha256': pin})
+    result = evaluate(review/'cases.jsonl', {arm: review/'predictions'/(arm+'.jsonl') for arm in experiment['arms']},
+                      review/'evaluation', workers=3, display_names=True)
+    save(review/'status.json', {'phase': 'complete', 'metrics': result['metrics'],
+        'automatic_promotion': False, 'automatic_epoch_completion': False, 'spec_sha256': pin})
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--training', type=Path, required=True)
+    parser.add_argument('--review', type=Path, required=True)
+    args = parser.parse_args()
+    run(args.training, args.review)

@@ -61,22 +61,42 @@ def check_custom_export(summary, identity, completion):
     return 'completed_custom_sft_pilot'
 
 
-def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allow_partial=False,dpo_run=None,custom_run=None):
+def check_continuation_export(summary, identity, completion):
+    if completion.get('training') != summary or completion.get('package_sha256') != identity.get('package_sha256'):
+        raise ValueError('SFT continuation receipt disagrees with training')
+    config = summary.get('config', {})
+    steps = summary.get('optimizer_steps')
+    if (config != identity.get('config') or not config.get('model_revision')
+            or not summary.get('parent_training_identity')
+            or not isinstance(steps, int) or steps <= 0
+            or steps != summary.get('planned_steps') or steps != config.get('stop_after_steps')
+            or not steps <= summary.get('schedule_steps', 0)
+            or summary.get('stop_reason') != 'review_checkpoint'
+            or summary.get('loss_mask_verified') is not True
+            or not summary.get('final_adapter_hash')
+            or summary['final_adapter_hash'] == summary.get('initial_adapter_hash')):
+        raise ValueError('SFT continuation did not reach its verified review checkpoint')
+    return 'completed_sft_review_segment'
+
+
+def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allow_partial=False,dpo_run=None,custom_run=None,continuation_run=None):
     import torch
     from huggingface_hub import snapshot_download
     from peft import PeftModel
     from transformers import AutoModelForCausalLM,AutoTokenizer
     if output.exists(): raise ValueError('Use a fresh serving candidate directory')
-    if dpo_run is not None and custom_run is not None:
+    if sum(run is not None for run in (dpo_run, custom_run, continuation_run)) > 1:
         raise ValueError('Choose one adapter provenance mode')
-    if custom_run is not None:
+    verified_run = custom_run or continuation_run
+    if verified_run is not None:
         from safetensors.torch import load_file
-        if adapter.resolve() != (custom_run/'adapter').resolve():
+        if adapter.resolve() != (verified_run/'adapter').resolve():
             raise ValueError('Adapter must belong to the supplied custom SFT run')
-        summary=json.loads((custom_run/'training-summary.json').read_text())
-        provenance=json.loads((custom_run/'identity.json').read_text())
-        completion=json.loads((custom_run/'phase-complete.json').read_text())
-        scope=check_custom_export(summary,provenance,completion)
+        summary=json.loads((verified_run/'training-summary.json').read_text())
+        provenance=json.loads((verified_run/'identity.json').read_text())
+        completion=json.loads((verified_run/'phase-complete.json').read_text())
+        checker = check_continuation_export if continuation_run else check_custom_export
+        scope=checker(summary,provenance,completion)
         for name in ('adapter_config.json','adapter_model.safetensors'):
             if sha(adapter/name) != completion['adapter_files'][name]:
                 raise ValueError('Custom adapter file differs from completion receipt')
@@ -119,7 +139,7 @@ def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allo
         'optimizer_steps':summary.get('optimizer_steps'),'training_epoch':summary.get('metrics',{}).get('epoch')}
     if dpo_run is not None:
         identity.update(dpo_summary=summary,adapter_loading='Final DPO adapter directly on original base; do not stack SFT adapter')
-    if custom_run is not None:
+    if verified_run is not None:
         identity.update(custom_summary=summary,adapter_loading='Final custom SFT adapter directly on original base; do not stack parent adapter')
     output.mkdir(parents=True);started=time.monotonic()
     (output/'request.json').write_text(json.dumps(identity,indent=2)+'\n')
@@ -149,10 +169,11 @@ if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--adapter',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
     p.add_argument('--converter',type=Path,required=True);p.add_argument('--quantizer',type=Path,required=True)
-    p.add_argument('--quantization',choices=['Q4_0','Q4_K_M','Q8_0'],default='Q4_0');p.add_argument('--threads',type=int,default=8)
+    p.add_argument('--quantization',choices=['Q4_0','Q4_K_M','Q5_K_M','Q8_0'],default='Q4_0');p.add_argument('--threads',type=int,default=8)
     p.add_argument('--allow-partial',action='store_true',help='Export a budget-stopped training checkpoint as a labeled preview')
     p.add_argument('--dpo-run',type=Path,help='Completed DPO run containing identity, summary, completion receipt and adapter')
     p.add_argument('--custom-run',type=Path,help='Completed custom SFT run containing identity, summary, completion receipt and adapter')
+    p.add_argument('--continuation-run',type=Path,help='Completed SFT review segment with identity, summary and completion receipt')
     a=p.parse_args()
     if a.threads<1: p.error('--threads must be positive')
-    print(json.dumps(export(a.adapter,a.output,a.converter,a.quantizer,a.quantization,a.threads,a.allow_partial,a.dpo_run,a.custom_run),indent=2))
+    print(json.dumps(export(a.adapter,a.output,a.converter,a.quantizer,a.quantization,a.threads,a.allow_partial,a.dpo_run,a.custom_run,a.continuation_run),indent=2))

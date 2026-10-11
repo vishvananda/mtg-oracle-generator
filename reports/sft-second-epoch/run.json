@@ -1,0 +1,19 @@
+{
+  "job_id": "6acb888cfee2c90070195ff6",
+  "url": "https://huggingface.co/jobs/vishvananda/6acb888cfee2c90070195ff6",
+  "package_hash": "84544539c9054a3c88fe210b3f021a495a9053888360b6d7591e4850e2aa93b1",
+  "dataset_manifest_sha256": "d7fd06e722c7b0ebde3784dce09861afa867a55d68d52994d66f3d10b49d7a7e",
+  "flavor": "a100-large",
+  "hardware_cost_cap_usd": 16.250130000000002,
+  "timeout_minutes": 390,
+  "stop_after_steps": 4944,
+  "schedule_steps": 19774,
+  "automatic_retry": false,
+  "automatic_epoch_completion": false,
+  "automatic_promotion": false,
+  "status": "running",
+  "experiment_compute_limit_usd": 20,
+  "expected_training_hours": 5,
+  "evaluation_cases": 160,
+  "final_test_used": false
+}

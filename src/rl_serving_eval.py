@@ -12,11 +12,14 @@ from rl_teacher import batches,REVIEW,prompt,faithful
 from rl_parser_cache import ParserCache
 
 
-def generate(cases_path,system,model_sha,endpoint,output,workers=1,case_messages=False):
+def generate(cases_path,system,model_sha,endpoint,output,workers=1,case_messages=False,
+             backend='llama.cpp Q4_0 CPU',decoding=None,adapter_sha=None):
     cases=list(map(json.loads,cases_path.read_text().splitlines()))
     identity={'cases_sha256':sha_file(cases_path),'system_sha256':digest(system.encode()),'model_sha256':model_sha,
-        'decoding':{'temperature':0,'seed':17,'max_tokens':2048,'enable_thinking':False},'backend':'llama.cpp Q4_0 CPU',
+        'decoding':decoding or {'temperature':0,'seed':17,'max_tokens':2048,'enable_thinking':False},'backend':backend,
         'scope':'production prompt with terminology guide; no schema-constrained decoding'}
+    if adapter_sha:
+        identity['adapter_sha256']=adapter_sha
     if case_messages:
         identity['scope']='Frozen browser repair/edit messages and generation replay; unconstrained decoding'
         identity['case_messages']=True
@@ -42,7 +45,8 @@ def generate(cases_path,system,model_sha,endpoint,output,workers=1,case_messages
     if not set(done)<={c['id'] for c in cases}:raise ValueError('Unknown saved case')
     def one(case):
         body={'messages':case['messages'] if case_messages else [{'role':'system','content':system},{'role':'user','content':case['request']}],
-            'temperature':0,'seed':17,'max_tokens':2048,'chat_template_kwargs':{'enable_thinking':False}}
+            **{k:v for k,v in identity['decoding'].items() if k!='enable_thinking'},
+            'chat_template_kwargs':{'enable_thinking':identity['decoding']['enable_thinking']}}
         req=urllib.request.Request(endpoint+'/v1/chat/completions',data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
         before=time.monotonic()
         with urllib.request.urlopen(req,timeout=1800) as f:value=json.load(f)
@@ -68,7 +72,7 @@ def generate(cases_path,system,model_sha,endpoint,output,workers=1,case_messages
     receipt_path.write_text(json.dumps(receipt,indent=2)+'\n');return receipt
 
 
-def evaluate(cases_path,predictions,output,workers=4,display_names=False):
+def evaluate(cases_path,predictions,output,workers=4,display_names=False,reuse_evaluation=None):
     cases={c['id']:c for c in map(json.loads,cases_path.read_text().splitlines())}
     schema=json.loads((PROJECT/'schemas/design-draft-v1.json').read_text());schema['required']+=['name','rarity']
     output.mkdir(parents=True,exist_ok=True)
@@ -95,7 +99,7 @@ def evaluate(cases_path,predictions,output,workers=4,display_names=False):
         parser_provenance=parser.provenance
     if display_names:
         from judge_display import judge_display
-        judgments=judge_display(pending,output/'judge',workers)
+        judgments=judge_display(pending,output/'judge',workers,reuse_evaluation)
     else:
         judgments=batches(pending,prompt('reward-judge-v3.txt'),REVIEW,output/'judge',workers)
     counts={arm:Counter() for arm in predictions};results=[]
@@ -120,6 +124,8 @@ def evaluate(cases_path,predictions,output,workers=4,display_names=False):
             'faithful_clean_oracle':'intent_faithful plus highest Oracle style score (2)'},
         'parser':parser_provenance,'automatic_promotion':False}
     result['judge_display_names']=display_names
+    if reuse_evaluation:
+        result['reused_judgments']=json.loads((output/'judge/reuse.json').read_text())
     (output/'comparison.json').write_text(json.dumps(result,indent=2)+'\n');return result
 
 
