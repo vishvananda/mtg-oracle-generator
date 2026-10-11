@@ -13,6 +13,7 @@ from rl_gpu import save, sha
 from serving_quantization import run_arm
 from rl_serving_eval import evaluate
 from train_qlora import checkpoint_release, publish_checkpoint
+from export_lora_gguf import export_adapter
 
 
 def run(training, review):
@@ -39,6 +40,12 @@ def run(training, review):
         subprocess.run([spec['cpu_python'], str(PROJECT/'src/export_gguf.py'),
             '--adapter', str(source/'adapter'), '--continuation-run', str(source), '--output', str(serving),
             '--converter', spec['converter'], '--quantizer', spec['quantizer']], check=True)
+    if spec.get('separate_adapter'):
+        separate = spec['separate_adapter']
+        save(review/'status.json', {'phase': 'exporting_separate_adapter', 'spec_sha256': pin})
+        export_adapter(source/'adapter', Path(separate['base']), Path(separate['base_gguf']),
+                       Path(separate['base_receipt']), Path(separate['converter']),
+                       serving/'separate', python=spec['cpu_python'])
     if spec.get('publication') and not (training/'public-adapter/publication.json').exists():
         publication = spec['publication']; summary = receipt['training']
         release = checkpoint_release(source/'adapter', training/'public-adapter', {

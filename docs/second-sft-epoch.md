@@ -114,3 +114,8 @@ The [completed serving comparison](../reports/serving-quantization/README.md)
 contains aggregate results, paired uncertainty, artifact identities and the
 browser integration limitations. It did not justify changing the serving model
 or increasing its download size.
+
+The next-checkpoint [separate adapter workflow](separate-browser-adapters.md)
+reuses that pinned base and adds an F16 adapter export to the local follow-up.
+This prepares smaller future browser updates without changing the deployed
+model or the frozen evaluation panel.

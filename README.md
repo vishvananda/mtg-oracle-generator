@@ -115,6 +115,9 @@ parser acceptance 47 → 48. These are new-request panels with model-judged
 intent, not the 400-card SFT test. See the [paired intervals, curves and limitations](reports/preference-round-two/README.md).
 [Download the adapter or exact Q4 quant](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009)
 and follow the [local serving guide](docs/serve-preference-model.md).
+The [separate browser adapter workflow](docs/separate-browser-adapters.md)
+prepares approximately 66 MB checkpoint updates on a reusable 2.50 GB base.
+It is available for the next release, pending browser device and quality checks.
 
 The earlier DPO pilot completed without measured development gain. Both SFT and
 DPO passed schema checks on 64/64 development requests, mtgish on 48/64 and
