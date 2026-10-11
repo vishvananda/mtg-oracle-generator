@@ -1,0 +1,35 @@
+{
+  "proposals": 1620,
+  "synthetic_edit_controls": 1380,
+  "real_parser_rejections": 240,
+  "teacher_uncertain": 42,
+  "reviewed": 1578,
+  "accepted_total": 1529,
+  "accepted_real": {
+    "train": {
+      "parsed_repairs": 6,
+      "unchanged_unsupported_controls": 122
+    },
+    "evaluation": {
+      "parsed_repairs": 0,
+      "unchanged_unsupported_controls": 32
+    }
+  },
+  "review_rejected": {
+    "pass": 28,
+    "uncertain": 13,
+    "reject": 8
+  },
+  "calls": 228,
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "workers": 3,
+  "delta_usage": {
+    "input_tokens": 2741639,
+    "cached_input_tokens": 1995008,
+    "cache_write_input_tokens": 0,
+    "output_tokens": 64876,
+    "reasoning_output_tokens": 20949
+  },
+  "human_reviewed": false
+}

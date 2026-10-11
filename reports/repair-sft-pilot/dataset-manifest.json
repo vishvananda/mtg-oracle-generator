@@ -1,0 +1,60 @@
+{
+  "version": "repair-sft-v1",
+  "files": {
+    "train.sft.jsonl": {
+      "rows": 2670,
+      "bytes": 13641977,
+      "sha256": "3c8b0bdb2cfe1cf4b09bf52a423b99ae1784a6169aa7cb0459802be4509ab79b"
+    },
+    "training-provenance.jsonl": {
+      "rows": 2670,
+      "bytes": 469163,
+      "sha256": "62fe285160c81854fb64d7fc9b62b5ac17d219bf271b7729db9587110b92d05c"
+    },
+    "evaluation-cases.jsonl": {
+      "rows": 193,
+      "bytes": 1602382,
+      "sha256": "17d41ce8c9887d683d97471295cc7f1d5e48c1d3fdf39b292444fb6c28cd6989"
+    }
+  },
+  "source_review_sha256": "c91030708b02359a179c4284f315b580072b9dfdb2bdc8116c562f723dbd8b02",
+  "repair_examples": 1335,
+  "replay_examples": 1335,
+  "group_overlap": 0,
+  "checks": {
+    "group_overlap": 0,
+    "description_overlap": 0
+  },
+  "counts": {
+    "trigger_comma": 184,
+    "real_model_error": 128,
+    "power_edit": 316,
+    "tap_words": 57,
+    "vigilance_typo": 5,
+    "loyalty_edit": 79,
+    "loyalty_colon": 79,
+    "short_self_reference": 31,
+    "no_op": 164,
+    "keyword_edit": 1,
+    "flying_typo": 46,
+    "draw_grammar": 31,
+    "loyalty_words": 68,
+    "activation_colon": 82,
+    "create_grammar": 41,
+    "counter_grammar": 9,
+    "scry_grammar": 4,
+    "old_enters_wording": 10,
+    "generation_replay": 1335
+  },
+  "evaluation_counts": {
+    "real": 32,
+    "synthetic": 61,
+    "edit": 24,
+    "noop": 12,
+    "generation": 64
+  },
+  "planeswalker_training": 283,
+  "browser_prompt_sha256": "7b33ebc69c27ef8b9d7e151b3979c1b98158493bd6b843d62d6547d907bdbc14",
+  "automatic_promotion": false,
+  "evaluation_scope": "Repair-family holdout plus existing DPO2 real errors and development regression cases; not an untouched final test."
+}
