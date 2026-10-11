@@ -3,9 +3,10 @@
 The [corrected HF job](https://huggingface.co/jobs/vishvananda/6aca52ccfee2c90070188f39)
 completed on 2026-10-10: **255/255 updates**, followed by all three 320-request
 comparisons. Custom-card intent preservation improved on the new holdout;
-parser acceptance did not. **The live model remains round-two DPO.** Deployment
-Q4_0 confirmation remains before promotion. The completed display-name audit
-below removes the apparent style regression.
+parser acceptance did not. **The live model remains round-two DPO.** The completed
+Q4_0 comparison shows a smaller, uncertain custom-holdout gain and some development
+regressions; it does not justify replacing the live model. The display-name audit
+below removes the apparent NF4 style regression.
 
 ## Held-out generation results
 
@@ -80,6 +81,55 @@ it does not prove that every changed label was caused solely by `CARDNAME`.
 [complete audited counts/intervals/protocol](display-name-audit.json) are retained
 alongside the original table. Parser acceptance alone never proves rules
 correctness or fidelity to intent.
+
+### Completed Q4_0 serving comparison (2026-10-11)
+
+Both frozen GGUFs generated all 320 requests using the same production prompt,
+greedy decoding, seed 17 and 2,048-token limit. This used native llama.cpp on
+CPU for an offline quality check; it does not measure browser GPU performance.
+All 633 schema-valid outputs received the displayed-name-aware Sol/medium review
+(598 unique submissions). The unchanged mtgish workflow checked both arms.
+
+| Metric | Custom holdout: DPO / 192 | Custom holdout: Custom / 192 | Development: DPO / 128 | Development: Custom / 128 |
+| --- | ---: | ---: | ---: | ---: |
+| Schema valid | 192 | 192 | 125 | 124 |
+| mtgish accepted | 171 | 172 | 49 | 45 |
+| Intent faithful | 176 | 179 | 71 | 71 |
+| Faithful and parsed | 161 | 167 | 46 | 43 |
+| Faithful with clean Oracle style | 174 | 176 | 67 | 66 |
+
+Custom-holdout faithful-and-parsed improves **83.9% → 87.0%**, or +3.13 points
+(descriptive 95% family-bootstrap interval **−0.52 to +6.77**). Development falls
+**35.9% → 33.6%**, or −2.34 points (**−6.11 to +0.79**). Neither establishes a
+robust improvement. The earlier +8.33-point NF4 gain does not reproduce at the
+same size in the serving quant. NF4 and Q4 also use different inference runtimes;
+this is not a controlled test isolating precision alone.
+
+All failures remain in the denominators. Custom has four token-limit failures;
+DPO has two plus one missing required field, all in development. Interrupted
+CPU requests were resumed only where no completed output had been saved, with
+frozen identities and a longer transport timeout. Truncated outputs were not
+regenerated for a better answer.
+
+One Adventure per arm reproducibly fails upstream preprocessing: it prints a
+diagnostic before an empty JSON array, which the client reports as `parser_error`.
+Two isolated retries per card confirmed this. These are separately recorded
+workflow failures, counted as not accepted; both outputs also fail intent.
+
+Spot checks found useful gains in exact requested names, but also lost targeting
+surcharges and a missing duration on a granted keyword. One apparent development
+win has inconsistent judge labels: both copying halves are sorceries, but only
+DPO was penalized for the casting restriction. Scores remain frozen; the small
+differences should not be treated as definitive wins. Parser acceptance is also
+an imperfect proxy: a straightforward mana-adding output was rejected.
+
+![Audited NF4 and Q4 serving comparisons](review-gates.png)
+
+[Full counts, paired intervals, failure audit and artifact hashes](q4-comparison.json)
+and [SVG graph](review-gates.svg) preserve the results. **Keep DPO2 deployed.**
+The next experiment should target error-to-repair behavior and representation
+failures, with a fresh held-out repair panel, rather than assuming more of this
+same SFT mixture will improve general generation. No repair training has started.
 
 ## Training and compute
 

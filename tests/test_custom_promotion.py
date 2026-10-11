@@ -11,6 +11,8 @@ from export_gguf import check_custom_export
 from judge_display import display_card
 from judge_display import judge_display
 from rl_serving_eval import generate
+from compare_custom_q4 import run as compare_q4
+from rl_data import sha_file
 
 
 class CustomPromotion(unittest.TestCase):
@@ -103,6 +105,30 @@ class CustomPromotion(unittest.TestCase):
                     generate(cases, 'System', 'weights', 'http://unused', output, workers=2)
             self.assertEqual({r['case_id'] for r in map(json.loads, output.read_text().splitlines())}, {'1', '2'})
             self.assertFalse(json.loads(output.with_suffix('.manifest.json').read_text())['complete'])
+
+    def test_completed_arm_reuses_verified_outputs_without_starting_a_server(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths = {name: root / name for name in ['cases', 'system', 'custom', 'dpo', 'server']}
+            for name, path in paths.items():
+                path.write_text(name)
+            paths['cases'].write_text(json.dumps({'id': 'one', 'request': 'A creature.'}) + '\n')
+            output = root / 'results'
+            output.mkdir()
+            prediction = output / 'custom.jsonl'
+            response = {'choices': [{'message': {'content': '{}'}, 'finish_reason': 'stop'}]}
+            with patch('rl_serving_eval.urllib.request.urlopen',
+                       return_value=io.BytesIO(json.dumps(response).encode())):
+                generate(paths['cases'], paths['system'].read_text(), sha_file(paths['custom']),
+                         'http://unused', prediction, workers=2)
+            with patch('compare_custom_q4.socket.socket', side_effect=AssertionError('No socket needed')), \
+                 patch('compare_custom_q4.subprocess.Popen', side_effect=AssertionError('No model needed')):
+                compare_q4(**paths, output=output, port=4221, threads=8, slots=2,
+                           judges=3, generate_arm='custom')
+                prediction.write_text(prediction.read_text() + '\n')
+                with self.assertRaisesRegex(ValueError, 'output changed'):
+                    compare_q4(**paths, output=output, port=4221, threads=8, slots=2,
+                               judges=3, generate_arm='custom')
 
 
 if __name__ == '__main__':

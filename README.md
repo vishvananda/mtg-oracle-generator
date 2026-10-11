@@ -32,7 +32,7 @@ training and evaluation pipeline, not application code or application artwork.
 | Preference pilot | [47 reviewed pairs](https://huggingface.co/datasets/vishvananda/mtg-oracle-preference-pilot-v1), [six-update adapter](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-dpo-pilot-20261009); [no measured development gain](reports/dpo-pilot-v1/README.md) |
 | Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |
 | Custom-card collection | [All 14,969 eligible MSEM designs](reports/custom-card-full/README.md): 3,997 parse after conservative cleanup; **3,852 distinct review candidates** after duplicate and vanilla-card filtering |
-| Additional custom-card training | [4,076-example pilot](reports/custom-sft-pilot/README.md): 511 reviewed custom training families plus original-corpus replay; 64-family holdout and SFT/DPO/custom comparisons; 255 updates completed; faithful-and-parsed 155 → 171/192 versus DPO, parser acceptance unchanged; displayed-name style audit complete, Q4 confirmation pending |
+| Additional custom-card training | [4,076-example pilot](reports/custom-sft-pilot/README.md): 255 updates completed; displayed-name audit and Q4 comparison complete; Q4 faithful-and-parsed 161 → 167/192 on custom holdout, 46 → 43/128 on development; keep DPO2 deployed |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -90,11 +90,13 @@ verified Arrow files without repeating full-corpus preprocessing.
 
 The [custom-card SFT continuation](reports/custom-sft-pilot/README.md) completed
 255 updates on 4,076 examples. On 192 descriptions from 64 unseen custom-card
-families, faithful-and-parsed outputs improved **155 → 171** versus DPO;
-mtgish acceptance stayed **177/192**. The broader development panel showed
-little parser gain. A consistent displayed-name audit found no remaining style
-regression: faithful, clean-style outputs were 165 → 181/192. Deployment-quant
-confirmation remains; this candidate is not served yet. The
+families, NF4 faithful-and-parsed outputs improved **155 → 171** versus DPO;
+mtgish acceptance stayed **177/192**. The completed **Q4_0 serving comparison**
+shows a smaller gain, **161 → 167/192**, with its paired interval including zero.
+Development faithful-and-parsed falls **46 → 43/128**. The displayed-name audit
+removed the apparent NF4 style regression, but the serving results do not justify
+promotion: **DPO2 remains deployed**. See the report for failure counts, graphs,
+judge limitations and pinned artifacts. The
 [repair-training pilot](docs/oracle-repair-training.md) is prepared, not trained.
 
 The larger DPO round completed 125 updates on 1,000 reviewed pairs, with **no

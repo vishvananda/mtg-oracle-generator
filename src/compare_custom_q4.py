@@ -27,10 +27,17 @@ def run(cases, system, custom, dpo, server, output, port, threads, slots, judges
     pin.write_text(json.dumps(identity, indent=2) + '\n')
 
     def arm(name, model, listen):
+        endpoint = f'http://127.0.0.1:{listen}'
+        receipt = output / f'{name}.manifest.json'
+        if receipt.exists() and json.loads(receipt.read_text()).get('complete'):
+            # Recheck frozen inputs and output bytes without loading a model or
+            # binding a recently closed server socket just to reuse predictions.
+            return generate(cases, system.read_text(), identity['models'][name], endpoint,
+                            output / f'{name}.jsonl', slots)
         # Refuse an occupied port instead of accidentally querying another model.
         with socket.socket() as probe:
+            probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             probe.bind(('127.0.0.1', listen))
-        endpoint = f'http://127.0.0.1:{listen}'
         command = [str(server), '--model', str(model), '--host', '127.0.0.1',
                    '--port', str(listen), '--threads', str(threads), '--threads-batch', str(threads),
                    '--ctx-size', str(slots * 4096), '--parallel', str(slots), '--jinja',

@@ -218,5 +218,19 @@ against the same arm/output directory. Native CPU requests have a 30-minute
 transport timeout; truncated or repeating model outputs are still scored as
 failures rather than retried for a better answer.
 
+A completed arm is hash-verified and reused without loading its model or binding
+a server socket. This lets the review stage resume independently of inference.
+The [completed comparison](../reports/custom-sft-pilot/README.md) found a small,
+uncertain Q4 custom-holdout gain and development regressions; DPO2 stays deployed.
+
+To regenerate the comparison graph from the published aggregate reports:
+
+```bash
+python src/plot_custom_comparison.py \
+  --audit reports/custom-sft-pilot/display-name-audit.json \
+  --quantized reports/custom-sft-pilot/q4-comparison.json \
+  --output reports/custom-sft-pilot/review-gates
+```
+
 For the measured adapter sizes and runtime work needed to reduce browser model
 downloads, see [incremental model downloads](incremental-model-downloads.md).
