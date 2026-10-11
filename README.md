@@ -33,7 +33,7 @@ training and evaluation pipeline, not application code or application artwork.
 | Larger preference round | 1,007 approved pairs; **1,000 trained for 125 updates**. [Run details and results](reports/preference-round-two/README.md) |
 | Custom-card collection | [All 14,969 eligible MSEM designs](reports/custom-card-full/README.md): 3,997 parse after conservative cleanup; **3,852 distinct review candidates** after duplicate and vanilla-card filtering |
 | Additional custom-card training | [4,076-example pilot](reports/custom-sft-pilot/README.md): 255 updates completed; displayed-name audit and Q4 comparison complete; Q4 faithful-and-parsed 161 → 167/192 on custom holdout, 46 → 43/128 on development; keep DPO2 deployed |
-| Oracle repair continuation | [Expanded repair pilot](reports/repair-sft-pilot/README.md): 2,670 training examples; 167 updates completed; frozen 193-case Q4 comparison in progress; no automatic promotion |
+| Oracle repair continuation | [2,670-example pilot](reports/repair-sft-pilot/README.md): 167 updates completed; controlled repairs 57 → 57/61, edits 23 → 24/24, generation 23 → 19/64; keep DPO2 deployed |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 
@@ -99,7 +99,10 @@ removed the apparent NF4 style regression, but the serving results do not justif
 promotion: **DPO2 remains deployed**. See the report for failure counts, graphs,
 judge limitations and pinned artifacts. The
 [repair-training pilot](docs/oracle-repair-training.md) has expanded to 2,670
-examples and completed its bounded continuation from DPO2. Paired Q4 results are pending.
+examples and completed its bounded continuation from DPO2. Controlled repairs
+stay at 57/61, while normal-generation faithful-and-parsed outputs fall from
+23 to 19/64. [Results, curves and limitations](reports/repair-sft-pilot/README.md)
+support keeping DPO2 deployed.
 
 The larger DPO round completed 125 updates on 1,000 reviewed pairs, with **no
 clear measured quality gain**. On the

@@ -1,6 +1,45 @@
 # Oracle repair SFT pilot
 
-**Training completed; paired Q4 evaluation is in progress. No model promotion.**
+**Complete: keep DPO2 deployed.** Wording repair did not improve, while normal
+generation regressed. Small gains in editing and preserving unsupported cards
+do not justify replacing the general generator or adding a second repair model.
+
+## Results
+
+| Strict successful outputs | DPO2 | Repair SFT | Paired difference, percentage points (95% interval) |
+| --- | ---: | ---: | --- |
+| Controlled wording repairs | 57/61 | 57/61 | 0.00 (0.00, 0.00) |
+| Requested edits | 23/24 | 24/24 | +4.17 (0.00, 12.50) |
+| Accepted no-op cards | 12/12 | 12/12 | 0.00 (0.00, 0.00) |
+| Unsupported-valid controls | 29/32 | 30/32 | +3.13 (0.00, 9.38) |
+| Normal generation, faithful and parsed | 23/64 | 19/64 | −6.25 (−12.90, −1.49) |
+
+![Paired Q4 outcomes and family-bootstrap intervals](repair-comparison.png)
+
+Success requires valid schema, preserved metadata and meaning, and mtgish
+acceptance. Unsupported-valid controls instead require unchanged output and
+semantic approval; neither model made those 32 cards parse. Both models parse
+**58/61** controlled repairs and match the target's canonical parse tree on all
+58. The strict score is one lower because the judge objects to a retained
+pronoun even though both models exactly reproduce that case's reviewed target.
+This shared judge false negative does not affect the paired conclusion. Raw
+scores are retained alongside the independent parse-tree diagnostic.
+
+Planeswalker wording repairs are **15/16 in both arms**. Starting-loyalty edits
+improve **15 → 16/16**, and preservation of unsupported planeswalkers improves
+**2 → 3/3**. The two gains preserve fields the baseline omitted: starting
+loyalty in one card, and rarity/type metadata in another.
+
+Normal-generation schema validity falls **63 → 59/64**, parser acceptance
+**24 → 21/64**, and judged intent fidelity **37 → 32/64**. Three new schema
+failures involve planeswalker structure. All 386 generations completed, with
+zero truncations and no parser infrastructure failures.
+
+These are diagnostic panels and the intervals are not adjusted for multiple
+comparisons. A zero-width paired interval means the observed paired outcomes
+were identical, not that true population performance is known exactly.
+[Full metrics and model/parser identities](comparison.json) ·
+[per-case flags, without source card text](paired-outcomes.jsonl).
 
 This pilot teaches the browser's existing card + requested change + parser
 diagnostic flow. It continues the deployed DPO2 adapter for one pass with a fresh
@@ -82,5 +121,36 @@ held-out card or repair accuracy. Length-grouped batches mix nearly copying a
 card with the harder normal-generation task, so individual batch losses vary
 strongly. [Raw curve](training-curve.csv) · [training summary](training-summary.json).
 
-Paired generation results will be added after the Q4 comparison. CardForge
-continues serving DPO2 during the experiment.
+The completed Q4 comparison above determines the decision. CardForge continues
+serving DPO2; this candidate remains an experiment artifact.
+
+## Small regression checks
+
+Three previously used probes were also rerun, separately from the frozen panel.
+Both models repair draw/discard punctuation and replace Smaug's shortened
+self-reference with `CARDNAME`, preserving its name. The repair candidate also
+changes the planeswalker's `Scry two` to `Scry 2`; DPO2 leaves that wording error.
+Both preserve all non-Oracle fields in all three probes.
+
+The planeswalker still fails whole-card parsing in both arms because mtgish
+rejects its custom subtype `Neris`. In a separate diagnostic-only copy, replacing
+that subtype with a recognized subtype makes the repair candidate parse while
+DPO2 still fails. This is not a proposed card change and does not change either
+model's score. [Exact probe inputs and outputs](smoke-examples.json).
+
+## Follow-up considerations
+
+The new exporter changed completion field order relative to the original
+training data, and its replay contains only single-face cards. Both are avoidable
+differences in a repair-focused experiment. A [serialization audit](serialization-audit.json)
+records these facts; it does not establish either as the cause of the regression.
+Future work should preserve the original compact, sorted-key target format,
+broaden replay coverage, and compare lower-update or task-specific alternatives.
+The current synthetic repair panel is already near its ceiling on DPO2, so
+adding more of the same easy corruptions is unlikely to address the main gap.
+
+For better repair inputs, the existing identity-linked `printed_wording` data
+offers real historical phrasing paired with modern Oracle targets. Reuse its
+documented errata exclusions, then independently review semantic equivalence
+in the repair task. This is a stronger candidate source than treating every
+parser rejection as an error that must be rewritten.

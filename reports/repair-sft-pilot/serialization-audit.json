@@ -1,0 +1,23 @@
+{
+  "original_first_1000": {
+    "examples": 1000,
+    "first_three_keys": {
+      "colors, mana_cost, name": 896,
+      "colors, design_notes, mana_cost": 35,
+      "colors, layout, mana_cost": 35,
+      "card_faces, layout, name": 11,
+      "colors, loyalty, mana_cost": 8,
+      "card_faces, colors, layout": 14,
+      "colors, hand_modifier, layout": 1
+    },
+    "multiface_targets": 25
+  },
+  "repair_all": {
+    "examples": 2670,
+    "first_three_keys": {
+      "name, rarity, mana_cost": 2670
+    },
+    "multiface_targets": 0
+  },
+  "interpretation": "Observed serialization and coverage differences, not evidence that either caused the generation regression."
+}

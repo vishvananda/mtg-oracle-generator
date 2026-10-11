@@ -1,0 +1,203 @@
+{
+  "scope": "Three previously used, hand-selected regression probes; outside the 193-case comparison.",
+  "decoding": {
+    "temperature": 0,
+    "seed": 17,
+    "max_tokens": 2048,
+    "enable_thinking": false
+  },
+  "cases": [
+    {
+      "arm": "dpo",
+      "case": "repair-loot",
+      "original": {
+        "name": "Cloudwing Sentinel",
+        "rarity": "uncommon",
+        "mana_cost": "{2}{U}",
+        "type_line": "Creature — Bird",
+        "colors": [
+          "U"
+        ],
+        "power": "2",
+        "toughness": "2",
+        "oracle_text": "Flying\n{T}: Draw one card then discard one card."
+      },
+      "candidate": {
+        "colors": [
+          "U"
+        ],
+        "mana_cost": "{2}{U}",
+        "name": "Cloudwing Sentinel",
+        "oracle_text": "Flying\n{T}: Draw a card, then discard a card.",
+        "power": "2",
+        "rarity": "uncommon",
+        "toughness": "2",
+        "type_line": "Creature — Bird"
+      },
+      "parse_complete": true,
+      "non_oracle_metadata_unchanged": true
+    },
+    {
+      "arm": "dpo",
+      "case": "repair-walker",
+      "original": {
+        "name": "Neris, Tide Seeker",
+        "rarity": "mythic",
+        "mana_cost": "{2}{U}{U}",
+        "type_line": "Legendary Planeswalker — Neris",
+        "colors": [
+          "U"
+        ],
+        "loyalty": "4",
+        "oracle_text": "+1: Scry two.\n−2: Return target creature to its owners hand.\n−7: Draw seven cards."
+      },
+      "candidate": {
+        "colors": [
+          "U"
+        ],
+        "loyalty": "4",
+        "mana_cost": "{2}{U}{U}",
+        "name": "Neris, Tide Seeker",
+        "oracle_text": "+1: Scry two.\n−2: Return target creature to its owner's hand.\n−7: Draw seven cards.",
+        "rarity": "mythic",
+        "type_line": "Legendary Planeswalker — Neris"
+      },
+      "parse_complete": false,
+      "non_oracle_metadata_unchanged": true
+    },
+    {
+      "arm": "dpo",
+      "case": "repair-custom-short-name",
+      "original": {
+        "name": "Smaug the Unkillable",
+        "rarity": "rare",
+        "mana_cost": "{3}{U}{R}",
+        "type_line": "Legendary Creature — Dragon",
+        "colors": [
+          "U",
+          "R"
+        ],
+        "power": "4",
+        "toughness": "4",
+        "oracle_text": "Flying\nWhenever Smaug attacks, draw a card, then discard a card."
+      },
+      "candidate": {
+        "colors": [
+          "U",
+          "R"
+        ],
+        "mana_cost": "{3}{U}{R}",
+        "name": "Smaug the Unkillable",
+        "oracle_text": "Flying\nWhenever CARDNAME attacks, draw a card, then discard a card.",
+        "power": "4",
+        "rarity": "rare",
+        "toughness": "4",
+        "type_line": "Legendary Creature — Dragon"
+      },
+      "parse_complete": true,
+      "non_oracle_metadata_unchanged": true
+    },
+    {
+      "arm": "repair",
+      "case": "repair-loot",
+      "original": {
+        "name": "Cloudwing Sentinel",
+        "rarity": "uncommon",
+        "mana_cost": "{2}{U}",
+        "type_line": "Creature — Bird",
+        "colors": [
+          "U"
+        ],
+        "power": "2",
+        "toughness": "2",
+        "oracle_text": "Flying\n{T}: Draw one card then discard one card."
+      },
+      "candidate": {
+        "name": "Cloudwing Sentinel",
+        "rarity": "uncommon",
+        "mana_cost": "{2}{U}",
+        "type_line": "Creature — Bird",
+        "colors": [
+          "U"
+        ],
+        "power": "2",
+        "toughness": "2",
+        "oracle_text": "Flying\n{T}: Draw a card, then discard a card."
+      },
+      "parse_complete": true,
+      "non_oracle_metadata_unchanged": true
+    },
+    {
+      "arm": "repair",
+      "case": "repair-walker",
+      "original": {
+        "name": "Neris, Tide Seeker",
+        "rarity": "mythic",
+        "mana_cost": "{2}{U}{U}",
+        "type_line": "Legendary Planeswalker — Neris",
+        "colors": [
+          "U"
+        ],
+        "loyalty": "4",
+        "oracle_text": "+1: Scry two.\n−2: Return target creature to its owners hand.\n−7: Draw seven cards."
+      },
+      "candidate": {
+        "name": "Neris, Tide Seeker",
+        "rarity": "mythic",
+        "mana_cost": "{2}{U}{U}",
+        "type_line": "Legendary Planeswalker — Neris",
+        "colors": [
+          "U"
+        ],
+        "loyalty": "4",
+        "oracle_text": "+1: Scry 2.\n−2: Return target creature to its owner's hand.\n−7: Draw seven cards."
+      },
+      "parse_complete": false,
+      "non_oracle_metadata_unchanged": true
+    },
+    {
+      "arm": "repair",
+      "case": "repair-custom-short-name",
+      "original": {
+        "name": "Smaug the Unkillable",
+        "rarity": "rare",
+        "mana_cost": "{3}{U}{R}",
+        "type_line": "Legendary Creature — Dragon",
+        "colors": [
+          "U",
+          "R"
+        ],
+        "power": "4",
+        "toughness": "4",
+        "oracle_text": "Flying\nWhenever Smaug attacks, draw a card, then discard a card."
+      },
+      "candidate": {
+        "name": "Smaug the Unkillable",
+        "rarity": "rare",
+        "mana_cost": "{3}{U}{R}",
+        "type_line": "Legendary Creature — Dragon",
+        "colors": [
+          "U",
+          "R"
+        ],
+        "power": "4",
+        "toughness": "4",
+        "oracle_text": "Flying\nWhenever CARDNAME attacks, draw a card, then discard a card."
+      },
+      "parse_complete": true,
+      "non_oracle_metadata_unchanged": true
+    }
+  ],
+  "planeswalker_isolation": [
+    {
+      "arm": "dpo",
+      "diagnostic_only": "Replaced custom subtype with Jace only in this separate counterfactual check. Original output and scores unchanged.",
+      "parsed": false
+    },
+    {
+      "arm": "repair",
+      "diagnostic_only": "Replaced custom subtype with Jace only in this separate counterfactual check. Original output and scores unchanged.",
+      "parsed": true
+    }
+  ]
+}

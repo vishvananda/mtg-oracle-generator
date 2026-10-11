@@ -1,12 +1,18 @@
 # Oracle-error repair training
 
-A focused repair SFT continuation is the next useful experiment. The existing
+This experiment tested a focused repair SFT continuation. The existing
 model was mainly trained on description → card generation; the browser repair
 task instead supplies a card, a requested change, and structured parser feedback.
 Previous DPO repairs used the original description rather than this conversation
-shape. Teach the actual repair task before collecting more preference pairs.
+shape. The pilot tested teaching that actual repair task before collecting more
+preference pairs.
 
-## Prepared now
+The [expanded pilot is now complete](../reports/repair-sft-pilot/README.md).
+It found no controlled wording-repair gain and a normal-generation regression;
+DPO2 remains deployed. The workflow below is retained for reproducibility, not
+as a recommendation to scale this particular corpus and recipe unchanged.
+
+## Expanded workflow
 
 An expanded one-job pilot now uses `repair_expansion.py`, `repair_review.py`, and
 `repair_dataset.py`. The original 128-example export below is retained as an
@@ -84,6 +90,8 @@ planeswalkers, and paired family-bootstrap intervals are reported separately.
 The evaluator also reports exact mtgish parse-tree equality with the known-good
 targets. Tree mismatches alone do not establish changed meaning; alternative
 wordings may produce different trees. Unsupported targets have no accepted tree.
+
+## Earlier smoke dataset
 
 `src/repair_corpus.py` exports the browser's exact `revisionMessages` prompt and
 `designOnly` card projection through the shared `prompts/browser-repair.mjs` protocol implementation. It

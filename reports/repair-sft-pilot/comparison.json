@@ -1,0 +1,443 @@
+{
+  "panels": {
+    "real": {
+      "cases": 32,
+      "families": 32,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 0,
+          "metadata_preserved": 31,
+          "mtgish_accepted": 0,
+          "schema_valid": 32,
+          "semantics_preserved": 29,
+          "successful": 29,
+          "target_ast_exact": 0,
+          "unchanged": 30,
+          "unsupported_control": 32,
+          "unsupported_preserved": 29
+        },
+        "repair": {
+          "faithful_and_parsed": 0,
+          "metadata_preserved": 32,
+          "mtgish_accepted": 0,
+          "schema_valid": 32,
+          "semantics_preserved": 30,
+          "successful": 30,
+          "target_ast_exact": 0,
+          "unchanged": 31,
+          "unsupported_control": 32,
+          "unsupported_preserved": 30
+        }
+      },
+      "success_difference_pp": 3.125,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        9.375
+      ]
+    },
+    "synthetic": {
+      "cases": 61,
+      "families": 61,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 57,
+          "metadata_preserved": 61,
+          "mtgish_accepted": 58,
+          "schema_valid": 61,
+          "semantics_preserved": 59,
+          "successful": 57,
+          "target_ast_exact": 58,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        },
+        "repair": {
+          "faithful_and_parsed": 57,
+          "metadata_preserved": 61,
+          "mtgish_accepted": 58,
+          "schema_valid": 61,
+          "semantics_preserved": 59,
+          "successful": 57,
+          "target_ast_exact": 58,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        }
+      },
+      "success_difference_pp": 0.0,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    "edit": {
+      "cases": 24,
+      "families": 24,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 23,
+          "metadata_preserved": 23,
+          "mtgish_accepted": 23,
+          "schema_valid": 23,
+          "semantics_preserved": 23,
+          "successful": 23,
+          "target_ast_exact": 23,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        },
+        "repair": {
+          "faithful_and_parsed": 24,
+          "metadata_preserved": 24,
+          "mtgish_accepted": 24,
+          "schema_valid": 24,
+          "semantics_preserved": 24,
+          "successful": 24,
+          "target_ast_exact": 24,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        }
+      },
+      "success_difference_pp": 4.166666666666667,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        12.5
+      ]
+    },
+    "noop": {
+      "cases": 12,
+      "families": 12,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 12,
+          "metadata_preserved": 12,
+          "mtgish_accepted": 12,
+          "schema_valid": 12,
+          "semantics_preserved": 12,
+          "successful": 12,
+          "target_ast_exact": 12,
+          "unchanged": 12,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        },
+        "repair": {
+          "faithful_and_parsed": 12,
+          "metadata_preserved": 12,
+          "mtgish_accepted": 12,
+          "schema_valid": 12,
+          "semantics_preserved": 12,
+          "successful": 12,
+          "target_ast_exact": 12,
+          "unchanged": 12,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        }
+      },
+      "success_difference_pp": 0.0,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    "generation": {
+      "cases": 64,
+      "families": 58,
+      "counts": {
+        "dpo": {
+          "intent_faithful": 37,
+          "mtgish_accepted": 24,
+          "schema_valid": 63,
+          "successful": 23
+        },
+        "repair": {
+          "intent_faithful": 32,
+          "mtgish_accepted": 21,
+          "schema_valid": 59,
+          "successful": 19
+        }
+      },
+      "success_difference_pp": -6.25,
+      "family_bootstrap_95_percent_interval_pp": [
+        -12.903225806451612,
+        -1.492537313432836
+      ]
+    }
+  },
+  "real_error_breakdown": {
+    "unsupported_valid": {
+      "cases": 32,
+      "families": 32,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 0,
+          "metadata_preserved": 31,
+          "mtgish_accepted": 0,
+          "schema_valid": 32,
+          "semantics_preserved": 29,
+          "successful": 29,
+          "target_ast_exact": 0,
+          "unchanged": 30,
+          "unsupported_control": 32,
+          "unsupported_preserved": 29
+        },
+        "repair": {
+          "faithful_and_parsed": 0,
+          "metadata_preserved": 32,
+          "mtgish_accepted": 0,
+          "schema_valid": 32,
+          "semantics_preserved": 30,
+          "successful": 30,
+          "target_ast_exact": 0,
+          "unchanged": 31,
+          "unsupported_control": 32,
+          "unsupported_preserved": 30
+        }
+      },
+      "success_difference_pp": 3.125,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        9.375
+      ]
+    }
+  },
+  "planeswalker_breakdown": {
+    "planeswalker_real": {
+      "cases": 3,
+      "families": 3,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 0,
+          "metadata_preserved": 2,
+          "mtgish_accepted": 0,
+          "schema_valid": 3,
+          "semantics_preserved": 2,
+          "successful": 2,
+          "target_ast_exact": 0,
+          "unchanged": 2,
+          "unsupported_control": 3,
+          "unsupported_preserved": 2
+        },
+        "repair": {
+          "faithful_and_parsed": 0,
+          "metadata_preserved": 3,
+          "mtgish_accepted": 0,
+          "schema_valid": 3,
+          "semantics_preserved": 3,
+          "successful": 3,
+          "target_ast_exact": 0,
+          "unchanged": 3,
+          "unsupported_control": 3,
+          "unsupported_preserved": 3
+        }
+      },
+      "success_difference_pp": 33.333333333333336,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        100.0
+      ]
+    },
+    "planeswalker_synthetic": {
+      "cases": 16,
+      "families": 16,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 15,
+          "metadata_preserved": 16,
+          "mtgish_accepted": 15,
+          "schema_valid": 16,
+          "semantics_preserved": 16,
+          "successful": 15,
+          "target_ast_exact": 15,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        },
+        "repair": {
+          "faithful_and_parsed": 15,
+          "metadata_preserved": 16,
+          "mtgish_accepted": 15,
+          "schema_valid": 16,
+          "semantics_preserved": 16,
+          "successful": 15,
+          "target_ast_exact": 15,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        }
+      },
+      "success_difference_pp": 0.0,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        0.0
+      ]
+    },
+    "planeswalker_edit": {
+      "cases": 16,
+      "families": 16,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 15,
+          "metadata_preserved": 15,
+          "mtgish_accepted": 15,
+          "schema_valid": 15,
+          "semantics_preserved": 15,
+          "successful": 15,
+          "target_ast_exact": 15,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        },
+        "repair": {
+          "faithful_and_parsed": 16,
+          "metadata_preserved": 16,
+          "mtgish_accepted": 16,
+          "schema_valid": 16,
+          "semantics_preserved": 16,
+          "successful": 16,
+          "target_ast_exact": 16,
+          "unchanged": 0,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        }
+      },
+      "success_difference_pp": 6.25,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        18.75
+      ]
+    },
+    "planeswalker_noop": {
+      "cases": 1,
+      "families": 1,
+      "counts": {
+        "dpo": {
+          "faithful_and_parsed": 1,
+          "metadata_preserved": 1,
+          "mtgish_accepted": 1,
+          "schema_valid": 1,
+          "semantics_preserved": 1,
+          "successful": 1,
+          "target_ast_exact": 1,
+          "unchanged": 1,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        },
+        "repair": {
+          "faithful_and_parsed": 1,
+          "metadata_preserved": 1,
+          "mtgish_accepted": 1,
+          "schema_valid": 1,
+          "semantics_preserved": 1,
+          "successful": 1,
+          "target_ast_exact": 1,
+          "unchanged": 1,
+          "unsupported_control": 0,
+          "unsupported_preserved": 0
+        }
+      },
+      "success_difference_pp": 0.0,
+      "family_bootstrap_95_percent_interval_pp": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "predictions": {
+    "dpo": {
+      "cases_sha256": "17d41ce8c9887d683d97471295cc7f1d5e48c1d3fdf39b292444fb6c28cd6989",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+      "decoding": {
+        "temperature": 0,
+        "seed": 17,
+        "max_tokens": 2048,
+        "enable_thinking": false
+      },
+      "backend": "llama.cpp Q4_0 CPU",
+      "scope": "Frozen browser repair/edit messages and generation replay; unconstrained decoding",
+      "case_messages": true,
+      "concurrent_requests": 4,
+      "complete": true,
+      "sha256": "8671d881b9495eae93daeb657553b1cfdf09acc5212bd0ae07740b5ac6cf3604",
+      "cases": 193,
+      "completions": 193
+    },
+    "repair": {
+      "cases_sha256": "17d41ce8c9887d683d97471295cc7f1d5e48c1d3fdf39b292444fb6c28cd6989",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "model_sha256": "6b788c9929f4eee1b295ff174b173feb8e4e52da1222680722578b15229fe950",
+      "decoding": {
+        "temperature": 0,
+        "seed": 17,
+        "max_tokens": 2048,
+        "enable_thinking": false
+      },
+      "backend": "llama.cpp Q4_0 CPU",
+      "scope": "Frozen browser repair/edit messages and generation replay; unconstrained decoding",
+      "case_messages": true,
+      "concurrent_requests": 4,
+      "complete": true,
+      "sha256": "ef4e1c63abf94ec10587d37ccc1e3b730296bc6035491f2aac8ed67ce5823d82",
+      "cases": 193,
+      "completions": 193
+    }
+  },
+  "parser": {
+    "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+    "workflow": "upstream-standard-v2",
+    "manifest_sha256": "2d3820bf78cb398736fd7e56381e1fbd1a4549c5a0ee9fbbb58c7d7c78aca3b5",
+    "binary_sha256": "9137350af5cf08fc473b2a47e46b0f038acea36226ce954bf09ca4c237c79da4",
+    "grammar_files": {
+      "english_grammar-INPUT.json5": "9bf36603040f3eb3018a65f8520554300a6307cda98bb1df3034f454adafdbe6",
+      "english_grammar-ability_word.json5": "bd1eb337e7a29f7f27e2124944c6ac3ebfa545bac51d65faba595de71063d3fb",
+      "english_grammar-counters.json5": "a49a6dec59e2cca4162f286f6eb8ac523133ef0f584c4000b78b04d809ea5aa2",
+      "english_grammar-flavor_word.json5": "524548be31e483bdf513033bcaa64211e1ffc4746655e9792cbd7579aee206a1",
+      "english_grammar-named_cards.json5": "1df3fada73ab7554181441d51c65af2de54ac2346c806244b758617a9805ed42",
+      "english_grammar-null_text.json5": "9dd2507cddbe23a725d2a652961b311928ae3f54520cc11ba722e79f5f5b6c30",
+      "english_grammar-reminder_text.json5": "a57f4e77d4b46d28a18d6f4b5a7978cfef54ef49b3466a0a5db50f3b01a33082",
+      "english_grammar-type_line.json5": "57242bc89563b416aeebcb40192ea490a103bb28ce882d51142f4e6b6bc081d0",
+      "english_grammar.json5": "e82ca3e575eb75109fb88827e5890f60a17448a5fc84446ca2d2a25f330500ac",
+      "find_replace.json5": "0982b35d9f3ee12d0c61963cb7520f42a24ab7f383af8f345f70fc1d78d9d458",
+      "ignore.json5": "77e86963b89f9c3a6799db9fc35f53ecd347f0a9552a1d8fb785084387708a09",
+      "mtgish_grammar-counters.json5": "bf310d27bc187d3239384d1cc5b8b4e8365f1c075ab87b607b4d75b8fb71c461",
+      "mtgish_grammar-create_tokens.json5": "13100305c8edb8ec9c4002e59250c3011c01598a332ffe6c7258090b70230554",
+      "mtgish_grammar-exile.json5": "31f6ac351b04ef00c1fbcac5706c4ee1f2e6802272a62c686959b8084fe981b3",
+      "mtgish_grammar-fight.json5": "d7ff5d99d50e960a10f560da82c8dbe7a219b6b6827f0697310a8b0a0b90db6c",
+      "mtgish_grammar-mana.json5": "1212a7f06a53ba3032673c18d129267f1256384e0c6c3fa604aff846de1960bb",
+      "mtgish_grammar-named_cards.json5": "a44e7d644245c567452cef8d723e8b6dd2bcd11c7f5880c43320d1ff934f3be0",
+      "mtgish_grammar-put_counters.json5": "77425da052f6e30ba54e23b90f41e440a3e484a72f2cb28bd39d22ce24fe6c23",
+      "mtgish_grammar-triggers.json5": "96b070faa84d9a5cad36071d156a01e6139a8590a57f3b51a9b94fca9c1dff24",
+      "mtgish_grammar-type_line.json5": "1c7bbca24f18075a49f4b06c60d89b7e08c28757ef61a72b55677d469e73c8b4",
+      "mtgish_grammar-vote_option.json5": "93e2f2472543b1a6865d80c7d45032788759dfc365c41d5dfb0a424cd65587e3",
+      "mtgish_grammar.json5": "e29a5d84e898d996eb2b55677b3ce62727a05db88f57463d75af8ccf8c54f34c",
+      "short_names.json5": "dd44ee8da0d0546722fa3b83de3d042c5f147cbe7553ad8e200c3b572b2c76a3"
+    }
+  },
+  "judge": "gpt-6.1-sol medium; blind candidate identities; calibrated batches",
+  "additional_diagnostics": {
+    "target_ast_exact": "Exact canonical mtgish tree equality against the reviewed target; false if either does not parse. A mismatch alone does not prove changed meaning."
+  },
+  "automatic_promotion": false,
+  "inference": "Native CPU llama.cpp Q4_0; not browser timing",
+  "caveats": [
+    "Existing development panel is diagnostic, not an untouched final test.",
+    "Repair holdout families are excluded from this continuation but may occur in original SFT.",
+    "Same model family supplies teacher and reviewer labels; no claim of human accuracy.",
+    "Parser rejection can mean unsupported rules; unsupported controls require unchanged output.",
+    "Family bootstrap intervals are descriptive and uncorrected for multiple comparisons."
+  ],
+  "decision": "Keep deployed DPO2. No meaningful wording-repair gain; small edit/control gains do not offset generation regression.",
+  "judge_audit": {
+    "case_id": "b21876f2330b6e1e5f9661fb",
+    "finding": "Both arms exactly reproduce the known-good target but the judge objects to the retained pronoun he. This is a shared false negative against the target, with no effect on the paired conclusion. Raw scores are retained; target AST equality is reported separately.",
+    "strict_scored_synthetic": {
+      "dpo": 57,
+      "repair": 57
+    },
+    "mtgish_accepted_and_target_ast_equal": {
+      "dpo": 58,
+      "repair": 58
+    }
+  }
+}
