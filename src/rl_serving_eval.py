@@ -12,11 +12,16 @@ from rl_teacher import batches,REVIEW,prompt,faithful
 from rl_parser_cache import ParserCache
 
 
-def generate(cases_path,system,model_sha,endpoint,output,workers=1):
+def generate(cases_path,system,model_sha,endpoint,output,workers=1,case_messages=False):
     cases=list(map(json.loads,cases_path.read_text().splitlines()))
     identity={'cases_sha256':sha_file(cases_path),'system_sha256':digest(system.encode()),'model_sha256':model_sha,
         'decoding':{'temperature':0,'seed':17,'max_tokens':2048,'enable_thinking':False},'backend':'llama.cpp Q4_0 CPU',
         'scope':'production prompt with terminology guide; no schema-constrained decoding'}
+    if case_messages:
+        identity['scope']='Frozen browser repair/edit messages and generation replay; unconstrained decoding'
+        identity['case_messages']=True
+        if any(not isinstance(c.get('messages'),list) or not c['messages'] for c in cases):
+            raise ValueError('Every evaluation case needs frozen messages')
     if workers < 1:raise ValueError('workers must be positive')
     if workers > 1:identity['concurrent_requests']=workers
     output.parent.mkdir(parents=True,exist_ok=True)
@@ -36,7 +41,7 @@ def generate(cases_path,system,model_sha,endpoint,output,workers=1):
             done[row['case_id']]=row
     if not set(done)<={c['id'] for c in cases}:raise ValueError('Unknown saved case')
     def one(case):
-        body={'messages':[{'role':'system','content':system},{'role':'user','content':case['request']}],
+        body={'messages':case['messages'] if case_messages else [{'role':'system','content':system},{'role':'user','content':case['request']}],
             'temperature':0,'seed':17,'max_tokens':2048,'chat_template_kwargs':{'enable_thinking':False}}
         req=urllib.request.Request(endpoint+'/v1/chat/completions',data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
         before=time.monotonic()
@@ -45,7 +50,7 @@ def generate(cases_path,system,model_sha,endpoint,output,workers=1):
         return {'case_id':case['id'],'candidate_id':case['id']+'-00','raw':choice['message']['content'],
             'hit_token_limit':choice['finish_reason']=='length','output_tokens':value.get('usage',{}).get('completion_tokens'),
             'seconds':time.monotonic()-before}
-    todo=[c for c in sorted(cases,key=lambda c:(len(c['request']),c['id'])) if c['id'] not in done]
+    todo=[c for c in sorted(cases,key=lambda c:(len(json.dumps(c['messages'])) if case_messages else len(c['request']),c['id'])) if c['id'] not in done]
     failures=[]
     with output.open('a') as stream, ThreadPoolExecutor(max_workers=workers) as pool:
         futures={pool.submit(one,case):case['id'] for case in todo}
