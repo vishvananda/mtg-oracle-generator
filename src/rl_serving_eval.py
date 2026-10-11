@@ -12,11 +12,13 @@ from rl_teacher import batches,REVIEW,prompt,faithful
 from rl_parser_cache import ParserCache
 
 
-def generate(cases_path,system,model_sha,endpoint,output):
+def generate(cases_path,system,model_sha,endpoint,output,workers=1):
     cases=list(map(json.loads,cases_path.read_text().splitlines()))
     identity={'cases_sha256':sha_file(cases_path),'system_sha256':digest(system.encode()),'model_sha256':model_sha,
         'decoding':{'temperature':0,'seed':17,'max_tokens':2048,'enable_thinking':False},'backend':'llama.cpp Q4_0 CPU',
         'scope':'production prompt with terminology guide; no schema-constrained decoding'}
+    if workers < 1:raise ValueError('workers must be positive')
+    if workers > 1:identity['concurrent_requests']=workers
     output.parent.mkdir(parents=True,exist_ok=True)
     receipt_path=output.with_suffix('.manifest.json')
     if receipt_path.exists():
@@ -33,25 +35,35 @@ def generate(cases_path,system,model_sha,endpoint,output):
             if row['case_id'] in done:raise ValueError('Duplicate saved output')
             done[row['case_id']]=row
     if not set(done)<={c['id'] for c in cases}:raise ValueError('Unknown saved case')
-    with output.open('a') as stream:
-        for case in sorted(cases,key=lambda c:(len(c['request']),c['id'])):
-            if case['id'] in done:continue
-            body={'messages':[{'role':'system','content':system},{'role':'user','content':case['request']}],
-                'temperature':0,'seed':17,'max_tokens':2048,'chat_template_kwargs':{'enable_thinking':False}}
-            req=urllib.request.Request(endpoint+'/v1/chat/completions',data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
-            before=time.monotonic()
-            with urllib.request.urlopen(req,timeout=300) as f:value=json.load(f)
-            choice=value['choices'][0]
-            row={'case_id':case['id'],'candidate_id':case['id']+'-00','raw':choice['message']['content'],
-                'hit_token_limit':choice['finish_reason']=='length','output_tokens':value.get('usage',{}).get('completion_tokens'),
-                'seconds':time.monotonic()-before}
-            stream.write(json.dumps(row,ensure_ascii=False)+'\n');stream.flush();done[case['id']]=row
+    def one(case):
+        body={'messages':[{'role':'system','content':system},{'role':'user','content':case['request']}],
+            'temperature':0,'seed':17,'max_tokens':2048,'chat_template_kwargs':{'enable_thinking':False}}
+        req=urllib.request.Request(endpoint+'/v1/chat/completions',data=json.dumps(body).encode(),headers={'Content-Type':'application/json'})
+        before=time.monotonic()
+        with urllib.request.urlopen(req,timeout=1800) as f:value=json.load(f)
+        choice=value['choices'][0]
+        return {'case_id':case['id'],'candidate_id':case['id']+'-00','raw':choice['message']['content'],
+            'hit_token_limit':choice['finish_reason']=='length','output_tokens':value.get('usage',{}).get('completion_tokens'),
+            'seconds':time.monotonic()-before}
+    todo=[c for c in sorted(cases,key=lambda c:(len(c['request']),c['id'])) if c['id'] not in done]
+    failures=[]
+    with output.open('a') as stream, ThreadPoolExecutor(max_workers=workers) as pool:
+        futures={pool.submit(one,case):case['id'] for case in todo}
+        for future in as_completed(futures):
+            try:row=future.result()
+            except Exception as error:
+                failures.append((futures[future],error));continue
+            stream.write(json.dumps(row,ensure_ascii=False)+'\n');stream.flush();done[row['case_id']]=row
             print(json.dumps({'generation':output.name,'completed':len(done),'scheduled':len(cases)}),flush=True)
+    if failures:
+        raise RuntimeError(f'{len(failures)} generation requests failed; completed results saved for resume') from failures[0][1]
+    # Completion order is not a judge batch-order decision. Freeze case order.
+    write_jsonl(output,[done[c['id']] for c in cases])
     receipt={**identity,'complete':True,'sha256':sha_file(output),'cases':len(cases),'completions':len(done)}
     receipt_path.write_text(json.dumps(receipt,indent=2)+'\n');return receipt
 
 
-def evaluate(cases_path,predictions,output,workers=4):
+def evaluate(cases_path,predictions,output,workers=4,display_names=False):
     cases={c['id']:c for c in map(json.loads,cases_path.read_text().splitlines())}
     schema=json.loads((PROJECT/'schemas/design-draft-v1.json').read_text());schema['required']+=['name','rarity']
     output.mkdir(parents=True,exist_ok=True)
@@ -76,7 +88,11 @@ def evaluate(cases_path,predictions,output,workers=4):
                     pending.append({'id':key,'request':case['request'],'explicit_metadata':case['explicit_metadata'],
                         'candidate':json.loads(row['raw'])})
         parser_provenance=parser.provenance
-    judgments=batches(pending,prompt('reward-judge-v3.txt'),REVIEW,output/'judge',workers)
+    if display_names:
+        from judge_display import judge_display
+        judgments=judge_display(pending,output/'judge',workers)
+    else:
+        judgments=batches(pending,prompt('reward-judge-v3.txt'),REVIEW,output/'judge',workers)
     counts={arm:Counter() for arm in predictions};results=[]
     for key,(arm,row) in allrows.items():
         c=cases[row['case_id']];a=checks[key];j=judgments.get(key)
@@ -98,6 +114,7 @@ def evaluate(cases_path,predictions,output,workers=4):
         'metric_definitions':{'intent_faithful':'Schema/explicit-field gates and high-confidence pass without violations; style reported separately',
             'faithful_clean_oracle':'intent_faithful plus highest Oracle style score (2)'},
         'parser':parser_provenance,'automatic_promotion':False}
+    result['judge_display_names']=display_names
     (output/'comparison.json').write_text(json.dumps(result,indent=2)+'\n');return result
 
 
@@ -106,9 +123,11 @@ if __name__=='__main__':
     gen=sub.add_parser('generate');gen.add_argument('--cases',type=Path,required=True)
     gen.add_argument('--system',type=Path,required=True);gen.add_argument('--model-sha',required=True)
     gen.add_argument('--endpoint',required=True);gen.add_argument('--output',type=Path,required=True)
+    gen.add_argument('--workers',type=int,default=1)
     ev=sub.add_parser('evaluate');ev.add_argument('--cases',type=Path,required=True);ev.add_argument('--output',type=Path,required=True)
     ev.add_argument('--prediction',action='append',required=True,help='arm=/path/to/generations.jsonl');ev.add_argument('--workers',type=int,default=4)
+    ev.add_argument('--display-names',action='store_true',help='Bind CARDNAME for blind judging only; preserve raw predictions and parser inputs')
     a=p.parse_args()
-    if a.action=='generate':result=generate(a.cases,a.system.read_text(),a.model_sha,a.endpoint,a.output)
-    else:result=evaluate(a.cases,{k:Path(v) for k,v in (s.split('=',1) for s in a.prediction)},a.output,a.workers)
+    if a.action=='generate':result=generate(a.cases,a.system.read_text(),a.model_sha,a.endpoint,a.output,a.workers)
+    else:result=evaluate(a.cases,{k:Path(v) for k,v in (s.split('=',1) for s in a.prediction)},a.output,a.workers,a.display_names)
     print(json.dumps(result,indent=2))

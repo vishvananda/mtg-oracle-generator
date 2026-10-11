@@ -1,0 +1,227 @@
+{
+  "panels": {
+    "existing_development": {
+      "cases": 128,
+      "families": 96,
+      "counts": {
+        "sft": {
+          "schema_valid": 128,
+          "mtgish_accepted": 51,
+          "intent_faithful": 70,
+          "faithful_clean_oracle": 67,
+          "faithful_and_parsed": 46
+        },
+        "dpo": {
+          "schema_valid": 127,
+          "mtgish_accepted": 53,
+          "intent_faithful": 68,
+          "faithful_clean_oracle": 65,
+          "faithful_and_parsed": 46
+        },
+        "custom": {
+          "schema_valid": 128,
+          "mtgish_accepted": 52,
+          "intent_faithful": 77,
+          "faithful_clean_oracle": 73,
+          "faithful_and_parsed": 47
+        }
+      },
+      "custom_minus_baseline": {
+        "dpo": {
+          "schema_valid": {
+            "difference_percentage_points": 0.78125,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.0,
+              2.4
+            ]
+          },
+          "mtgish_accepted": {
+            "difference_percentage_points": -0.78125,
+            "family_bootstrap_95_percent_interval_pp": [
+              -3.278688524590164,
+              1.639344262295082
+            ]
+          },
+          "intent_faithful": {
+            "difference_percentage_points": 7.03125,
+            "family_bootstrap_95_percent_interval_pp": [
+              1.4814814814814816,
+              12.781954887218044
+            ]
+          },
+          "faithful_clean_oracle": {
+            "difference_percentage_points": 6.25,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.78125,
+              11.940298507462686
+            ]
+          },
+          "faithful_and_parsed": {
+            "difference_percentage_points": 0.78125,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.0,
+              2.459016393442623
+            ]
+          }
+        },
+        "sft": {
+          "schema_valid": {
+            "difference_percentage_points": 0.0,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.0,
+              0.0
+            ]
+          },
+          "mtgish_accepted": {
+            "difference_percentage_points": 0.78125,
+            "family_bootstrap_95_percent_interval_pp": [
+              -2.3622047244094486,
+              4.166666666666666
+            ]
+          },
+          "intent_faithful": {
+            "difference_percentage_points": 5.46875,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.0,
+              11.200000000000001
+            ]
+          },
+          "faithful_clean_oracle": {
+            "difference_percentage_points": 4.6875,
+            "family_bootstrap_95_percent_interval_pp": [
+              -1.5625,
+              11.200000000000001
+            ]
+          },
+          "faithful_and_parsed": {
+            "difference_percentage_points": 0.78125,
+            "family_bootstrap_95_percent_interval_pp": [
+              -1.574803149606299,
+              3.731343283582089
+            ]
+          }
+        }
+      }
+    },
+    "custom_holdout": {
+      "cases": 192,
+      "families": 64,
+      "counts": {
+        "sft": {
+          "schema_valid": 192,
+          "mtgish_accepted": 177,
+          "intent_faithful": 163,
+          "faithful_clean_oracle": 160,
+          "faithful_and_parsed": 151
+        },
+        "dpo": {
+          "schema_valid": 192,
+          "mtgish_accepted": 177,
+          "intent_faithful": 169,
+          "faithful_clean_oracle": 165,
+          "faithful_and_parsed": 155
+        },
+        "custom": {
+          "schema_valid": 192,
+          "mtgish_accepted": 177,
+          "intent_faithful": 184,
+          "faithful_clean_oracle": 181,
+          "faithful_and_parsed": 171
+        }
+      },
+      "custom_minus_baseline": {
+        "dpo": {
+          "schema_valid": {
+            "difference_percentage_points": 0.0,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.0,
+              0.0
+            ]
+          },
+          "mtgish_accepted": {
+            "difference_percentage_points": 0.0,
+            "family_bootstrap_95_percent_interval_pp": [
+              -2.604166666666667,
+              3.125
+            ]
+          },
+          "intent_faithful": {
+            "difference_percentage_points": 7.8125,
+            "family_bootstrap_95_percent_interval_pp": [
+              3.6458333333333335,
+              11.979166666666668
+            ]
+          },
+          "faithful_clean_oracle": {
+            "difference_percentage_points": 8.333333333333334,
+            "family_bootstrap_95_percent_interval_pp": [
+              4.6875,
+              12.5
+            ]
+          },
+          "faithful_and_parsed": {
+            "difference_percentage_points": 8.333333333333334,
+            "family_bootstrap_95_percent_interval_pp": [
+              3.6458333333333335,
+              13.541666666666666
+            ]
+          }
+        },
+        "sft": {
+          "schema_valid": {
+            "difference_percentage_points": 0.0,
+            "family_bootstrap_95_percent_interval_pp": [
+              0.0,
+              0.0
+            ]
+          },
+          "mtgish_accepted": {
+            "difference_percentage_points": 0.0,
+            "family_bootstrap_95_percent_interval_pp": [
+              -2.604166666666667,
+              3.125
+            ]
+          },
+          "intent_faithful": {
+            "difference_percentage_points": 10.9375,
+            "family_bootstrap_95_percent_interval_pp": [
+              6.770833333333333,
+              15.625
+            ]
+          },
+          "faithful_clean_oracle": {
+            "difference_percentage_points": 10.9375,
+            "family_bootstrap_95_percent_interval_pp": [
+              6.770833333333333,
+              15.625
+            ]
+          },
+          "faithful_and_parsed": {
+            "difference_percentage_points": 10.416666666666666,
+            "family_bootstrap_95_percent_interval_pp": [
+              5.729166666666666,
+              15.625
+            ]
+          }
+        }
+      }
+    }
+  },
+  "inference": "NF4; quantized deployment confirmation is a separate next gate",
+  "caveats": [
+    "Custom holdout is parser-filtered and limited to supported single-face designs.",
+    "Descriptions and intent labels are correlated Sol judgments, not human labels.",
+    "Intervals are descriptive, family-clustered, and not corrected for multiple metrics.",
+    "Existing development cards may have been seen by the original SFT model."
+  ],
+  "automatic_promotion": false,
+  "audit": {
+    "cases_sha256": "eca6f3e221ad532ea7ce63d47c010458dfb5471322dbb6a799786e20b7eae5e5",
+    "original_scores_sha256": "b8f48f607df5d2cfee93f81060f3eb28f732c0ff1863d11b4bea4130212faa3b",
+    "rubric_sha256": "6ef3f219e85c1f5be82bae3943fb82180f3a301f6ab2fc7d9070bd9333624f3b",
+    "normalization": "CARDNAME replaced with that face name, only in oracle_text",
+    "deduplication": "identical displayed request/metadata/card judged once across arms",
+    "judge_model": "gpt-6.1-sol",
+    "effort": "medium"
+  }
+}

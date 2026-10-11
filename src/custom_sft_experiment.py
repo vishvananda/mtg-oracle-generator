@@ -127,7 +127,7 @@ def panel_report(cases_path, scored_path):
         if any(set(rows)!=keys for rows in arms.values()):raise ValueError('Unpaired panel')
         counts={arm:{field:sum(bool(fn(r)) for r in rows.values()) for field,fn in fields.items()} for arm,rows in arms.items()}
         paired={}
-        for baseline in ('sft','dpo'):
+        for baseline in sorted(set(arms)-{'custom'}):
             paired[baseline]={}
             for field,fn in fields.items():
                 groups=defaultdict(list)

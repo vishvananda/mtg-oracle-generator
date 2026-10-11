@@ -162,3 +162,61 @@ cache, and both parent adapters. `status.json` reports progress. Results are in
 loss/token-accuracy plots in `plots/`; weights in `gpu/adapter/`; compute
 reservations and settled elapsed-time bounds in `budget.json`. Raw generation
 and reviewer receipts remain under `corpus/runs/` and `comparison/judge/`.
+
+## Deployment gates
+
+Rejudge every frozen arm consistently before deciding whether a style change
+is real. This audit binds `CARDNAME` to the displayed name only for judging;
+it preserves the original scores, raw output and parser input. It first runs
+six calibration examples and deduplicates identical displayed requests/cards
+across arms. It does not change the reward rubric for one model.
+
+```bash
+python src/audit_oracle_style.py \
+  --cases /data/custom-sft/dataset/evaluation-cases.jsonl \
+  --scores /data/custom-sft/comparison/cases.jsonl \
+  --output /data/custom-sft/review/style-audit --workers 3
+```
+
+Export the completed cumulative custom adapter directly onto the pinned original
+base, without stacking the parent SFT adapter again. The exporter checks the
+completion receipt, saved-file hashes, trained tensor hash, completed epoch and
+loss-mask verification. Use the CPU Torch/Transformers/PEFT environment used by
+the original GGUF export. The converter and quantizer must be from the same
+pinned llama.cpp checkout/binary release.
+
+```bash
+python src/export_gguf.py \
+  --adapter /data/custom-sft/gpu/adapter --custom-run /data/custom-sft/gpu \
+  --output /data/custom-sft/review/serving \
+  --converter /tools/llama.cpp/convert_hf_to_gguf.py \
+  --quantizer /tools/llama-quantize --threads 8
+python src/compare_custom_q4.py \
+  --cases /data/custom-sft/dataset/evaluation-cases.jsonl \
+  --system /data/round2/serving-system.txt \
+  --custom /data/custom-sft/review/serving/model-Q4_0.gguf \
+  --dpo /data/round2/serving-final/model-Q4_0.gguf \
+  --server /tools/llama-server --output /data/custom-sft/review/q4
+```
+
+Set `CARD_INTENT_ARTIFACTS` to the directory containing the unchanged mtgish
+adapter/workflow artifacts. The comparison starts two localhost-only native
+servers on ports 4221/4222, checks that they are free, and terminates only its
+own processes afterward. It generates the same 320 requests with four concurrent
+slots per model, resumes saved predictions, pins models/binary/prompts/cases,
+and runs the same display-name-aware judging plus parser checks. Results include
+separate panels and family-clustered paired intervals. This is a **Q4_0 quality
+comparison on native CPU**, not a browser GPU performance test, and it neither
+publishes weights nor changes the deployed model. There are no new HF jobs.
+
+Each completed request is flushed immediately, even if another request is slow
+or fails. Generation errors leave the completion receipt false; rerunning reuses
+saved cases and retries only missing results. `--generate-arm custom` or
+`--generate-arm dpo` can resume one arm without starting the other; rerun without
+that flag after both finish to perform evaluation. Do not run two controllers
+against the same arm/output directory. Native CPU requests have a 30-minute
+transport timeout; truncated or repeating model outputs are still scored as
+failures rather than retried for a better answer.
+
+For the measured adapter sizes and runtime work needed to reduce browser model
+downloads, see [incremental model downloads](incremental-model-downloads.md).

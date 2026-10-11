@@ -45,13 +45,49 @@ def check_dpo_export(summary,identity,completion):
     return 'completed_dpo_pilot'
 
 
-def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allow_partial=False,dpo_run=None):
+def check_custom_export(summary, identity, completion):
+    if completion.get('training') != summary or completion.get('package_sha256') != identity.get('package_sha256'):
+        raise ValueError('Custom SFT completion receipt disagrees with training')
+    if (summary.get('config') != identity.get('config') or not summary.get('config', {}).get('model_revision')
+            or not summary.get('parent_training_identity')):
+        raise ValueError('Custom SFT base and training identity must be pinned')
+    if (not isinstance(summary.get('optimizer_steps'), int) or summary['optimizer_steps'] <= 0
+            or summary['optimizer_steps'] != summary.get('planned_steps')
+            or summary.get('stopped_for_budget') or summary.get('metrics', {}).get('epoch', 0) < 1
+            or summary.get('loss_mask_verified') is not True
+            or not summary.get('final_adapter_hash')
+            or summary['final_adapter_hash'] == summary.get('initial_adapter_hash')):
+        raise ValueError('Custom SFT did not complete a verified learned pass')
+    return 'completed_custom_sft_pilot'
+
+
+def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allow_partial=False,dpo_run=None,custom_run=None):
     import torch
     from huggingface_hub import snapshot_download
     from peft import PeftModel
     from transformers import AutoModelForCausalLM,AutoTokenizer
     if output.exists(): raise ValueError('Use a fresh serving candidate directory')
-    if dpo_run is None:
+    if dpo_run is not None and custom_run is not None:
+        raise ValueError('Choose one adapter provenance mode')
+    if custom_run is not None:
+        from safetensors.torch import load_file
+        if adapter.resolve() != (custom_run/'adapter').resolve():
+            raise ValueError('Adapter must belong to the supplied custom SFT run')
+        summary=json.loads((custom_run/'training-summary.json').read_text())
+        provenance=json.loads((custom_run/'identity.json').read_text())
+        completion=json.loads((custom_run/'phase-complete.json').read_text())
+        scope=check_custom_export(summary,provenance,completion)
+        for name in ('adapter_config.json','adapter_model.safetensors'):
+            if sha(adapter/name) != completion['adapter_files'][name]:
+                raise ValueError('Custom adapter file differs from completion receipt')
+        tensor_hash=hashlib.sha256()
+        for name,tensor in sorted(load_file(adapter/'adapter_model.safetensors').items()):
+            tensor_hash.update(name.encode());tensor_hash.update(tensor.float().numpy().tobytes())
+        if tensor_hash.hexdigest() != summary['final_adapter_hash']:
+            raise ValueError('Saved custom adapter differs from the trained weights')
+        config=summary['config']
+        summary={**summary,'training_identity':provenance}
+    elif dpo_run is None:
         summary=json.loads((adapter/'run-summary.json').read_text());config=summary['config']
         scope=check_export_scope(summary,allow_partial)
     else:
@@ -83,6 +119,8 @@ def export(adapter,output,converter,quantizer,quantization='Q4_0',threads=8,allo
         'optimizer_steps':summary.get('optimizer_steps'),'training_epoch':summary.get('metrics',{}).get('epoch')}
     if dpo_run is not None:
         identity.update(dpo_summary=summary,adapter_loading='Final DPO adapter directly on original base; do not stack SFT adapter')
+    if custom_run is not None:
+        identity.update(custom_summary=summary,adapter_loading='Final custom SFT adapter directly on original base; do not stack parent adapter')
     output.mkdir(parents=True);started=time.monotonic()
     (output/'request.json').write_text(json.dumps(identity,indent=2)+'\n')
     torch.set_num_threads(threads)
@@ -114,6 +152,7 @@ if __name__=='__main__':
     p.add_argument('--quantization',choices=['Q4_0','Q4_K_M','Q8_0'],default='Q4_0');p.add_argument('--threads',type=int,default=8)
     p.add_argument('--allow-partial',action='store_true',help='Export a budget-stopped training checkpoint as a labeled preview')
     p.add_argument('--dpo-run',type=Path,help='Completed DPO run containing identity, summary, completion receipt and adapter')
+    p.add_argument('--custom-run',type=Path,help='Completed custom SFT run containing identity, summary, completion receipt and adapter')
     a=p.parse_args()
     if a.threads<1: p.error('--threads must be positive')
-    print(json.dumps(export(a.adapter,a.output,a.converter,a.quantizer,a.quantization,a.threads,a.allow_partial,a.dpo_run),indent=2))
+    print(json.dumps(export(a.adapter,a.output,a.converter,a.quantizer,a.quantization,a.threads,a.allow_partial,a.dpo_run,a.custom_run),indent=2))

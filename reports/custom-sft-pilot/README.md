@@ -4,7 +4,8 @@ The [corrected HF job](https://huggingface.co/jobs/vishvananda/6aca52ccfee2c9007
 completed on 2026-10-10: **255/255 updates**, followed by all three 320-request
 comparisons. Custom-card intent preservation improved on the new holdout;
 parser acceptance did not. **The live model remains round-two DPO.** Deployment
-Q4_0 confirmation and a style-judge audit remain before promotion.
+Q4_0 confirmation remains before promotion. The completed display-name audit
+below removes the apparent style regression.
 
 ## Held-out generation results
 
@@ -46,20 +47,39 @@ See [counts, paired intervals and limitations](evaluation.json).
 
 ![Held-out generation comparisons](validation-comparison.png)
 
-### Style-judge caveat
+### Completed style-judge audit (2026-10-11)
 
-The apparent custom-holdout style regression needs a controlled audit. The
+The original custom-holdout style regression prompted a controlled audit. The
 production prompt requires `CARDNAME` for self-references; the style judge
 receives raw JSON and its rubric does not explain that placeholder. Of 39
 faithful custom outputs given style score 1, **37 contain CARDNAME**. The
 corresponding DPO counts are 5 of 9. Spot checks include conventional wording
 such as `Flying\nWhen CARDNAME enters, scry 1.`
 
-This is an association, not proof that every downgrade is wrong. We retain the
-original scores. Before promotion, rejudge all arms with identical display-name
-normalization or a calibrated placeholder-aware rubric. Do not silently replace
-labels or relax the metric just for the candidate. [Audit counts](style-audit.json).
-Parser acceptance alone never proves rules correctness or fidelity to intent.
+All three frozen arms were rejudged with `CARDNAME` replaced by the displayed
+face name, only in `oracle_text`. The raw outputs, metadata, parser inputs and
+original scores remain unchanged. All six calibration cases passed: equivalent
+placeholder/real-name cards passed, while altered quantities, beneficiaries,
+missing flying and a substituted life-loss effect failed. Identical displayed
+request/card combinations across arms were judged once (715 unique submissions
+from 959 schema-valid outputs). The same v3 rubric and Sol/medium were used.
+
+| Faithful with clean Oracle style, audited | SFT | DPO | Custom SFT |
+| --- | ---: | ---: | ---: |
+| Custom holdout / 192 | 160 | 165 | **181** |
+| Existing development / 128 | 67 | 65 | **73** |
+
+Audited custom-holdout intent fidelity is 163/169/184, and faithful-and-parsed
+remains **151/155/171**. The latter paired gain versus DPO is still +8.33 points.
+The development panel is 70/68/77 faithful and 46/46/47 faithful-and-parsed.
+The style regression does not persist under consistent displayed names. This
+is a full rejudgment, including deduplication and stochastic judge variation;
+it does not prove that every changed label was caused solely by `CARDNAME`.
+
+[Original audit counts](style-audit.json) and
+[complete audited counts/intervals/protocol](display-name-audit.json) are retained
+alongside the original table. Parser acceptance alone never proves rules
+correctness or fidelity to intent.
 
 ## Training and compute
 
