@@ -152,7 +152,8 @@ def evaluate(root, workers=3):
                 except (ValueError, jsonschema.ValidationError):
                     candidate = None; valid = False
                 check = checked(parser, candidate) if valid else {}
-                assessed[key] = (candidate, valid, check)
+                target_check = checked(parser, case['target'])
+                assessed[key] = (candidate, valid, check, target_check)
                 if valid:
                     data = {'current_card': case['current_card'],
                         'requested_change': case['requested_change'], 'candidate': design(candidate)}
@@ -180,9 +181,12 @@ def evaluate(root, workers=3):
             judgments.update(batch)
     scored = []
     for key, (arm, case, row) in by_key.items():
-        candidate, valid, check = assessed[key]; judgment = judgments.get(aliases.get(key))
+        candidate, valid, check, target_check = assessed[key]; judgment = judgments.get(aliases.get(key))
+        metrics = score(case, candidate, check.get('parse_complete') is True, judgment, valid)
+        metrics['target_ast_exact'] = bool(check.get('parse_complete') and target_check.get('parse_complete')
+                                           and check.get('mtgish') == target_check.get('mtgish'))
         scored.append({'arm': arm, 'case_id': case['id'], 'source_group_id': case['source_group_id'],
-            'metrics': score(case, candidate, check.get('parse_complete') is True, judgment, valid),
+            'metrics': metrics, 'target_check': target_check,
             'raw': row['raw'], 'check': check, 'judgment': judgment})
     generation = output/'generation'; generation.mkdir(exist_ok=True)
     generation_cases = [c for c in cases if c['panel'] == 'generation']
@@ -214,6 +218,7 @@ def evaluate(root, workers=3):
         'planeswalker_breakdown': paired_report(walker_cases, [r for r in scored if r['case_id'] in walker_ids]),
         'predictions': identities, 'parser': provenance,
         'judge': 'gpt-6.1-sol medium; blind candidate identities; calibrated batches',
+        'additional_diagnostics': {'target_ast_exact': 'Exact canonical mtgish tree equality against the reviewed target; false if either does not parse. A mismatch alone does not prove changed meaning.'},
         'automatic_promotion': False, 'inference': 'Native CPU llama.cpp Q4_0; not browser timing',
         'caveats': ['Existing development panel is diagnostic, not an untouched final test.',
             'Repair holdout families are excluded from this continuation but may occur in original SFT.',

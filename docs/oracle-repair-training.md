@@ -27,7 +27,7 @@ job, pinned container image, local parent adapter, tokenizer Python, and budget.
 python src/repair_expansion.py --root "$REPAIR_RUN" \
   --official "$ORACLE_DATASET" --custom "$CUSTOM_DATASET" \
   --reserved "$RESERVED_FAMILIES" --round2 "$DPO_RUN" \
-  --system "$SERVING_SYSTEM"
+  --system "$SERVING_SYSTEM" --serving-evaluation "$DPO_Q4_EVALUATION"
 python src/repair_review.py --root "$REPAIR_RUN" --workers 3
 python src/repair_dataset.py --root "$REPAIR_RUN" \
   --official "$ORACLE_DATASET" --development "$DEVELOPMENT_CASES"
@@ -81,6 +81,9 @@ must reject a deliberately destructive repair and accept an unchanged valid
 control. Identical evaluation candidates share one blind judgment. Raw parser
 acceptance, preserved metadata, semantic preservation, unsupported controls,
 planeswalkers, and paired family-bootstrap intervals are reported separately.
+The evaluator also reports exact mtgish parse-tree equality with the known-good
+targets. Tree mismatches alone do not establish changed meaning; alternative
+wordings may produce different trees. Unsupported targets have no accepted tree.
 
 `src/repair_corpus.py` exports the browser's exact `revisionMessages` prompt and
 `designOnly` card projection through the shared `prompts/browser-repair.mjs` protocol implementation. It

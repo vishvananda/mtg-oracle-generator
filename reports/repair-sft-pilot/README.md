@@ -1,6 +1,6 @@
 # Oracle repair SFT pilot
 
-**Training and paired Q4 evaluation are in progress. No model promotion.**
+**Training completed; paired Q4 evaluation is in progress. No model promotion.**
 
 This pilot teaches the browser's existing card + requested change + parser
 diagnostic flow. It continues the deployed DPO2 adapter for one pass with a fresh
@@ -16,8 +16,10 @@ in private Hugging Face staging, outside Git.
 
 There are 2,670 training examples: 1,335 repair/edit/control examples plus 1,335
 normal-generation examples selected from the original training split. The
-repair portion includes 283 planeswalker examples. Replay uses distinct card
-families and reserves a planeswalker quota. All repair variants of a family
+repair portion includes 283 planeswalker examples across 665 repair/edit/control
+families. Replay selects one example per family and reserves a planeswalker
+quota; 63 replay families also occur in the repair portion, for 1,937 training
+families overall. All repair variants of a family
 stay together; the frozen train/evaluation family and prompt overlap is zero.
 
 We built 1,380 synthetic repairs, requested edits, and controls, and sampled 240
@@ -66,5 +68,19 @@ test is untouched. Local CPU inference is a quality check, not browser timing.
 - Dataset SHA-256: `4ff9c382485725ab48d086e818608598369fdec13980eaf88a828ee9a147dc4f`.
 - Frozen package SHA-256: `70042ebc7964d2dc613632b6c7b526926c882d57ae87a989fd1e4829aac9b415`.
 
-The results and loss curves will be added after the completed adapter has passed
-the paired comparison. CardForge continues serving DPO2 during the experiment.
+All 167 updates completed in **992 seconds (16.5 minutes)**. Peak allocated GPU
+memory was **27.90 GiB**. The conservative compute estimate is **$0.88** (elapsed
+allocated minutes rounded up, plus two minutes; not a verified invoice and
+excluding teacher/reviewer usage). Adapter hashes changed, loss was finite, and
+the saved adapter matches the completion receipt.
+
+![Repair SFT training loss and token accuracy](training-curve.png)
+
+The fixed 64-example **training diagnostic** improved from loss **0.4231 →
+0.0629**, and teacher-forced token accuracy **93.43% → 98.49%**. These are not
+held-out card or repair accuracy. Length-grouped batches mix nearly copying a
+card with the harder normal-generation task, so individual batch losses vary
+strongly. [Raw curve](training-curve.csv) · [training summary](training-summary.json).
+
+Paired generation results will be added after the Q4 comparison. CardForge
+continues serving DPO2 during the experiment.

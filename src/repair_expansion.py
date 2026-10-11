@@ -65,7 +65,9 @@ def reserved_groups(official, custom, reserved):
     return groups
 
 
-def prepare(root, official, custom, reserved, round2, system, count=640):
+def prepare(root, official, custom, reserved, round2, system, serving_evaluation, count=640):
+    if count < 80:
+        raise ValueError('Select at least 80 source families for this planeswalker quota')
     if root.exists():
         raise ValueError('Use a new experiment directory')
     root.mkdir(parents=True)
@@ -164,7 +166,7 @@ def prepare(root, official, custom, reserved, round2, system, count=640):
             break
     # Current serving-policy errors are evaluation only, including valid-but-unsupported controls.
     eval_real = []
-    q4 = custom.parent/'review-gates-20261011/q4'
+    q4 = serving_evaluation
     scored = {r['case_id']: r for r in read(q4/'comparison/cases.jsonl') if r['arm'] == 'dpo'}
     eval_cases = {r['id']: r for r in read(custom/'evaluation-cases.jsonl')}
     for row in sorted(read(q4/'dpo.jsonl'), key=lambda r: digest(['real-eval', r['case_id']])):
@@ -201,7 +203,7 @@ def prepare(root, official, custom, reserved, round2, system, count=640):
 
 if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
-    for key in ('root', 'official', 'custom', 'reserved', 'round2', 'system'):
+    for key in ('root', 'official', 'custom', 'reserved', 'round2', 'system', 'serving-evaluation'):
         p.add_argument('--'+key, type=Path, required=True)
     p.add_argument('--count', type=int, default=640)
     print(json.dumps(prepare(**vars(p.parse_args())), indent=2))
