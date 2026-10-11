@@ -43,6 +43,18 @@ def quantize(source, destination, kind, quantizer):
     return result
 
 
+def available_port(preferred=0):
+    """Select a local port without mistaking closed TIME_WAIT sockets for servers.
+
+    Zero lets the OS choose a fresh port. This is a probe, not a reservation;
+    process startup/health checks still have to succeed after closing it.
+    """
+    with socket.socket() as probe:
+        probe.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        probe.bind(('127.0.0.1', preferred))
+        return probe.getsockname()[1]
+
+
 def run_arm(root, arm, port=4241):
     spec = json.loads((root/'experiment.json').read_text())
     setup = spec['arms'][arm]
@@ -69,8 +81,8 @@ def run_arm(root, arm, port=4241):
     receipt = output/(arm+'.manifest.json')
     if receipt.exists() and json.loads(receipt.read_text()).get('complete'):
         return sample()
-    with socket.socket() as probe:
-        probe.bind(('127.0.0.1', port))
+    port = available_port(port)
+    endpoint = f'http://127.0.0.1:{port}'
     command = [str(server), '--model', str(model), '--host', '127.0.0.1', '--port', str(port),
         '--threads', '8', '--threads-batch', '8', '--ctx-size', '16384', '--parallel', '4',
         '--jinja', '--no-webui', '--chat-template-kwargs', '{"enable_thinking":false}']

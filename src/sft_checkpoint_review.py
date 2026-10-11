@@ -3,6 +3,7 @@
 This never submits another paid job, finishes the epoch, or promotes a model.
 """
 import argparse
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import subprocess
@@ -16,7 +17,26 @@ from train_qlora import checkpoint_release, publish_checkpoint
 from export_lora_gguf import export_adapter
 
 
+def save_status(review, value):
+    value = {**value, 'updated_at': datetime.now(timezone.utc).isoformat()}
+    pending = review/'status.pending.json'
+    save(pending, value)
+    pending.replace(review/'status.json')
+
+
 def run(training, review):
+    try:
+        _run(training, review)
+    except Exception as error:
+        path = review/'status.json'
+        previous = json.loads(path.read_text()) if path.exists() else {}
+        save_status(review, {**previous, 'phase': 'failed', 'failed_phase': previous.get('phase'),
+            'error_type': type(error).__name__, 'errno': getattr(error, 'errno', None),
+            'completed_outputs_preserved': True, 'automatic_promotion': False})
+        raise
+
+
+def _run(training, review):
     spec = json.loads((review/'review.json').read_text())
     pin = sha(review/'review.json')
     while True:
@@ -25,7 +45,7 @@ def run(training, review):
             break
         if status.get('state') in ('ERROR', 'CANCELED'):
             raise ValueError('Training failed; no paid retry or evaluation')
-        save(review/'status.json', {'phase': 'waiting_for_training', 'spec_sha256': pin})
+        save_status(review, {'phase': 'waiting_for_training', 'spec_sha256': pin})
         time.sleep(30)
     source = training/'gpu'
     if sha(review/'review.json') != pin or sha(review/'cases.jsonl') != spec['cases_sha256'] or sha(review/'experiment.json') != spec['experiment_sha256']:
@@ -34,7 +54,7 @@ def run(training, review):
     for name, value in receipt['adapter_files'].items():
         if sha(source/'adapter'/name) != value:
             raise ValueError('Downloaded adapter differs from training receipt')
-    save(review/'status.json', {'phase': 'exporting', 'spec_sha256': pin})
+    save_status(review, {'phase': 'exporting', 'spec_sha256': pin})
     serving = training/'serving'
     if not (serving/'candidate.json').exists():
         subprocess.run([spec['cpu_python'], str(PROJECT/'src/export_gguf.py'),
@@ -42,7 +62,7 @@ def run(training, review):
             '--converter', spec['converter'], '--quantizer', spec['quantizer']], check=True)
     if spec.get('separate_adapter'):
         separate = spec['separate_adapter']
-        save(review/'status.json', {'phase': 'exporting_separate_adapter', 'spec_sha256': pin})
+        save_status(review, {'phase': 'exporting_separate_adapter', 'spec_sha256': pin})
         export_adapter(source/'adapter', Path(separate['base']), Path(separate['base_gguf']),
                        Path(separate['base_receipt']), Path(separate['converter']),
                        serving/'separate', python=spec['cpu_python'])
@@ -60,12 +80,12 @@ def run(training, review):
             save(release/'publication-error.json', {'error_type': type(error).__name__, 'retry_required': True})
     experiment = json.loads((review/'experiment.json').read_text())
     for arm in experiment['arms']:
-        save(review/'status.json', {'phase': 'generating', 'arm': arm, 'spec_sha256': pin})
-        run_arm(review, arm, port=4243)
-    save(review/'status.json', {'phase': 'evaluating', 'spec_sha256': pin})
+        save_status(review, {'phase': 'generating', 'arm': arm, 'spec_sha256': pin})
+        run_arm(review, arm, port=0)
+    save_status(review, {'phase': 'evaluating', 'spec_sha256': pin})
     result = evaluate(review/'cases.jsonl', {arm: review/'predictions'/(arm+'.jsonl') for arm in experiment['arms']},
                       review/'evaluation', workers=3, display_names=True)
-    save(review/'status.json', {'phase': 'complete', 'metrics': result['metrics'],
+    save_status(review, {'phase': 'complete', 'metrics': result['metrics'],
         'automatic_promotion': False, 'automatic_epoch_completion': False, 'spec_sha256': pin})
 
 
