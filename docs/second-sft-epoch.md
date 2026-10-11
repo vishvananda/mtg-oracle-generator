@@ -81,6 +81,12 @@ The observer and local follow-up submit no additional GPU jobs. Inference-only
 adapter publication uses the existing checkpoint repository and an immutable tag;
 optimizer state remains in private storage. Publication is not model promotion.
 
+When parser artifacts live outside the checkout, launch the follow-up with
+`CARD_INTENT_ARTIFACTS` pointing to that artifact root. It verifies the parser
+installation before generation, chooses a fresh local port for each model, and
+records a failed phase if the driver stops with an exception. Restarting the
+same command verifies and reuses completed prediction files.
+
 An explicitly approved later segment can use `sft_continuation_gpu.py --resume`
 with the saved checkpoint, retaining the original full-epoch schedule and data
 order. The first segment initializes a fresh optimizer from the original SFT

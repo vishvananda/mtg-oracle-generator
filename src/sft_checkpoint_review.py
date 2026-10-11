@@ -15,6 +15,7 @@ from serving_quantization import run_arm
 from rl_serving_eval import evaluate
 from train_qlora import checkpoint_release, publish_checkpoint
 from export_lora_gguf import export_adapter
+from validate_mtgish import MtgishValidator
 
 
 def save_status(review, value):
@@ -50,6 +51,10 @@ def _run(training, review):
     source = training/'gpu'
     if sha(review/'review.json') != pin or sha(review/'cases.jsonl') != spec['cases_sha256'] or sha(review/'experiment.json') != spec['experiment_sha256']:
         raise ValueError('Frozen review configuration changed while waiting')
+    save_status(review, {'phase': 'checking_evaluation_setup', 'spec_sha256': pin})
+    # Catch a missing artifact root or changed grammar before lengthy generation.
+    with MtgishValidator():
+        pass
     receipt = json.loads((source/'phase-complete.json').read_text())
     for name, value in receipt['adapter_files'].items():
         if sha(source/'adapter'/name) != value:
