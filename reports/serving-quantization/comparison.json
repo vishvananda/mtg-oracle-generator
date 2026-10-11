@@ -1,0 +1,726 @@
+{
+  "metrics": {
+    "dpo-q4_0": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 46,
+      "mtgish_accepted": 41,
+      "faithful_and_parsed": 40,
+      "faithful_clean_oracle": 46,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 2,
+      "abstentions": 3
+    },
+    "custom-q4_0": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 45,
+      "mtgish_accepted": 39,
+      "faithful_and_parsed": 38,
+      "faithful_clean_oracle": 45,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 3,
+      "abstentions": 3
+    },
+    "dpo-q4_k_m": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 44,
+      "mtgish_accepted": 40,
+      "faithful_and_parsed": 36,
+      "faithful_clean_oracle": 44,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 4,
+      "abstentions": 3
+    },
+    "custom-q4_k_m": {
+      "cases": 64,
+      "schema_valid": 62,
+      "intent_faithful": 46,
+      "mtgish_accepted": 41,
+      "faithful_and_parsed": 38,
+      "faithful_clean_oracle": 45,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 2,
+      "abstentions": 2
+    },
+    "dpo-q5_k_m": {
+      "cases": 64,
+      "schema_valid": 62,
+      "intent_faithful": 45,
+      "mtgish_accepted": 41,
+      "faithful_and_parsed": 38,
+      "faithful_clean_oracle": 45,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 5,
+      "abstentions": 2
+    },
+    "custom-q5_k_m": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 45,
+      "mtgish_accepted": 40,
+      "faithful_and_parsed": 38,
+      "faithful_clean_oracle": 43,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 2,
+      "abstentions": 3
+    },
+    "dpo-q8_0": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 44,
+      "mtgish_accepted": 40,
+      "faithful_and_parsed": 37,
+      "faithful_clean_oracle": 44,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 4,
+      "abstentions": 5
+    },
+    "custom-q8_0": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 46,
+      "mtgish_accepted": 41,
+      "faithful_and_parsed": 38,
+      "faithful_clean_oracle": 46,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 3,
+      "abstentions": 3
+    },
+    "dpo-q4_k_m-lora": {
+      "cases": 64,
+      "schema_valid": 63,
+      "intent_faithful": 44,
+      "mtgish_accepted": 41,
+      "faithful_and_parsed": 40,
+      "faithful_clean_oracle": 44,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 3,
+      "abstentions": 4
+    },
+    "custom-q4_k_m-lora": {
+      "cases": 64,
+      "schema_valid": 64,
+      "intent_faithful": 43,
+      "mtgish_accepted": 41,
+      "faithful_and_parsed": 39,
+      "faithful_clean_oracle": 43,
+      "parser_infrastructure_error": 1,
+      "exact_metadata_failure": 3,
+      "abstentions": 4
+    }
+  },
+  "panels": {
+    "custom_holdout": {
+      "dpo-q4_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 30,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 28
+      },
+      "custom-q4_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 29,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      },
+      "dpo-q4_k_m": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 28,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 26
+      },
+      "custom-q4_k_m": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 30,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      },
+      "dpo-q5_k_m": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 30,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      },
+      "custom-q5_k_m": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 30,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      },
+      "dpo-q8_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 29,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      },
+      "custom-q8_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 29,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      },
+      "dpo-q4_k_m-lora": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 30,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 28
+      },
+      "custom-q4_k_m-lora": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 29,
+        "mtgish_accepted": 28,
+        "faithful_and_parsed": 27
+      }
+    },
+    "existing_development": {
+      "dpo-q4_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 16,
+        "mtgish_accepted": 13,
+        "faithful_and_parsed": 12
+      },
+      "custom-q4_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 16,
+        "mtgish_accepted": 11,
+        "faithful_and_parsed": 11
+      },
+      "dpo-q4_k_m": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 16,
+        "mtgish_accepted": 12,
+        "faithful_and_parsed": 10
+      },
+      "custom-q4_k_m": {
+        "cases": 32,
+        "schema_valid": 30,
+        "intent_faithful": 16,
+        "mtgish_accepted": 13,
+        "faithful_and_parsed": 11
+      },
+      "dpo-q5_k_m": {
+        "cases": 32,
+        "schema_valid": 30,
+        "intent_faithful": 15,
+        "mtgish_accepted": 13,
+        "faithful_and_parsed": 11
+      },
+      "custom-q5_k_m": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 15,
+        "mtgish_accepted": 12,
+        "faithful_and_parsed": 11
+      },
+      "dpo-q8_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 15,
+        "mtgish_accepted": 12,
+        "faithful_and_parsed": 10
+      },
+      "custom-q8_0": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 17,
+        "mtgish_accepted": 13,
+        "faithful_and_parsed": 11
+      },
+      "dpo-q4_k_m-lora": {
+        "cases": 32,
+        "schema_valid": 31,
+        "intent_faithful": 14,
+        "mtgish_accepted": 13,
+        "faithful_and_parsed": 12
+      },
+      "custom-q4_k_m-lora": {
+        "cases": 32,
+        "schema_valid": 32,
+        "intent_faithful": 14,
+        "mtgish_accepted": 13,
+        "faithful_and_parsed": 12
+      }
+    }
+  },
+  "paired": {
+    "custom_minus_dpo": {
+      "q4_0": {
+        "all": {
+          "cases": 64,
+          "families": 64,
+          "gained": 0,
+          "lost": 2,
+          "difference_pp": -3.125,
+          "exact_paired_discordance_p_value": 0.5,
+          "family_bootstrap_95_percent_interval_pp": [
+            -7.8125,
+            0.0
+          ]
+        },
+        "custom_holdout": {
+          "cases": 32,
+          "families": 32,
+          "gained": 0,
+          "lost": 1,
+          "difference_pp": -3.125,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -9.375,
+            0.0
+          ]
+        },
+        "existing_development": {
+          "cases": 32,
+          "families": 32,
+          "gained": 0,
+          "lost": 1,
+          "difference_pp": -3.125,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -9.375,
+            0.0
+          ]
+        }
+      },
+      "q4_k_m": {
+        "all": {
+          "cases": 64,
+          "families": 64,
+          "gained": 3,
+          "lost": 1,
+          "difference_pp": 3.125,
+          "exact_paired_discordance_p_value": 0.625,
+          "family_bootstrap_95_percent_interval_pp": [
+            -3.125,
+            9.375
+          ]
+        },
+        "custom_holdout": {
+          "cases": 32,
+          "families": 32,
+          "gained": 2,
+          "lost": 1,
+          "difference_pp": 3.125,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -6.25,
+            15.625
+          ]
+        },
+        "existing_development": {
+          "cases": 32,
+          "families": 32,
+          "gained": 1,
+          "lost": 0,
+          "difference_pp": 3.125,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            0.0,
+            9.375
+          ]
+        }
+      },
+      "q5_k_m": {
+        "all": {
+          "cases": 64,
+          "families": 64,
+          "gained": 1,
+          "lost": 1,
+          "difference_pp": 0.0,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -4.6875,
+            4.6875
+          ]
+        },
+        "custom_holdout": {
+          "cases": 32,
+          "families": 32,
+          "gained": 1,
+          "lost": 1,
+          "difference_pp": 0.0,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -9.375,
+            9.375
+          ]
+        },
+        "existing_development": {
+          "cases": 32,
+          "families": 32,
+          "gained": 0,
+          "lost": 0,
+          "difference_pp": 0.0,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "q8_0": {
+        "all": {
+          "cases": 64,
+          "families": 64,
+          "gained": 2,
+          "lost": 1,
+          "difference_pp": 1.5625,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -3.125,
+            6.25
+          ]
+        },
+        "custom_holdout": {
+          "cases": 32,
+          "families": 32,
+          "gained": 1,
+          "lost": 1,
+          "difference_pp": 0.0,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -9.375,
+            9.375
+          ]
+        },
+        "existing_development": {
+          "cases": 32,
+          "families": 32,
+          "gained": 1,
+          "lost": 0,
+          "difference_pp": 3.125,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            0.0,
+            9.375
+          ]
+        }
+      },
+      "q4_k_m-lora": {
+        "all": {
+          "cases": 64,
+          "families": 64,
+          "gained": 1,
+          "lost": 2,
+          "difference_pp": -1.5625,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -7.8125,
+            3.125
+          ]
+        },
+        "custom_holdout": {
+          "cases": 32,
+          "families": 32,
+          "gained": 0,
+          "lost": 1,
+          "difference_pp": -3.125,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -9.375,
+            0.0
+          ]
+        },
+        "existing_development": {
+          "cases": 32,
+          "families": 32,
+          "gained": 1,
+          "lost": 1,
+          "difference_pp": 0.0,
+          "exact_paired_discordance_p_value": 1.0,
+          "family_bootstrap_95_percent_interval_pp": [
+            -9.375,
+            9.375
+          ]
+        }
+      }
+    },
+    "versus_same_model_q4_0": {
+      "dpo-q4_k_m": {
+        "cases": 64,
+        "families": 64,
+        "gained": 0,
+        "lost": 4,
+        "difference_pp": -6.25,
+        "exact_paired_discordance_p_value": 0.125,
+        "family_bootstrap_95_percent_interval_pp": [
+          -12.5,
+          -1.5625
+        ]
+      },
+      "custom-q4_k_m": {
+        "cases": 64,
+        "families": 64,
+        "gained": 1,
+        "lost": 1,
+        "difference_pp": 0.0,
+        "exact_paired_discordance_p_value": 1.0,
+        "family_bootstrap_95_percent_interval_pp": [
+          -4.6875,
+          4.6875
+        ]
+      },
+      "dpo-q5_k_m": {
+        "cases": 64,
+        "families": 64,
+        "gained": 0,
+        "lost": 2,
+        "difference_pp": -3.125,
+        "exact_paired_discordance_p_value": 0.5,
+        "family_bootstrap_95_percent_interval_pp": [
+          -7.8125,
+          0.0
+        ]
+      },
+      "custom-q5_k_m": {
+        "cases": 64,
+        "families": 64,
+        "gained": 1,
+        "lost": 1,
+        "difference_pp": 0.0,
+        "exact_paired_discordance_p_value": 1.0,
+        "family_bootstrap_95_percent_interval_pp": [
+          -4.6875,
+          4.6875
+        ]
+      },
+      "dpo-q8_0": {
+        "cases": 64,
+        "families": 64,
+        "gained": 0,
+        "lost": 3,
+        "difference_pp": -4.6875,
+        "exact_paired_discordance_p_value": 0.25,
+        "family_bootstrap_95_percent_interval_pp": [
+          -10.9375,
+          0.0
+        ]
+      },
+      "custom-q8_0": {
+        "cases": 64,
+        "families": 64,
+        "gained": 1,
+        "lost": 1,
+        "difference_pp": 0.0,
+        "exact_paired_discordance_p_value": 1.0,
+        "family_bootstrap_95_percent_interval_pp": [
+          -4.6875,
+          4.6875
+        ]
+      },
+      "dpo-q4_k_m-lora": {
+        "cases": 64,
+        "families": 64,
+        "gained": 0,
+        "lost": 0,
+        "difference_pp": 0.0,
+        "exact_paired_discordance_p_value": 1.0,
+        "family_bootstrap_95_percent_interval_pp": [
+          0.0,
+          0.0
+        ]
+      },
+      "custom-q4_k_m-lora": {
+        "cases": 64,
+        "families": 64,
+        "gained": 2,
+        "lost": 1,
+        "difference_pp": 1.5625,
+        "exact_paired_discordance_p_value": 1.0,
+        "family_bootstrap_95_percent_interval_pp": [
+          -3.125,
+          6.25
+        ]
+      }
+    }
+  },
+  "download_bytes": {
+    "dpo-q4_0": 2369545056,
+    "custom-q4_0": 2369545056,
+    "dpo-q4_k_m": 2497278816,
+    "custom-q4_k_m": 2497278816,
+    "dpo-q5_k_m": 2889511776,
+    "custom-q5_k_m": 2889511776,
+    "dpo-q8_0": 4280403296,
+    "custom-q8_0": 4280403296,
+    "dpo-q4_k_m-lora": 2563374176,
+    "custom-q4_k_m-lora": 2563374176
+  },
+  "identities": {
+    "dpo-q4_0": {
+      "model_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q4_0",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "custom-q4_0": {
+      "model_sha256": "143fa54330a2169af516d47315d2c2db5502b43ae9c018380f59c20d03eda54a",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q4_0",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "dpo-q4_k_m": {
+      "model_sha256": "96fd4a14b9a36969c558d4335f18c75851463bbbcc2851fd9904504d07d3af5b",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q4_K_M",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "custom-q4_k_m": {
+      "model_sha256": "3ea2eaf402527d629b8b8513682bfb1da99d2dd8b2d56012432bbf2532e36053",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q4_K_M",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "dpo-q5_k_m": {
+      "model_sha256": "03d85892986e66434b2b2b46a8ac0aa144c8649b426ba7b1a7c94613a9acff50",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q5_K_M",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "custom-q5_k_m": {
+      "model_sha256": "430f75e0f6220fb7f17c8e8b7e9d2895f9bdd05710c454383f2ab0afd0866385",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q5_K_M",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "dpo-q8_0": {
+      "model_sha256": "7cecc4be1d154f535539757a11e5bb5d1a7175bd3c02104dc6ec47a47bb32724",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q8_0",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "custom-q8_0": {
+      "model_sha256": "7b6737fb44c9f578b778a0b9ba99a16925f9fbb3625484e852bcff5c59ec5887",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q8_0",
+      "scope": "native CPU quality, not browser GPU speed"
+    },
+    "dpo-q4_k_m-lora": {
+      "model_sha256": "e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q4_K_M",
+      "scope": "native CPU quality, not browser GPU speed",
+      "adapter_sha256": "d37499147e055da6a3efb2d8546109f9df21eb4477ce7bf92e98d2970a3a54c1"
+    },
+    "custom-q4_k_m-lora": {
+      "model_sha256": "e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292",
+      "server_sha256": "7b683d5a9b5647676178e26f9d8836b2981b93bfa8d4dad7902a6ae360200687",
+      "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+      "system_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+      "threads": 8,
+      "slots": 4,
+      "context_per_slot": 4096,
+      "quantization": "Q4_K_M",
+      "scope": "native CPU quality, not browser GPU speed",
+      "adapter_sha256": "f84ec8e9896573024958bf978b5480b2cb565c812bfb6e5ab0a253f013ecb52e"
+    }
+  },
+  "cases_sha256": "141aa30df465b8816bf430c6654285502752a64623f7d3a639937d57f2b2cda2",
+  "cases": 64,
+  "families": 64,
+  "judge_model": "gpt-6.1-sol",
+  "judge_effort": "medium",
+  "rubric_sha256": "6ef3f219e85c1f5be82bae3943fb82180f3a301f6ab2fc7d9070bd9333624f3b",
+  "parser": {
+    "revision": "153451e44d88baabfeb9902092032c328f4d5416",
+    "workflow": "upstream-standard-v2",
+    "manifest_sha256": "2d3820bf78cb398736fd7e56381e1fbd1a4549c5a0ee9fbbb58c7d7c78aca3b5",
+    "binary_sha256": "9137350af5cf08fc473b2a47e46b0f038acea36226ce954bf09ca4c237c79da4",
+    "grammar_files": {
+      "english_grammar-INPUT.json5": "9bf36603040f3eb3018a65f8520554300a6307cda98bb1df3034f454adafdbe6",
+      "english_grammar-ability_word.json5": "bd1eb337e7a29f7f27e2124944c6ac3ebfa545bac51d65faba595de71063d3fb",
+      "english_grammar-counters.json5": "a49a6dec59e2cca4162f286f6eb8ac523133ef0f584c4000b78b04d809ea5aa2",
+      "english_grammar-flavor_word.json5": "524548be31e483bdf513033bcaa64211e1ffc4746655e9792cbd7579aee206a1",
+      "english_grammar-named_cards.json5": "1df3fada73ab7554181441d51c65af2de54ac2346c806244b758617a9805ed42",
+      "english_grammar-null_text.json5": "9dd2507cddbe23a725d2a652961b311928ae3f54520cc11ba722e79f5f5b6c30",
+      "english_grammar-reminder_text.json5": "a57f4e77d4b46d28a18d6f4b5a7978cfef54ef49b3466a0a5db50f3b01a33082",
+      "english_grammar-type_line.json5": "57242bc89563b416aeebcb40192ea490a103bb28ce882d51142f4e6b6bc081d0",
+      "english_grammar.json5": "e82ca3e575eb75109fb88827e5890f60a17448a5fc84446ca2d2a25f330500ac",
+      "find_replace.json5": "0982b35d9f3ee12d0c61963cb7520f42a24ab7f383af8f345f70fc1d78d9d458",
+      "ignore.json5": "77e86963b89f9c3a6799db9fc35f53ecd347f0a9552a1d8fb785084387708a09",
+      "mtgish_grammar-counters.json5": "bf310d27bc187d3239384d1cc5b8b4e8365f1c075ab87b607b4d75b8fb71c461",
+      "mtgish_grammar-create_tokens.json5": "13100305c8edb8ec9c4002e59250c3011c01598a332ffe6c7258090b70230554",
+      "mtgish_grammar-exile.json5": "31f6ac351b04ef00c1fbcac5706c4ee1f2e6802272a62c686959b8084fe981b3",
+      "mtgish_grammar-fight.json5": "d7ff5d99d50e960a10f560da82c8dbe7a219b6b6827f0697310a8b0a0b90db6c",
+      "mtgish_grammar-mana.json5": "1212a7f06a53ba3032673c18d129267f1256384e0c6c3fa604aff846de1960bb",
+      "mtgish_grammar-named_cards.json5": "a44e7d644245c567452cef8d723e8b6dd2bcd11c7f5880c43320d1ff934f3be0",
+      "mtgish_grammar-put_counters.json5": "77425da052f6e30ba54e23b90f41e440a3e484a72f2cb28bd39d22ce24fe6c23",
+      "mtgish_grammar-triggers.json5": "96b070faa84d9a5cad36071d156a01e6139a8590a57f3b51a9b94fca9c1dff24",
+      "mtgish_grammar-type_line.json5": "1c7bbca24f18075a49f4b06c60d89b7e08c28757ef61a72b55677d469e73c8b4",
+      "mtgish_grammar-vote_option.json5": "93e2f2472543b1a6865d80c7d45032788759dfc365c41d5dfb0a424cd65587e3",
+      "mtgish_grammar.json5": "e29a5d84e898d996eb2b55677b3ce62727a05db88f57463d75af8ccf8c54f34c",
+      "short_names.json5": "dd44ee8da0d0546722fa3b83de3d042c5f147cbe7553ad8e200c3b572b2c76a3"
+    }
+  },
+  "scored_outputs_sha256": "397c524f80437d3db5bd48198055f6aed6a479ad1c09893f0fd66ef1071297d1",
+  "limitations": [
+    "Exploratory development screen, not an untouched final test.",
+    "32 independent families per panel, selected before outcomes; one prompt per family.",
+    "Intervals are descriptive, unadjusted for multiple comparisons and model-judge dependence.",
+    "Bootstrap intervals can degenerate at boundaries; zero observed differences do not establish equivalence.",
+    "Native CPU inference; browser GPU output, speed and memory are not measured.",
+    "Separate LoRA uses a different quantized base from training NF4; it is not numerically equivalent.",
+    "Parser acceptance does not establish semantic fidelity, balance or official rules legality."
+  ],
+  "automatic_promotion": false
+}

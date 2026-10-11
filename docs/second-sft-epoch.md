@@ -109,3 +109,8 @@ separate adapter Blobs need a loader extension. Actual device testing is still
 required before a deployment change. Float32 arithmetic
 in the alternate browser backend does not mean float32 model weights: its
 weights remain quantized to four bits.
+
+The [completed serving comparison](../reports/serving-quantization/README.md)
+contains aggregate results, paired uncertainty, artifact identities and the
+browser integration limitations. It did not justify changing the serving model
+or increasing its download size.

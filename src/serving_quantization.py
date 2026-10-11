@@ -93,6 +93,12 @@ def run_arm(root, arm, port=4241):
                 if time.monotonic() >= deadline:
                     raise TimeoutError('Evaluation server startup')
                 time.sleep(.5)
+            if setup.get('adapter'):
+                with urllib.request.urlopen(endpoint+'/lora-adapters', timeout=5) as response:
+                    adapters = json.load(response)
+                if len(adapters) != 1 or adapters[0]['path'] != setup['adapter'] or adapters[0]['scale'] != 1:
+                    raise ValueError('Expected one active cumulative adapter at scale 1')
+                save(output/(arm+'-loaded-adapters.json'), adapters)
             # Compare tokenizer/template bytes against frozen Transformers output.
             audit = []
             for row in map(json.loads, (root/'prompt-audit.jsonl').read_text().splitlines()):

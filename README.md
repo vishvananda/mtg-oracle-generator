@@ -34,7 +34,8 @@ training and evaluation pipeline, not application code or application artwork.
 | Custom-card collection | [All 14,969 eligible MSEM designs](reports/custom-card-full/README.md): 3,997 parse after conservative cleanup; **3,852 distinct review candidates** after duplicate and vanilla-card filtering |
 | Additional custom-card training | [4,076-example pilot](reports/custom-sft-pilot/README.md): 255 updates completed; displayed-name audit and Q4 comparison complete; Q4 faithful-and-parsed 161 → 167/192 on custom holdout, 46 → 43/128 on development; keep DPO2 deployed |
 | Oracle repair continuation | [2,670-example pilot](reports/repair-sft-pilot/README.md): 167 updates completed; controlled repairs 57 → 57/61, edits 23 → 24/24, generation 23 → 19/64; keep DPO2 deployed |
-| Second broad SFT epoch | [Quarter-epoch experiment](reports/sft-second-epoch/README.md) running: 4,944 planned new updates from original SFT, $20 HF budget; serving-quantization comparison in progress |
+| Second broad SFT epoch | [Quarter-epoch experiment](reports/sft-second-epoch/README.md) running: 4,944 planned new updates from original SFT, $20 HF budget |
+| Serving precision | [Ten-arm comparison](reports/serving-quantization/README.md): no demonstrated quality gain from larger quants; separate adapters enable a potential 66 MB update path |
 | Locked final SFT test | **400/400 schema valid; 260/400 (65.0%) accepted by mtgish**; [paired base comparison](reports/full-epoch-v2/README.md#locked-final-generation-test) |
 | Public model checkpoints | [Checkpoint repository](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007); weights are published as training saves them |
 

@@ -1,0 +1,38 @@
+{
+  "observed_at": "2026-10-11T14:11:40.314355+00:00",
+  "status": "running",
+  "checkpoint_step": 1000,
+  "planned_segment_steps": 4944,
+  "job_id": "6acb888cfee2c90070195ff6",
+  "diagnostic_sample": {
+    "available": 316372,
+    "evaluated": 256,
+    "source_split": "train",
+    "indices_sha256": "939ef73a2cf496288d6e00510916ac4d34db73997730105e2ef5ff056dc2a227",
+    "policy": "fixed training diagnostic sample; NOT held-out validation"
+  },
+  "before": {
+    "eval_loss": 0.17142337560653687,
+    "eval_model_preparation_time": 0.0072,
+    "eval_runtime": 17.1646,
+    "eval_samples_per_second": 14.914,
+    "eval_steps_per_second": 0.932,
+    "eval_entropy": 2.2003380209207535,
+    "eval_num_tokens": 0.0,
+    "eval_mean_token_accuracy": 0.95372249558568
+  },
+  "at_step_1000": {
+    "epoch": 0.050571457469404266,
+    "eval_entropy": 2.2211189717054367,
+    "eval_loss": 0.16967210173606873,
+    "eval_mean_token_accuracy": 0.9538827165961266,
+    "eval_model_preparation_time": 0.0072,
+    "eval_num_tokens": 10290153.0,
+    "eval_runtime": 16.8666,
+    "eval_samples_per_second": 15.178,
+    "eval_steps_per_second": 0.949,
+    "step": 1000
+  },
+  "trainer_state_sha256": "6bdab924b812a4355533eabb67001eb891b13aa5e758ff96c95daee4104a4bcf",
+  "held_out_generation_accuracy_available": false
+}
