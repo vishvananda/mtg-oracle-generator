@@ -1,0 +1,108 @@
+{
+  "config": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "method": "QLoRA",
+    "load_in_4bit": true,
+    "quant_type": "nf4",
+    "double_quant": true,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "epochs": 1,
+    "max_length": 4096,
+    "per_device_train_batch_size": 16,
+    "gradient_accumulation_steps": 1,
+    "per_device_eval_batch_size": 16,
+    "validation_max_examples": 256,
+    "learning_rate": 3e-05,
+    "warmup_ratio": 0.02,
+    "seed": 17,
+    "completion_only_loss": true,
+    "packing": false,
+    "gradient_checkpointing": true,
+    "group_by_length": true,
+    "save_steps": 200,
+    "eval_steps": 1000,
+    "monitoring_split": "train",
+    "data_seed": 29,
+    "stop_after_steps": 4944,
+    "schedule_steps": 19774,
+    "training_seconds": 21600
+  },
+  "optimizer_steps": 4944,
+  "planned_steps": 4944,
+  "schedule_steps": 19774,
+  "training_seconds": 17474.730887869024,
+  "setup_seconds": 278.66167855996173,
+  "metrics": {
+    "train_runtime": 17474.3833,
+    "train_samples_per_second": 18.105,
+    "train_steps_per_second": 1.132,
+    "total_flos": 1.1290297963167744e+18,
+    "train_loss": 0.17716413025042,
+    "entropy": 2.1215250492095947,
+    "num_tokens": 50854037.0,
+    "mean_token_accuracy": 0.9475991874933243,
+    "epoch": 0.2500252857287347
+  },
+  "base_eval": {
+    "eval_loss": 0.17142337560653687,
+    "eval_model_preparation_time": 0.0072,
+    "eval_runtime": 17.1646,
+    "eval_samples_per_second": 14.914,
+    "eval_steps_per_second": 0.932,
+    "eval_entropy": 2.2003380209207535,
+    "eval_num_tokens": 0.0,
+    "eval_mean_token_accuracy": 0.95372249558568
+  },
+  "adapter_eval": {
+    "eval_loss": 0.1541854739189148,
+    "eval_model_preparation_time": 0.0072,
+    "eval_runtime": 16.8145,
+    "eval_samples_per_second": 15.225,
+    "eval_steps_per_second": 0.952,
+    "eval_entropy": 2.0199561417102814,
+    "eval_num_tokens": 50854037.0,
+    "eval_mean_token_accuracy": 0.957487877458334,
+    "epoch": 0.2500252857287347
+  },
+  "validation_sample": {
+    "available": 316372,
+    "evaluated": 256,
+    "source_split": "train",
+    "indices_sha256": "939ef73a2cf496288d6e00510916ac4d34db73997730105e2ef5ff056dc2a227",
+    "policy": "fixed training diagnostic sample; NOT held-out validation"
+  },
+  "loss_mask_verified": true,
+  "peak_allocated_gib": 57.54750680923462,
+  "initial_adapter_hash": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+  "final_adapter_hash": "0f7e19cda996c225a244c356cca2fd014044590df0615b6303ab4ae1f99d4966",
+  "stop_reason": "review_checkpoint",
+  "parent_training_identity": {
+    "dataset_manifest_sha256": "d7fd06e722c7b0ebde3784dce09861afa867a55d68d52994d66f3d10b49d7a7e",
+    "config_sha256": "61bff5f937a1c952c2455e6c916fdf726effe4f9a2c1bf7d1ea36a85c29c11c5",
+    "trainer_sha256": "251a0cf2b14a938dfb736f5a1120af15615ea87f02c69755861a129613824b6d",
+    "train_sha256": "5dafa9b34a5236b9320bf77098217d6b28af11083f0b2e072778b40c77d2461e",
+    "validation_sha256": null,
+    "monitoring_split": "train",
+    "max_steps": -1
+  },
+  "resume_checkpoint": "checkpoints/checkpoint-4944",
+  "automatic_promotion": false,
+  "dataset": {
+    "splits": {
+      "train": 316372
+    }
+  },
+  "final_test_evaluated": false
+}

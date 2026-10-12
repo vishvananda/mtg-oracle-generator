@@ -1,5 +1,10 @@
 # A staged second supervised epoch
 
+The [first-quarter experiment is complete](../reports/sft-second-epoch/README.md):
+4,944 updates reduced training diagnostic loss, but combined request fidelity
+and mtgish acceptance was 70/160 versus deployed DPO2's 75/160. DPO2 remains
+deployed; no automatic continuation or promotion was performed.
+
 This experiment tests more exposure to the original broad corpus, independently
 of the small custom-card, repair, and preference experiments. Start from the
 completed original SFT adapter, not a cumulative DPO or repair adapter.

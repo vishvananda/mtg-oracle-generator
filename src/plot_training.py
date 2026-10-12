@@ -34,7 +34,7 @@ def plot(summary_path,output,csv_path=None,state_path=None):
         x=[r['step'] for r in rows]; y=[r[field]*factor for r in rows]
         ax.plot(x,y,color='#3177a4',alpha=.18,linewidth=.7,label='Training batches')
         ax.plot(x,[statistics.mean(y[max(0,i-49):i+1]) for i in range(len(y))],
-                color='#23658e',linewidth=2,label='Training: 50-step mean')
+                color='#23658e',linewidth=2,label='Training: 50-observation mean')
         points=sorted((s,r[metric]*factor) for s,r in validation.items() if metric in r)
         ax.scatter([p[0] for p in points],[p[1] for p in points],color='#bc5525',s=50,
                    label='Training diagnostic sample' if diagnostic else 'Measured validation',zorder=5)
