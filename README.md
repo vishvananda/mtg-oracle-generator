@@ -18,6 +18,8 @@ intent fidelity, game balance, or official Magic rules correctness.
 The application is maintained separately. This public repository contains the
 training and evaluation pipeline, not application code or application artwork.
 
+Historical inactive inference adapters, exact source snapshots, restoration tools and cleanup receipts are indexed in the [2026-10-26 experiment archive](experiments/archive-20261026/README.md). The five newly archived adapters remain research models; DPO2 stays deployed.
+
 ## Current status
 
 | Artifact | Status |

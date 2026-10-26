@@ -182,8 +182,9 @@ in 8.68 seconds; training has 2,643,382 tokens, maximum sequence length 1,009.
 See [protocol and reproduction commands](../../docs/custom-card-training.md),
 [dataset manifest](dataset-manifest.json), and
 [configuration](../../configs/custom-sft-pilot.json).
-Raw third-party records and candidate weights remain in private staging, outside
-Git. There is no automatic publication or model deployment.
+Raw third-party records remain in private staging, outside Git. The inference
+adapter was [archived on Hugging Face](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-research-adapters/tree/archive-20261026/custom-sft)
+on 2026-10-26 at the user's request; see the [archive and restoration guide](../../experiments/archive-20261026/README.md). It has not been promoted to production.
 
 For the next task, [Oracle repair training](../../docs/oracle-repair-training.md)
 now has an exact-browser-prompt exporter and a parser-checked synthetic pilot.

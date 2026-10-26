@@ -1,0 +1,65 @@
+[
+  {
+    "pid": 35241,
+    "port": 4204,
+    "model": "rl-pilot-20261009/serving-dpo-6/model-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 611047,
+    "port": 4186,
+    "model": "models/Qwen3-0.6B-Q8_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 758576,
+    "port": 4187,
+    "model": "models/Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 1080182,
+    "port": 4192,
+    "model": "models/Qwen3-4B-Instruct-2507-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 1956912,
+    "port": 4198,
+    "model": "full-run-preparation-v2/serving-step-19385/model-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 2201980,
+    "port": 4193,
+    "model": "training-runs/qwen4-head-to-head-20261007T011432401468Z/adapter/serving/model-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 2301414,
+    "port": 4203,
+    "model": "full-run-preparation-v2/serving-final-19774/model-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 2336480,
+    "port": 4196,
+    "model": "full-run-preparation-v1/checkpoint-experiment-2-prepared/serving-step-963/model-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  },
+  {
+    "pid": 3072261,
+    "port": 4205,
+    "model": "rl-round2-20261009/serving-final/model-Q4_0.gguf",
+    "model_exists": true,
+    "http_status": 200
+  }
+]

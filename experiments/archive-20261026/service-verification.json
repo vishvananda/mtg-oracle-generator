@@ -1,0 +1,23 @@
+{
+  "deployments": [
+    {
+      "release": "/srv/vizier-editor/releases/20261025T183720Z-multiplayer-fixes",
+      "files_checked": 3474,
+      "bad_files": []
+    },
+    {
+      "release": "/srv/vizier-editor/releases/20261024T073314Z-forge",
+      "files_checked": 3472,
+      "bad_files": []
+    }
+  ],
+  "missing_original_active_files": [],
+  "service": "active",
+  "http": {
+    "https://tetrarchs.com/": 200,
+    "https://tetrarchs.com/api/card-generator/health": 200
+  },
+  "artifact_du_kib": 168155056,
+  "releases_du_kib": 5612468,
+  "df": "Filesystem               1B-blocks          Used    Available Use% Mounted on\n/dev/mapper/vg0-root 1608954445824 1079295676416 447852859392  71% /\n"
+}

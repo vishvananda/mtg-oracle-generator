@@ -154,3 +154,7 @@ offers real historical phrasing paired with modern Oracle targets. Reuse its
 documented errata exclusions, then independently review semantic equivalence
 in the repair task. This is a stronger candidate source than treating every
 parser rejection as an error that must be rewritten.
+
+## Archived inference adapter
+
+The saved research adapter was [archived on Hugging Face](https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-research-adapters/tree/archive-20261026/repair-sft) on 2026-10-26. The [archive guide](../../experiments/archive-20261026/README.md) pins its source, receipts and restoration hashes. Raw datasets and evaluation records remain in private staging; DPO2 stays deployed.

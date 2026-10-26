@@ -601,5 +601,23 @@
     "automatic_promotion": false,
     "deployed": false,
     "weights_published": false
+  },
+  "inactive_experiment_archive": {
+    "date": "2026-10-26",
+    "github_branch": "archive/experiments-20261026",
+    "hugging_face_repository": "vishvananda/mtg-oracle-qwen3-4b-research-adapters",
+    "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362",
+    "new_adapters": [
+      "custom-sft",
+      "repair-sft",
+      "partial-pilot",
+      "smoke-20-step",
+      "tiny-pilot-153-step"
+    ],
+    "public_files_redownload_verified": 85,
+    "local_model_files_removed": 54,
+    "local_reclaimed_bytes": 110067392512,
+    "datasets_and_reports_retained": true,
+    "guide": "experiments/archive-20261026/README.md"
   }
 }
