@@ -1,0 +1,7 @@
+{
+  "repository": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
+  "revision": "31f85db13719800d05035be8b1eb20333ec709c1",
+  "file": "adapter_model.safetensors",
+  "sha256": "79005faf7d23889e1619bad9038f8deb25dd6ba96759962d2d2bb432ad668cc1",
+  "method": "Downloaded immutable HF artifact and verified SHA-256."
+}

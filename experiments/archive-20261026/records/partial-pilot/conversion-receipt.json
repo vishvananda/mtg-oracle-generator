@@ -1,0 +1,21 @@
+{
+  "adapter_sha256": "9936390f9dfb8e9b78c07f1181cef25c948cb8cd6e7ed3f08f5a2f32aef48f68",
+  "adapter_config_sha256": "54658f61e1dd32ce2f83482151754a8d10a0ccf56aa01dad06be684f025aeda9",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "llama_cpp_tag": "b11443",
+  "llama_source_sha256": "2af9982450ce28559af5177ce69afd37a46a19bf27e15a1866692f19b43fe45a",
+  "recipe": "BF16 base + PEFT safe merge, F16 GGUF, one Q4_0 quantization",
+  "base_files": {
+    "model-00001-of-00003.safetensors": "75311d91bb08cf0b882913da464a1e722a31fb44db35208663487efb7a3d8ed6",
+    "model-00002-of-00003.safetensors": "0b48adbb1f60e901153d91907ba11ce63bd4b8b584482e730f48808d055dfba1",
+    "model-00003-of-00003.safetensors": "7dd39ccca5e4de123c74c14af44c9bf2eb75df33b4614382af0134528e060d5d"
+  },
+  "output_sha256": "cffd649b0173857e41a10d595984a277cf72428adf2d83a377d735126b247142",
+  "elapsed_seconds": 88.83,
+  "versions": {
+    "torch": "2.8.0+cpu",
+    "transformers": "4.56.2",
+    "peft": "0.17.1"
+  }
+}

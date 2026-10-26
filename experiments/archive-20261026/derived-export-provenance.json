@@ -1,0 +1,25 @@
+{
+  "training_exports": [
+    {
+      "experiment": "partial-pilot",
+      "source_adapter_sha256": "9936390f9dfb8e9b78c07f1181cef25c948cb8cd6e7ed3f08f5a2f32aef48f68",
+      "matches_archived_adapter": true
+    },
+    {
+      "experiment": "custom-sft",
+      "source_adapter_sha256": "d7abf9131ffb11bf6fa5633516ce478d5dd05a5c0bb18e2cb28e6dc6700f30b1",
+      "matches_archived_adapter": true
+    },
+    {
+      "experiment": "repair-sft",
+      "source_adapter_sha256": "29414d7907e355111a95565df8cb9b207601010998b262ebbb670df165c06540",
+      "matches_archived_adapter": true
+    },
+    {
+      "experiment": "sft-epoch2-quarter",
+      "source_adapter_sha256": "79005faf7d23889e1619bad9038f8deb25dd6ba96759962d2d2bb432ad668cc1",
+      "matches_archived_adapter": true
+    }
+  ],
+  "comparison_exports": "Custom and DPO sources in the serving-adapter conversion receipt match the archived custom adapter and published DPO2 adapter; remaining model files are conversions/shards of these or the pinned Qwen base."
+}

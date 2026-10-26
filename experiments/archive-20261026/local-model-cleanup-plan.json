@@ -1,0 +1,332 @@
+{
+  "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362",
+  "removed_only_after_verified_archive": true,
+  "files": [
+    {
+      "experiment": "serving-adapter-quality-20261011",
+      "path": "serving-adapter-quality-20261011/models/base-F16.gguf",
+      "bytes": 8051283328,
+      "allocated_bytes": 8051290112
+    },
+    {
+      "experiment": "serving-adapter-quality-20261011",
+      "path": "serving-adapter-quality-20261011/models/custom-adapter-F16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66101248
+    },
+    {
+      "experiment": "serving-adapter-quality-20261011",
+      "path": "serving-adapter-quality-20261011/models/dpo-adapter-F16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66101248
+    },
+    {
+      "experiment": "serving-adapter-quality-20261011",
+      "path": "serving-adapter-quality-20261011/models/base-Q4_K_M.gguf",
+      "bytes": 2497278848,
+      "allocated_bytes": 2497286144
+    },
+    {
+      "experiment": "serving-quality-20261011",
+      "path": "serving-quality-20261011/models/custom-q8_0.gguf",
+      "bytes": 4280403296,
+      "allocated_bytes": 4280410112
+    },
+    {
+      "experiment": "serving-quality-20261011",
+      "path": "serving-quality-20261011/models/dpo-q5_k_m.gguf",
+      "bytes": 2889511776,
+      "allocated_bytes": 2889519104
+    },
+    {
+      "experiment": "serving-quality-20261011",
+      "path": "serving-quality-20261011/models/custom-q4_k_m.gguf",
+      "bytes": 2497278816,
+      "allocated_bytes": 2497286144
+    },
+    {
+      "experiment": "serving-quality-20261011",
+      "path": "serving-quality-20261011/models/custom-q5_k_m.gguf",
+      "bytes": 2889511776,
+      "allocated_bytes": 2889519104
+    },
+    {
+      "experiment": "serving-quality-20261011",
+      "path": "serving-quality-20261011/models/dpo-q8_0.gguf",
+      "bytes": 4280403296,
+      "allocated_bytes": 4280410112
+    },
+    {
+      "experiment": "serving-quality-20261011",
+      "path": "serving-quality-20261011/models/dpo-q4_k_m.gguf",
+      "bytes": 2497278816,
+      "allocated_bytes": 2497286144
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/serving/model-Q4_0.gguf",
+      "bytes": 2369545056,
+      "allocated_bytes": 2369552384
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/serving/model-F16.gguf",
+      "bytes": 8051283296,
+      "allocated_bytes": 8051290112
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/serving/separate/adapter-F16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66097152
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/serving/merged/model-00001-of-00003.safetensors",
+      "bytes": 3957900840,
+      "allocated_bytes": 3957907456
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/serving/merged/model-00003-of-00003.safetensors",
+      "bytes": 99630640,
+      "allocated_bytes": 99631104
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/serving/merged/model-00002-of-00003.safetensors",
+      "bytes": 3987450520,
+      "allocated_bytes": 3987456000
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/public-adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132194304
+    },
+    {
+      "experiment": "sft-epoch2-quarter-20261011",
+      "path": "sft-epoch2-quarter-20261011/gpu/adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132194304
+    },
+    {
+      "experiment": "repair-sft-20261011",
+      "path": "repair-sft-20261011/serving/model-Q4_0.gguf",
+      "bytes": 2369545056,
+      "allocated_bytes": 2369552384
+    },
+    {
+      "experiment": "repair-sft-20261011",
+      "path": "repair-sft-20261011/serving/model-F16.gguf",
+      "bytes": 8051283296,
+      "allocated_bytes": 8051290112
+    },
+    {
+      "experiment": "repair-sft-20261011",
+      "path": "repair-sft-20261011/serving/merged/model-00001-of-00003.safetensors",
+      "bytes": 3957900840,
+      "allocated_bytes": 3957907456
+    },
+    {
+      "experiment": "repair-sft-20261011",
+      "path": "repair-sft-20261011/serving/merged/model-00003-of-00003.safetensors",
+      "bytes": 99630640,
+      "allocated_bytes": 99631104
+    },
+    {
+      "experiment": "repair-sft-20261011",
+      "path": "repair-sft-20261011/serving/merged/model-00002-of-00003.safetensors",
+      "bytes": 3987450520,
+      "allocated_bytes": 3987456000
+    },
+    {
+      "experiment": "repair-sft-20261011",
+      "path": "repair-sft-20261011/gpu/adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132194304
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/review-gates-20261011/adapter-f16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66097152
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/review-gates-20261011/serving-custom/model-Q4_0.gguf",
+      "bytes": 2369545056,
+      "allocated_bytes": 2369552384
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/review-gates-20261011/serving-custom/model-F16.gguf",
+      "bytes": 8051283296,
+      "allocated_bytes": 8051290112
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/review-gates-20261011/serving-custom/merged/model-00001-of-00003.safetensors",
+      "bytes": 3957900840,
+      "allocated_bytes": 3957907456
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/review-gates-20261011/serving-custom/merged/model-00003-of-00003.safetensors",
+      "bytes": 99630640,
+      "allocated_bytes": 99631104
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/review-gates-20261011/serving-custom/merged/model-00002-of-00003.safetensors",
+      "bytes": 3987450520,
+      "allocated_bytes": 3987456000
+    },
+    {
+      "experiment": "custom-sft-pilot-20261010",
+      "path": "custom-sft-pilot-20261010/recovery-01/gpu/adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132194304
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132194304
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/adapter-f16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66097152
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/serving/model-Q4_0.gguf",
+      "bytes": 2369545056,
+      "allocated_bytes": 2369552384
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/serving/model-F16.gguf",
+      "bytes": 8051283296,
+      "allocated_bytes": 8051290112
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/serving/merged/model-00001-of-00003.safetensors",
+      "bytes": 3957900840,
+      "allocated_bytes": 3957907456
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/serving/merged/model-00003-of-00003.safetensors",
+      "bytes": 99630640,
+      "allocated_bytes": 99635200
+    },
+    {
+      "experiment": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "path": "training-runs/qwen4-partial-pilot-20261006T214946201974Z/adapter/serving/merged/model-00002-of-00003.safetensors",
+      "bytes": 3987450520,
+      "allocated_bytes": 3987456000
+    },
+    {
+      "experiment": "training-runs/qwen4-smoke-20261006T175333269721Z",
+      "path": "training-runs/qwen4-smoke-20261006T175333269721Z/adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132194304
+    },
+    {
+      "experiment": "training-runs/qwen4-pilot-20261006T180041438161Z",
+      "path": "training-runs/qwen4-pilot-20261006T180041438161Z/adapter/adapter_model.safetensors",
+      "bytes": 132187888,
+      "allocated_bytes": 132190208
+    },
+    {
+      "experiment": "browser-benchmark-20261009",
+      "path": "browser-benchmark-20261009/models/oracle-q4-00001-of-00005.gguf",
+      "bytes": 510142880,
+      "allocated_bytes": 510148608
+    },
+    {
+      "experiment": "browser-benchmark-20261009",
+      "path": "browser-benchmark-20261009/models/oracle-q4-00003-of-00005.gguf",
+      "bytes": 511134560,
+      "allocated_bytes": 511139840
+    },
+    {
+      "experiment": "browser-benchmark-20261009",
+      "path": "browser-benchmark-20261009/models/oracle-q4-00004-of-00005.gguf",
+      "bytes": 511134560,
+      "allocated_bytes": 511139840
+    },
+    {
+      "experiment": "browser-benchmark-20261009",
+      "path": "browser-benchmark-20261009/models/oracle-q4-00005-of-00005.gguf",
+      "bytes": 325999136,
+      "allocated_bytes": 326004736
+    },
+    {
+      "experiment": "browser-benchmark-20261009",
+      "path": "browser-benchmark-20261009/models/oracle-q4-00002-of-00005.gguf",
+      "bytes": 511134496,
+      "allocated_bytes": 511139840
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00002-of-00006.gguf",
+      "bytes": 474677728,
+      "allocated_bytes": 474685440
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00004-of-00006.gguf",
+      "bytes": 474954976,
+      "allocated_bytes": 474959872
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00005-of-00006.gguf",
+      "bytes": 476551648,
+      "allocated_bytes": 476557312
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00006-of-00006.gguf",
+      "bytes": 126292704,
+      "allocated_bytes": 126296064
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00001-of-00006.gguf",
+      "bytes": 468218688,
+      "allocated_bytes": 468226048
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00003-of-00006.gguf",
+      "bytes": 476583808,
+      "allocated_bytes": 476590080
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/adapters/d37499147e055da6a3efb2d8546109f9df21eb4477ce7bf92e98d2970a3a54c1/adapter-F16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66101248
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/models/adapters/f84ec8e9896573024958bf978b5480b2cb565c812bfb6e5ab0a253f013ecb52e/adapter-F16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66097152
+    },
+    {
+      "experiment": "browser-adapter-prep-20261011",
+      "path": "browser-adapter-prep-20261011/export-check/adapter-F16.gguf",
+      "bytes": 66095328,
+      "allocated_bytes": 66097152
+    }
+  ],
+  "preserved_nonmodel_files": 14997,
+  "skipped_experiments": []
+}
