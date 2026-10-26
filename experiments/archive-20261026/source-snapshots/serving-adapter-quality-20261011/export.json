@@ -1,0 +1,10 @@
+{
+  "base": "/home/vishvananda/.cache/huggingface/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+  "converter": "${ARTIFACT_ROOT}/llama/llama.cpp-b11443/convert_hf_to_gguf.py",
+  "adapter_converter": "${ARTIFACT_ROOT}/llama/llama.cpp-b11443/convert_lora_to_gguf.py",
+  "python": "${ARTIFACT_ROOT}/training-cpu-check/bin/python",
+  "adapters": {
+    "dpo": "${ARTIFACT_ROOT}/rl-round2-20261009/train/adapter",
+    "custom": "${ARTIFACT_ROOT}/custom-sft-pilot-20261010/recovery-01/gpu/adapter"
+  }
+}

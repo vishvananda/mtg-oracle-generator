@@ -1,0 +1,12 @@
+{
+  "experiment": "smoke-20-step",
+  "source_artifact": "training-runs/qwen4-smoke-20261006T175333269721Z",
+  "adapter_sha256": "793818abeccc2bcddd2c32e5fa97be4826398ed7e2a77327f4ea5e3c71f14dc2",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "code_base_commit": "da7b2ad5ceea3680b14e2b15b4753aabe0c71860",
+  "dataset": {},
+  "status": "historical research artifact; not promoted",
+  "result_note": "Historical 20-update infrastructure smoke test on 406 training / 81 validation examples; not a quality model.",
+  "report": null
+}

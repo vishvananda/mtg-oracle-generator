@@ -1,0 +1,36 @@
+{
+  "label": "Qwen3 4B \u00b7 SFT + DPO round two \u00b7 Q4_0",
+  "runtime": "3.8.1",
+  "source_sha256": "af725e3116b06145d96c23d1626dad6f512b52021491722cdb6883e7d6b79c09",
+  "source_bytes": 2369545056,
+  "source_repo": "vishvananda/mtg-oracle-qwen3-4b-dpo-round2-20261009",
+  "first_shard": "models/af725e31/oracle-q4-00001-of-00005.gguf",
+  "shards": [
+    {
+      "name": "oracle-q4-00001-of-00005.gguf",
+      "bytes": 510142880,
+      "sha256": "efbf9b482e0b761a0c693fae181bc54b14e8cf998bfba391f9cd0296e9e6b672"
+    },
+    {
+      "name": "oracle-q4-00002-of-00005.gguf",
+      "bytes": 511134496,
+      "sha256": "93d8c4ddf17091a503984e098e13c0061281363602c374db737f9386052cac2e"
+    },
+    {
+      "name": "oracle-q4-00003-of-00005.gguf",
+      "bytes": 511134560,
+      "sha256": "5cf66c92680b8bd2bc29f6ba32306f15734169767b3cab0416c282d829a452de"
+    },
+    {
+      "name": "oracle-q4-00004-of-00005.gguf",
+      "bytes": 511134560,
+      "sha256": "ecd92b589ad93ffb2b91225bd322e2b33e6de393fa7a82071e73703507c44c1c"
+    },
+    {
+      "name": "oracle-q4-00005-of-00005.gguf",
+      "bytes": 325999136,
+      "sha256": "56a68eb688becacb5993fe207b43b851e714de8d799de61d56b9767352b84f20"
+    }
+  ],
+  "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa"
+}

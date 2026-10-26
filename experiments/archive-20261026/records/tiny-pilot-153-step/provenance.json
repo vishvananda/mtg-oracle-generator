@@ -1,0 +1,12 @@
+{
+  "experiment": "tiny-pilot-153-step",
+  "source_artifact": "training-runs/qwen4-pilot-20261006T180041438161Z",
+  "adapter_sha256": "14406b2c9631958036bfc2c0ab5b5929f8128f0e5bfa392955bc19cf1ecb094e",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "code_base_commit": "da7b2ad5ceea3680b14e2b15b4753aabe0c71860",
+  "dataset": {},
+  "status": "historical research artifact; not promoted",
+  "result_note": "Historical 153-update tiny pilot on 406 training / 81 validation examples. Near-perfect token accuracy does not establish generalization.",
+  "report": null
+}

@@ -1,0 +1,30 @@
+import { chromium } from '/home/vishvananda/vizier-editor/mtg-oracle-generator/web/client-benchmark/node_modules/playwright/index.mjs';
+import { writeFile, readFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const dir='/home/vishvananda/vizier-editor-artifacts/card-authoring/browser-benchmark-20261009/test';
+const browser=await chromium.launchPersistentContext(dir+'/chrome-profile',{executablePath:'/home/vishvananda/.local/bin/vizier-chrome',headless:true,viewport:{width:1280,height:1100},args:['--no-sandbox','--disable-dev-shm-usage']});
+const errors=[], requests=[];
+try {
+ const page=await browser.newPage();
+ page.on('pageerror',e=>errors.push(e.message)); page.on('request',r=>requests.push({method:r.method(),url:r.url()}));
+ await page.route('**/system-prompt.txt',r=>r.fulfill({status:200,contentType:'text/plain',body:'Return a JSON object with one field: greeting.'}));
+ await page.goto('https://tetrarchs.com/model-bench/');
+ await page.waitForFunction(()=>!document.querySelector('#load').disabled);
+ await page.locator('#backend').selectOption('cpu'); await page.locator('#context').selectOption('2048'); await page.locator('#threads').fill('8'); await page.locator('#load').click();
+ await page.waitForFunction(()=>!document.querySelector('#generate').disabled,null,{timeout:90000});
+ await page.locator('#description').fill('Say hello.'); await page.locator('#cache').check(); await page.locator('#generate').click();
+ await page.waitForFunction(()=>document.querySelector('#output').textContent.length>0,null,{timeout:90000});
+ const streamed=await page.locator('#stop').isEnabled();
+ await page.waitForFunction(()=>!document.querySelector('#generate').disabled,null,{timeout:90000});
+ const run=await page.evaluate(()=>JSON.parse(localStorage.getItem('oracle-browser-benchmark-v1')).at(-1));
+ assert(streamed); assert.equal(run.finish,'stop'); assert.equal(run.json_syntax_valid,true); assert(run.runtime_timings.predicted_n>0);
+ console.log('Short-prompt streaming and timings passed. Testing warm cancellation.');
+ await page.locator('#generate').click(); await page.waitForFunction(()=>document.querySelector('#output').textContent.length>0,null,{timeout:90000}); await page.locator('#stop').click();
+ await page.waitForFunction(()=>!document.querySelector('#generate').disabled,null,{timeout:90000});
+ const stopped=await page.evaluate(()=>JSON.parse(localStorage.getItem('oracle-browser-benchmark-v1')).at(-1));
+ assert.equal(stopped.finish,'cancelled'); assert(requests.every(r=>['GET','HEAD'].includes(r.method))); assert(!requests.some(r=>r.url.includes('/api/card-generator/'))); assert.equal(errors.length,0);
+ await page.screenshot({path:dir+'/cancellation.png',fullPage:true});
+ const full=JSON.parse(await readFile(dir+'/saved-runs.json','utf8')).at(-1);
+ const result={target:'https://tetrarchs.com/model-bench/',full_model_run:full,checks:{full_card_json:true,short_prompt_streaming:streamed,short_prompt_cancellation:true,no_server_inference:true,isolation_headers:await page.evaluate(()=>crossOriginIsolated)},diagnostic_system_prompt:'Return a JSON object with one field: greeting.',diagnostic_run:run,cancelled_run:stopped,errors,requests};
+ await writeFile(dir+'/validation.json',JSON.stringify(result,null,2)); console.log(JSON.stringify({streamed,finish:stopped.finish,generation_ms:stopped.generation_ms,full_generation_ms:full.generation_ms}));
+} finally { await browser.close(); }

@@ -1,0 +1,77 @@
+{
+  "config": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "method": "QLoRA",
+    "load_in_4bit": true,
+    "quant_type": "nf4",
+    "double_quant": true,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "lora_dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ],
+    "epochs": 3,
+    "max_length": 1536,
+    "per_device_train_batch_size": 1,
+    "gradient_accumulation_steps": 8,
+    "learning_rate": 0.0001,
+    "warmup_ratio": 0.05,
+    "seed": 17,
+    "completion_only_loss": true,
+    "packing": false,
+    "gradient_checkpointing": true,
+    "notes": "Untrained initial configuration; measure 20 steps and validate masks before a full run. GPU memory fit is not yet measured."
+  },
+  "max_steps": 20,
+  "dataset": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "splits": {
+      "train": 406,
+      "validation": 81
+    }
+  },
+  "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "training_seconds": 105.36874189800074,
+  "peak_allocated_gib": 4.992381572723389,
+  "optimizer_steps": 20,
+  "metrics": {
+    "train_runtime": 105.0772,
+    "train_samples_per_second": 1.523,
+    "train_steps_per_second": 0.19,
+    "total_flos": 3251027532241920.0,
+    "train_loss": 0.23041591119254007,
+    "epoch": 0.39408866995073893
+  },
+  "base_eval": {
+    "eval_loss": 1.2281455993652344,
+    "eval_model_preparation_time": 0.0067,
+    "eval_runtime": 15.3734,
+    "eval_samples_per_second": 5.269,
+    "eval_steps_per_second": 5.269,
+    "eval_entropy": 1.3585602368837522,
+    "eval_num_tokens": 0.0,
+    "eval_mean_token_accuracy": 0.8789967394169466
+  },
+  "adapter_eval": {
+    "eval_loss": 0.030398378148674965,
+    "eval_model_preparation_time": 0.0067,
+    "eval_runtime": 12.6132,
+    "eval_samples_per_second": 6.422,
+    "eval_steps_per_second": 6.422,
+    "eval_entropy": 1.5750651050496984,
+    "eval_num_tokens": 147779.0,
+    "eval_mean_token_accuracy": 0.9931519715874283,
+    "epoch": 0.39408866995073893
+  },
+  "loss_mask_verified": true,
+  "loss_masks_checked": 487
+}

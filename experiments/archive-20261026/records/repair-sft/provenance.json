@@ -1,0 +1,38 @@
+{
+  "experiment": "repair-sft",
+  "source_artifact": "repair-sft-20261011",
+  "adapter_sha256": "29414d7907e355111a95565df8cb9b207601010998b262ebbb670df165c06540",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "code_base_commit": "da7b2ad5ceea3680b14e2b15b4753aabe0c71860",
+  "dataset": {
+    "manifest_sha256": "4ff9c382485725ab48d086e818608598369fdec13980eaf88a828ee9a147dc4f",
+    "version": "repair-sft-v1",
+    "counts": {
+      "trigger_comma": 184,
+      "real_model_error": 128,
+      "power_edit": 316,
+      "tap_words": 57,
+      "vigilance_typo": 5,
+      "loyalty_edit": 79,
+      "loyalty_colon": 79,
+      "short_self_reference": 31,
+      "no_op": 164,
+      "keyword_edit": 1,
+      "flying_typo": 46,
+      "draw_grammar": 31,
+      "loyalty_words": 68,
+      "activation_colon": 82,
+      "create_grammar": 41,
+      "counter_grammar": 9,
+      "scry_grammar": 4,
+      "old_enters_wording": 10,
+      "generation_replay": 1335
+    },
+    "public_dataset": null,
+    "availability": "Retained private staging; third-party card corpus is not included in this adapter release."
+  },
+  "status": "historical research artifact; not promoted",
+  "result_note": "Repair continuation; 167 updates. No controlled-repair gain and normal-generation regression; no promotion.",
+  "report": "https://github.com/vishvananda/mtg-oracle-generator/blob/da7b2ad5ceea3680b14e2b15b4753aabe0c71860/reports/repair-sft-pilot/README.md"
+}

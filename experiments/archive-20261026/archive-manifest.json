@@ -1,0 +1,389 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-26",
+  "code_repository": "vishvananda/mtg-oracle-generator",
+  "code_base_commit": "da7b2ad5ceea3680b14e2b15b4753aabe0c71860",
+  "archive_branch": "archive/experiments-20261026",
+  "hugging_face_repository": "vishvananda/mtg-oracle-qwen3-4b-research-adapters",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "adapters": {
+    "custom-sft": {
+      "source_artifact": "custom-sft-pilot-20261010",
+      "source_adapter": "recovery-01/gpu/adapter",
+      "files": {
+        "tokenizer.json": {
+          "bytes": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        "chat_template.jinja": {
+          "bytes": 2630,
+          "sha256": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+        },
+        "training-summary.json": {
+          "bytes": 2872,
+          "sha256": "642f9402c75c93a368f84046d30ccd13f56e06f5d8efdc99b51fbbb9b840cb0c"
+        },
+        "adapter_config.json": {
+          "bytes": 939,
+          "sha256": "c2e41c2f5ee8f81c7ecc821bbf650523961463c04be47ca881b436f9be8e2a5f"
+        },
+        "README.md": {
+          "bytes": 723,
+          "sha256": "0a2050f97b5f53eb85a2d8ff81e13dae43155ea60ed2bfead75b61be3642d2c6"
+        },
+        "tokenizer_config.json": {
+          "bytes": 5402,
+          "sha256": "6ea222687bb0c5b8b2f8df309357efc93c6f5bb5eb960270a9ac5d846a2780e5"
+        },
+        "provenance.json": {
+          "bytes": 1051,
+          "sha256": "d76773d6c8ee8946c54d5a943296f0026c9c7b5ea8fbf235a6b62efa9f10890f"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 132187888,
+          "sha256": "d7abf9131ffb11bf6fa5633516ce478d5dd05a5c0bb18e2cb28e6dc6700f30b1"
+        },
+        "merges.txt": {
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "vocab.json": {
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "special_tokens_map.json": {
+          "bytes": 382,
+          "sha256": "82352696758d09083b9fcb1a38b610910496e8951bcdd1db2e8631f29f1c4033"
+        },
+        "added_tokens.json": {
+          "bytes": 707,
+          "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+        },
+        "system-prompt.txt": {
+          "bytes": 2679,
+          "sha256": "94d8461e479e2894dcfc4e89f49962b903cb77903303f7ceb91e381e149e1768"
+        },
+        "training-config.json": {
+          "bytes": 610,
+          "sha256": "384b12b06bfaf9784daedf3d2b777b21bb1526223a0970e94282f85146c1ffe1"
+        },
+        "DATA_LICENSE.md": {
+          "bytes": 1420,
+          "sha256": "b750a5114eb7b0bf26332e785a2a7460b406e15addf8daf6d99d90b7d2e704cd"
+        },
+        "run/identity.json": {
+          "bytes": 1415,
+          "sha256": "dadf46c920aa3d30da56ff3178d9238141e5f46a592d4190cabbd4946b5a759f"
+        },
+        "run/training-summary.json": {
+          "bytes": 3050,
+          "sha256": "47eeb235c340f91398bb4fceefdf5a51219e08a1182d4befc5be31bc9a32a981"
+        },
+        "run/phase-complete.json": {
+          "bytes": 5999,
+          "sha256": "712d4cc101d3f1b3cf43af1f27ee7a42f9dde9af11312f68968ca36d2dd3263a"
+        }
+      },
+      "result_note": "Custom-card continuation; 255 updates. Small Q4 holdout gain, development regression; no promotion.",
+      "report": "reports/custom-sft-pilot/README.md",
+      "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362"
+    },
+    "repair-sft": {
+      "source_artifact": "repair-sft-20261011",
+      "source_adapter": "gpu/adapter",
+      "files": {
+        "tokenizer.json": {
+          "bytes": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        "chat_template.jinja": {
+          "bytes": 2630,
+          "sha256": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+        },
+        "training-summary.json": {
+          "bytes": 3311,
+          "sha256": "5eaf24203d4fdba81b7dfa99af82813b918d2a97d951b6eb11a23601d5f720a0"
+        },
+        "adapter_config.json": {
+          "bytes": 939,
+          "sha256": "70425235a39f36973d54ff23a9018c1721b76e343e9eb69c00c5f98e50ec5304"
+        },
+        "README.md": {
+          "bytes": 731,
+          "sha256": "a17bc2f5962218ef27bac26ac7608147cf924ba47cbc2b747a9949edc993509b"
+        },
+        "tokenizer_config.json": {
+          "bytes": 5402,
+          "sha256": "6ea222687bb0c5b8b2f8df309357efc93c6f5bb5eb960270a9ac5d846a2780e5"
+        },
+        "provenance.json": {
+          "bytes": 1501,
+          "sha256": "a6fbac73041d7618d8f6853d8f09783d9c82f28293587a7f980b3b81b7c5891a"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 132187888,
+          "sha256": "29414d7907e355111a95565df8cb9b207601010998b262ebbb670df165c06540"
+        },
+        "merges.txt": {
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "vocab.json": {
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "special_tokens_map.json": {
+          "bytes": 382,
+          "sha256": "82352696758d09083b9fcb1a38b610910496e8951bcdd1db2e8631f29f1c4033"
+        },
+        "added_tokens.json": {
+          "bytes": 707,
+          "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+        },
+        "system-prompt.txt": {
+          "bytes": 3818,
+          "sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa"
+        },
+        "training-config.json": {
+          "bytes": 645,
+          "sha256": "9e3eb3fc3a2b8ea3cd0eb8a508ce15cf95bec6dad115ee9b1455d2f903165d5b"
+        },
+        "DATA_LICENSE.md": {
+          "bytes": 1420,
+          "sha256": "b750a5114eb7b0bf26332e785a2a7460b406e15addf8daf6d99d90b7d2e704cd"
+        },
+        "run/identity.json": {
+          "bytes": 1417,
+          "sha256": "7e88df1f0852bc2965e4a19377736598e17f3242380d5e941a38981bda805880"
+        },
+        "run/training-summary.json": {
+          "bytes": 3380,
+          "sha256": "0cc0925c51b5a79ba407214588a822c5abdaf247a0aad15395dacd0aab6d6446"
+        },
+        "run/phase-complete.json": {
+          "bytes": 3913,
+          "sha256": "eebd1f77e613accafeba0652787c81c350d89985b30bc1a8acdd618edcc06a96"
+        }
+      },
+      "result_note": "Repair continuation; 167 updates. No controlled-repair gain and normal-generation regression; no promotion.",
+      "report": "reports/repair-sft-pilot/README.md",
+      "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362"
+    },
+    "partial-pilot": {
+      "source_artifact": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+      "source_adapter": "adapter",
+      "files": {
+        "tokenizer.json": {
+          "bytes": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        "chat_template.jinja": {
+          "bytes": 2630,
+          "sha256": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+        },
+        "training-summary.json": {
+          "bytes": 2255,
+          "sha256": "8843609ae6bdfce9b9e187dc3b36388862b20eff96de298c301d980cd5e3a76b"
+        },
+        "adapter_config.json": {
+          "bytes": 939,
+          "sha256": "54658f61e1dd32ce2f83482151754a8d10a0ccf56aa01dad06be684f025aeda9"
+        },
+        "README.md": {
+          "bytes": 713,
+          "sha256": "2b2df31db535147045277e890c9c6f42e4a13ae2a7131b3073d503b3e0c36b0c"
+        },
+        "tokenizer_config.json": {
+          "bytes": 5405,
+          "sha256": "4b5f2f80f84faefe8420e1616671adb1dd3d7e632038d34b1f0e3a1363a51059"
+        },
+        "provenance.json": {
+          "bytes": 630,
+          "sha256": "eba4506ce85276583fd12db07eac4ff6285da5f52e60111cb6405b57ebfb2ca2"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 132187888,
+          "sha256": "9936390f9dfb8e9b78c07f1181cef25c948cb8cd6e7ed3f08f5a2f32aef48f68"
+        },
+        "merges.txt": {
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "vocab.json": {
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "special_tokens_map.json": {
+          "bytes": 499,
+          "sha256": "a5dba86f1cb07d7e5b093bbea2339d2c3c4effec4d6a76d812a7271897bd151a"
+        },
+        "added_tokens.json": {
+          "bytes": 707,
+          "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+        },
+        "training-config.json": {
+          "bytes": 789,
+          "sha256": "c3d6a842971f4aff584825e25d209e0f097d7a35dcc94912cbe45f90a0e869d9"
+        },
+        "DATA_LICENSE.md": {
+          "bytes": 1420,
+          "sha256": "b750a5114eb7b0bf26332e785a2a7460b406e15addf8daf6d99d90b7d2e704cd"
+        },
+        "run-summary.json": {
+          "bytes": 3067,
+          "sha256": "7b745eb0767e45436e986f2699b844e5de2873cc282fd8768b00e6578b53429e"
+        }
+      },
+      "result_note": "Historical 6,500-example partial-completion pilot; 407 updates. Loss and a four-request diagnostic do not establish generation quality.",
+      "report": null,
+      "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362"
+    },
+    "smoke-20-step": {
+      "source_artifact": "training-runs/qwen4-smoke-20261006T175333269721Z",
+      "source_adapter": "adapter",
+      "files": {
+        "tokenizer.json": {
+          "bytes": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        "chat_template.jinja": {
+          "bytes": 2630,
+          "sha256": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+        },
+        "training-summary.json": {
+          "bytes": 2235,
+          "sha256": "307efec1ab4cf23056698d1b431e0820822d5ff4c5a36c048f5690fcbcb1a2df"
+        },
+        "adapter_config.json": {
+          "bytes": 939,
+          "sha256": "7e48784d4238fd0f042a7f89a4011dc7830a7390f37dfea9cb3064036e28769a"
+        },
+        "README.md": {
+          "bytes": 687,
+          "sha256": "7b7b2ed3004647bc7e934845ca9da92afea8f543582d8a21ccba80ed2e17f142"
+        },
+        "tokenizer_config.json": {
+          "bytes": 5405,
+          "sha256": "4b5f2f80f84faefe8420e1616671adb1dd3d7e632038d34b1f0e3a1363a51059"
+        },
+        "provenance.json": {
+          "bytes": 596,
+          "sha256": "461ca1fe484049f8ae888b854ee00080b7762245877551addef21d54a0f746a9"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 132187888,
+          "sha256": "793818abeccc2bcddd2c32e5fa97be4826398ed7e2a77327f4ea5e3c71f14dc2"
+        },
+        "merges.txt": {
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "vocab.json": {
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "special_tokens_map.json": {
+          "bytes": 499,
+          "sha256": "a5dba86f1cb07d7e5b093bbea2339d2c3c4effec4d6a76d812a7271897bd151a"
+        },
+        "added_tokens.json": {
+          "bytes": 707,
+          "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+        },
+        "training-config.json": {
+          "bytes": 790,
+          "sha256": "e6c76458e325e759723f890e604dfbd628d711e866f87b8693efb89db71915aa"
+        },
+        "DATA_LICENSE.md": {
+          "bytes": 1420,
+          "sha256": "b750a5114eb7b0bf26332e785a2a7460b406e15addf8daf6d99d90b7d2e704cd"
+        },
+        "run-summary.json": {
+          "bytes": 3014,
+          "sha256": "da672ab05a9d1d48f82bfb9e045977bf7b06cda6c833a8b944b19243a7051a9c"
+        }
+      },
+      "result_note": "Historical 20-update infrastructure smoke test on 406 training / 81 validation examples; not a quality model.",
+      "report": null,
+      "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362"
+    },
+    "tiny-pilot-153-step": {
+      "source_artifact": "training-runs/qwen4-pilot-20261006T180041438161Z",
+      "source_adapter": "adapter",
+      "files": {
+        "tokenizer.json": {
+          "bytes": 11422654,
+          "sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4"
+        },
+        "chat_template.jinja": {
+          "bytes": 2630,
+          "sha256": "64f85b198065d0fba2a81f37e10ed68161ce2c19a754c7100e67e0ca2ee9c326"
+        },
+        "training-summary.json": {
+          "bytes": 2191,
+          "sha256": "e3ed551c0f4abd1bd3fd81f95efa55fd2d684dd909be602d48638c2c149bdbac"
+        },
+        "adapter_config.json": {
+          "bytes": 939,
+          "sha256": "e9957cc0d758aaa32da6b447482a1099971406fb5b533109fdb2c0c563585bb5"
+        },
+        "README.md": {
+          "bytes": 721,
+          "sha256": "1e6f631a8d5e7b438db3ef65f41a9cc4c86a1b0c289a4c9521ee66ba379a0c08"
+        },
+        "tokenizer_config.json": {
+          "bytes": 5405,
+          "sha256": "4b5f2f80f84faefe8420e1616671adb1dd3d7e632038d34b1f0e3a1363a51059"
+        },
+        "provenance.json": {
+          "bytes": 630,
+          "sha256": "1a447bd6aff80599da3858cfa187c06b39a1e1016d4a4ef5bad4a236c832a949"
+        },
+        "adapter_model.safetensors": {
+          "bytes": 132187888,
+          "sha256": "14406b2c9631958036bfc2c0ab5b5929f8128f0e5bfa392955bc19cf1ecb094e"
+        },
+        "merges.txt": {
+          "bytes": 1671853,
+          "sha256": "8831e4f1a044471340f7c0a83d7bd71306a5b867e95fd870f74d0c5308a904d5"
+        },
+        "vocab.json": {
+          "bytes": 2776833,
+          "sha256": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+        },
+        "special_tokens_map.json": {
+          "bytes": 499,
+          "sha256": "a5dba86f1cb07d7e5b093bbea2339d2c3c4effec4d6a76d812a7271897bd151a"
+        },
+        "added_tokens.json": {
+          "bytes": 707,
+          "sha256": "c0284b582e14987fbd3d5a2cb2bd139084371ed9acbae488829a1c900833c680"
+        },
+        "training-config.json": {
+          "bytes": 790,
+          "sha256": "e6c76458e325e759723f890e604dfbd628d711e866f87b8693efb89db71915aa"
+        },
+        "DATA_LICENSE.md": {
+          "bytes": 1420,
+          "sha256": "b750a5114eb7b0bf26332e785a2a7460b406e15addf8daf6d99d90b7d2e704cd"
+        },
+        "run-summary.json": {
+          "bytes": 2971,
+          "sha256": "d1a107c6688d1ffa219136ae7bc944ecd2df07b7232913cd2146ed4723b34923"
+        }
+      },
+      "result_note": "Historical 153-update tiny pilot on 406 training / 81 validation examples. Near-perfect token accuracy does not establish generalization.",
+      "report": null,
+      "hugging_face_revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362"
+    }
+  },
+  "already_published": {
+    "sft-epoch2-quarter": {
+      "repo_id": "vishvananda/mtg-oracle-qwen3-4b-checkpoints-20261007",
+      "revision": "31f85db13719800d05035be8b1eb20333ec709c1",
+      "sha256": "79005faf7d23889e1619bad9038f8deb25dd6ba96759962d2d2bb432ad668cc1"
+    }
+  },
+  "policy": "Inference adapters and reproducible source/configs archived. Private datasets, raw source cards, local reviewer transcripts and active serving exports are retained locally; not public upload inputs."
+}

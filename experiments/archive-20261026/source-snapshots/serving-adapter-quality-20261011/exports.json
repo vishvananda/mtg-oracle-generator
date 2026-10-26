@@ -1,0 +1,42 @@
+{
+  "inputs": {
+    "base_files": {
+      "config.json": "5beea1a4a34c62782bfb2f911c606741a3bab8f92d80a118fa053c28af12e8ba",
+      "generation_config.json": "835fffe355c9438e7a25be099b3fccaa98350b83451f9fd2d99512e74f1ade48",
+      "merges.txt": "599bab54075088774b1733fde865d5bd747cbcc7a547c5bc12610e874e26f5e3",
+      "model-00001-of-00003.safetensors": "75311d91bb08cf0b882913da464a1e722a31fb44db35208663487efb7a3d8ed6",
+      "model-00002-of-00003.safetensors": "0b48adbb1f60e901153d91907ba11ce63bd4b8b584482e730f48808d055dfba1",
+      "model-00003-of-00003.safetensors": "7dd39ccca5e4de123c74c14af44c9bf2eb75df33b4614382af0134528e060d5d",
+      "model.safetensors.index.json": "d6c42883a895dfef5b0080ed2116a1bcd764f558406b98923d675978a1abf29c",
+      "tokenizer.json": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "tokenizer_config.json": "a62ff0a2472a0fa1b8eaabcb57c59b58afa42a22831dc141400b6e0cf2b65ce3",
+      "vocab.json": "ca10d7e9fb3ed18575dd1e277a2579c16d108e32f27439684afa0e10b1440910"
+    },
+    "converter_sha256": "e9a1da876330bbce9687541ab31736542a01b4ac43c6686126514a50f122fb7f",
+    "adapter_converter_sha256": "3c5f109f3d7a5ef530ea388d8e994512df6f544ce1aa8b2e39be446223637b93",
+    "adapters": {
+      "dpo": {
+        "adapter_config.json": "cf4e9f29bcf35fb4a8abb9bf9c736ca80516cbb5603e2cb5b70752956242a30f",
+        "adapter_model.safetensors": "baeb675c5ce8e6663a978eb0a696d29189b964ec432dbd6dcad60229d4d69301"
+      },
+      "custom": {
+        "adapter_config.json": "c2e41c2f5ee8f81c7ecc821bbf650523961463c04be47ca881b436f9be8e2a5f",
+        "adapter_model.safetensors": "d7abf9131ffb11bf6fa5633516ce478d5dd05a5c0bb18e2cb28e6dc6700f30b1"
+      }
+    },
+    "recipe": "Pinned BF16 base -> F16 GGUF -> Q4_K_M; cumulative adapters -> separate F16 GGUF"
+  },
+  "files": {
+    "base-F16.gguf": "3d543c3cd300d1a60c6a4258d165403407309db2e898f62545c556d8883df8de",
+    "custom-adapter-F16.gguf": "f84ec8e9896573024958bf978b5480b2cb565c812bfb6e5ab0a253f013ecb52e",
+    "dpo-adapter-F16.gguf": "d37499147e055da6a3efb2d8546109f9df21eb4477ce7bf92e98d2970a3a54c1",
+    "base-Q4_K_M.gguf": "e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292"
+  },
+  "bytes": {
+    "base-F16.gguf": 8051283328,
+    "custom-adapter-F16.gguf": 66095328,
+    "dpo-adapter-F16.gguf": 66095328,
+    "base-Q4_K_M.gguf": 2497278848
+  },
+  "automatic_promotion": false
+}

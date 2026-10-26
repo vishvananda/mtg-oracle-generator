@@ -1,0 +1,48 @@
+{
+  "selection": "32 independent card families per panel, up to four planeswalker families per panel first, remainder SHA256(serving-quant-v1:id); no outcome-based selection",
+  "case_source": "${ARTIFACT_ROOT}/custom-sft-pilot-20261010/dataset/evaluation-cases.jsonl",
+  "case_source_sha256": "eca6f3e221ad532ea7ce63d47c010458dfb5471322dbb6a799786e20b7eae5e5",
+  "server": "${ARTIFACT_ROOT}/llama/llama-b11443/llama-server",
+  "quantizer": "${ARTIFACT_ROOT}/llama/llama-b11443/llama-quantize",
+  "arms": {
+    "dpo-q4_0": {
+      "model": "${ARTIFACT_ROOT}/rl-round2-20261009/serving-final/model-Q4_0.gguf",
+      "quantization": "Q4_0"
+    },
+    "custom-q4_0": {
+      "model": "${ARTIFACT_ROOT}/custom-sft-pilot-20261010/review-gates-20261011/serving-custom/model-Q4_0.gguf",
+      "quantization": "Q4_0"
+    },
+    "dpo-q4_k_m": {
+      "model": "${ARTIFACT_ROOT}/serving-quality-20261011/models/dpo-q4_k_m.gguf",
+      "quantization": "Q4_K_M",
+      "source": "${ARTIFACT_ROOT}/rl-round2-20261009/serving-final/model-F16.gguf"
+    },
+    "custom-q4_k_m": {
+      "model": "${ARTIFACT_ROOT}/serving-quality-20261011/models/custom-q4_k_m.gguf",
+      "quantization": "Q4_K_M",
+      "source": "${ARTIFACT_ROOT}/custom-sft-pilot-20261010/review-gates-20261011/serving-custom/model-F16.gguf"
+    },
+    "dpo-q5_k_m": {
+      "model": "${ARTIFACT_ROOT}/serving-quality-20261011/models/dpo-q5_k_m.gguf",
+      "quantization": "Q5_K_M",
+      "source": "${ARTIFACT_ROOT}/rl-round2-20261009/serving-final/model-F16.gguf"
+    },
+    "custom-q5_k_m": {
+      "model": "${ARTIFACT_ROOT}/serving-quality-20261011/models/custom-q5_k_m.gguf",
+      "quantization": "Q5_K_M",
+      "source": "${ARTIFACT_ROOT}/custom-sft-pilot-20261010/review-gates-20261011/serving-custom/model-F16.gguf"
+    },
+    "dpo-q8_0": {
+      "model": "${ARTIFACT_ROOT}/serving-quality-20261011/models/dpo-q8_0.gguf",
+      "quantization": "Q8_0",
+      "source": "${ARTIFACT_ROOT}/rl-round2-20261009/serving-final/model-F16.gguf"
+    },
+    "custom-q8_0": {
+      "model": "${ARTIFACT_ROOT}/serving-quality-20261011/models/custom-q8_0.gguf",
+      "quantization": "Q8_0",
+      "source": "${ARTIFACT_ROOT}/custom-sft-pilot-20261010/review-gates-20261011/serving-custom/model-F16.gguf"
+    }
+  },
+  "automatic_promotion": false
+}

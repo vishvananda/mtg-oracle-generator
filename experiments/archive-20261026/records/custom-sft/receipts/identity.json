@@ -1,0 +1,40 @@
+{
+  "package_sha256": "59ff39f089ae4452c10a33263665eed97b616dbbdd4c89d4a5386bdc24d43474",
+  "adapters": {
+    "sft": {
+      "adapter_config.json": "45566cd0da7a8819103bce2d88a749de4819c882cd16bd046257771fd43c5e56",
+      "adapter_model.safetensors": "7cd83a73a5f0816dd300adb0b38d58211eb91e28cc920ed69f6db9888daf9251",
+      "run-summary.json": "8c86abe8da80ad15f428fdc2ae066932951661f4e740b2e55a0e5e0dbb67c847"
+    },
+    "dpo": {
+      "adapter_config.json": "cf4e9f29bcf35fb4a8abb9bf9c736ca80516cbb5603e2cb5b70752956242a30f",
+      "adapter_model.safetensors": "baeb675c5ce8e6663a978eb0a696d29189b964ec432dbd6dcad60229d4d69301"
+    }
+  },
+  "config": {
+    "model": "Qwen/Qwen3-4B-Instruct-2507",
+    "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+    "method": "QLoRA",
+    "load_in_4bit": true,
+    "quant_type": "nf4",
+    "double_quant": true,
+    "epochs": 1,
+    "max_length": 4096,
+    "per_device_train_batch_size": 8,
+    "gradient_accumulation_steps": 2,
+    "per_device_eval_batch_size": 8,
+    "monitoring_split": "train",
+    "validation_max_examples": 64,
+    "learning_rate": 2e-05,
+    "warmup_ratio": 0.05,
+    "seed": 43,
+    "completion_only_loss": true,
+    "packing": false,
+    "generation_batch_size": 24,
+    "max_new_tokens": 2048,
+    "training_seconds": 3600
+  },
+  "starting_point": "completed SFT, not DPO",
+  "fresh_optimizer": true,
+  "automatic_promotion": false
+}

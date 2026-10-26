@@ -1,0 +1,12 @@
+{
+  "experiment": "partial-pilot",
+  "source_artifact": "training-runs/qwen4-partial-pilot-20261006T214946201974Z",
+  "adapter_sha256": "9936390f9dfb8e9b78c07f1181cef25c948cb8cd6e7ed3f08f5a2f32aef48f68",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "code_base_commit": "da7b2ad5ceea3680b14e2b15b4753aabe0c71860",
+  "dataset": {},
+  "status": "historical research artifact; not promoted",
+  "result_note": "Historical 6,500-example partial-completion pilot; 407 updates. Loss and a four-request diagnostic do not establish generation quality.",
+  "report": null
+}

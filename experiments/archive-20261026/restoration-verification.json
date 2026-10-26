@@ -1,0 +1,14 @@
+[
+  {
+    "experiment": "custom-sft",
+    "restored": "/home/vishvananda/editor-archive-restoration-20261026/custom-sft",
+    "existing_exporter_receipt_check": "completed_custom_sft_pilot",
+    "adapter_files_verified": 2
+  },
+  {
+    "experiment": "repair-sft",
+    "restored": "/home/vishvananda/editor-archive-restoration-20261026/repair-sft",
+    "existing_exporter_receipt_check": "completed_custom_sft_pilot",
+    "adapter_files_verified": 2
+  }
+]

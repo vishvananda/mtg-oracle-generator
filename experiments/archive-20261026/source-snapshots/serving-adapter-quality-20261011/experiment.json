@@ -1,0 +1,18 @@
+{
+  "arms": {
+    "dpo-q4_k_m-lora": {
+      "model": "${ARTIFACT_ROOT}/serving-adapter-quality-20261011/models/base-Q4_K_M.gguf",
+      "adapter": "${ARTIFACT_ROOT}/serving-adapter-quality-20261011/models/dpo-adapter-F16.gguf",
+      "quantization": "Q4_K_M"
+    },
+    "custom-q4_k_m-lora": {
+      "model": "${ARTIFACT_ROOT}/serving-adapter-quality-20261011/models/base-Q4_K_M.gguf",
+      "adapter": "${ARTIFACT_ROOT}/serving-adapter-quality-20261011/models/custom-adapter-F16.gguf",
+      "quantization": "Q4_K_M"
+    }
+  },
+  "server": "${ARTIFACT_ROOT}/llama/llama-b11443/llama-server",
+  "quantizer": "${ARTIFACT_ROOT}/llama/llama-b11443/llama-quantize",
+  "port_base": 4244,
+  "generation_only": true
+}

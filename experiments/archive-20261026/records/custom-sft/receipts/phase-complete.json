@@ -1,0 +1,178 @@
+{
+  "training": {
+    "config": {
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "model_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "method": "QLoRA",
+      "load_in_4bit": true,
+      "quant_type": "nf4",
+      "double_quant": true,
+      "epochs": 1,
+      "max_length": 4096,
+      "per_device_train_batch_size": 8,
+      "gradient_accumulation_steps": 2,
+      "per_device_eval_batch_size": 8,
+      "monitoring_split": "train",
+      "validation_max_examples": 64,
+      "learning_rate": 2e-05,
+      "warmup_ratio": 0.05,
+      "seed": 43,
+      "completion_only_loss": true,
+      "packing": false,
+      "generation_batch_size": 24,
+      "max_new_tokens": 2048,
+      "training_seconds": 3600
+    },
+    "dataset": {
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+      "splits": {
+        "train": 4076
+      }
+    },
+    "optimizer_steps": 255,
+    "planned_steps": 255,
+    "training_seconds": 930.1885871830164,
+    "setup_and_baseline_seconds": 39.263711914012674,
+    "metrics": {
+      "train_runtime": 929.834,
+      "train_samples_per_second": 4.384,
+      "train_steps_per_second": 0.274,
+      "total_flos": 5.836542478159872e+16,
+      "train_loss": 0.21304556490378637,
+      "epoch": 1.0
+    },
+    "base_eval": {
+      "eval_loss": 0.36548706889152527,
+      "eval_model_preparation_time": 0.0073,
+      "eval_runtime": 4.9317,
+      "eval_samples_per_second": 12.977,
+      "eval_steps_per_second": 1.622,
+      "eval_entropy": 2.1662799417972565,
+      "eval_num_tokens": 0.0,
+      "eval_mean_token_accuracy": 0.9388095289468765
+    },
+    "adapter_eval": {
+      "eval_loss": 0.18130210041999817,
+      "eval_model_preparation_time": 0.0073,
+      "eval_runtime": 4.5349,
+      "eval_samples_per_second": 14.113,
+      "eval_steps_per_second": 1.764,
+      "eval_entropy": 2.2078557908535004,
+      "eval_num_tokens": 2643382.0,
+      "eval_mean_token_accuracy": 0.9553790166974068,
+      "epoch": 1.0
+    },
+    "validation_sample": {
+      "available": 4076,
+      "evaluated": 64,
+      "source_split": "train",
+      "indices_sha256": "917bd8f682cdd19b5f5a15f098a060902ffce9c8a5a2eeda39d8ec56f4073b0a",
+      "policy": "fixed training diagnostic sample; NOT held-out validation"
+    },
+    "loss_mask_verified": true,
+    "peak_allocated_gib": 19.21729278564453,
+    "initial_adapter_hash": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+    "final_adapter_hash": "6a9df746fbe66357d85651fa83cce2b21748c07aefd9029c67db153b4fc5a557",
+    "baseline_adapter_hash": "29f469ddf89dc61091106c918d1a42ae42fab0b7ebad5bf8001d3fbfd7881c67",
+    "stopped_for_budget": false,
+    "parent_training_identity": {
+      "dataset_manifest_sha256": "d7fd06e722c7b0ebde3784dce09861afa867a55d68d52994d66f3d10b49d7a7e",
+      "config_sha256": "61bff5f937a1c952c2455e6c916fdf726effe4f9a2c1bf7d1ea36a85c29c11c5",
+      "trainer_sha256": "251a0cf2b14a938dfb736f5a1120af15615ea87f02c69755861a129613824b6d",
+      "train_sha256": "5dafa9b34a5236b9320bf77098217d6b28af11083f0b2e072778b40c77d2461e",
+      "validation_sha256": null,
+      "monitoring_split": "train",
+      "max_steps": -1
+    },
+    "automatic_promotion": false
+  },
+  "generation": {
+    "sft": {
+      "complete": true,
+      "cases": 320,
+      "completions": 320,
+      "sha256": "990c41d5233cb5ea19dc483fc0f0e98acf6b33464ead53d905de9cc5b8638b20",
+      "output_tokens": 24965,
+      "seconds": 281.80629065897665,
+      "reused_completions": 0,
+      "resume_sha256": null,
+      "oom_reductions": [],
+      "actual_batch_sizes": [
+        8,
+        24
+      ],
+      "decoding": {
+        "do_sample": false,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null,
+        "seed": 43,
+        "batch_size": 24,
+        "rng_protocol": "sha256(seed, batch candidate IDs), reset per batch; resumed rows retain their original stream",
+        "max_new_tokens": 2048,
+        "enable_thinking": false
+      },
+      "backend": "transformers NF4 + SFT/DPO adapter"
+    },
+    "dpo": {
+      "complete": true,
+      "cases": 320,
+      "completions": 320,
+      "sha256": "8d41665258002d60c2046f49f9a914462b7abd6fabadb97776ba70899f3d4ded",
+      "output_tokens": 25092,
+      "seconds": 285.51542402998894,
+      "reused_completions": 0,
+      "resume_sha256": null,
+      "oom_reductions": [],
+      "actual_batch_sizes": [
+        8,
+        24
+      ],
+      "decoding": {
+        "do_sample": false,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null,
+        "seed": 43,
+        "batch_size": 24,
+        "rng_protocol": "sha256(seed, batch candidate IDs), reset per batch; resumed rows retain their original stream",
+        "max_new_tokens": 2048,
+        "enable_thinking": false
+      },
+      "backend": "transformers NF4 + SFT/DPO adapter"
+    },
+    "custom": {
+      "complete": true,
+      "cases": 320,
+      "completions": 320,
+      "sha256": "2a66a168f5308eb93ab3fab94fecab987d457f929e1d304ecd8958d2ac0338ab",
+      "output_tokens": 25511,
+      "seconds": 269.7284266970237,
+      "reused_completions": 0,
+      "resume_sha256": null,
+      "oom_reductions": [],
+      "actual_batch_sizes": [
+        8,
+        24
+      ],
+      "decoding": {
+        "do_sample": false,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null,
+        "seed": 43,
+        "batch_size": 24,
+        "rng_protocol": "sha256(seed, batch candidate IDs), reset per batch; resumed rows retain their original stream",
+        "max_new_tokens": 2048,
+        "enable_thinking": false
+      },
+      "backend": "transformers NF4 + SFT/DPO adapter"
+    }
+  },
+  "package_sha256": "59ff39f089ae4452c10a33263665eed97b616dbbdd4c89d4a5386bdc24d43474",
+  "adapter_files": {
+    "adapter_config.json": "c2e41c2f5ee8f81c7ecc821bbf650523961463c04be47ca881b436f9be8e2a5f",
+    "adapter_model.safetensors": "d7abf9131ffb11bf6fa5633516ce478d5dd05a5c0bb18e2cb28e6dc6700f30b1"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "experiment": "custom-sft",
+  "source_artifact": "custom-sft-pilot-20261010",
+  "adapter_sha256": "d7abf9131ffb11bf6fa5633516ce478d5dd05a5c0bb18e2cb28e6dc6700f30b1",
+  "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+  "base_revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "code_base_commit": "da7b2ad5ceea3680b14e2b15b4753aabe0c71860",
+  "dataset": {
+    "manifest_sha256": "cae58bc0ce45d49b2ba1e9e5dc0529c0cf8471299a235e1dc53c2886309ba348",
+    "version": "custom-sft-pilot-v1",
+    "counts": {
+      "train": 4076,
+      "test": 192,
+      "development": 128
+    },
+    "public_dataset": null,
+    "availability": "Retained private staging; third-party card corpus is not included in this adapter release."
+  },
+  "status": "historical research artifact; not promoted",
+  "result_note": "Custom-card continuation; 255 updates. Small Q4 holdout gain, development regression; no promotion.",
+  "report": "https://github.com/vishvananda/mtg-oracle-generator/blob/da7b2ad5ceea3680b14e2b15b4753aabe0c71860/reports/custom-sft-pilot/README.md"
+}

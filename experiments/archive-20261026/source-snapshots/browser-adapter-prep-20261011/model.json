@@ -1,0 +1,54 @@
+{
+  "schema_version": 2,
+  "format": "gguf-lora-v1",
+  "runtime": "3.8.1",
+  "label": "DPO2 separate adapter \u00b7 browser verification",
+  "system_prompt": "prompts/620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa/system-prompt.txt",
+  "system_prompt_sha256": "620b723fc804360b14ae5ff4b19b65c43781c00ec52fc897e04346899587ecaa",
+  "base": {
+    "source_sha256": "e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292",
+    "source_bytes": 2497278848,
+    "quantization": "Q4_K_M",
+    "first_shard": "models/base/e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292/base-00001-of-00006.gguf",
+    "shards": [
+      {
+        "name": "base-00001-of-00006.gguf",
+        "bytes": 468218688,
+        "sha256": "b2bc9088d4ad0a205f8bbca8376b1ebcdd88cda1397149504ab2ad383f5597c8"
+      },
+      {
+        "name": "base-00002-of-00006.gguf",
+        "bytes": 474677728,
+        "sha256": "ee7c67dfd7d9d33b6c2d9b02179ef85b534cecce1d654ceb27b4bdbd2c8b6978"
+      },
+      {
+        "name": "base-00003-of-00006.gguf",
+        "bytes": 476583808,
+        "sha256": "a921d76ae98b17297826af00f3144e8477b67a9fb4bb588b295ef3d023d2cea4"
+      },
+      {
+        "name": "base-00004-of-00006.gguf",
+        "bytes": 474954976,
+        "sha256": "6f747b2a238b9313178e2c2fd4118f9f52919eded153c5c85d308330d4871403"
+      },
+      {
+        "name": "base-00005-of-00006.gguf",
+        "bytes": 476551648,
+        "sha256": "80edd9ce62a5537c8a53f8827c24f268d81734fe84eb925ef107ae7e2ec5b50a"
+      },
+      {
+        "name": "base-00006-of-00006.gguf",
+        "bytes": 126292704,
+        "sha256": "2e92d5c17752cadff1ff23cd34cc58079ef0c9a5680f0bee140d8cbdf0bff84b"
+      }
+    ]
+  },
+  "adapter": {
+    "sha256": "d37499147e055da6a3efb2d8546109f9df21eb4477ce7bf92e98d2970a3a54c1",
+    "bytes": 66095328,
+    "path": "models/adapters/d37499147e055da6a3efb2d8546109f9df21eb4477ce7bf92e98d2970a3a54c1/adapter-F16.gguf",
+    "base_sha256": "e1aea7fdd10fbf05d7bd92b96a8750bd9807fdb55f92fd8907d6b1dccaf4c292",
+    "precision": "F16",
+    "scale": 1
+  }
+}

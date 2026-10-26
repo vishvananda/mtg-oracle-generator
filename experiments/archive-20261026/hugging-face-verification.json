@@ -1,0 +1,9 @@
+{
+  "repository": "vishvananda/mtg-oracle-qwen3-4b-research-adapters",
+  "revision": "bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362",
+  "url": "https://huggingface.co/vishvananda/mtg-oracle-qwen3-4b-research-adapters/tree/bdbb7dc16c3dae6a122592a4f7fe3828d1f5c362",
+  "files_verified": 85,
+  "bytes_verified": 740445615,
+  "method": "Complete re-download into an isolated cache; SHA-256 and size compared for every published file.",
+  "cache": "/home/vishvananda/editor-archive-verification-20261026"
+}
